@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from edurange_refactored.user.models import Role, User
+from edurange_refactored.user.models import User
 
 from .factories import UserFactory
 
@@ -56,11 +56,4 @@ class TestUser:
         user = UserFactory(first_name="Foo", last_name="Bar")
         assert user.full_name == "Foo Bar"
 
-    def test_roles(self):
-        """Add a role to a user."""
-        role = Role(name="admin")
-        role.save()
-        user = UserFactory()
-        user.roles.append(role)
-        user.save()
-        assert role in user.roles
+

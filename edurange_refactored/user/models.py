@@ -15,23 +15,6 @@ from edurange_refactored.database import (
 from edurange_refactored.extensions import bcrypt
 
 
-class Role(SurrogatePK, Model):
-    """A role for a user."""
-
-    __tablename__ = "roles"
-    name = Column(db.String(80), unique=True, nullable=False)
-    user_id = reference_col("users", nullable=True)
-    user = relationship("User", backref="roles")
-
-    def __init__(self, name, **kwargs):
-        """Create instance."""
-        db.Model.__init__(self, name=name, **kwargs)
-
-    def __repr__(self):
-        """Represent instance as a unique string."""
-        return f"<Role({self.name})>"
-
-
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
@@ -43,6 +26,7 @@ class User(UserMixin, SurrogatePK, Model):
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
+    is_instructor = Column(db.Boolean(), default=False)
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
