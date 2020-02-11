@@ -2,6 +2,7 @@
 """User views."""
 from flask import Blueprint, render_template
 from flask_login import login_required
+from flask_user import roles_required
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
@@ -11,3 +12,8 @@ blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../s
 def members():
     """List members."""
     return render_template("users/members.html")
+
+@blueprint.route("/admin")
+def adminPanel():
+    return render_template("users/admin.html")
+
