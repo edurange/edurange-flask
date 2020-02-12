@@ -40,6 +40,16 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
+
+    admin = User.query.filter_by(username='admin').first()
+    if not admin:
+        User.create(username='admin',
+                    email='admin@edurange.org',
+                    password='passwordfoo',
+                    active=True,
+                    is_admin=True,
+                    is_instructor=True)
+
     return render_template("public/home.html", form=form)
 
 

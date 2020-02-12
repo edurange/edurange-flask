@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, session
 from flask_login import login_required
-from flask_user import roles_required
+from .models import User
+
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
@@ -15,5 +16,9 @@ def members():
 
 @blueprint.route("/admin")
 def adminPanel():
-    return render_template("users/admin.html")
+    number = session.get('_user_id')
+    user = User.query.filter_by(id=number).first()
+    if user.is_admin:
+        return render_template('users/admin.html')
+    return redirect('/')
 

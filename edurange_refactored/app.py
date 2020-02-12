@@ -6,6 +6,7 @@ import sys
 from flask import Flask, render_template
 
 from edurange_refactored import commands, public, user
+from edurange_refactored.user.models import User
 from edurange_refactored.extensions import (
     bcrypt,
     cache,

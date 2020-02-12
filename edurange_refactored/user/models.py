@@ -44,11 +44,6 @@ class User(UserMixin, SurrogatePK, Model):
         """Check password."""
         return bcrypt.check_password_hash(self.password, value)
 
-    @property
-    def full_name(self):
-        """Full user name."""
-        return f"{self.first_name} {self.last_name}"
-
     def __repr__(self):
         """Represent instance as a unique string."""
         return f"<User({self.username!r})>"
