@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, redirect, session
+from flask import abort, Blueprint, render_template, session
 from flask_login import login_required
 from .models import User
 
@@ -18,7 +18,7 @@ def members():
 def adminPanel():
     number = session.get('_user_id')
     user = User.query.filter_by(id=number).first()
-    if user.is_admin:
-        return render_template('users/admin.html')
-    return redirect('/')
+    if not user.is_admin:
+        abort(403)
+    return render_template('users/admin.html')
 

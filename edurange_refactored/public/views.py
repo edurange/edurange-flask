@@ -43,6 +43,7 @@ def home():
 
     admin = User.query.filter_by(username='admin').first()
     if not admin:
+        #TODO: Make a config file that this account info can be pulled from
         User.create(username='admin',
                     email='admin@edurange.org',
                     password='passwordfoo',
