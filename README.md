@@ -1,4 +1,4 @@
-# Edurange_Refactored [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/pwndbg/pwndbg/blob/dev/LICENSE.md) [![Py2&3](https://img.shields.io/badge/Python-2%20%26%203-green.svg)]()
+# Edurange_Refactored [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/coojac09/edurange-flask/blob/master/LICENSE) [![Py2&3](https://img.shields.io/badge/Python-2%20%26%203-green.svg)]()
 
 EDURange
 
