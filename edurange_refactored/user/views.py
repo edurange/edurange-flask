@@ -7,6 +7,12 @@ from .models import User
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
+# WARNING:
+# This check is actually vulnerable to attacks.
+# Since we're retrieving user id from the session request variables, it can be spoofed
+# Although it requires knowledge of the admin user_id #, it will often just be '1'
+# TODO: Harden check_admin()
+
 def check_admin():
     number = session.get('_user_id')
     user = User.query.filter_by(id=number).first()
@@ -20,6 +26,7 @@ def members():
     return render_template("users/members.html")
 
 @blueprint.route("/admin")
+@login_required
 def adminPanel():
     check_admin()
     return render_template('users/admin.html')

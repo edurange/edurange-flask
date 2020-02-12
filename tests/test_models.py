@@ -51,9 +51,4 @@ class TestUser:
         assert user.check_password("foobarbaz123") is True
         assert user.check_password("barfoobaz") is False
 
-    def test_full_name(self):
-        """User full name."""
-        user = UserFactory(first_name="Foo", last_name="Bar")
-        assert user.full_name == "Foo Bar"
-
 

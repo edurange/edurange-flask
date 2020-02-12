@@ -70,9 +70,10 @@ class TestRegistering:
 
     def test_can_register(self, user, testapp):
         """Register a new user."""
-        old_count = len(User.query.all())
         # Goes to homepage
         res = testapp.get("/")
+        # Check Number of Users
+        old_count = len(User.query.all())
         # Clicks Create Account button
         res = res.click("Create account")
         # Fills out the form
