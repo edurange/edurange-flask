@@ -40,17 +40,6 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    #TODO: Find a way to make this default user outside of the request context
-    admin = User.query.filter_by(username='admin').first()
-    if not admin:
-        #TODO: Make a config file that this account info can be pulled from
-        User.create(username='admin',
-                    email='admin@edurange.org',
-                    password='passwordfoo',
-                    active=True,
-                    is_admin=True,
-                    is_instructor=True)
-
     return render_template("public/home.html", form=form)
 
 

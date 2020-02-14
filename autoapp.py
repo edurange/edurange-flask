@@ -5,23 +5,22 @@ from edurange_refactored.user.models import User
 import os
 
 app = create_app()
+app.app_context().push()
 
-admin = User.query.filter_by(username='admin').first()
-if not admin:
-    default_User()
-
-
-def default_User():
-    #
+def create_admin():
     username=os.environ['USERNAME']
     email=os.environ['EMAIL']
     password=os.environ['PASSWORD']
-    #
-    active=os.environ['ACTIVE']
-    is_admin=os.environ['IS_ADMIN']
-    is_instructor=os.environ['IS_INSTRUCTOR']
+    
+    User.create(username=username,
+                email=email,
+                password=password,
+                active=True,
+                is_admin=True,
+                is_instructor=True)
 
-    default_user = User(unsername=username, email=email, password=password, active=active, is_admin=is_admin, is_instructor=is_instructor)
-    db.session.add(default_user)
-    db.session.commit()
+
+admin = User.query.limit(1).all()
+if not admin:
+    create_admin()
 
