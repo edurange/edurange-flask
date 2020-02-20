@@ -12,6 +12,7 @@ from edurange_refactored.database import (
 )
 from edurange_refactored.extensions import bcrypt
 
+#TODO: create student_groups and other table functions and stuffs
 
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""

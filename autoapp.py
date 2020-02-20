@@ -8,7 +8,7 @@ app = create_app()
 app.app_context().push()
 
 def create_admin():
-    username=os.environ['USERNAME']
+    username=os.environ['FLASK_USERNAME']
     email=os.environ['EMAIL']
     password=os.environ['PASSWORD']
     
