@@ -8,11 +8,32 @@ from edurange_refactored.database import (
     Column,
     Model,
     SurrogatePK,
-    db
+    db,
+    reference_col,
+    relationship
 )
 from edurange_refactored.extensions import bcrypt
+import string
+import random
 
-#TODO: create student_groups and other table functions and stuffs
+def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+class StudentGroups(UserMixin, SurrogatePK, Model):
+    """Groups of Users"""
+    __tablename__ = "groups"
+    name = Column(db.String(40), unique=True, nullable=False)
+    owner_id = reference_col("users", nullable=False)
+    owner = relationship("User", backref="groups")
+    code = Column(db.String(8), unique=True, nullable=True, default=generate_registration_code())
+
+class GroupUsers(UserMixin, SurrogatePK, Model):
+    """Users belong to groups"""
+    __tablename__ = "group_users"
+    user_id = reference_col("users", nullable=False)
+    user = relationship("User", backref="group_users")
+    group_id = reference_col("groups", nullable=False)
+    group = relationship("StudentGroups", backref="group_users")
 
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""

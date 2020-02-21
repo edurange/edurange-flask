@@ -2,10 +2,12 @@
 """Create an application instance."""
 from edurange_refactored.app import create_app
 from edurange_refactored.user.models import User
+from edurange_refactored.extensions import db
 import os
 
 app = create_app()
 app.app_context().push()
+db.create_all()
 
 def create_admin():
     username=os.environ['FLASK_USERNAME']
