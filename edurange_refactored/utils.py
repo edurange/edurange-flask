@@ -11,14 +11,14 @@ def flash_errors(form, category="warning"):
             flash(f"{getattr(form, field).label.text} - {error}", category)
 
 class StudentTable(Table):
-    u_id = Col('id')
-    u_name = Col('username')
+    id = Col('id')
+    username = Col('username')
     email = Col('email')
 
 class Student(object):
-    def __init__(self, u_id, u_name, email):
+    def __init__(self, id, username, email):
         #will have to change parameters
-        self.u_id = u_id
-        self.u_name = u_name
+        self.id = id
+        self.username = username
         self.email = email
 

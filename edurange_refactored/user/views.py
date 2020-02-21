@@ -31,5 +31,5 @@ def adminPanel():
     check_admin()
     students = User.query.all()
     table = StudentTable(students)
-    return render_template('users/admin.html')
+    return render_template('users/admin.html', table=table)
 
