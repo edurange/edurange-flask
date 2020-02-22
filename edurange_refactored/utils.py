@@ -12,6 +12,7 @@ def flash_errors(form, category="warning"):
 
 class StudentTable(Table):
     classes = ['table']
+    thead_classes = ['thead-dark']
     id = Col('id')
     username = Col('username')
     email = Col('email')
