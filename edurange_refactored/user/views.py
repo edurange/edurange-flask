@@ -3,6 +3,7 @@
 from flask import abort, Blueprint, render_template, session
 from flask_login import login_required
 from .models import User
+from ..utils import StudentTable, Student
 
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
@@ -29,5 +30,7 @@ def members():
 @login_required
 def adminPanel():
     check_admin()
-    return render_template('users/admin.html')
+    students = User.query.all()
+    table = StudentTable(students)
+    return render_template('users/admin.html', table=table)
 
