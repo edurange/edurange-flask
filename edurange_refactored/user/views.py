@@ -2,8 +2,8 @@
 """User views."""
 from flask import abort, Blueprint, render_template, session
 from flask_login import login_required
-from .models import User
-from ..utils import StudentTable, Student
+from .models import User, StudentGroups
+from ..utils import StudentTable, Student, GroupTable, Group
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
@@ -30,6 +30,8 @@ def members():
 def adminPanel():
     check_admin()
     students = User.query.all()
-    table = StudentTable(students)
-    return render_template('users/admin.html', table=table)
+    stuTable = StudentTable(students)
+    groups = StudentGroups.query.all()
+    groTable = GroupTable(groups)
+    return render_template('users/admin.html', stuTable=stuTable, groTable=groTable)
 

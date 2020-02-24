@@ -12,14 +12,25 @@ def flash_errors(form, category="warning"):
 
 class StudentTable(Table):
     classes = ['table']
+    thead_classes = ['thead-dark']
     id = Col('id')
     username = Col('username')
     email = Col('email')
 
 class Student(object):
     def __init__(self, id, username, email):
-        #will have to change parameters
         self.id = id
         self.username = username
         self.email = email
+
+class GroupTable(Table):
+    classes = ['table']
+    thead_classes = ['thead-dark']
+    id = Col('id')
+    name = Col('name')
+
+class Group(object):
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
 
