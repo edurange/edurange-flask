@@ -1,5 +1,18 @@
 {% extends "layout.html" %}
-{% block content %}
-    <h1>Welcome Admin!</h1>
-    {{ table }}
+{% block content %}    
+    <div class="container-fluid">
+	    <h1>Welcome Admin!</h1>
+    </div>
+
+    <div class="container container-fluid">
+	    <div class="container-heading">
+		    <h2> <i class="fa fa-user"></i> All Students </h2>
+	    </div>
+	    <div class="row">
+		    <div class="col">
+			    {{ table }}
+		    </div>
+	    </div>
+    </div>
 {% endblock %}
+

@@ -11,6 +11,7 @@ def flash_errors(form, category="warning"):
             flash(f"{getattr(form, field).label.text} - {error}", category)
 
 class StudentTable(Table):
+    classes = ['table']
     id = Col('id')
     username = Col('username')
     email = Col('email')
