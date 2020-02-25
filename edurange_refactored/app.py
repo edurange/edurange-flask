@@ -62,7 +62,7 @@ def register_errorhandlers(app):
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, "code", 500)
-        return render_template("{error_code}.html"), error_code #removed f from render_template(f...
+        return render_template(f"{error_code}.html"), error_code #removed f from render_template(f...
 
     for errcode in [401, 403, 404, 500]:
         app.errorhandler(errcode)(render_error)
