@@ -20,7 +20,7 @@ def generate_registration_code(size=8, chars=string.ascii_lowercase + string.dig
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-class StudentGroup(UserMixin, SurrogatePK, Model):
+class StudentGroups(UserMixin, SurrogatePK, Model):
     """"Groupts of Users"""
     __tablename__ = "groups"
     name = Column(db.String(40), unique=True, nullable=False)
@@ -34,7 +34,7 @@ class GroupUsers(UserMixin, SurrogatePK, Model):
     user_id = reference_col("users", nullable=False)
     user = relationship("User", backref="group_users")
     group_id = reference_col("groups", nullable=False)
-    group = relationship("StudentGroup", backref="group_users")
+    group = relationship("StudentGroups", backref="group_users")
 
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""

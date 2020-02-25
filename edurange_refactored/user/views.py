@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import abort, Blueprint, redirect, render_template, request, url_for, session
+from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.models import User
 from edurange_refactored.user.forms import EmailForm
-from edurange_refactored.utils import flash, StudentTable
+from .models import User, StudentGroups
+from ..utils import StudentTable, Student, GroupTable, Group
 from edurange_refactored.tasks import send_async_email
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
@@ -32,10 +32,12 @@ def members():
 def adminPanel():
     check_admin()
     students = User.query.all()
-    table = StudentTable(students)
+    stuTable = StudentTable(students)
+    groups = StudentGroups.query.all()
+    groTable = GroupTable(groups)
     if request.method == 'GET':
         form = EmailForm()
-        return render_template('users/admin.html', table=table, form=form)
+        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form)
     else:
         form = EmailForm(request.form)
     if form.validate_on_submit():
