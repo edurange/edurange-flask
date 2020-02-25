@@ -16,6 +16,10 @@ class StudentTable(Table):
     id = Col('id')
     username = Col('username')
     email = Col('email')
+    html_attrs={
+            'data-toggle': 'table',
+            'data-pagination': 'true',
+            'data-show-columns': 'true'}
 
 class Student(object):
     def __init__(self, id, username, email):
@@ -28,6 +32,14 @@ class GroupTable(Table):
     thead_classes = ['thead-dark']
     id = Col('id')
     name = Col('name')
+    html_attrs={
+            'data-toggle': 'table',
+            'data-search': 'true',
+            'data-search-on-enter-key': 'true',
+            'data-show-columns': 'true',
+            'data-multiple-select-row': 'true',
+            'data-click-to-select': 'true',
+            'data-pagination': 'true'}
 
 class Group(object):
     def __init__(self, id, name):
