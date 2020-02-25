@@ -2,8 +2,9 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.forms import EmailForm
+from edurange_refactored.user.forms import EmailForm, GroupForm
 from .models import User, StudentGroups
+from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group
 from edurange_refactored.tasks import send_async_email
 
@@ -37,21 +38,30 @@ def adminPanel():
     groTable = GroupTable(groups)
     if request.method == 'GET':
         form = EmailForm()
-        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form)
-    else:
+        form1 = GroupForm()
+        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1)
+    elif request.form['to'] and request.form['subject']:
         form = EmailForm(request.form)
-    if form.validate_on_submit():
-        email_data = {
-            'subject' : form.subject.data,
-            'to': form.to.data,
-            'body': form.body.data
-        }
-        email = form.email.data
-        if request.form['submit'] == 'Send':
-            send_async_email.delay(email_data)
-            flash('Sending email to {0}'.format(email))
-        else:
-            send_async_email.apply_async(args=[email_data], countdown=60)
-            flash('An email will be sent to {0} in one minute.'.format(email))
-        return redirect(url_for('user.adminPanel'))
+        if form.validate_on_submit():
+            email_data = {
+                'subject' : form.subject.data,
+                'to': form.to.data,
+                'body': form.body.data
+            }
+            email = form.email.data
+            if request.form['submit'] == 'Send':
+                send_async_email.delay(email_data)
+                flash('Sending email to {0}'.format(email))
+            else:
+                send_async_email.apply_async(args=[email_data], countdown=60)
+                flash('An email will be sent to {0} in one minute.'.format(email))
+            return redirect(url_for('user.adminPanel'))
+
+    elif request.form['name']:
+        form = GroupForm(request.form)
+        if form.validate_on_submit():
+            code = grc()
+            #create() with name and code
+            name = form.name.data
+            flash('Created group {0}'.format(name))
 

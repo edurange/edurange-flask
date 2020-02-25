@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-from .models import User
+from .models import User, StudentGroups
 
 
 class RegisterForm(FlaskForm):
@@ -69,5 +69,24 @@ class EmailForm(FlaskForm):
     def validate(self):
         initial_validation = super(EmailForm, self).validate()
         if not initial_validation:
+            return False
+        return True
+
+class GroupForm(FlaskForm):
+    """Create New Group Form"""
+    name = StringField(
+            "Group Name", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(GroupForm, self).validate()
+        if not initial_validation:
+            return False
+        group = StudentGroups.query.filter_by(name=self.name.data).first()
+        if group:
+            self.name.errors.append("Group with this name already exists")
             return False
         return True

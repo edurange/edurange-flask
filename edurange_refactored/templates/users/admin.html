@@ -7,7 +7,7 @@
 
 <div class="container-narrow">
 	<p>
-		<a class="btn btn-dark" data-toggle="collapse" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="#collapseUsers">Users Table</a>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">Users Table</button>
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
@@ -112,6 +112,15 @@
         <input name="submit" class="btn btn-dark" type="submit" value="Send">
         <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
     </form>
+</div>
+<div class="container-narrow">
+	<form id="createGroup" method="POST" action="" role="form">
+		<div class="form-group">
+			<label for="name">Group Name</label>
+			<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+		</div>
+		<input name="create" class="btn btn-dark" type="submit" value="Create">
+	</form>
 </div>
 {% endblock %}
 
