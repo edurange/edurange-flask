@@ -1,20 +1,117 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    <div class="container-fluid">
-        <h1>Welcome Admin!</h1>
-    </div>
+<div class="container-fluid">
+	<h1>Welcome Admin!</h1>
+</div>
 
+<div class="container-narrow">
+	<p>
+		<a class="btn btn-dark" data-toggle="collapse" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="#collapseUsers">Users Table</a>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
+	</p>
+	<div class="row justify-content-start">
+		<!--TODO: fix the panels into an unchanging position-->
 
-    <div class="container">
-        <div class="container-heading">
-          <h2>  <i class="fa fa-user"></i>  All Students </h2>
+		<div class="panel-group"> <!--user table collapse-->
+			<div class="panel panel-default">
+				<div id="collapseUsers" class="panel-collapse collapse">
+					<div class="panel-body">
+						<!--table content start-->
+						<div class="col">
+							<h2> <i class="fa fa-user"></i> All Students </h2>
+							{{ stuTable }}
+						</div>
+						<!--table content end-->
+					</div>
+				</div>
+			</div>
+		</div> <!--user table collapse-->
+
+		<div class="panel-group"> <!--scenario table collapse-->
+			<div class="panel panel-default">
+				<div id="collapseScenarios" class="panel-collapse collapse">
+					<div class="panel-body">
+						<!--table content start-->
+						<div class="col">
+							<h2> <i class="fa fa-code"></i> Scenario Status </h2>
+							<table class="table">
+								<thead class="thead-dark">
+								<tr><th>Scenario</th><th>Status</th></tr>
+								</thead>
+								<tbody>
+								<tr><td>There are no scenarios running.</td><td>N/A</td></tr>
+								</tbody>
+							</table>
+						</div>
+						<!--table content end-->
+					</div>
+				</div>
+			</div>
+		</div> <!--scenario table collapse-->
+
+		<div class="panel-group"> <!--group table collapse-->
+			<div class="panel panel-default">
+				<div id="collapseGroups" class="panel-collapse collapse">
+					<div class="panel-body">
+						<!--table content start-->
+						<div class="col">
+							<h2> <i class="fa fa-user"></i> All Groups </h2>
+							{{ groTable }}
+						</div>
+						<!--end table content-->
+					</div>
+				</div>
+			</div>
+		</div> <!--groups table collapse-->
+
+		<div class="panel-group"> <!--user groups table collapse-->
+			<div class="panel panel-default">
+				<div id="collapseUserGroups" class="panel-collapse">
+					<div class="panel-body">
+						<!--table content start-->
+						<div class="col">
+							<h2> <i class="fa fa-user"></i> All Group Users </h2>
+							<table class="table">
+								<thead class="thead-dark">
+								<tr><th>ID</th><th>UserName</th><th>Email</th></tr>
+								</thead>
+								<tbody>
+								<tr><td>N/A</td><td> - </td><td> - </td></tr>
+								</tbody>
+							</table>
+						</div>
+						<!--table content end-->
+					</div>
+				</div>
+			</div>
+		</div> <!--user groups table collapse-->
+	</div>
+</div>
+<div class="container-narrow">
+    <form id="emailForm" method="POST" action="" role="form">
+        {{ form.csrf_token}}
+        <div class="form-group">
+            <label for="to">Recipient</label>
+            <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
         </div>
-        <div class="row">
-            <div class="col">
-                {{ table }}
-            </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
         </div>
-    </div>
-
+        <div class="form-group">
+            <label for="body">Message </label>
+            <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
+        </div>
+        <div class="form-group">
+            <label for="email">Sender</label>
+            <input class="form-control" id="email" name="email" placeholder="Sender" required type="text" value="">
+        </div>
+        <input name="submit" class="btn btn-dark" type="submit" value="Send">
+        <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
+    </form>
+</div>
 {% endblock %}
+

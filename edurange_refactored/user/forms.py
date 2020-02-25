@@ -16,6 +16,9 @@ class RegisterForm(FlaskForm):
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
+    code = StringField(
+        "Registration Code", validators=[DataRequired(), Length(min=8, max=8)]
+    )
     password = PasswordField(
         "Password", validators=[DataRequired(), Length(min=6, max=40)]
     )
@@ -41,5 +44,30 @@ class RegisterForm(FlaskForm):
         user = User.query.filter_by(email=self.email.data).first()
         if user:
             self.email.errors.append("Email already registered")
+            return False
+        return True
+
+
+class EmailForm(FlaskForm):
+    """Email Form."""
+    email = StringField(
+        "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+    subject = StringField(
+        "Subject", validators=[DataRequired()]
+    )
+    to = StringField(
+        "Recipient", validators=[DataRequired()]
+    )
+    body = StringField(
+        "Body", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(EmailForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(EmailForm, self).validate()
+        if not initial_validation:
             return False
         return True
