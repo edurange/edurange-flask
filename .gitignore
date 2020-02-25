@@ -56,3 +56,11 @@ env/
 
 # Development database
 *.db
+
+edurange_refactored/static/cache_manifest.json
+
+.idea/vcs.xml
+
+.idea/workspace.xml
+
+.idea/

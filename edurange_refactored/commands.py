@@ -49,7 +49,7 @@ def lint(fix_imports, check):
     def execute_tool(description, *args):
         """Execute a checking tool with its arguments."""
         command_line = list(args) + files_and_directories
-        click.echo("{description}: {' '.join(command_line)}") #removed f from echo(f
+        click.echo(f"{description}: {' '.join(command_line)}") #removed f from echo(f
         rv = call(command_line)
         if rv != 0:
             exit(rv)
