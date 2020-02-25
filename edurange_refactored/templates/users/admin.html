@@ -24,5 +24,28 @@
             </div>
         </div>
     </div>
-
+<br/>
+<div class="container-narrow">
+    <form id="emailForm" method="POST" action="" role="form">
+        {{ form.csrf_token}}
+        <div class="form-group">
+            <label for="to">Recipient</label>
+            <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
+        </div>
+        <div class="form-group">
+            <label for="body">Message </label>
+            <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
+        </div>
+        <div class="form-group">
+            <label for="email">Sender</label>
+            <input class="form-control" id="email" name="email" placeholder="Sender" required type="text" value="">
+        </div>
+        <input name="submit" class="btn btn-dark" type="submit" value="Send">
+        <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
+    </form>
+</div>
 {% endblock %}
