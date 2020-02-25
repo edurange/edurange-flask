@@ -50,9 +50,6 @@ class RegisterForm(FlaskForm):
 
 class EmailForm(FlaskForm):
     """Email Form."""
-    email = StringField(
-        "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
-    )
     subject = StringField(
         "Subject", validators=[DataRequired()]
     )
