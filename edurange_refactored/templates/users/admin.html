@@ -111,6 +111,7 @@
 </div>
 <div class="container-narrow">
 	<form id="createGroup" method="POST" action="" role="form">
+        {{  form.csrf_token }}
 		<div class="form-group">
 			<label for="name">Group Name</label>
 			<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
