@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-from .models import User
+from .models import User, StudentGroups
 
 
 class RegisterForm(FlaskForm):
@@ -17,7 +17,7 @@ class RegisterForm(FlaskForm):
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
     code = StringField(
-        "Registration Code", validators=[DataRequired(), Length(min=8, max=8)]
+        "Registration Code (Optional)", validators=[Length(min=0, max=8)]
     )
     password = PasswordField(
         "Password", validators=[DataRequired(), Length(min=6, max=40)]
@@ -45,6 +45,11 @@ class RegisterForm(FlaskForm):
         if user:
             self.email.errors.append("Email already registered")
             return False
+        if self.code.data:
+            group = StudentGroups.query.filter_by(code=self.code.data).first()
+            if not group:
+                self.code.errors.append("Invalid registration code")
+                return False
         return True
 
 

@@ -38,15 +38,15 @@ def adminPanel():
     if request.method == 'GET':
         form = EmailForm()
         return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form)
-    else:
+    elif request.form['to'] and request.form['subject']:
         form = EmailForm(request.form)
-    if form.validate_on_submit():
-        email_data = {
-            'subject' : form.subject.data,
-            'to': form.to.data,
-            'body': form.body.data
-        }
-        email = email_data['to']
+        if form.validate_on_submit():
+            email_data = {
+                'subject' : form.subject.data,
+                'to': form.to.data,
+                'body': form.body.data
+            }
+            email = email_data['to']
         if request.form['submit'] == 'Send':
             send_async_email.delay(email_data)
             flash('Sending email to {0}'.format(email))
