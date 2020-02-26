@@ -73,3 +73,22 @@ class EmailForm(FlaskForm):
         if not initial_validation:
             return False
         return True
+
+class GroupForm(FlaskForm):
+    """Create New Group Form"""
+    name = StringField(
+            "Group Name", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(GroupForm, self).validate()
+        if not initial_validation:
+            return False
+        group = StudentGroups.query.filter_by(name=self.name.data).first()
+        if group:
+            self.name.errors.append("Group with this name already exists")
+            return False
+        return True
