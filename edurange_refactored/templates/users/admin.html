@@ -7,12 +7,12 @@
 
 <div class="container-narrow">
 	<p>
-		<a class="btn btn-dark" data-toggle="collapse" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="#collapseUsers">Users Table</a>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
+		<a class="btn btn-dark" data-toggle="collapse" data-parent="#collapseParent" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="#collapseUsers">Users Table</a>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
 	</p>
-	<div class="row justify-content-start">
+	<div class="row justify-content-start" id="collapseParent">
 		<!--TODO: fix the panels into an unchanging position-->
 
 		<div class="panel-group"> <!--user table collapse-->
