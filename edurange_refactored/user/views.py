@@ -40,7 +40,7 @@ def adminPanel():
         form = EmailForm()
         form1 = GroupForm()
         return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1)
-    elif request.form['to'] and request.form['subject']:
+    elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
             email_data = {
@@ -57,11 +57,14 @@ def adminPanel():
                 flash('An email will be sent to {0} in one minute.'.format(email))
             return redirect(url_for('user.adminPanel'))
 
-    elif request.form['name']:
+    elif request.form.get('name') is not None:
         form = GroupForm(request.form)
         if form.validate_on_submit():
             code = grc()
             #create() with name and code
             name = form.name.data
+            StudentGroups.create(name=name, owner_id = session.get('_user_id'), code=code)
             flash('Created group {0}'.format(name))
+
+            return redirect(url_for('user.adminPanel'))
 

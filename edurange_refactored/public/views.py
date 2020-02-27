@@ -14,7 +14,7 @@ from flask_login import login_required, login_user, logout_user
 from edurange_refactored.extensions import login_manager
 from edurange_refactored.public.forms import LoginForm
 from edurange_refactored.user.forms import RegisterForm
-from edurange_refactored.user.models import User
+from edurange_refactored.user.models import User, StudentGroups, GroupUsers
 from edurange_refactored.utils import flash_errors
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
@@ -63,6 +63,18 @@ def register():
             password=form.password.data,
             active=True,
         )
+        if form.code.data:
+            group = StudentGroups.query.filter_by(code=form.code.data).first()
+            user = User.query.filter_by(username=form.username.data).first()
+            gid = group.get_id()
+            uid = user.get_id()
+            GroupUsers.create(user_id=uid, group_id=gid)
+        else:
+            group = StudentGroups.query.filter_by(name="ALL").first()
+            gid = group.get_id()
+            user = User.query.filter_by(username=form.username.data).first()
+            uid = user.get_id()
+            GroupUsers.create(user_id=uid, group_id=gid)
         flash("Thank you for registering. You can now log in.", "success")
         return redirect(url_for("public.home"))
     else:
