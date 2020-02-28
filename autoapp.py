@@ -9,7 +9,7 @@ app.app_context().push()
 db.create_all()
 
 def create_admin():
-    username=os.environ['FLASK_USERNAME']
+    username=os.environ['USERNAME']
     email=os.environ['EMAIL']
     password=os.environ['PASSWORD']
     User.create(username=username,
@@ -32,7 +32,7 @@ if not admin:
     create_admin()
 
 group = StudentGroups.query.limit(1).all()
-admin = User.query.filter_by(username=os.environ['FLASK_USERNAME']).first()
+admin = User.query.filter_by(username=os.environ['USERNAME']).first()
 a_id = admin.get_id()
 if not group:
     create_all_group()
