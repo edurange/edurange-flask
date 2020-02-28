@@ -40,6 +40,8 @@ class GroupTable(Table):
         'data-click-to-select': 'true',
         'data-pagination': 'true'}
 
+#TODO: fix html_attrs, make row selection work at least
+
 class Group(object):
     def __init__(self, id, name):
         self.id = id
