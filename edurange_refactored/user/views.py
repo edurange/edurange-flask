@@ -2,11 +2,12 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.forms import EmailForm, GroupForm
-from .models import User, StudentGroups
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
+from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser
 from edurange_refactored.tasks import send_async_email
+from edurange_refactored.extensions import db
 
 blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
@@ -39,7 +40,8 @@ def adminPanel():
     if request.method == 'GET':
         form = EmailForm()
         form1 = GroupForm()
-        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1)
+        form2 = GroupFinderForm()
+        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2)
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
@@ -61,10 +63,18 @@ def adminPanel():
         form = GroupForm(request.form)
         if form.validate_on_submit():
             code = grc()
-            #create() with name and code
             name = form.name.data
             StudentGroups.create(name=name, owner_id = session.get('_user_id'), code=code)
             flash('Created group {0}'.format(name))
 
             return redirect(url_for('user.adminPanel'))
 
+    elif request.form.get('group') is not None:
+        form = GroupFinderForm(request.form)
+        if form.validate_on_submit():
+            db_ses = db.session
+            name = form.group.data
+            groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+            groUTable = GroupUserTable(groupUsers)
+            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form)
+#TODO: add function for adding users to groups

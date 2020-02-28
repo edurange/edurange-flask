@@ -92,3 +92,18 @@ class GroupForm(FlaskForm):
             self.name.errors.append("Group with this name already exists")
             return False
         return True
+
+class GroupFinderForm(FlaskForm):
+    """Finds Existing Group"""
+    group = StringField(
+            "Group Name", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GroupFinderForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(GroupFinderForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

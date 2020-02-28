@@ -13,7 +13,7 @@
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
 	</p>
 	<div class="row justify-content-start">
-		<!--TODO: fix the panels into an unchanging position-->
+		<!--TODO: fix the panels into an unchanging position, fix the size of users table-->
 
 		<div class="panel-group"> <!--user table collapse-->
 			<div class="panel panel-default">
@@ -72,9 +72,13 @@
 				<div id="collapseUserGroups" class="panel-collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
-						<div class="md-form mt-0">
-							<input class="form-control" type="text" placeholder="Search" aria-label="Search">
-						</div>
+						<h2> <i Class="fa fa-user"></i> All Group Users </h2>
+						<form id="groupFinderForm" method="POST" action="" role="form">
+							{{ form.csrf_token }}
+							<input class="form-control" id="group" name="group" type="text" placeholder="Search" aria-label="Search">
+							<input name="search" class="btn btn-dark" type="submit" value="Search">
+						</form>
+						{{ groUTable }}
 						<!--table content end-->
 					</div>
 				</div>
