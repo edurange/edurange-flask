@@ -5,7 +5,7 @@
 	<h1>Welcome Admin!</h1>
 </div>
 
-<div class="container-narrow">
+<div class="container-narrow" id="collapseParent">
 	<p>
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">Users Table</button>
 		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
@@ -17,7 +17,7 @@
 
 		<div class="panel-group"> <!--user table collapse-->
 			<div class="panel panel-default">
-				<div id="collapseUsers" class="panel-collapse collapse">
+				<div id="collapseUsers" class="panel-collapse collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
 						<div class="col">
@@ -32,7 +32,7 @@
 
 		<div class="panel-group"> <!--scenario table collapse-->
 			<div class="panel panel-default">
-				<div id="collapseScenarios" class="panel-collapse collapse">
+				<div id="collapseScenarios" class="panel-collapse collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
 						<div class="col">
@@ -54,7 +54,7 @@
 
 		<div class="panel-group"> <!--group table collapse-->
 			<div class="panel panel-default">
-				<div id="collapseGroups" class="panel-collapse collapse">
+				<div id="collapseGroups" class="panel-collapse collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
 						<div class="col">
@@ -69,19 +69,11 @@
 
 		<div class="panel-group"> <!--user groups table collapse-->
 			<div class="panel panel-default">
-				<div id="collapseUserGroups" class="panel-collapse">
+				<div id="collapseUserGroups" class="panel-collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
-						<div class="col">
-							<h2> <i class="fa fa-user"></i> All Group Users </h2>
-							<table class="table">
-								<thead class="thead-dark">
-								<tr><th>ID</th><th>UserName</th><th>Email</th></tr>
-								</thead>
-								<tbody>
-								<tr><td>N/A</td><td> - </td><td> - </td></tr>
-								</tbody>
-							</table>
+						<div class="md-form mt-0">
+							<input class="form-control" type="text" placeholder="Search" aria-label="Search">
 						</div>
 						<!--table content end-->
 					</div>
