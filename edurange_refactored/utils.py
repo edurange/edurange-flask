@@ -18,7 +18,8 @@ class StudentTable(Table):
     html_attrs={
         'data-toggle': 'table',
         'data-pagination': 'true',
-        'data-show-columns': 'true'}
+        'data-show-columns': 'true',
+        'overflow-y': 'scroll'}
 
 class Student(object):
     def __init__(self, id, username, email):
