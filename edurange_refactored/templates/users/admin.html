@@ -1,119 +1,121 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container-fluid">
-	<h1>Welcome Admin!</h1>
-</div>
+    <div class="container">
+        <h1>Welcome Admin!</h1>
+    </div>
 
-<div class="container-narrow" id="collapseParent">
-	<p>
-		<button class="btn btn-dark" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="#collapseUsers">Users Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
-	</p>
-	<div class="row justify-content-start">
-		<!--TODO: fix the panels into an unchanging position, fix the size of users table-->
-
-		<div class="panel-group"> <!--user table collapse-->
-			<div class="panel panel-default">
-				<div id="collapseUsers" class="panel-collapse collapse" data-parent="#collapseParent">
-					<div class="panel-body">
-						<!--table content start-->
-						<div class="col" style="height:300px;overflow-y:scroll;">
-							<h2> <i class="fa fa-user"></i> All Students </h2>
-							{{ stuTable }}
-						</div>
-						<!--table content end-->
-					</div>
-				</div>
-			</div>
-		</div> <!--user table collapse-->
-
-		<div class="panel-group"> <!--scenario table collapse-->
-			<div class="panel panel-default">
-				<div id="collapseScenarios" class="panel-collapse collapse" data-parent="#collapseParent">
-					<div class="panel-body">
-						<!--table content start-->
-						<div class="col">
-							<h2> <i class="fa fa-code"></i> Scenario Status </h2>
-							<table class="table">
-								<thead class="thead-dark">
-								<tr><th>Scenario</th><th>Status</th></tr>
-								</thead>
-								<tbody>
-								<tr><td>There are no scenarios running.</td><td>N/A</td></tr>
-								</tbody>
-							</table>
-						</div>
-						<!--table content end-->
-					</div>
-				</div>
-			</div>
-		</div> <!--scenario table collapse-->
-
-		<div class="panel-group"> <!--group table collapse-->
-			<div class="panel panel-default">
-				<div id="collapseGroups" class="panel-collapse collapse" data-parent="#collapseParent">
-					<div class="panel-body">
-						<!--table content start-->
-						<div class="col">
-							<h2> <i class="fa fa-user"></i> All Groups </h2>
-							{{ groTable }}
-						</div>
-						<!--end table content-->
-					</div>
-				</div>
-			</div>
-		</div> <!--groups table collapse-->
-
-		<div class="panel-group"> <!--user groups table collapse-->
-			<div class="panel panel-default">
-				<div id="collapseUserGroups" class="panel-collapse" data-parent="#collapseParent">
-					<div class="panel-body">
-						<!--table content start-->
-						<h2> <i Class="fa fa-user"></i> All Group Users </h2>
-						<form id="groupFinderForm" method="POST" action="" role="form">
-							{{ form.csrf_token }}
-							<input class="form-control" id="group" name="group" type="text" placeholder="Search" aria-label="Search">
-							<input name="search" class="btn btn-dark" type="submit" value="Search">
-						</form>
-						{{ groUTable }}
-						<!--table content end-->
-					</div>
-				</div>
-			</div>
-		</div> <!--user groups table collapse-->
-	</div>
-</div>
-<div class="container-narrow">
-    <form id="emailForm" method="POST" action="" role="form">
-        {{ form.csrf_token}}
-        <div class="form-group">
-            <label for="to">Recipient</label>
-            <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
+    <div class="container" id="accordion">
+    <div class="card"> <!--user table collapse-->
+        <div class="card-header" id="headingUsers">
+            <h5 class="mb-0">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                    Users Table
+                </button>
+            </h5>
         </div>
-        <div class="form-group">
-            <label for="subject">Subject</label>
-            <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
+        <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+            <div class="card-body">
+                <!--user table stuff-->
+                <div class="col">
+                    <h2> <i class="fa fa-user"></i> All Students </h2>
+                    {{ stuTable }}
+                </div>
+                <!--user table stuff-->
+            </div>
         </div>
-        <div class="form-group">
-            <label for="body">Message </label>
-            <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
+    </div> <!--user table collapse-->
+
+    <div class="card"> <!--scenarios table collapse-->
+        <div class="card-header" id="headingScenarios">
+            <h5 class="mb-0">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">
+                    Scenarios Table
+                </button>
+            </h5>
         </div>
-        <input name="submit" class="btn btn-dark" type="submit" value="Send">
-        <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
-    </form>
-</div>
-<div class="container-narrow">
-	<form id="createGroup" method="POST" action="" role="form">
-        {{  form.csrf_token }}
-		<div class="form-group">
-			<label for="name">Group Name</label>
-			<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
-		</div>
-		<input name="create" class="btn btn-dark" type="submit" value="Create">
-	</form>
-</div>
+        <div id="collapseScenarios" class="collapse" aria-labelledby="headingScenarios" data-parent="#accordion">
+            <div class="card-body">
+                <!--scenarios table stuff-->
+                <div class="col">
+                    <h2> <i class="fa fa-code"></i> Scenarios Status </h2>
+                    <p> table goes here </p>
+                </div>
+                <!--scenarios table stuff-->
+            </div>
+        </div>
+    </div> <!--scenarios table collapse-->
+
+    <div class="card"> <!--groups table collapse-->
+        <div class="card-header" id="headingGroups">
+            <h5 class="mb-0">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
+                    Groups Table
+                </button>
+            </h5>
+        </div>
+        <div id="collapseGroups" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
+            <div class="card-body">
+                <!--groups table stuff-->
+                <div class="col">
+                    <h2> <i class="fa fa-user"></i> All Groups </h2>
+                    {{ groTable }}
+                </div>
+                <!--groups table stuff-->
+            </div>
+        </div>
+    </div> <!--groups table collapse-->
+
+    <div class="card"> <!--group users table collapse-->
+        <div class="card-header" id="headingGroupUsers">
+            <h5 class="mb-0">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroupUsers" aria-expanded="false" aria-controls="collapseGroupUsers">
+                    Group Users Table
+                </button>
+            </h5>
+        </div>
+        <div id="collapseGroupUsers" class="collapse" aria-labelledby="headingGroupUsers" data-parent="#accordion">
+            <div class="card-body">
+                <!--group users table stuff-->
+                <h2> <i class="fa fa-user"></i> All Group Users </h2>
+                <form id="groupFinderForm" method="POST" action="" role="form">
+                    {{ form.csrf_token }}
+                    <input class="form-control" id="group" name="group" type="text" placeholder="Search" aria-label="Search">
+                    <input name="search" class="btn btn-dark" type="submit" value="Search">
+                </form>
+                {{ groUTable }}
+                <!--group users table stuff-->
+            </div>
+        </div>
+    </div> <!--group users table collapse-->
+
+    <div class="container-narrow">
+        <form id="emailForm" method="POST" action="" role="form">
+            {{ form.csrf_token}}
+            <div class="form-group">
+                <label for="to">Recipient</label>
+                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
+            </div>
+            <div class="form-group">
+                <label for="body">Message </label>
+                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
+            </div>
+            <input name="submit" class="btn btn-dark" type="submit" value="Send">
+            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
+        </form>
+    </div>
+    <div class="container-narrow">
+        <form id="createGroup" method="POST" action="" role="form">
+            {{  form.csrf_token }}
+            <div class="form-group">
+                <label for="name">Group Name</label>
+                <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+            </div>
+            <input name="create" class="btn btn-dark" type="submit" value="Create">
+        </form>
+    </div>
 {% endblock %}
-
