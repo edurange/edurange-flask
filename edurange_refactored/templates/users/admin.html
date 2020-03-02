@@ -7,10 +7,10 @@
 
 <div class="container-narrow" id="collapseParent">
 	<p>
-		<a class="btn btn-dark" data-toggle="collapse" data-parent="#collapseParent" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="#collapseUsers">Users Table</a>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
-		<button class="btn btn-dark" type="button" data-toggle="collapse" data-parent="#collapseParent" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
+		<button class="btn btn-dark" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="#collapseUsers">Users Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">Scenarios Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups Table</button>
+		<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUserGroups" aria-expanded="false" aria-controls="collapseUserGroups">Group Users Table</button>
 	</p>
 	<div class="row justify-content-start">
 		<!--TODO: fix the panels into an unchanging position, fix the size of users table-->
@@ -20,7 +20,7 @@
 				<div id="collapseUsers" class="panel-collapse collapse" data-parent="#collapseParent">
 					<div class="panel-body">
 						<!--table content start-->
-						<div class="col">
+						<div class="col" style="height:300px;overflow-y:scroll;">
 							<h2> <i class="fa fa-user"></i> All Students </h2>
 							{{ stuTable }}
 						</div>
