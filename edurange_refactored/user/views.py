@@ -5,7 +5,7 @@ from flask_login import login_required
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
 from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser
+from ..utils import StudentTable, GroupTable, GroupUserTable, flash_errors
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -77,4 +77,7 @@ def adminPanel():
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
             return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form)
+        else:
+            flash_errors(form)
+        return redirect(url_for('user.adminPanel'))
 #TODO: add function for adding users to groups
