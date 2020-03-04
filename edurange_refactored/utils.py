@@ -1,6 +1,6 @@
 """Helper utilities and decorators."""
 from flask import flash
-from flask_table import Table, Col
+from flask_table import Table, Col, ButtonCol
 
 
 def flash_errors(form, category="warning"):
@@ -24,8 +24,9 @@ class StudentTable(Table):
         'overflow-y': 'scroll'}
     def addCheck(self):
         self.add_column('State',
-            Col(
-                'state',
+            ButtonCol(
+                'wat',
+                'user.adminPanel',
                 column_html_attrs={'data-checkbox': 'true'}
             )
         )
