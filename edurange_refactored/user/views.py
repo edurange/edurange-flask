@@ -2,7 +2,7 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
 from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors
@@ -37,11 +37,14 @@ def adminPanel():
     stuTable = StudentTable(students)
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
+    groupNames = []
+    for g in groups:
+        groupNames.append(g.name)
     if request.method == 'GET':
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2)
+        return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames)
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
@@ -76,16 +79,16 @@ def adminPanel():
             name = form.group.data
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
-            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form)
+            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groups)
         else:
             flash_errors(form)
         return redirect(url_for('user.adminPanel'))
 
-    elif request.form.get('user_group') is not None:
-        form = addUsersForm(request.form)
-        if form.validate_on_submit():
-            group = form.user_group.data
-
-            # TODO: make add group users functional
-            # for user in user_list
-            #   add user to group
+    # elif request.form.get('user_group') is not None:
+    #     form = addUsersForm(request.form)
+    #     if form.validate_on_submit():
+    #         group = form.user_group.data
+    #
+    #         # TODO: make add group users functional
+    #         # for user in user_list
+    #         #   add user to group
