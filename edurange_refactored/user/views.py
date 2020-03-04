@@ -2,10 +2,10 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm
 from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -77,4 +77,15 @@ def adminPanel():
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
             return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form)
-#TODO: add function for adding users to groups
+        else:
+            flash_errors(form)
+        return redirect(url_for('user.adminPanel'))
+
+    elif request.form.get('user_group') is not None:
+        form = addUsersForm(request.form)
+        if form.validate_on_submit():
+            group = form.user_group.data
+
+            # TODO: make add group users functional
+            # for user in user_list
+            #   add user to group
