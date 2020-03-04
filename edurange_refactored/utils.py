@@ -19,7 +19,17 @@ class StudentTable(Table):
         'data-toggle': 'table',
         'data-pagination': 'true',
         'data-show-columns': 'true',
+        'data-multiple-select-row': 'true',
+        'data-click-to-select': 'true',
         'overflow-y': 'scroll'}
+    def addCheck(self):
+        self.add_column('State',
+            Col(
+                'state',
+                column_html_attrs={'data-checkbox': 'true'}
+            )
+        )
+
 
 class Student(object):
     def __init__(self, id, username, email):
