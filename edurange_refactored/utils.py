@@ -1,6 +1,6 @@
 """Helper utilities and decorators."""
 from flask import flash
-from flask_table import Table, Col
+from flask_table import Table, Col, ButtonCol
 
 
 def flash_errors(form, category="warning"):
