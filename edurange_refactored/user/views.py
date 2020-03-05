@@ -35,7 +35,6 @@ def adminPanel():
     check_admin()
     students = User.query.all()
     stuTable = StudentTable(students)
-    stuTable.addCheck()
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     if request.method == 'GET':

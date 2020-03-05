@@ -42,6 +42,7 @@ class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = "users"
+    state = False #binding state to id would make it easy to tag checkboxes, naming 'check1', 'check2', etc.
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password

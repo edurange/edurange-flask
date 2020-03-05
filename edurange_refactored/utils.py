@@ -9,9 +9,15 @@ def flash_errors(form, category="warning"):
         for error in errors:
             flash(f"{getattr(form, field).label.text} - {error}", category)
 
+class CheckCol(Col):
+    def td_format(self, content):
+        return '<div class="form-check">\n\t<input type="checkbox" class="form-check-input" value="">\n</div>'
+
+
 class StudentTable(Table):
     classes = ['table']
     thead_classes = ['thead-dark']
+    state = CheckCol('')
     id = Col('id')
     username = Col('username')
     email = Col('email')
@@ -22,13 +28,6 @@ class StudentTable(Table):
         'data-multiple-select-row': 'true',
         'data-click-to-select': 'true',
         'overflow-y': 'scroll'}
-    def addCheck(self):
-        self.add_column('State',
-            Col(
-                'state',
-                column_html_attrs={'data-checkbox': 'true'}
-            )
-        )
 
 
 class Student(object):
