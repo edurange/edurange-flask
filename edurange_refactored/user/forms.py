@@ -3,13 +3,14 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
-
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from .models import User, StudentGroups
+from edurange_refactored.extensions import db
+
 
 
 class RegisterForm(FlaskForm):
     """Register form."""
-
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=3, max=25)]
     )
@@ -74,10 +75,11 @@ class EmailForm(FlaskForm):
             return False
         return True
 
+
 class GroupForm(FlaskForm):
     """Create New Group Form"""
     name = StringField(
-            "Group Name", validators=[DataRequired()]
+        "Group Name", validators=[DataRequired()]
     )
 
     def __init__(self, *args, **kwargs):
@@ -93,10 +95,11 @@ class GroupForm(FlaskForm):
             return False
         return True
 
+
 class GroupFinderForm(FlaskForm):
     """Finds Existing Group"""
     group = StringField(
-            "Group Name", validators=[DataRequired()]
+        "Group Name", validators=[DataRequired()]
     )
 
     def __init__(self, *args, **kwargs):
@@ -107,3 +110,26 @@ class GroupFinderForm(FlaskForm):
         if not initial_validation:
             return False
         return True
+
+
+# class addUsersForm(FlaskForm):
+#     """Adds selected users to a group"""
+#     db_ses = db.session
+#     from edurange_refactored.app import create_app
+#     with create_app().app_context():
+#         user_group = QuerySelectField(
+#             'Groups',
+#             query_factory=db_ses.query(StudentGroups.id),
+#             allow_blank=False
+#         )
+#
+#     # user id list
+#
+#     def __init__(self, *args, **kwargs):
+#         super(addUsersForm, self).__init__(*args, **kwargs)
+#
+#     def validate(self):
+#         initial_validation = super(addUsersForm, self).validate()
+#         if not initial_validation:
+#             return False
+#         return True
