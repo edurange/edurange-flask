@@ -12,7 +12,11 @@
                 <h2> <i class="fa fa-user"></i> All Students </h2>
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ form.csrf_token}}
-                    <select></select>
+                    <select name="groups">
+                        {% for group in groups %}
+                            <option value= "{{group}}" SELECTED>{{group}}</option>"
+                        {% endfor %}
+                    </select>
                     <input name="add" class="btn btn-dark" type="submit" value="Add"></input>
                     <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
                         Users Table
