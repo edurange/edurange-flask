@@ -1,24 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    <div class="container">
-        <h1>Welcome Admin!</h1>
-    </div>
+<div class="container">
+    <h1>Welcome Admin!</h1>
+</div>
 
-    <div class="container" id="accordion">
+<div class="container-narrow" id="accordion">
     <div class="card"> <!--user table collapse-->
         <div class="card-header" id="headingUsers">
             <h5 class="mb-0">
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                    Users Table
-                </button>
+                <h2> <i class="fa fa-user"></i> All Students </h2>
+                <form id="addGroupUsers" method="POST" action="" role="form">
+                    {{ form.csrf_token}}
+                    <select name="groups">
+                        {% for group in groups %}
+                            <option value= "{{group}}" SELECTED>{{group}}</option>"
+                        {% endfor %}
+                    </select>
+                    <input name="add" class="btn btn-dark" type="submit" value="Add"></input>
+                    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                        Users Table
+                    </button>
+                </form>
             </h5>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
             <div class="card-body">
                 <!--user table stuff-->
                 <div class="col" style="height:300px;overflow-y:scroll;">
-                    <h2> <i class="fa fa-pencil"></i> All Students </h2>
+                    <h2> <i class="fa fa-beer"></i> All Students </h2>
                     {{ stuTable }}
                 </div>
                 <!--user table stuff-->
@@ -29,6 +39,7 @@
     <div class="card"> <!--scenarios table collapse-->
         <div class="card-header" id="headingScenarios">
             <h5 class="mb-0">
+                <h2> <i class="fa fa-code"></i> Scenarios Status </h2>
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">
                     Scenarios Table
                 </button>
@@ -38,7 +49,6 @@
             <div class="card-body">
                 <!--scenarios table stuff-->
                 <div class="col" style="height:300px;overflow-y:scroll;">
-                    <h2> <i class="fa fa-code"></i> Scenarios Status </h2>
                     <p> table goes here </p>
                 </div>
                 <!--scenarios table stuff-->
@@ -49,6 +59,7 @@
     <div class="card"> <!--groups table collapse-->
         <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
+                <h2> <i class="fa fa-user"></i> All Groups </h2>
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
                     Groups Table
                 </button>
@@ -58,7 +69,6 @@
             <div class="card-body">
                 <!--groups table stuff-->
                 <div class="col" style="height:300px;overflow-y:scroll;">
-                    <h2> <i class="fa fa-user"></i> All Groups </h2>
                     {{ groTable }}
                 </div>
                 <!--groups table stuff-->
@@ -75,20 +85,18 @@
                     <input class="form-control" id="group" name="group" type="text" placeholder="Search" aria-label="Search">
                     <input name="search" class="btn btn-dark" type="submit" value="Search">
                     <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroupUsers" aria-expanded="false" aria-controls="collapseGroupUsers">
-                        Show/Hide Results
+                        Hide / Show Table
                     </button>
                 </form>
             </h5>
         </div>
         <div id="collapseGroupUsers" class="collapse show" aria-labelledby="headingGroupUsers" data-parent="#accordion">
             <div class="card-body">
-
                 <!--group users table stuff-->
-
                 <div class="col" style="height:300px;overflow-y:scroll;">
                     {{ groUTable }}
-                    <!--group users table stuff-->
                 </div>
+                <!--group users table stuff-->
             </div>
         </div>
     </div> <!--group users table collapse-->
@@ -122,4 +130,4 @@
             <input name="create" class="btn btn-dark" type="submit" value="Create">
         </form>
     </div>
-{% endblock %}
+    {% endblock %}
