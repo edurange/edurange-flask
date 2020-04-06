@@ -50,7 +50,7 @@ def adminPanel():
                 'to': form.to.data,
                 'body': form.body.data
             }
-            email = form.email.data
+            email = form.to.data
             if request.form['submit'] == 'Send':
                 send_async_email.delay(email_data)
                 flash('Sending email to {0}'.format(email))
