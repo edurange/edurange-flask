@@ -50,7 +50,7 @@ def adminPanel():
                 'to': form.to.data,
                 'body': form.body.data
             }
-            email = form.email.data
+            email = form.to.data
             if request.form['submit'] == 'Send':
                 send_async_email.delay(email_data)
                 flash('Sending email to {0}'.format(email))
@@ -77,9 +77,7 @@ def adminPanel():
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
             return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form)
-        else:
-            flash_errors(form)
-        return redirect(url_for('user.adminPanel'))
+#TODO: add function for adding users to groups
 
     elif request.form.get('user_group') is not None:
         form = addUsersForm(request.form)
