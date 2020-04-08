@@ -5,6 +5,7 @@ from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db
 import os
 from flask import session
+from flask_login import current_user
 app = create_app()
 app.app_context().push()
 db.create_all()
@@ -26,7 +27,8 @@ def create_all_group():
                          code="")
 
 def Aid():
-    number = session.get('_user_id')
+    #number = session.get('_user_id')
+    number = current_user.id
     user = User.query.filter_by(id=number).first()
     if user.is_admin:
         return True
