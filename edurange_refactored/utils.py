@@ -41,8 +41,6 @@ class GroupTable(Table):
         'data-click-to-select': 'true',
         'data-pagination': 'true'}
 
-#TODO: fix html_attrs, make row selection work at least
-
 class Group(object):
     def __init__(self, id, name):
         self.id = id
@@ -64,6 +62,19 @@ class GroupUserTable(Table):
         'data-pagination': 'true'}
 
 class GroupUser(object):
+    def __init__(self, id, username, email):
+        self.id = id
+        self.username = username
+        self.email = email
+
+class UserInfoTable(Table):
+    classes = ['table']
+    thead_classes = ['thead-dark']
+    id = Col('id')
+    username = Col('username')
+    email = Col('email')
+
+class UserInfo(object):
     def __init__(self, id, username, email):
         self.id = id
         self.username = username

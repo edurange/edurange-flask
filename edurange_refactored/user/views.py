@@ -5,7 +5,7 @@ from flask_login import login_required
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
 from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, UserInfoTable, UserInfo
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -27,7 +27,11 @@ def check_admin():
 @login_required
 def members():
     """List members."""
-    return render_template("users/members.html")
+    db_ses = db.session
+    curId = session.get('_user_id')
+    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
+    infoTable = UserInfoTable(userInfo)
+    return render_template("users/members.html", infoTable=infoTable)
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
@@ -79,7 +83,7 @@ def adminPanel():
             name = form.group.data
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
-            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groups)
+            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
         else:
             flash_errors(form)
         return redirect(url_for('user.adminPanel'))
