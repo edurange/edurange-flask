@@ -4,6 +4,7 @@ from edurange_refactored.app import create_app
 from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db
 import os
+from flask import session
 app = create_app()
 app.app_context().push()
 db.create_all()
@@ -24,6 +25,13 @@ def create_all_group():
                          owner_id=a_id,
                          code="")
 
+def Aid():
+    number = session.get('_user_id')
+    user = User.query.filter_by(id=number).first()
+    if user.is_admin:
+        return True
+    return False
+
 admin = User.query.limit(1).all()
 print(admin)
 print(admin)
@@ -36,4 +44,5 @@ admin = User.query.filter_by(username=os.environ['USERNAME']).first()
 a_id = admin.get_id()
 if not group:
     create_all_group()
+app.jinja_env.globals.update(Aid=Aid)
 
