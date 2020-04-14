@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
-from flask_login import login_required
+from flask_login import login_required, current_user
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
 from .models import User, StudentGroups, GroupUsers
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, UserInfoTable, UserInfo
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -18,7 +18,8 @@ blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../s
 # TODO: Harden check_admin()
 
 def check_admin():
-    number = session.get('_user_id')
+    #number = session.get('_user_id')
+    number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_admin:
         abort(403)
@@ -27,7 +28,11 @@ def check_admin():
 @login_required
 def members():
     """List members."""
-    return render_template("users/members.html")
+    db_ses = db.session
+    curId = session.get('_user_id')
+    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
+    infoTable = UserInfoTable(userInfo)
+    return render_template("users/members.html", infoTable=infoTable)
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
