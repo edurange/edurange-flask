@@ -79,7 +79,7 @@ def adminPanel():
             name = form.group.data
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
-            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groups)
+            return render_template('users/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
         else:
             flash_errors(form)
         return redirect(url_for('user.adminPanel'))
