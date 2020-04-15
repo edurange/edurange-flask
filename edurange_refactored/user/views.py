@@ -3,9 +3,9 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
-from .models import User, StudentGroups, GroupUsers
+from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, UserInfoTable, UserInfo
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfo
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -43,6 +43,8 @@ def admin():
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     groupNames = []
+    scenarios = Scenarios.query.all()
+    scenarioTable = ScenarioTable(scenarios)
     for g in groups:
         groupNames.append(g.name)
     if request.method == 'GET':

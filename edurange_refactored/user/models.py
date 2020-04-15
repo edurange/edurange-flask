@@ -18,6 +18,7 @@ from edurange_refactored.extensions import bcrypt
 import string
 import random
 
+
 def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -30,6 +31,7 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
     owner = relationship("User", backref="groups")
     code = Column(db.String(8), unique=True, nullable=True, default=generate_registration_code())
 
+
 class GroupUsers(UserMixin, SurrogatePK, Model):
     """Users belong to groups"""
     ___tablename___ = "group_users"
@@ -37,6 +39,7 @@ class GroupUsers(UserMixin, SurrogatePK, Model):
     user = relationship("User", backref="group_users")
     group_id = reference_col("groups", nullable=False)
     group = relationship("StudentGroups", backref="group_users")
+
 
 class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
@@ -70,3 +73,25 @@ class User(UserMixin, SurrogatePK, Model):
     def __repr__(self):
         """Represent instance as a unique string."""
         return f"<User({self.username!r})>"
+
+
+class Scenarios(UserMixin, SurrogatePK, Model):
+    """An exercise  """
+
+    __tablename__ = "scenarios"
+
+    name = Column(db.String(40), unique=False, nullable=False)
+    description = Column(db.String(80), unique=False, nullable=True)
+    owner_id = reference_col("users", nullable=False)
+    owner = relationship("User", backref="scenarios")
+    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    status = Column(db.Integer, default=0, nullable=False)
+
+
+class ScenarioUsers(UserMixin, SurrogatePK, Model):
+    """Users belong to groups"""
+    ___tablename___ = "scenario_users"
+    user_id = reference_col("users", nullable=False)
+    user = relationship("User", backref="scenario_users")
+    scenario_id = reference_col("scenarios", nullable=False)
+    scenario = relationship("Scenarios", backref="scenario_users")

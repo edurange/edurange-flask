@@ -21,6 +21,9 @@ class StudentTable(Table):
         'data-show-columns': 'true',
         'overflow-y': 'scroll'}
 
+    def get_tr_attrs(self, item):
+        return {'class': 'clickable-row'}
+
 class Student(object):
     def __init__(self, id, username, email):
         self.id = id
@@ -80,3 +83,19 @@ class UserInfo(object):
         self.username = username
         self.email = email
 
+class ScenarioTable(Table):
+    classes = ['table']
+    thead_classes = ['thead_dark']
+    id = Col('id')
+    name = Col('name')
+    created_at = Col('created_at')
+    status = Col('status')
+
+
+
+class Scenario(object):
+    def __init__(self, id, name, created_at, status):
+        self.id = id
+        self.name = name
+        self.created_at = created_at
+        self.status = status
