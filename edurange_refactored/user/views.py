@@ -2,10 +2,11 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
+from flask_table import BoolCol
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
-from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfo
+from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 
@@ -51,7 +52,7 @@ def admin():
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames)
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():

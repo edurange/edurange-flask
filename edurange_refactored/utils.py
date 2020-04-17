@@ -1,6 +1,7 @@
 """Helper utilities and decorators."""
 from flask import flash
-from flask_table import Table, Col
+from flask_table import Table, Col, BoolCol
+from wtforms.fields import BooleanField
 
 
 def flash_errors(form, category="warning"):
@@ -21,8 +22,6 @@ class StudentTable(Table):
         'data-show-columns': 'true',
         'overflow-y': 'scroll'}
 
-    def get_tr_attrs(self, item):
-        return {'class': 'clickable-row'}
 
 class Student(object):
     def __init__(self, id, username, email):
