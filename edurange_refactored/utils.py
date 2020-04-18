@@ -1,6 +1,7 @@
 """Helper utilities and decorators."""
 from flask import flash
-from flask_table import Table, Col
+from flask_table import Table, Col, BoolCol
+from wtforms.fields import BooleanField
 
 
 def flash_errors(form, category="warning"):
@@ -20,6 +21,7 @@ class StudentTable(Table):
         'data-pagination': 'true',
         'data-show-columns': 'true',
         'overflow-y': 'scroll'}
+
 
 class Student(object):
     def __init__(self, id, username, email):
@@ -80,3 +82,19 @@ class UserInfo(object):
         self.username = username
         self.email = email
 
+class ScenarioTable(Table):
+    classes = ['table']
+    thead_classes = ['thead_dark']
+    id = Col('id')
+    name = Col('name')
+    created_at = Col('created_at')
+    status = Col('status')
+
+
+
+class Scenario(object):
+    def __init__(self, id, name, created_at, status):
+        self.id = id
+        self.name = name
+        self.created_at = created_at
+        self.status = status

@@ -84,3 +84,9 @@ footer .footer-nav {
   margin-right: 25px;
   list-style: none;
 }
+
+input[type="radio"], input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+  transform: scale(2);
+}
