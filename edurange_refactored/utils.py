@@ -1,6 +1,7 @@
 """Helper utilities and decorators."""
 from flask import flash
-from flask_table import Table, Col, ButtonCol
+from flask_table import Table, Col, BoolCol
+from wtforms.fields import BooleanField
 
 
 def flash_errors(form, category="warning"):
@@ -50,8 +51,6 @@ class GroupTable(Table):
         'data-click-to-select': 'true',
         'data-pagination': 'true'}
 
-#TODO: fix html_attrs, make row selection work at least
-
 class Group(object):
     def __init__(self, id, name):
         self.id = id
@@ -78,3 +77,32 @@ class GroupUser(object):
         self.username = username
         self.email = email
 
+class UserInfoTable(Table):
+    classes = ['table']
+    thead_classes = ['thead-dark']
+    id = Col('id')
+    username = Col('username')
+    email = Col('email')
+
+class UserInfo(object):
+    def __init__(self, id, username, email):
+        self.id = id
+        self.username = username
+        self.email = email
+
+class ScenarioTable(Table):
+    classes = ['table']
+    thead_classes = ['thead_dark']
+    id = Col('id')
+    name = Col('name')
+    created_at = Col('created_at')
+    status = Col('status')
+
+
+
+class Scenario(object):
+    def __init__(self, id, name, created_at, status):
+        self.id = id
+        self.name = name
+        self.created_at = created_at
+        self.status = status

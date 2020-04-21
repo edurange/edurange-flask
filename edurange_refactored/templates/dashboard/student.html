@@ -1,0 +1,51 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>Welcome {{ current_user.username }}</h1>
+        <h3>This is where your scenarios will show up</h3>
+    </div>
+
+    <div class="container-narrow" id="accordion">
+	    <div class="card"> <!--info table collapse-->
+		    <div class="card-header" id="headingInfo">
+			    <h5 class="mb-0">
+				    <h2> <i class="fa fa-code"></i> User Info </h2>
+				    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+					    User Info
+				    </button>
+			    </h5>
+		    </div>
+		    <div id="collapseInfo" class="collapse" aria-labelledby="headingInfo" data-parent="#accordion">
+			    <div class="card-body">
+				    <!--info table stuff-->
+				    <div class="col" style="height:300px;overflow-y:scroll;">
+				    	{{ infoTable }}	
+				    </div>
+				    <!--info table stuff-->
+			    </div>
+		    </div>
+	    </div> <!--info table collapse-->
+
+	    <div class="card"> <!--scenarios table collapse-->
+		    <div class="card-header" id="headingScenario">
+			    <h5 class="mb-0">
+				    <h2> <i class="fa fa-code"></i> Scenarios </h2>
+				    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenario" aria-expanded="false" aria-controls="collapseScenario">
+					    Scenarios Table
+				    </button>
+			    </h5>
+		    </div>
+		    <div id="collapseScenario" class="collapse" aria-labelledby="headingScenario" data-parent="#accordion">
+			    <div class="card-body">
+				    <!--scenario table stuff-->
+				    <div class="col" style="height:300px;overflow-y:scroll;">
+				    	<!--{{ scenTable }}-->
+					<p> Scenario Table Here </p>
+				    </div>
+				    <!--scenario table stuff-->
+			    </div>
+		    </div>
+	    </div> <!--scenario table collapse-->
+{% endblock %}
+
