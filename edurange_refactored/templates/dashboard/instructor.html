@@ -25,14 +25,18 @@
 								<thead class="thead-dark">
 									<tr>
 										<th> Group ID </th>
+										<th> Group Name </th>
 										<th> User ID </th>
+										<th> Username </th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for group in groups %}
 									<tr>
-										<td> {{ group.group_id }} </td>
-										<td> {{ group.user_id }}
+										<td> {{ group.gid }} </td>
+										<td> {{ group.name }} </td>
+										<td> {{ group.uid }} </td>
+										<td> {{ group.username }} </td>
 									</tr>
 									{% endfor %}
 								</tbody>
