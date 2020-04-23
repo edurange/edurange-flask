@@ -25,6 +25,12 @@ def check_admin():
     if not user.is_admin:
         abort(403)
 
+def check_instructor():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor:
+        abort(403)
+
 @blueprint.route("/")
 @login_required
 def student():
@@ -34,6 +40,16 @@ def student():
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     return render_template("dashboard/student.html", infoTable=infoTable)
+
+@blueprint.route("/instructor", methods=['GET'])
+@login_required
+def instructor():
+    check_instructor()
+    curId = session.get('_user_id')
+    db_ses = db.session
+    groups = db_ses.query(StudentGroups.id, StudentGroups.name, User.id, User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    if request.method == 'GET':
+        return render_template('dashboard/instructor.html', groups=groups)
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
