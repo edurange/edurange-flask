@@ -112,24 +112,22 @@ class GroupFinderForm(FlaskForm):
         return True
 
 
-# class addUsersForm(FlaskForm):
-#     """Adds selected users to a group"""
-#     db_ses = db.session
-#     from edurange_refactored.app import create_app
-#     with create_app().app_context():
-#         user_group = QuerySelectField(
-#             'Groups',
-#             query_factory=db_ses.query(StudentGroups.id),
-#             allow_blank=False
-#         )
-#
-#     # user id list
-#
-#     def __init__(self, *args, **kwargs):
-#         super(addUsersForm, self).__init__(*args, **kwargs)
-#
-#     def validate(self):
-#         initial_validation = super(addUsersForm, self).validate()
-#         if not initial_validation:
-#             return False
-#         return True
+class addUsersForm(FlaskForm):
+    """Adds selected users to a group"""
+    uid = StringField(
+        "User IDs", validators=[DataRequired()]
+    )
+    groups = StringField(
+        "Group Name", validators=[DataRequired()]
+    )
+
+    # user id list
+
+    def __init__(self, *args, **kwargs):
+        super(addUsersForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(addUsersForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
