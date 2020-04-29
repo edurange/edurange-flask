@@ -29,3 +29,10 @@ def send_async_email(email_data):
                   recipients=[email_data['to']])
     msg.body = email_data['body']
     mail.send(msg)
+
+# @celery.task
+# def start_scenario(scenario_data):
+#     app = current_app
+#     command = 'terraform apply -fy --config'
+#     app.run(command)
+#

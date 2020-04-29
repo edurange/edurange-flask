@@ -11,32 +11,32 @@
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Students </h2>
                 <form id="addGroupUsers" method="POST" action="" role="form">
-                    {{ form.csrf_token}}
-                    <input name="add" class="btn btn-dark" type="submit" value="Add Selected To:">
+                    {{ form.csrf_token }}
+                    <input name="add" class="btn btn-dark" type="submit" value="Add">
                     <select name="groups" title="Group">
                         {% for group in groups %}
                             <option value= "{{group}}" SELECTED>{{group}}</option>"
                         {% endfor %}
                     </select>
 
-                    <p></p>
+                    <p>Click the ID number to add a student to the selected group.</p>
                 <div>
                     <table class="table">
                     <thead class="thead-dark">
                         <tr>
-                            <th> ID </th>
+                            <th> ID #</th>
                             <th> Username </th>
                             <th> Email </th>
-                            <th> Selection </th>
+                            <th> Select </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for student in students %}
                         <tr>
-                            <td> {{ student.id }}</td>
-                            <td> {{ student.name }}</td>
+                            <td><input name="uid" class="btn btn-dark" type="submit" value="{{ student.id }}"></td>
+                            <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
-                            <td><input type="checkbox"></td>
+                        <td><input name="uid" type="checkbox" value="{{ student.id }}"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -46,16 +46,6 @@
             </h5>
         </div>
 
-{#        <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">#}
-{#            <div class="card-body">#}
-{#                <!--user table stuff-->#}
-{#                <div class="col" style="height:300px;overflow-y:scroll;">#}
-{#                    <h2> <i class="fa fa-beer"></i> Edit Groups </h2>#}
-{#                    {{ stuTable }}#}
-{#                </div>#}
-{#                <!--user table stuff-->#}
-{#            </div>#}
-{#        </div>#}
     </div> <!--user table collapse-->
 
     <div class="card"> <!--scenarios table collapse-->
