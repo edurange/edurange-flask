@@ -2,8 +2,7 @@
 """User views."""
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
-from flask_table import BoolCol
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
@@ -52,14 +51,14 @@ def admin():
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
+        return render_template('dashboard/admin.html', groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
             email_data = {
                 'subject' : form.subject.data,
                 'to': form.to.data,
-                'body': form.body.data
+                            'body': form.body.data
             }
             email = form.to.data
             if request.form['submit'] == 'Send':
@@ -87,17 +86,27 @@ def admin():
             name = form.group.data
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
-            return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
+            return render_template('dashboard/admin.html', students=students, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
         else:
             flash_errors(form)
         return redirect(url_for('user.admin'))
-#TODO: add function for adding users to groups
 
-    # elif request.form.get('user_group') is not None:
-    #     form = addUsersForm(request.form)
-    #     if form.validate_on_submit():
-    #         group = form.user_group.data
-    #
-    #         # TODO: make add group users functional
-    #         # for user in user_list
-    #         #   add user to group
+    elif request.form.get('groups') is not None:
+        form = addUsersForm(request.form)
+        if form.validate_on_submit():
+            db_ses = db.session
+            group = form.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = form.uids.data # string form
+            if uids[-1] == ',':
+                uids = uids[:-1] # slice last comma to avoid empty string after string split
+
+            for uid in uids.split(','):
+                GroupUsers.create(user_id=int(uid), group_id=gid)
+
+            flash('Added {0} users to group {1}.'.format(len(uids.split(',')), group))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))

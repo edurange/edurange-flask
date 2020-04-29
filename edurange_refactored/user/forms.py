@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """User forms."""
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from .models import User, StudentGroups
@@ -111,17 +111,39 @@ class GroupFinderForm(FlaskForm):
             return False
         return True
 
+class addUsersForm(FlaskForm):
+    """Adds selected users to a group"""
+    uids = StringField(
+        'User IDs', validators=[DataRequired()]
+    )
+    groups = StringField(
+        'Group Name', validators=[DataRequired()]
+    )
+
+    # user id list
+
+    def __init__(self, *args, **kwargs):
+        super(addUsersForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(addUsersForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
 
 # class addUsersForm(FlaskForm):
 #     """Adds selected users to a group"""
-#     db_ses = db.session
-#     from edurange_refactored.app import create_app
-#     with create_app().app_context():
-#         user_group = QuerySelectField(
-#             'Groups',
-#             query_factory=db_ses.query(StudentGroups.id),
-#             allow_blank=False
-#         )
+#     groups = StringField(
+#         'Group Name', validators=[DataRequired()]
+#     )
+#
+#     uids = SelectMultipleField('User IDs', validators=[DataRequired()])
+#
+#     #uids = FieldList(
+#     #    StringField('User IDs')
+#     #)
 #
 #     # user id list
 #
