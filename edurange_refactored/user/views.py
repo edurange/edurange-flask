@@ -48,8 +48,10 @@ def instructor():
     curId = session.get('_user_id')
     db_ses = db.session
     groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
+    infoTable = UserInfoTable(userInfo)
     if request.method == 'GET':
-        return render_template('dashboard/instructor.html', groups=groups)
+        return render_template('dashboard/instructor.html', groups=groups, infoTable=infoTable)
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
@@ -117,9 +119,15 @@ def admin():
             uids = form.uid.data
 
             for uid in uids:
-                GroupUsers.create(user_id=uid, group_id=gid)
+                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid).limit(1)
+                if any(check):
+                    flash('User already in group.')
+                    pass
+                else:
+                    GroupUsers.create(user_id=uid, group_id=gid)
+                    flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
 
-            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
+
             return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)
