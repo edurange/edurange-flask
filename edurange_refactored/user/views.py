@@ -40,12 +40,9 @@ def student():
 def scenarios():
     """List scenarios.s"""""
     check_admin()
-    scenarios = Scenarios.query.all()
     # scenarioTable = ScenarioTable(scenarios)
-
+    scenarios = Scenarios.query.all()
     return render_template("dashboard/scenarios.html", scenarios=scenarios)
-
-
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
@@ -102,23 +99,6 @@ def admin():
         else:
             flash_errors(form)
         return redirect(url_for('user.admin'))
-    elif request.form.get('groups') is not None:
-        form = addUsersForm(request.form)
-        if form.validate_on_submit():
-            db_ses = db.session
-            group = form.groups.data
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).limit(1)
-
-            uids = form.uid.data
-
-            for uid in uids:
-                GroupUsers.create(user_id=uid, group_id=gid)
-
-            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            return redirect(url_for('dashboard.admin'))
-        else:
-            flash_errors(form)
-        return redirect(url_for('dashboard.admin'))
 #TODO: add function for adding users to groups
 
     # elif request.form.get('user_group') is not None:
