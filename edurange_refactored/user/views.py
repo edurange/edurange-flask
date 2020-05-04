@@ -70,15 +70,14 @@ def admin():
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
-
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
             email_data = {
                 'subject' : form.subject.data,
                 'to': form.to.data,
-                'body': form.body.data
+                            'body': form.body.data
             }
             email = form.to.data
             if request.form['submit'] == 'Send':
@@ -111,37 +110,11 @@ def admin():
             flash_errors(form)
         return redirect(url_for('user.admin'))
 
-    elif request.form.get('groups') is not None:
-        form = addUsersForm(request.form)
-        if form.validate_on_submit():
-            db_ses = db.session
-            group = form.groups.data
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).limit(1)
-
-            uids = form.uid.data
-
-            for uid in uids:
-                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid).limit(1)
-                if any(check):
-                    flash('User already in group.')
-                    pass
-                else:
-                    GroupUsers.create(user_id=uid, group_id=gid)
-                    flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-
-
-            return redirect(url_for('dashboard.admin'))
-        else:
-            flash_errors(form)
-        return redirect(url_for('dashboard.admin'))
-
-    elif request.form.get('uName') is not None:
-        form = makeInstructorForm(request.form)
-        if form.validate_on_submit():
-            uName = form.uName.data
-            User.update()
-            flash('Made {0} an Instructor.'.format(uName))
-            return redirect(url_for('dashboard.admin'))
-        else:
-            flash_errors(form)
-        return redirect(url_for('dashboard.admin'))
+    # elif request.form.get('user_group') is not None:
+    #     form = addUsersForm(request.form)
+    #     if form.validate_on_submit():
+    #         group = form.user_group.data
+    #
+    #         # TODO: make add group users functional
+    #         # for user in user_list
+    #         #   add user to group

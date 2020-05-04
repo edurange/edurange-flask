@@ -23,33 +23,40 @@
                     <input name="add" class="btn btn-dark" type="submit" value="Add">
                     <select name="groups" title="Group">
                         {% for group in groups %}
-                        <option value= "{{group}}" SELECTED>{{group}}</option>"
+                            <option value="{{group}}" SELECTED>{{group}}</option>
                         {% endfor %}
-                    </select>
+                    </select><p></p>
 
-                    <p>Click the ID number to add a student to the selected group.</p>
-                    <div>
-                        <table class="table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th> ID #</th>
-                                <th> Username </th>
-                                <th> Email </th>
-                                <th> Select </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for student in students %}
-                            <tr>
-                                <td><input name="uid" class="btn btn-dark" type="submit" value="{{ student.id }}"></td>
-                                <td> {{ student.username }}</td>
-                                <td> {{ student.email }}</td>
-                                <td><input name="uid" type="checkbox" value="{{ student.id }}"></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                    <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
+
+                    <p></p>
+                <div>
+                    <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th> ID # </th>
+                            <th> Username </th>
+                            <th> Email </th>
+                            <th> Selection </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td> {{ student.id }}</td>
+                            <td> {{ student.name }}</td>
+                            <td> {{ student.email }}</td>
+                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="
+				if (document.forms['addGroupUsers']['selection'].value.includes('{{ student.id }}') == true) {
+					document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace('{{ student.id }},', '');
+				} else { document.forms['addGroupUsers']['selection'].value += '{{ student.id }},'; }"
+                            /></td>
+			                {# <td><input type="checkbox" name="uids" value={{student.id}} </td> #}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
                 </form>
                 <!--user table stuff-->
             </div>
