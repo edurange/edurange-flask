@@ -39,8 +39,9 @@
                             <td> {{ student.name }}</td>
                             <td> {{ student.email }}</td>
                             <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}"
-                                onclick="document.forms['addGroupUsers']['selection'].value += '{{ student.id }},'"
-                            /></td>
+                                onclick="check_user_list({{ student.id }})">
+                                Add to list
+                            </button></td>
 			                {# <td><input type="checkbox" name="uids" value={{student.id}} </td> #}
                         </tr>
                         {% endfor %}
