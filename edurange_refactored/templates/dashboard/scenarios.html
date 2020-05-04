@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scenarios</title>
+	</head>
+	<body>
+		<script>
+
+		</script>
+
+		{% extends "layout.html" %}
+		{% block content %}
+			<div class="container">
+				<h1>Welcome Instructor {{ current_user.username }}</h1>
+			</div>
+
+			<div class="container-fluid px-4" id="accordion"> <!--scenarios table-->
+				<table class="table">
+					<caption>List of scenarios</caption>
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">NAME</th>
+							<th scope="col">DESCRIPTION</th>
+							<th scope="col">OWNER ID</th>
+							<th scope="col">CREATED AT</th>
+							<th scope="col">STATUS</th>
+						</tr>
+					</thead>
+					<tbody> <!--Content of scenario table-->
+						{% for scenario in scenarios%}
+						<tr>
+							<td>{{scenario.id}}</td>
+							<td>{{scenario.name}}</td>
+							<td>{{scenario.description}}</td>
+							<td>{{scenario.owner_id}}</td>
+							<td>{{scenario.created_at}}</td>
+							<td>{{scenario.status}}</td>
+						</tr>
+						{% endfor %}
+					</tbody> <!--Content of scenario table-->
+				</table>
+			</div> <!--scenario table-->
+		{% endblock %}
+	</body>
+</html>>
