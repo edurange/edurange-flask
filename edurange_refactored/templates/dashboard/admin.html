@@ -38,10 +38,11 @@
                             <td> {{ student.id }}</td>
                             <td> {{ student.name }}</td>
                             <td> {{ student.email }}</td>
-                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}"
-                                onclick="check_user_list({{ student.id }})">
-                                Add to list
-                            </button></td>
+                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="
+				if (document.forms['addGroupUsers']['selection'].value.includes('{{ student.id }}') == true) {
+					document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace('{{ student.id }},', '');
+				} else { document.forms['addGroupUsers']['selection'].value += '{{ student.id }},'; }"
+                            /></td>
 			                {# <td><input type="checkbox" name="uids" value={{student.id}} </td> #}
                         </tr>
                         {% endfor %}
