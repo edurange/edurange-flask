@@ -3,7 +3,7 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from flask_table import BoolCol
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
@@ -58,12 +58,12 @@ def instructor():
 def admin():
     check_admin()
     students = User.query.all()
-    stuTable = StudentTable(students)
+    #stuTable = StudentTable(students)
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     groupNames = []
     scenarios = Scenarios.query.all()
-    scenarioTable = ScenarioTable(scenarios)
+    #scenarioTable = ScenarioTable(scenarios)
     for g in groups:
         groupNames.append(g.name)
     if request.method == 'GET':
@@ -71,6 +71,7 @@ def admin():
         form1 = GroupForm()
         form2 = GroupFinderForm()
         return render_template('dashboard/admin.html', groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
+
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
@@ -109,6 +110,7 @@ def admin():
         else:
             flash_errors(form)
         return redirect(url_for('user.admin'))
+
     elif request.form.get('groups') is not None:
         form = addUsersForm(request.form)
         if form.validate_on_submit():
@@ -132,13 +134,14 @@ def admin():
         else:
             flash_errors(form)
         return redirect(url_for('dashboard.admin'))
-#TODO: add function for adding users to groups
 
-    # elif request.form.get('user_group') is not None:
-    #     form = addUsersForm(request.form)
-    #     if form.validate_on_submit():
-    #         group = form.user_group.data
-    #
-    #         # TODO: make add group users functional
-    #         # for user in user_list
-    #         #   add user to group
+    elif request.form.get('uName') is not None:
+        form = makeInstructorForm(request.form)
+        if form.validate_on_submit():
+            uName = form.uName.data
+            User.update()
+            flash('Made {0} an Instructor.'.format(uName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))

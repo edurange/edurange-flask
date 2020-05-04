@@ -10,42 +10,50 @@
         <div class="card-header" id="headingUsers">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Students </h2>
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                    Users Table
+                </button>
+            </h5>
+        </div>
+        <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+            <div class="card-body">
+                <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ form.csrf_token }}
                     <input name="add" class="btn btn-dark" type="submit" value="Add">
                     <select name="groups" title="Group">
                         {% for group in groups %}
-                            <option value= "{{group}}" SELECTED>{{group}}</option>"
+                        <option value= "{{group}}" SELECTED>{{group}}</option>"
                         {% endfor %}
                     </select>
 
                     <p>Click the ID number to add a student to the selected group.</p>
-                <div>
-                    <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th> ID #</th>
-                            <th> Username </th>
-                            <th> Email </th>
-                            <th> Select </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                        <tr>
-                            <td><input name="uid" class="btn btn-dark" type="submit" value="{{ student.id }}"></td>
-                            <td> {{ student.username }}</td>
-                            <td> {{ student.email }}</td>
-                        <td><input name="uid" type="checkbox" value="{{ student.id }}"></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    </table>
-                </div>
+                    <div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> ID #</th>
+                                <th> Username </th>
+                                <th> Email </th>
+                                <th> Select </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td><input name="uid" class="btn btn-dark" type="submit" value="{{ student.id }}"></td>
+                                <td> {{ student.username }}</td>
+                                <td> {{ student.email }}</td>
+                                <td><input name="uid" type="checkbox" value="{{ student.id }}"></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
-            </h5>
+                <!--user table stuff-->
+            </div>
         </div>
-
     </div> <!--user table collapse-->
 
     <div class="card"> <!--scenarios table collapse-->
@@ -132,6 +140,7 @@
             <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
         </form>
     </div>
+
     <div class="container-narrow">
         <form id="createGroup" method="POST" action="" role="form">
             {{  form.csrf_token }}
@@ -140,6 +149,17 @@
                 <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
             </div>
             <input name="create" class="btn btn-dark" type="submit" value="Create">
+        </form>
+    </div>
+
+    <div class="container-narrow">
+        <form id="makeInstructor" method="POST" action="" role="">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="uName">Instructor Username</label>
+                <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+            </div>
+            <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
         </form>
     </div>
     {% endblock %}
