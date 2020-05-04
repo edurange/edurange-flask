@@ -58,11 +58,11 @@ def instructor():
 def admin():
     check_admin()
     students = User.query.all()
-    #stuTable = StudentTable(students)
+    stuTable = StudentTable(students)
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     groupNames = []
-    scenarios = Scenarios.query.all()
+    #scenarios = Scenarios.query.all()
     #scenarioTable = ScenarioTable(scenarios)
     for g in groups:
         groupNames.append(g.name)
@@ -71,6 +71,7 @@ def admin():
         form1 = GroupForm()
         form2 = GroupFinderForm()
         return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
+
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
         if form.validate_on_submit():
@@ -108,13 +109,17 @@ def admin():
             return render_template('dashboard/admin.html', students=students, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
         else:
             flash_errors(form)
-        return redirect(url_for('user.admin'))
+        return redirect(url_for('dashboard.admin'))
 
-    # elif request.form.get('user_group') is not None:
-    #     form = addUsersForm(request.form)
-    #     if form.validate_on_submit():
-    #         group = form.user_group.data
-    #
-    #         # TODO: make add group users functional
-    #         # for user in user_list
-    #         #   add user to group
+    elif request.form.get('uName') is not None:
+        form = makeInstructorForm(request.form)
+        if form.validate_on_submit():
+            uName = form.uName.data
+            user = User.query.filter_by(username=uName).first()
+            user.update(is_instructor=True)
+
+            flash('Made {0} an Instructor.'.format(uName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
