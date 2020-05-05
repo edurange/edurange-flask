@@ -62,15 +62,13 @@ def admin():
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     groupNames = []
-    #scenarios = Scenarios.query.all()
-    #scenarioTable = ScenarioTable(scenarios)
     for g in groups:
         groupNames.append(g.name)
     if request.method == 'GET':
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groupNames, students=students)
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students)
 
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
@@ -107,6 +105,38 @@ def admin():
             groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
             groUTable = GroupUserTable(groupUsers)
             return render_template('dashboard/admin.html', students=students, groTable=groTable, groUTable=groUTable, form=form, groups=groupNames)
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('groups') is not None:
+        form = addUsersForm(request.form)
+        if form.validate_on_submit():
+            db_ses = db.session
+
+            if len(form.groups.data) < 1:
+                flash('A group must be selected')
+                return redirect(url_for('dashboard.admin'))
+
+            group = form.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = form.uids.data # string form
+            if uids[-1] == ',':
+                uids = uids[:-1] # slice last comma to avoid empty string after string split
+            uids = uids.split(',')
+            for i,uid in enumerate(uids):
+                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
+                if any(check):
+                    flash('User already in group.')
+                    uids.pop(i-1)
+                    pass
+                else:
+                    GroupUsers.create(user_id=uid, group_id=gid)
+
+
+            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
+            return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)
         return redirect(url_for('dashboard.admin'))

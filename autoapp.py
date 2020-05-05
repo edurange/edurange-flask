@@ -24,7 +24,8 @@ def create_admin():
 def create_all_group():
     StudentGroups.create(name="ALL",
                          owner_id=a_id,
-                         code="")
+                         code="",
+                         hidden=True)
 
 def Aid():
     #number = session.get('_user_id')
