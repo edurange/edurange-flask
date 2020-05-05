@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """User forms."""
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from .models import User, StudentGroups
@@ -111,14 +111,13 @@ class GroupFinderForm(FlaskForm):
             return False
         return True
 
-
 class addUsersForm(FlaskForm):
     """Adds selected users to a group"""
-    uid = StringField(
-        "User IDs", validators=[DataRequired()]
+    uids = StringField(
+        'User IDs', validators=[DataRequired()]
     )
     groups = StringField(
-        "Group Name", validators=[DataRequired()]
+        'Group Name', validators=[DataRequired()]
     )
 
     # user id list
@@ -128,6 +127,57 @@ class addUsersForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(addUsersForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+
+# class addUsersForm(FlaskForm):
+#     """Adds selected users to a group"""
+#     groups = StringField(
+#         'Group Name', validators=[DataRequired()]
+#     )
+#
+#     uids = SelectMultipleField('User IDs', validators=[DataRequired()])
+#
+#     #uids = FieldList(
+#     #    StringField('User IDs')
+#     #)
+#
+#     # user id list
+#
+#     def __init__(self, *args, **kwargs):
+#         super(addUsersForm, self).__init__(*args, **kwargs)
+#
+#     def validate(self):
+#         initial_validation = super(addUsersForm, self).validate()
+#         if not initial_validation:
+#             return False
+#         return True
+
+    # user id list
+
+    def __init__(self, *args, **kwargs):
+        super(addUsersForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(addUsersForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+class makeInstructorForm(FlaskForm):
+    """Elevates user to an instructor"""
+    uName = StringField(
+        "Username", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(makeInstructorForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(makeInstructorForm, self).validate()
         if not initial_validation:
             return False
         return True

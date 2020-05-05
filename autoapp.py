@@ -34,6 +34,13 @@ def Aid():
         return True
     return False
 
+def Iid():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if user.is_instructor:
+        return True
+    return False
+
 admin = User.query.limit(1).all()
 print(admin)
 print(admin)
@@ -47,4 +54,5 @@ a_id = admin.get_id()
 if not group:
     create_all_group()
 app.jinja_env.globals.update(Aid=Aid)
+app.jinja_env.globals.update(Iid=Iid)
 
