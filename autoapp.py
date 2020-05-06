@@ -24,13 +24,21 @@ def create_admin():
 def create_all_group():
     StudentGroups.create(name="ALL",
                          owner_id=a_id,
-                         code="")
+                         code="",
+                         hidden=True)
 
 def Aid():
     #number = session.get('_user_id')
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if user.is_admin:
+        return True
+    return False
+
+def Iid():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if user.is_instructor:
         return True
     return False
 
@@ -47,4 +55,5 @@ a_id = admin.get_id()
 if not group:
     create_all_group()
 app.jinja_env.globals.update(Aid=Aid)
+app.jinja_env.globals.update(Iid=Iid)
 

@@ -1,0 +1,75 @@
+
+{% extends "layout.html" %}
+{% block content %}
+	<div class="container">
+		<h1>Welcome {{ current_user.username }}</h1>
+		<h3>This is your Instructor Dashboard</h3>
+	</div>
+
+	<div class="container-narrow" id="accordion">
+		<div class="card"> <!--owned groups-->
+			<div class="card-header" id="headingOwned">
+				<h5 class="mb-0">
+					<h2> <i class="fa fa-user"></i> Owned Groups </h2>
+					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseOwned" aria-expanded="false" aria-controls="collapseOwned">
+						Owned Groups
+					</button>
+				</h5>
+			</div>
+			<div id="collapseOwned" class="collapse" aria-labelledby="headingOwned" data-parent="#accordion">
+				<div class="card-body">
+					<!--owned table stuff-->
+					<div class="col" style="height:300px;overflow-y:scroll;">
+						<div>
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th> Group ID </th>
+										<th> Group Name </th>
+										<th> User ID </th>
+										<th> Username </th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for group in groups %}
+									<tr>
+										<td> {{ group.gid }} </td>
+										<td> {{ group.name }} </td>
+										<td> {{ group.uid }} </td>
+										<td> {{ group.username }} </td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!--owned table stuff-->
+				</div>
+			</div>
+		</div><!--owned groups-->
+
+		<div class="card"><!--student responses-->
+			<div class="card-header" id="headingResponse">
+				<h5 class="mb-0">
+					<h2> <i class="fa fa-user"></i> Student Responses</h2>
+					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseResponse" aria-expanded="false" aria-controls="collapseResponse">
+						Student Responses
+					</button>
+				</h5>
+			</div>
+			<div id="collapseResponse" class="collapse" aria-labelledby="headingResponse" data-parent="#accordion">
+				<div class="card-body">
+					<!--response table stuff-->
+					<div class="col" style="height:300px;overflow-y:scroll;">
+						<div>
+							<p>This is the table of student responses. (trust me)</p>
+						</div>
+					</div>
+					<!--response table stuff-->
+				</div>
+			</div>
+		</div><!--student responses-->
+	</div>
+
+{% endblock %}
+
