@@ -23,22 +23,22 @@
 						<div>
 							<table class="table">
 								<thead class="thead-dark">
-									<tr>
-										<th> Group ID </th>
-										<th> Group Name </th>
-										<th> User ID </th>
-										<th> Username </th>
-									</tr>
+								<tr>
+									<th> Group ID </th>
+									<th> Group Name </th>
+									<th> User ID </th>
+									<th> Username </th>
+								</tr>
 								</thead>
 								<tbody>
-									{% for group in groups %}
-									<tr>
-										<td> {{ group.gid }} </td>
-										<td> {{ group.name }} </td>
-										<td> {{ group.uid }} </td>
-										<td> {{ group.username }} </td>
-									</tr>
-									{% endfor %}
+								{% for group in groups %}
+								<tr>
+									<td> {{ group.gid }} </td>
+									<td> {{ group.name }} </td>
+									<td> {{ group.uid }} </td>
+									<td> {{ group.username }} </td>
+								</tr>
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>

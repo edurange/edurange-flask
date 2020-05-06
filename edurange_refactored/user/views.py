@@ -39,7 +39,8 @@ def student():
     curId = session.get('_user_id')
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
-    return render_template("dashboard/student.html", infoTable=infoTable)
+    memberOf = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers).filter(GroupUsers.user_id == curId).filter(GroupUsers.group_id == StudentGroups.id)
+    return render_template("dashboard/student.html", infoTable=infoTable, memberOf=memberOf)
 
 @blueprint.route("/instructor", methods=['GET'])
 @login_required
