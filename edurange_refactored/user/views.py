@@ -41,6 +41,16 @@ def student():
     infoTable = UserInfoTable(userInfo)
     return render_template("dashboard/student.html", infoTable=infoTable)
 
+@blueprint.route("/scenarios")
+@login_required
+def scenarios():
+    """List scenarios.s"""""
+    check_admin()
+    scenarios = Scenarios.query.all()
+    # scenarioTable = ScenarioTable(scenarios)
+
+    return render_template("dashboard/scenarios.html", scenarios=scenarios)
+
 @blueprint.route("/instructor", methods=['GET'])
 @login_required
 def instructor():
@@ -128,7 +138,7 @@ def admin():
             for i,uid in enumerate(uids):
                 check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
                 if any(check):
-                    flash('User already in group.')
+                    flash('User already in group.', 'error')
                     uids.pop(i-1)
                     pass
                 else:
