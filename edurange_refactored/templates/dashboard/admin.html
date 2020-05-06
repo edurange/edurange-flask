@@ -1,17 +1,49 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<div class="container">
-    <h1>Welcome Admin!</h1>
-</div>
+    <div class="container">
+        <h1>User and Group Management</h1>
+    </div>
 
 <div class="container" id="accordion">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Create Student Group</div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                <form id="createGroup" method="POST" action="" role="form">
+                    {{  form.csrf_token }}
+                    <div class="form-group">
+                        <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+                    </div>
+                    <input name="create" class="btn btn-dark" type="submit" value="Create">
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Promote to Instructor </div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                <form id="makeInstructor" method="POST" action="" role="">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                    </div>
+                    <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card"> <!--user table collapse-->
         <div class="card-header" id="headingUsers">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Students </h2>
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                    Users Table
+                    Show/Collapse
                 </button>
             </h5>
         </div>
@@ -19,11 +51,11 @@
             <div class="card-body">
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
-                    {{ form.csrf_token }}
-                    <input name="add" class="btn btn-dark" type="submit" value="Add">
+                    {{ form.csrf_token}}
+                    <input name="add" class="btn btn-dark" type="submit" value="Add Selected To:">
                     <select name="groups" title="Group">
                         {% for group in groups %}
-                            <option value="{{group}}" SELECTED>{{group}}</option>
+                            <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
 
@@ -44,7 +76,7 @@
                         {% for student in students %}
                         <tr>
                             <td> {{ student.id }}</td>
-                            <td> {{ student.name }}</td>
+                            <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
                             <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="
 				if (document.forms['addGroupUsers']['selection'].value.includes('{{ student.id }}') == true) {
@@ -63,110 +95,21 @@
         </div>
     </div> <!--user table collapse-->
 
-    <div class="card"> <!--scenarios table collapse-->
-        <div class="card-header" id="headingScenarios">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-code"></i> Scenarios Status </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseScenarios" aria-expanded="false" aria-controls="collapseScenarios">
-                    Scenarios Table
-                </button>
-            </h5>
-        </div>
-        <div id="collapseScenarios" class="collapse" aria-labelledby="headingScenarios" data-parent="#accordion">
-            <div class="card-body">
-                <!--scenarios table stuff-->
-                <div class="col" style="height:300px;overflow-y:scroll;">
-                    <p> table goes here </p>
-                </div>
-                <!--scenarios table stuff-->
-            </div>
-        </div>
-    </div> <!--scenarios table collapse-->
-
-    <div class="card"> <!--groups table collapse-->
-        <div class="card-header" id="headingGroups">
+    <div class="card">
+        <div class="card-header" id="headingUsers">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
-                    Groups Table
-                </button>
             </h5>
         </div>
-        <div id="collapseGroups" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
-            <div class="card-body">
-                <!--groups table stuff-->
-                <div class="col" style="height:300px;overflow-y:scroll;">
-                    {{ groTable }}
-                </div>
-                <!--groups table stuff-->
-            </div>
-        </div>
-    </div> <!--groups table collapse-->
+        {% for group in groups if not group.hidden %}
 
-    <div class="card"> <!--group users table collapse-->
-        <div class="card-header" id="headingGroupUsers">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Group Users </h2>
-                <form id="groupFinderForm" method="POST" action="" role="form">
-                    {{ form.csrf_token }}
-                    <input class="form-control" id="group" name="group" type="text" placeholder="Search" aria-label="Search">
-                    <input name="search" class="btn btn-dark" type="submit" value="Search">
-                    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseGroupUsers" aria-expanded="false" aria-controls="collapseGroupUsers">
-                        Hide / Show Table
-                    </button>
-                </form>
-            </h5>
-        </div>
-        <div id="collapseGroupUsers" class="collapse" aria-labelledby="headingGroupUsers" data-parent="#accordion">
-            <div class="card-body">
-                <!--group users table stuff-->
-                <div class="col" style="height:300px;overflow-y:scroll;">
-                    {{ groUTable }}
-                </div>
-                <!--group users table stuff-->
-            </div>
-        </div>
-    </div> <!--group users table collapse-->
+        {% endfor %}
 
-    <div class="container-narrow">
-        <form id="emailForm" method="POST" action="" role="form">
-            {{ form.csrf_token}}
-            <div class="form-group">
-                <label for="to">Recipient</label>
-                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
-            </div>
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
-            </div>
-            <div class="form-group">
-                <label for="body">Message </label>
-                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
-            </div>
-            <input name="submit" class="btn btn-dark" type="submit" value="Send">
-            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
-        </form>
     </div>
 
-    <div class="container-narrow">
-        <form id="createGroup" method="POST" action="" role="form">
-            {{  form.csrf_token }}
-            <div class="form-group">
-                <label for="name">Group Name</label>
-                <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
-            </div>
-            <input name="create" class="btn btn-dark" type="submit" value="Create">
-        </form>
-    </div>
 
-    <div class="container-narrow">
-        <form id="makeInstructor" method="POST" action="" role="">
-            {{ form.csrf_token }}
-            <div class="form-group">
-                <label for="uName">Instructor Username</label>
-                <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
-            </div>
-            <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
-        </form>
-    </div>
-    {% endblock %}
+
+</div>
+
+
+{% endblock %}

@@ -22,6 +22,11 @@
       <li class="nav-item">
 	      <a class="nav-link" href="{{ url_for('dashboard.admin') }}">Admin Dashboard</a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('dashboard.scenarios')}}">Scenarios</a>
+      </li>
+
       {% endif %}
         {% if current_user and current_user.is_authenticated and not Aid() %}
             <li class="nav-item">
