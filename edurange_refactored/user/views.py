@@ -122,7 +122,8 @@ def admin():
             flash_errors(form)
         return redirect(url_for('dashboard.admin'))
 
-    elif request.form.get('groups') is not None:
+    #elif request.form.get('groups') is not None:
+    elif request.form.get('add') is not None:
         form = addUsersForm(request.form)
         if form.validate_on_submit():
             db_ses = db.session
@@ -162,6 +163,33 @@ def admin():
             user.update(is_instructor=True)
 
             flash('Made {0} an Instructor.'.format(uName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('remove') is not None:
+        form = addUsersForm(request.form)
+        if form.validate_on_submit():
+            db_ses = db.session
+            group = form.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = form.uids.data # string form
+            if uids[-1] == ',':
+                uids = uids[:-1] # slice last comma to avoid empty string after string split
+
+            miss = 0 # count user ids that are not in group
+            uids = uids.split(',')
+
+            for i, uid in enumerate(uids):
+                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
+                if user is not None: # if user is in group
+                    user.delete()
+                else:
+                    miss += 1
+
+            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
             return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)
