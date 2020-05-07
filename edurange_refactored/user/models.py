@@ -30,7 +30,7 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
     owner_id = reference_col("users", nullable=False)
     owner = relationship("User", backref="groups")
     code = Column(db.String(8), unique=True, nullable=True, default=generate_registration_code())
-
+    hidden = Column(db.Boolean(), nullable=False, default=False)
 
 class GroupUsers(UserMixin, SurrogatePK, Model):
     """Users belong to groups"""
