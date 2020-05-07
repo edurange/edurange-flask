@@ -107,6 +107,45 @@
 
     </div>
 
+    <div class="card"> <!--instructors table collapse-->
+        <div class="card-header" id="headingInstructors">
+            <h5 class="mb-0">
+                <h2> <i class="fa fa-user"></i> All Instructors </h2>
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                    Hide / Show Table
+                </button>
+            </h5>
+        </div>
+        <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
+            <div class="card-body">
+                <!--instructors table stuff-->
+                <div class="col" style="height:300px;overflow-y:scroll;">
+                    <div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> ID # </th>
+                                <th> Name </th>
+                                <th> Email </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in instructors %}
+                            <tr>
+                                <td> {{ user.id }} </td>
+                                <td> {{ user.username }} </td>
+                                <td> {{ user.email }} </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--instructors table stuff-->
+            </div>
+        </div>
+    </div> <!--instructors table collapse-->
+
 
 
 </div>

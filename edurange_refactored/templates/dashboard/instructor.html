@@ -12,7 +12,7 @@
 				<h5 class="mb-0">
 					<h2> <i class="fa fa-user"></i> Owned Groups </h2>
 					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseOwned" aria-expanded="false" aria-controls="collapseOwned">
-						Owned Groups
+						Hide / Show Table
 					</button>
 				</h5>
 			</div>
@@ -26,6 +26,7 @@
 								<tr>
 									<th> Group ID </th>
 									<th> Group Name </th>
+									<th> Code </th>
 									<th> User ID </th>
 									<th> Username </th>
 								</tr>
@@ -35,6 +36,7 @@
 								<tr>
 									<td> {{ group.gid }} </td>
 									<td> {{ group.name }} </td>
+									<td> {{ group.code }}</td>
 									<td> {{ group.uid }} </td>
 									<td> {{ group.username }} </td>
 								</tr>
@@ -53,7 +55,7 @@
 				<h5 class="mb-0">
 					<h2> <i class="fa fa-user"></i> Student Responses</h2>
 					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseResponse" aria-expanded="false" aria-controls="collapseResponse">
-						Student Responses
+						Hide / Show Table
 					</button>
 				</h5>
 			</div>

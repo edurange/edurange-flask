@@ -58,7 +58,7 @@ def instructor():
     check_instructor()
     curId = session.get('_user_id')
     db_ses = db.session
-    groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, StudentGroups.code, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     if request.method == 'GET':
@@ -68,7 +68,9 @@ def instructor():
 @login_required
 def admin():
     check_admin()
-    students = User.query.all()
+    db_ses = db.session
+    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False)
+    instructors = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == True)
     stuTable = StudentTable(students)
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
@@ -79,7 +81,7 @@ def admin():
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students)
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, instructors=instructors)
 
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
