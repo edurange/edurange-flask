@@ -23,12 +23,18 @@ celery.Task = ContextTask
 @celery.task
 def send_async_email(email_data):
     app = current_app
+    app.config.update(
+        MAIL_SERVER='smtp.googlemail.com',
+        MAIL_PORT=465,
+        MAIL_USE_TLS=False,
+        MAIL_USE_SSL=True
+    )
     mail = Mail(app)
     msg = Message(email_data['subject'],
                   sender=environ.get('MAIL_DEFAULT_SENDER'),
                   recipients=[email_data['to']])
-    msg.body = email_data['body']
     mail.send(msg)
+    msg.body = email_data['body']
 
 # @celery.task
 # def start_scenario(scenario_data):

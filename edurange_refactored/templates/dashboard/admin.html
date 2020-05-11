@@ -5,6 +5,26 @@
     </div>
 
 <div class="container" id="accordion">
+{##}
+{#    <div class="container-narrow">#}
+{#        <form id="emailForm" method="POST" action="" role="form">#}
+{#            {{ form.csrf_token}}#}
+{#            <div class="form-group">#}
+{#                <label for="to">Recipient</label>#}
+{#                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label for="subject">Subject</label>#}
+{#                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label for="body">Message </label>#}
+{#                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">#}
+{#            </div>#}
+{#            <input name="submit" class="btn btn-dark" type="submit" value="Send">#}
+{#            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">#}
+{#        </form>#}
+{#    </div>#}
     <div class="row">
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
@@ -64,6 +84,7 @@
 
                     <p></p>
                 <div>
+
                     <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -135,10 +156,40 @@
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
             </h5>
-        </div>
-        {% for group in groups if not group.hidden %}
+            <div class="card-body">
+            {% for group in groups if not group.hidden %}
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="{{ group.name }}-table" aria-expanded="false" aria-controls="collapseUsers">
+                    Show/Collapse
+                </button>
+                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+                    <p></p>
+                    <div>
 
-        {% endfor %}
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> ID # </th>
+                                <th> Username </th>
+                                <th> Email </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for student in usersPGroup.get(group.name) %}
+                                <tr>
+                                    <td> {{ student.id }}</td>
+                                    <td> {{ student.username }}</td>
+                                    <td> {{ student.email }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        </div>
 
     </div>
     
