@@ -82,7 +82,6 @@ class TestRegistering:
         form["email"] = "foo@bar.com"
         form["password"] = "secret"
         form["confirm"] = "secret"
-        form["code"] = "12345678"
         # Submits
         res = form.submit().follow()
         assert res.status_code == 200
