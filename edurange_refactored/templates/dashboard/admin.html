@@ -58,6 +58,7 @@
                             <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
+                    <input name="remove" class="btn btn-dark" type="submit" value="Remove Selected From:"><p></p>
 
                     <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
 
@@ -78,12 +79,7 @@
                             <td> {{ student.id }}</td>
                             <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
-                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="
-				if (document.forms['addGroupUsers']['selection'].value.includes('{{ student.id }}') == true) {
-					document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace('{{ student.id }},', '');
-				} else { document.forms['addGroupUsers']['selection'].value += '{{ student.id }},'; }"
-                            /></td>
-			                {# <td><input type="checkbox" name="uids" value={{student.id}} </td> #}
+                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -147,6 +143,44 @@
     </div> <!--instructors table collapse-->
 
 
+    <div class="container-narrow">
+        <form id="emailForm" method="POST" action="" role="form">
+            {{ form.csrf_token}}
+            <div class="form-group">
+                <label for="to">Recipient</label>
+                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">
+            </div>
+            <div class="form-group">
+                <label for="body">Message </label>
+                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">
+            </div>
+            <input name="submit" class="btn btn-dark" type="submit" value="Send">
+            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">
+        </form>
+    </div>
+    <div class="container-narrow">
+        <form id="createGroup" method="POST" action="" role="form">
+            {{  form.csrf_token }}
+            <div class="form-group">
+                <label for="name">Group Name</label>
+                <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+            </div>
+            <input name="create" class="btn btn-dark" type="submit" value="Create">
+        </form>
+    </div>
+
+    <script>
+        function selectUser(uid) {
+          if (document.forms['addGroupUsers']['selection'].value.includes(uid) == true) {
+            document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace(uid + ',', '');
+          } else { document.forms['addGroupUsers']['selection'].value += uid + ','; }
+        }
+    </script>
+    {% endblock %}
 
 </div>
 
