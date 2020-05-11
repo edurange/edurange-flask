@@ -7,6 +7,24 @@
 	</div>
 
 	<div class="container-narrow" id="accordion">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="card bg-light mb-3">
+					<div class="card-header">Create Student Group</div>
+					<div class="card-body">
+						<h5 class="card-text"></h5>
+						<form id="createGroup" method="POST" action="" role="form">
+							{{ form.csrf_token }}
+							<div class="form-group">
+								<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+							</div>
+							<input name="create" class="btn btn-dark" type="submit" value="Create">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="card"> <!--owned groups-->
 			<div class="card-header" id="headingOwned">
 				<h5 class="mb-0">

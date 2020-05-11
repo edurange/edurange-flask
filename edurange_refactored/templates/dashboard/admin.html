@@ -31,28 +31,38 @@
                 <div class="card-header">Create Student Group</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                <form id="createGroup" method="POST" action="" role="form">
-                    {{  form.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
-                    </div>
-                    <input name="create" class="btn btn-dark" type="submit" value="Create">
-                </form>
+                    <form id="createGroup" method="POST" action="" role="form">
+                        {{  form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+                        </div>
+                        <input name="create" class="btn btn-dark" type="submit" value="Create">
+                    </form>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Promote to Instructor </div>
+                <div class="card-header">Manage Instructors </div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                <form id="makeInstructor" method="POST" action="" role="">
-                    {{ form.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
-                    </div>
-                    <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
-                </form>
+                    <form id="makeInstructor" method="POST" action="" role="">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Manage Students </div>
+                <div class="card-body">
+                    <h5 class="card-text">Form Here</h5>
                 </div>
             </div>
         </div>
@@ -158,10 +168,10 @@
             </h5>
             <div class="card-body">
             {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="{{ group.name }}-table" aria-expanded="false" aria-controls="collapseUsers">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
                     Show/Collapse
                 </button>
-                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
                     <p></p>
                     <div>
 
@@ -192,7 +202,7 @@
         </div>
 
     </div>
-    
+
 </div>
 
 

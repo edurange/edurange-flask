@@ -62,7 +62,17 @@ def instructor():
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     if request.method == 'GET':
-        return render_template('dashboard/instructor.html', groups=groups, infoTable=infoTable)
+        form = GroupForm()
+        return render_template('dashboard/instructor.html', form=form, groups=groups, infoTable=infoTable)
+
+    elif request.form.get('name') is not None:
+        form = GroupForm(request.form)
+        if form.validate_on_submit():
+            code = grc()
+            name = form.name.data
+            StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
+            flash('Created group {0}'.format(name))
+            return redirect(url_for('dashboard.instructor'))
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
@@ -91,7 +101,7 @@ def admin():
         form1 = GroupForm()
         form2 = GroupFinderForm()
 
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, usersPGroup=users_per_group)
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
 
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
