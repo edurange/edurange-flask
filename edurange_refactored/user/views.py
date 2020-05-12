@@ -134,17 +134,19 @@ def admin():
 
             group = form.groups.data
 
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
-            uids = form.uids.data # string form
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
+            uids = form.uids.data
+
             if uids[-1] == ',':
-                uids = uids[:-1] # slice last comma to avoid empty string after string split
+                uids = uids[:-1]
+
             uids = uids.split(',')
-            for i,uid in enumerate(uids):
-                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
-                if any(check):
+
+            for i,uid in reversed(list(enumerate(uids))): # pop function was messing with integrity of the list
+                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
+                if check is not None:
                     flash('User already in group.', 'error')
-                    uids.pop(i-1)
-                    pass
+                    uids.pop(i)
                 else:
                     GroupUsers.create(user_id=uid, group_id=gid)
 
@@ -172,24 +174,30 @@ def admin():
         form = addUsersForm(request.form)
         if form.validate_on_submit():
             db_ses = db.session
+
+            if len(form.groups.data) < 1:
+                flash('A group must be selected')
+                return redirect(url_for('dashboard.admin'))
+
             group = form.groups.data
 
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
             uids = form.uids.data # string form
+
             if uids[-1] == ',':
                 uids = uids[:-1] # slice last comma to avoid empty string after string split
 
-            miss = 0 # count user ids that are not in group
             uids = uids.split(',')
 
-            for i, uid in enumerate(uids):
-                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
-                if user is not None: # if user is in group
-                    user.delete()
+            for i, uid in reversed(list(enumerate(uids))):
+                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
+                if check is not None: # if user is in group
+                    check.delete()
                 else:
-                    miss += 1
+                    flash('User not in group.', 'error')
+                    uids.pop(i)
 
-            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
+            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group, uids))
             return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)
