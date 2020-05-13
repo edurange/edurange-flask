@@ -98,7 +98,7 @@ class TestRegistering:
         form["email"] = "foo@bar.com"
         form["password"] = "secret"
         form["confirm"] = "secrets"
-        form["code"] = "12345678"
+        
         # Submits
         res = form.submit()
         # sees error message
@@ -116,7 +116,7 @@ class TestRegistering:
         form["email"] = "foo@bar.com"
         form["password"] = "secret"
         form["confirm"] = "secret"
-        form["code"] = "12345678"
+       
         # Submits
         res = form.submit()
         # sees error

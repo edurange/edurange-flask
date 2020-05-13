@@ -15,7 +15,6 @@ class TestRegisterForm:
             email="foo@bar.com",
             password="example",
             confirm="example",
-            code="12345678"
         )
 
         assert form.validate() is False
@@ -25,7 +24,6 @@ class TestRegisterForm:
         """Enter email that is already registered."""
         form = RegisterForm(
             username="unique", email=user.email, password="example", confirm="example",
-            code="12345678"
         )
 
         assert form.validate() is False

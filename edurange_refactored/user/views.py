@@ -74,13 +74,23 @@ def admin():
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
     groupNames = []
+    db_ses = db.session
+    users_per_group = {}
+
     for g in groups:
         groupNames.append(g.name)
+
+    for name in groupNames:
+        users_per_group[name] = []
+        groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+        users_per_group[name].append(groupUsers)
+
     if request.method == 'GET':
         form = EmailForm()
         form1 = GroupForm()
         form2 = GroupFinderForm()
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students)
+
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, usersPGroup=users_per_group)
 
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
