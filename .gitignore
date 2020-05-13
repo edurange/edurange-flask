@@ -64,3 +64,5 @@ edurange_refactored/static/cache_manifest.json
 .idea/workspace.xml
 
 .idea/
+
+package-lock.json
