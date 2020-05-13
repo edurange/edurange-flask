@@ -67,3 +67,4 @@ edurange_refactored/static/cache_manifest.json
 
 #JWT Generator
 edurange_refactored/templates/utils/.keys/
+package-lock.json
