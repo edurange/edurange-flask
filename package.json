@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run webpack-watch\" \"npm run flask-server\"",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -l debug -A edurange_refactored.tasks\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",

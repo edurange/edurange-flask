@@ -9,16 +9,22 @@ from flask import (
     request,
     url_for,
 )
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
+from jwt import JWT
+from jwt.exceptions import JWTDecodeError
 
+from edurange_refactored.extensions import bcrypt
 from edurange_refactored.extensions import login_manager
-from edurange_refactored.public.forms import LoginForm
+from edurange_refactored.public.forms import LoginForm, RequestResetPasswordForm, RestorePasswordForm
 from edurange_refactored.user.forms import RegisterForm
 from edurange_refactored.user.models import User, StudentGroups, GroupUsers
-from edurange_refactored.utils import flash_errors
+from edurange_refactored.utils import flash_errors, TokenHelper
+from edurange_refactored.tasks import test_send_async_email
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
-
+jwtToken = JWT()
+helper = TokenHelper()
+oct_data = helper.get_data()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -43,6 +49,54 @@ def home():
     return render_template("public/home.html", form=form)
 
 
+@blueprint.route("/reset/", methods=["GET", "POST"])
+def reset_password():
+    """Reset password."""
+    if current_user.is_authenticated:
+        return redirect(url_for("public.home"))
+    form = RequestResetPasswordForm(request.form)
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            flash("Unknown email address.", "warning")
+            return render_template("public/request_reset_password.html", form=form)
+        else:
+            email_data = form.get_email_data()
+            test_send_async_email(email_data)
+            flash("Please check your email to reset your password.", "success")
+            return redirect(url_for("public.home"))
+    return render_template("public/request_reset_password.html", form=form)
+
+
+@blueprint.route("/restore/<tk>", methods=["GET", "POST"])
+def restore_password(tk):
+    if current_user.is_authenticated:
+        return redirect(url_for("public.home"))
+    try:
+        decoded_token = jwtToken.decode(tk, oct_data, do_verify=True, do_time_check=True)
+    except JWTDecodeError:
+        flash("Password reset link has expired.", "warning")
+        return redirect(url_for("public.home"))
+    user = User.query.filter_by(email=decoded_token['email']).first()
+    if not user:
+        flash("Can't find any matching user.", "warning")
+        return render_template("public/home")
+    form = RestorePasswordForm(request.form)
+    if not form.validate_on_submit():
+        # flash("Unable to update your password, please type in your password again.", "warning")
+        return render_template("public/restore_password.html", form=form, email=decoded_token['email'])
+    else:
+        class password_object:
+            password = None
+        self_pass = password_object()
+        self_pass.password = form.password.data
+        User.update(
+            self=self_pass,
+            password=bcrypt.generate_password_hash(form.password.data)
+        )
+        flash("Password updated.", "success")
+    return redirect(url_for("public.home"))
+
+
 @blueprint.route("/logout/")
 @login_required
 def logout():
@@ -55,6 +109,8 @@ def logout():
 @blueprint.route("/register/", methods=["GET", "POST"])
 def register():
     """Register new user."""
+    if current_user.is_authenticated:
+        return redirect(url_for("public.home"))
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         User.create(
