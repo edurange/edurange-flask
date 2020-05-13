@@ -85,12 +85,8 @@ def restore_password(tk):
         # flash("Unable to update your password, please type in your password again.", "warning")
         return render_template("public/restore_password.html", form=form, email=decoded_token['email'])
     else:
-        class password_object:
-            password = None
-        self_pass = password_object()
-        self_pass.password = form.password.data
         User.update(
-            self=self_pass,
+            self=user,
             password=bcrypt.generate_password_hash(form.password.data)
         )
         flash("Password updated.", "success")
