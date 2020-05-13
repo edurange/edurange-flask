@@ -18,6 +18,7 @@ blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_fol
 # Although it requires knowledge of the admin user_id #, it will often just be '1'
 # TODO: Harden check_admin()
 
+
 def check_admin():
     #number = session.get('_user_id')
     number = current_user.id
@@ -40,6 +41,7 @@ def student():
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     return render_template("dashboard/student.html", infoTable=infoTable)
+
 
 @blueprint.route("/scenarios")
 @login_required

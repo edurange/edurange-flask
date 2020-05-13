@@ -2,6 +2,35 @@
 from flask import flash
 from flask_table import Table, Col, BoolCol
 from wtforms.fields import BooleanField
+from jwt.jwa import HS256
+from jwt.jwk import jwk_from_dict, OctetJWK
+
+import json
+import os
+
+path_to_key = os.path.dirname(os.path.abspath(__file__))
+
+
+def load_key_data(name, mode='rb'):
+    abspath = os.path.normpath(os.path.join(path_to_key, 'templates/utils/.keys', name))
+    with open(abspath, mode=mode) as fh:
+        return fh.read()
+
+
+class TokenHelper:
+
+    def __init__(self):
+        self.data = jwk_from_dict(json.loads(load_key_data('oct.json', 'r')))
+        self.octet_obj = OctetJWK(self.data.key, self.data.kid)
+
+    def get_JWK(self):
+        return self.octet_obj
+
+    def get_data(self):
+        return self.data
+
+    def verify(self, token):
+        self.octet_obj.verify()
 
 
 def flash_errors(form, category="warning"):
@@ -22,7 +51,7 @@ class StudentTable(Table):
     id = Col('id')
     username = Col('username')
     email = Col('email')
-    html_attrs={
+    html_attrs = {
         'data-toggle': 'table',
         'data-pagination': 'true',
         'data-show-columns': 'true',
@@ -37,12 +66,13 @@ class Student(object):
         self.username = username
         self.email = email
 
+
 class GroupTable(Table):
     classes = ['table']
     thead_classes = ['thead-dark']
     id = Col('id')
     name = Col('name')
-    html_attrs={
+    html_attrs = {
         'data-toggle': 'table',
         'data-search': 'true',
         'data-search-on-enter-key': 'true',
@@ -51,10 +81,12 @@ class GroupTable(Table):
         'data-click-to-select': 'true',
         'data-pagination': 'true'}
 
+
 class Group(object):
     def __init__(self, id, name):
         self.id = id
         self.name = name
+
 
 class GroupUserTable(Table):
     classes = ['table']
@@ -62,7 +94,7 @@ class GroupUserTable(Table):
     id = Col('id')
     username = Col('username')
     email = Col('email')
-    html_attrs={
+    html_attrs = {
         'data-toggle': 'table',
         'data-search': 'true',
         'data-search-on-enter-key': 'true',
@@ -71,11 +103,13 @@ class GroupUserTable(Table):
         'data-click-to-select': 'true',
         'data-pagination': 'true'}
 
+
 class GroupUser(object):
     def __init__(self, id, username, email):
         self.id = id
         self.username = username
         self.email = email
+
 
 class UserInfoTable(Table):
     classes = ['table']
@@ -84,11 +118,13 @@ class UserInfoTable(Table):
     username = Col('username')
     email = Col('email')
 
+
 class UserInfo(object):
     def __init__(self, id, username, email):
         self.id = id
         self.username = username
         self.email = email
+
 
 class ScenarioTable(Table):
     classes = ['table']
@@ -97,7 +133,6 @@ class ScenarioTable(Table):
     name = Col('name')
     created_at = Col('created_at')
     status = Col('status')
-
 
 
 class Scenario(object):
