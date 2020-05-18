@@ -45,18 +45,14 @@
 									<th> Group ID </th>
 									<th> Group Name </th>
 									<th> Code </th>
-									<th> User ID </th>
-									<th> Username </th>
 								</tr>
 								</thead>
 								<tbody>
 								{% for group in groups %}
 								<tr>
-									<td> {{ group.gid }} </td>
+									<td> {{ group.id }} </td>
 									<td> {{ group.name }} </td>
 									<td> {{ group.code }}</td>
-									<td> {{ group.uid }} </td>
-									<td> {{ group.username }} </td>
 								</tr>
 								{% endfor %}
 								</tbody>

@@ -3,7 +3,7 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from flask_table import BoolCol
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, unmakeInstructorForm, deleteStudentForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
@@ -52,13 +52,14 @@ def scenarios():
 
     return render_template("dashboard/scenarios.html", scenarios=scenarios)
 
-@blueprint.route("/instructor", methods=['GET'])
+@blueprint.route("/instructor", methods=['GET', 'POST'])
 @login_required
 def instructor():
     check_instructor()
     curId = session.get('_user_id')
     db_ses = db.session
-    groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, StudentGroups.code, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    #groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, StudentGroups.code, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    groups = db_ses.query(StudentGroups.id, StudentGroups.name, StudentGroups.code).filter(StudentGroups.owner_id == curId)
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     if request.method == 'GET':
@@ -183,6 +184,35 @@ def admin():
             user.update(is_instructor=True)
 
             flash('Made {0} an Instructor.'.format(uName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('iName') is not None:
+        form = unmakeInstructorForm(request.form)
+        if form.validate_on_submit():
+            iName = form.iName.data
+            user = User.query.filter_by(username=iName).first()
+            user.update(is_instructor=False)
+
+            flash('Demoted {0} from Instructor status.'.format(iName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('stuName') is not None:
+        form = deleteStudentForm(request.form)
+        if form.validate_on_submit():
+            stuName = form.stuName.data
+            user = User.query.filter_by(username=stuName).first()
+            stuId = db_ses.query(User.id).filter(User.username == stuName)
+            gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)
+            gu.delete()
+            user.delete()
+
+            flash('User {0} has been deleted.'.format(stuName))
             return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)

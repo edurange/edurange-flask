@@ -168,7 +168,7 @@ class addUsersForm(FlaskForm):
         return True
 
 class makeInstructorForm(FlaskForm):
-    """Elevates user to an instructor"""
+    """Promotes user to instructor status"""
     uName = StringField(
         "Username", validators=[DataRequired()]
     )
@@ -178,6 +178,36 @@ class makeInstructorForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(makeInstructorForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+class unmakeInstructorForm(FlaskForm):
+    """Demotes user from instructor status"""
+    iName = StringField(
+        "Username", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(unmakeInstructorForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(unmakeInstructorForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+class deleteStudentForm(FlaskForm):
+    """Deletes a student from the database"""
+    stuName = StringField(
+        "Username", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(deleteStudentForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(deleteStudentForm, self).validate()
         if not initial_validation:
             return False
         return True

@@ -44,15 +44,15 @@
 
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Instructors </div>
+                <div class="card-header">Manage Students [WIP] </div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                    <form id="makeInstructor" method="POST" action="" role="">
+                    <form id="deleteStudent" method="POST" action="" role="form">
                         {{ form.csrf_token }}
                         <div class="form-group">
-                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
                         </div>
-                        <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
+                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
                     </form>
                 </div>
             </div>
@@ -60,9 +60,24 @@
 
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students </div>
+                <div class="card-header">Manage Instructors </div>
                 <div class="card-body">
-                    <h5 class="card-text">Form Here</h5>
+                    <h5 class="card-text"></h5>
+                    <form id="makeInstructor" method="POST" action="" role="form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <input name="make_instructor" class="btn btn-dark" type="submit" value="Promote to Instructor">
+                    </form>
+                    <br>
+                    <form id="unmakeInstructor" method="POST" action="" role="form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="iName" name="iName" placeholder="Instructor Username" required type="text" value="">
+                        </div>
+                        <input name="unmake_instructor" class="btn btn-dark" type="submit" value="Demote from Instructor">
+                    </form>
                 </div>
             </div>
         </div>
@@ -169,7 +184,7 @@
             <div class="card-body">
             {% for group in groups if not group.hidden %}
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
-                    Show/Collapse
+                    Show/Collapse {{ group.name }}
                 </button>
                 <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
                     <p></p>
