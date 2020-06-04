@@ -3,12 +3,15 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from flask_table import BoolCol
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, \
+    makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
+import os
+import glob
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
@@ -43,15 +46,52 @@ def student():
     return render_template("dashboard/student.html", infoTable=infoTable)
 
 
-@blueprint.route("/scenarios")
+@blueprint.route("/scenarios", methods=['GET', 'POST'])
 @login_required
 def scenarios():
     """List scenarios.s"""""
     check_admin()
+    form = makeScenarioForm()
     scenarios = Scenarios.query.all()
+
+
+    if request.form.get('scenario_name') is not None:
+        form = makeScenarioForm(request.form)
+        if form.validate_on_submit():
+            name = form.scenario_name.data
+            desc = 'Getting Started'
+            own_id = session.get('_user_id')
+            Scenarios.create(name=name, description=desc, owner_id=own_id)
+
+        return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+
     # scenarioTable = ScenarioTable(scenarios)
 
-    return render_template("dashboard/scenarios.html", scenarios=scenarios)
+    elif request.form.get('start_scenario') is not None:
+        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
+        os.system('terraform apply -auto-approve')
+
+    elif request.form.get('stop_scenario') is not None:
+        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
+        os.system('terraform destroy -auto-approve')
+
+    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+
+
+@blueprint.route("/create_scenario")
+@login_required
+def create_scenarios():
+    check_admin()
+    os.chdir('/home/jack/edurange-flask/scenarios/prod')
+    for dir in os.listdir(os.getcwd()):
+        os.chdir(os.path.join('/home/jack/edurange-flask/scenarios/prod/', dir))
+        for filename in os.listdir(os.path.join(os.getcwd())):
+            with open(os.path.join(os.getcwd(), filename), 'r') as f:
+                print(filename)
+
+
+
+    return render_template("dashboard/create_scenario.html")
 
 @blueprint.route("/instructor", methods=['GET'])
 @login_required

@@ -132,41 +132,6 @@ class addUsersForm(FlaskForm):
         return True
 
 
-
-# class addUsersForm(FlaskForm):
-#     """Adds selected users to a group"""
-#     groups = StringField(
-#         'Group Name', validators=[DataRequired()]
-#     )
-#
-#     uids = SelectMultipleField('User IDs', validators=[DataRequired()])
-#
-#     #uids = FieldList(
-#     #    StringField('User IDs')
-#     #)
-#
-#     # user id list
-#
-#     def __init__(self, *args, **kwargs):
-#         super(addUsersForm, self).__init__(*args, **kwargs)
-#
-#     def validate(self):
-#         initial_validation = super(addUsersForm, self).validate()
-#         if not initial_validation:
-#             return False
-#         return True
-
-    # user id list
-
-    def __init__(self, *args, **kwargs):
-        super(addUsersForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(addUsersForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
 class makeInstructorForm(FlaskForm):
     """Elevates user to an instructor"""
     uName = StringField(
@@ -178,6 +143,21 @@ class makeInstructorForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(makeInstructorForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+class makeScenarioForm(FlaskForm):
+    """Elevates user to an instructor"""
+    scenario_name = StringField(
+        "Scenario", validators=[DataRequired()]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(makeScenarioForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(makeScenarioForm, self).validate()
         if not initial_validation:
             return False
         return True

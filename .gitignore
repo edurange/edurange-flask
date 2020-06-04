@@ -68,3 +68,6 @@ edurange_refactored/static/cache_manifest.json
 #JWT Generator
 edurange_refactored/templates/utils/.keys/
 package-lock.json
+
+data/tmp/Foo/.terraform/
+data/tmp/Foo/.terraform.tfstate.lock.info
