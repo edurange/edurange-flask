@@ -75,3 +75,5 @@ data/tmp/Foo/.terraform.tfstate.lock.info
 data/tmp/Foo/terraform.tfstate
 
 data/tmp/Foo/terraform.tfstate.backup
+
+*.info
