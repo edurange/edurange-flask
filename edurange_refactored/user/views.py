@@ -3,12 +3,7 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from flask_table import BoolCol
-<<<<<<< HEAD
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, unmakeInstructorForm, deleteStudentForm
-=======
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, \
-    makeScenarioForm
->>>>>>> jack-dev
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable

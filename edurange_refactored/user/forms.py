@@ -147,17 +147,10 @@ class makeInstructorForm(FlaskForm):
             return False
         return True
 
-<<<<<<< HEAD
-class makeInstructorForm(FlaskForm):
-    """Promotes user to instructor status"""
-    uName = StringField(
-        "Username", validators=[DataRequired()]
-=======
 class makeScenarioForm(FlaskForm):
-    """Elevates user to an instructor"""
+    """Creates a Scenario"""
     scenario_name = StringField(
         "Scenario", validators=[DataRequired()]
->>>>>>> jack-dev
     )
 
     def __init__(self, *args, **kwargs):
