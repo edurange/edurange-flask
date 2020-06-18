@@ -12,7 +12,6 @@ from autoapp import Aid, Iid, create_all_group, create_admin
 from edurange_refactored.app import create_app
 from edurange_refactored.database import db as _db
 from edurange_refactored.user.models import User, StudentGroups
-
 from .factories import UserFactory
 
 
@@ -24,11 +23,8 @@ def app():
     ctx = _app.test_request_context()
     ctx.push()
 
-
     _app.jinja_env.globals.update(Aid=Aid)
     _app.jinja_env.globals.update(Iid=Iid)
-
-
 
     yield _app
 
@@ -50,18 +46,16 @@ def db(app):
     with app.app_context():
         _db.create_all()
 
-        admin = User.query.limit(1).all()
-        print(admin)
-        print(admin)
-        print(admin)
-        if not admin:
-            create_admin()
+    admin = User.query.limit(1).all()
 
-        group = StudentGroups.query.limit(1).all()
-        admin = User.query.filter_by(username=os.environ['USERNAME']).first()
-        a_id = admin.get_id()
-        if not group:
-            create_all_group()
+    if not admin:
+        create_admin()
+
+    group = StudentGroups.query.limit(1).all()
+    admin = User.query.filter_by(username=os.environ['USERNAME']).first()
+    a_id = admin.get_id()
+    if not group:
+        create_all_group(a_id)
 
     yield _db
 

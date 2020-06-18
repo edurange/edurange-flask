@@ -21,9 +21,9 @@ def create_admin():
                 is_admin=True,
                 is_instructor=True)
 
-def create_all_group():
+def create_all_group(id):
     StudentGroups.create(name="ALL",
-                         owner_id=a_id,
+                         owner_id=id,
                          code="",
                          hidden=True)
 
@@ -53,7 +53,7 @@ group = StudentGroups.query.limit(1).all()
 admin = User.query.filter_by(username=os.environ['USERNAME']).first()
 a_id = admin.get_id()
 if not group:
-    create_all_group()
+    create_all_group(a_id)
 app.jinja_env.globals.update(Aid=Aid)
 app.jinja_env.globals.update(Iid=Iid)
 
