@@ -7,12 +7,30 @@
 	</div>
 
 	<div class="container-narrow" id="accordion">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="card bg-light mb-3">
+					<div class="card-header">Create Student Group</div>
+					<div class="card-body">
+						<h5 class="card-text"></h5>
+						<form id="createGroup" method="POST" action="" role="form">
+							{{ form.csrf_token }}
+							<div class="form-group">
+								<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+							</div>
+							<input name="create" class="btn btn-dark" type="submit" value="Create">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="card"> <!--owned groups-->
 			<div class="card-header" id="headingOwned">
 				<h5 class="mb-0">
 					<h2> <i class="fa fa-user"></i> Owned Groups </h2>
 					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseOwned" aria-expanded="false" aria-controls="collapseOwned">
-						Owned Groups
+						Hide / Show Table
 					</button>
 				</h5>
 			</div>
@@ -23,22 +41,20 @@
 						<div>
 							<table class="table">
 								<thead class="thead-dark">
-									<tr>
-										<th> Group ID </th>
-										<th> Group Name </th>
-										<th> User ID </th>
-										<th> Username </th>
-									</tr>
+								<tr>
+									<th> Group ID </th>
+									<th> Group Name </th>
+									<th> Code </th>
+								</tr>
 								</thead>
 								<tbody>
-									{% for group in groups %}
-									<tr>
-										<td> {{ group.gid }} </td>
-										<td> {{ group.name }} </td>
-										<td> {{ group.uid }} </td>
-										<td> {{ group.username }} </td>
-									</tr>
-									{% endfor %}
+								{% for group in groups %}
+								<tr>
+									<td> {{ group.id }} </td>
+									<td> {{ group.name }} </td>
+									<td> {{ group.code }}</td>
+								</tr>
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -53,7 +69,7 @@
 				<h5 class="mb-0">
 					<h2> <i class="fa fa-user"></i> Student Responses</h2>
 					<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseResponse" aria-expanded="false" aria-controls="collapseResponse">
-						Student Responses
+						Hide / Show Table
 					</button>
 				</h5>
 			</div>

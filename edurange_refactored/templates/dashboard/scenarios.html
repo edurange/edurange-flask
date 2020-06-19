@@ -4,30 +4,54 @@
 		{% block content %}
 			<div class="container">
 				<h1>Welcome Instructor {{ current_user.username }}</h1>
+
+                <div class="row">
+                    <div class="col-sm-6" align="left">
+
+                    </div>
+                </div>
+                <form id="createScenario" method="POST" action="" role="">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <input class="form-control"id="scenario_name" name="scenario_name" placeholder="Scenario name" required type="text" value="">
+                    </div>
+                    <input name="create_scenario" class="btn btn-dark" type="submit" value="Create Scenario">
+                </form>
 			</div>
 
-			<div class="container-fluid px-4" id="accordion"> <!--scenarios table-->
+            <p></p>
+
+            <div class="container-fluid px-4" id="accordion"> <!--scenarios table-->
 				<table class="table">
 					<caption>List of scenarios</caption>
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">ID</th>
 							<th scope="col">NAME</th>
 							<th scope="col">DESCRIPTION</th>
-							<th scope="col">OWNER ID</th>
+							<th scope="col">OWNER</th>
 							<th scope="col">CREATED AT</th>
 							<th scope="col">STATUS</th>
+                            <th scope="col">CONTROL</th>
 						</tr>
 					</thead>
 					<tbody> <!--Content of scenario table-->
 						{% for scenario in scenarios%}
 						<tr>
-							<td>{{scenario.id}}</td>
 							<td>{{scenario.name}}</td>
 							<td>{{scenario.description}}</td>
-							<td>{{scenario.owner_id}}</td>
+							<td>{{scenario.owner}}</td>
 							<td>{{scenario.created_at}}</td>
 							<td>{{scenario.status}}</td>
+                            <td>
+                            <form id="startScenario" method="POST" action="" role="">
+                                {{ form.csrf_token }}
+                                <input name="start_scenario" class="btn btn-success" type="submit" value="Start">
+                            </form>
+                                <form id="startScenario" method="POST" action="" role="">
+                                    {{ form.csrf_token }}
+                                    <input name="stop_scenario" class="btn btn-danger" type="submit" value="Stop">
+                                </form>
+                            </td>
 						</tr>
 						{% endfor %}
 					</tbody> <!--Content of scenario table-->

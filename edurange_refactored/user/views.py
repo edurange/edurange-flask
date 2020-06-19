@@ -3,12 +3,14 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, current_user
 from flask_table import BoolCol
-from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm
+from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
+import os
+import glob
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
@@ -40,36 +42,87 @@ def student():
     curId = session.get('_user_id')
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
-    return render_template("dashboard/student.html", infoTable=infoTable)
+    memberOf = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers).filter(GroupUsers.user_id == curId).filter(GroupUsers.group_id == StudentGroups.id)
+    return render_template("dashboard/student.html", infoTable=infoTable, memberOf=memberOf)
 
 
-@blueprint.route("/scenarios")
+@blueprint.route("/scenarios", methods=['GET', 'POST'])
 @login_required
 def scenarios():
     """List scenarios.s"""""
     check_admin()
+    form = makeScenarioForm()
     scenarios = Scenarios.query.all()
+
+
+    if request.form.get('scenario_name') is not None:
+        form = makeScenarioForm(request.form)
+        if form.validate_on_submit():
+            name = form.scenario_name.data
+            desc = 'Getting Started'
+            own_id = session.get('_user_id')
+            Scenarios.create(name=name, description=desc, owner_id=own_id)
+
+        return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+
     # scenarioTable = ScenarioTable(scenarios)
 
-    return render_template("dashboard/scenarios.html", scenarios=scenarios)
+    elif request.form.get('start_scenario') is not None:
+        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
+        os.system('terraform apply -auto-approve')
 
-@blueprint.route("/instructor", methods=['GET'])
+    elif request.form.get('stop_scenario') is not None:
+        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
+        os.system('terraform destroy -auto-approve')
+
+    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+
+
+@blueprint.route("/create_scenario")
+@login_required
+def create_scenarios():
+    check_admin()
+    os.chdir('/home/jack/edurange-flask/scenarios/prod')
+    for dir in os.listdir(os.getcwd()):
+        os.chdir(os.path.join('/home/jack/edurange-flask/scenarios/prod/', dir))
+        for filename in os.listdir(os.path.join(os.getcwd())):
+            with open(os.path.join(os.getcwd(), filename), 'r') as f:
+                print(filename)
+
+
+
+    return render_template("dashboard/create_scenario.html")
+
+@blueprint.route("/instructor", methods=['GET', 'POST'])
 @login_required
 def instructor():
     check_instructor()
     curId = session.get('_user_id')
     db_ses = db.session
-    groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    #groups = db_ses.query(StudentGroups.id.label('gid'), StudentGroups.name, StudentGroups.code, User.id.label('uid'), User.username, GroupUsers).filter(StudentGroups.owner_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
+    groups = db_ses.query(StudentGroups.id, StudentGroups.name, StudentGroups.code).filter(StudentGroups.owner_id == curId)
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     if request.method == 'GET':
-        return render_template('dashboard/instructor.html', groups=groups, infoTable=infoTable)
+        form = GroupForm()
+        return render_template('dashboard/instructor.html', form=form, groups=groups, infoTable=infoTable)
+
+    elif request.form.get('name') is not None:
+        form = GroupForm(request.form)
+        if form.validate_on_submit():
+            code = grc()
+            name = form.name.data
+            StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
+            flash('Created group {0}'.format(name))
+            return redirect(url_for('dashboard.instructor'))
 
 @blueprint.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
     check_admin()
-    students = User.query.all()
+    db_ses = db.session
+    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False)
+    instructors = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == True)
     stuTable = StudentTable(students)
     groups = StudentGroups.query.all()
     groTable = GroupTable(groups)
@@ -90,7 +143,7 @@ def admin():
         form1 = GroupForm()
         form2 = GroupFinderForm()
 
-        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, usersPGroup=users_per_group)
+        return render_template('dashboard/admin.html', stuTable=stuTable, groTable=groTable, form=form, form1=form1, form2=form2, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
 
     elif request.form.get('to') is not None:
         form = EmailForm(request.form)
@@ -131,7 +184,8 @@ def admin():
             flash_errors(form)
         return redirect(url_for('dashboard.admin'))
 
-    elif request.form.get('groups') is not None:
+    #elif request.form.get('groups') is not None:
+    elif request.form.get('add') is not None:
         form = addUsersForm(request.form)
         if form.validate_on_submit():
             db_ses = db.session
@@ -171,6 +225,62 @@ def admin():
             user.update(is_instructor=True)
 
             flash('Made {0} an Instructor.'.format(uName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('iName') is not None:
+        form = unmakeInstructorForm(request.form)
+        if form.validate_on_submit():
+            iName = form.iName.data
+            user = User.query.filter_by(username=iName).first()
+            user.update(is_instructor=False)
+
+            flash('Demoted {0} from Instructor status.'.format(iName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('stuName') is not None:
+        form = deleteStudentForm(request.form)
+        if form.validate_on_submit():
+            stuName = form.stuName.data
+            user = User.query.filter_by(username=stuName).first()
+            stuId = db_ses.query(User.id).filter(User.username == stuName)
+            gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)
+            gu.delete()
+            user.delete()
+
+            flash('User {0} has been deleted.'.format(stuName))
+            return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(form)
+        return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('remove') is not None:
+        form = addUsersForm(request.form)
+        if form.validate_on_submit():
+            db_ses = db.session
+            group = form.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = form.uids.data # string form
+            if uids[-1] == ',':
+                uids = uids[:-1] # slice last comma to avoid empty string after string split
+
+            miss = 0 # count user ids that are not in group
+            uids = uids.split(',')
+
+            for i, uid in enumerate(uids):
+                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
+                if user is not None: # if user is in group
+                    user.delete()
+                else:
+                    miss += 1
+
+            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
             return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(form)

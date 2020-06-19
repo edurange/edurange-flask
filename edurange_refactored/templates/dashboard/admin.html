@@ -31,28 +31,53 @@
                 <div class="card-header">Create Student Group</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                <form id="createGroup" method="POST" action="" role="form">
-                    {{  form.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
-                    </div>
-                    <input name="create" class="btn btn-dark" type="submit" value="Create">
-                </form>
+                    <form id="createGroup" method="POST" action="" role="form">
+                        {{  form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+                        </div>
+                        <input name="create" class="btn btn-dark" type="submit" value="Create">
+                    </form>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Promote to Instructor </div>
+                <div class="card-header">Manage Students [WIP] </div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                <form id="makeInstructor" method="POST" action="" role="">
-                    {{ form.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
-                    </div>
-                    <input name="make_instructor" class="btn btn-dark" type="submit" value="Make Instructor">
-                </form>
+                    <form id="deleteStudent" method="POST" action="" role="form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Manage Instructors </div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                    <form id="makeInstructor" method="POST" action="" role="form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <input name="make_instructor" class="btn btn-dark" type="submit" value="Promote to Instructor">
+                    </form>
+                    <br>
+                    <form id="unmakeInstructor" method="POST" action="" role="form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="iName" name="iName" placeholder="Instructor Username" required type="text" value="">
+                        </div>
+                        <input name="unmake_instructor" class="btn btn-dark" type="submit" value="Demote from Instructor">
+                    </form>
                 </div>
             </div>
         </div>
@@ -78,6 +103,7 @@
                             <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
+                    <input name="remove" class="btn btn-dark" type="submit" value="Remove Selected From:"><p></p>
 
                     <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
 
@@ -99,12 +125,7 @@
                             <td> {{ student.id }}</td>
                             <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
-                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="
-				if (document.forms['addGroupUsers']['selection'].value.includes('{{ student.id }}') == true) {
-					document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace('{{ student.id }},', '');
-				} else { document.forms['addGroupUsers']['selection'].value += '{{ student.id }},'; }"
-                            /></td>
-			                {# <td><input type="checkbox" name="uids" value={{student.id}} </td> #}
+                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -116,17 +137,56 @@
         </div>
     </div> <!--user table collapse-->
 
+    <div class="card"> <!--instructors table collapse-->
+        <div class="card-header" id="headingInstructors">
+            <h5 class="mb-0">
+                <h2> <i class="fa fa-user"></i> All Instructors </h2>
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                    Hide / Show Table
+                </button>
+            </h5>
+        </div>
+        <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
+            <div class="card-body">
+                <!--instructors table stuff-->
+                <div class="col" style="height:300px;overflow-y:scroll;">
+                    <div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> ID # </th>
+                                <th> Name </th>
+                                <th> Email </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in instructors %}
+                            <tr>
+                                <td> {{ user.id }} </td>
+                                <td> {{ user.username }} </td>
+                                <td> {{ user.email }} </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--instructors table stuff-->
+            </div>
+        </div>
+    </div> <!--instructors table collapse-->
+
     <div class="card">
-        <div class="card-header" id="headingUsers">
+        <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
             </h5>
             <div class="card-body">
             {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="{{ group.name }}-table" aria-expanded="false" aria-controls="collapseUsers">
-                    Show/Collapse
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
+                    Show/Collapse {{ group.name }}
                 </button>
-                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
                     <p></p>
                     <div>
 
@@ -157,8 +217,6 @@
         </div>
 
     </div>
-
-
 
 </div>
 
