@@ -87,6 +87,10 @@ class Scenarios(UserMixin, SurrogatePK, Model):
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     status = Column(db.Integer, default=0, nullable=False)
 
+    def __repr__(self):
+        """Represent instance as a unique string."""
+        return f"<Scenario({self.name!r})>"
+
 
 class ScenarioUsers(UserMixin, SurrogatePK, Model):
     """Users belong to groups"""

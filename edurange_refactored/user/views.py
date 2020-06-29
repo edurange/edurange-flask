@@ -11,6 +11,7 @@ from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 import os
 import glob
+import shutil
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
@@ -53,27 +54,109 @@ def scenarios():
     check_admin()
     form = makeScenarioForm()
     scenarios = Scenarios.query.all()
+    db_ses = db.session
 
 
     if request.form.get('scenario_name') is not None:
         form = makeScenarioForm(request.form)
         if form.validate_on_submit():
             name = form.scenario_name.data
+            name = ''.join(e for e in name if e.isalnum())
             desc = 'Getting Started'
             own_id = session.get('_user_id')
             Scenarios.create(name=name, description=desc, owner_id=own_id)
 
-        return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+            os.mkdir('./data/tmp/' + name)
+            os.chdir('./data/tmp/' + name)
+
+            #copy_directory('scenarios/templates/' + SELECTION, os.curdir)
+
+            with open('example.tf', 'w') as f:
+                f.write("""provider "docker" {}
+provider "template" {}
+
+resource "docker_container" "nat2" {
+  name = "nat2"
+  image = "rastasheep/ubuntu-sshd:18.04"
+  restart = "always"
+  hostname  = "NAT"
+
+  connection {
+    host = self.ip_address  
+    type = "ssh"
+    user = "root"
+    password = "root"
+  }
+
+  ports {
+    internal = 22
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+    "useradd --home-dir /home/jack --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) jack",
+    ]
+  }
+}""")
+
+
+            os.system('terraform init')
+        os.chdir('../../..')
+
+        return redirect(url_for('dashboard.scenarios'))
 
     # scenarioTable = ScenarioTable(scenarios)
 
     elif request.form.get('start_scenario') is not None:
-        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
-        os.system('terraform apply -auto-approve')
+        if request.form.get('sid') is not None:
+            sid = request.form.get('sid')
+            sName = db_ses.query(Scenarios).filter(Scenarios.id == sid).first()
+            sName.update(status=1)
+            sName = str(sName.name)
+            os.chdir('./data/tmp/' + sName)
+            os.system('terraform apply -auto-approve')
+
+        else:
+            flash('No Scenario Selected', category='error')
+        os.chdir('../../..')
+        return redirect(url_for('dashboard.scenarios'))
+
 
     elif request.form.get('stop_scenario') is not None:
-        os.chdir('/home/jack/edurange-flask/data/tmp/Foo')
-        os.system('terraform destroy -auto-approve')
+        if request.form.get('sid') is not None:
+            sid = request.form.get('sid')
+            sName = db_ses.query(Scenarios).filter(Scenarios.id == sid).first()
+            sName.update(status=0)
+            sName = str(sName.name)
+            os.chdir('./data/tmp/' + sName)
+            os.system('terraform destroy -auto-approve')
+
+        else:
+            flash('No Scenario Selected', 'warning')
+        os.chdir('../../..')
+        return redirect(url_for('dashboard.scenarios'))
+
+    elif request.form.get('delete_scenario') is not None:
+
+        os.chdir('./data/tmp')
+        if request.form.get('sid') is not None:
+            sid = request.form.get('sid')
+            sName = db_ses.query(Scenarios).filter(Scenarios.id == sid).first()
+
+            if sName.status != 0:
+                flash('Scenario must be stopped first', 'warning')
+                #flash_errors(form, category='error')
+                pass
+            else:
+                sName.delete()
+                sName = str(sName.name)
+                shutil.rmtree(sName)
+
+
+        else:
+            flash('No Scenario Selected', category='error')
+        os.chdir('../..')
+        return redirect(url_for('dashboard.scenarios'))
 
     return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
 
