@@ -5,7 +5,9 @@ import logging
 import os
 
 import pytest
-from flask_login import current_user
+
+from flask.testing import FlaskClient
+
 from webtest import TestApp
 
 from autoapp import Aid, Iid, create_all_group, create_admin
@@ -13,7 +15,7 @@ from edurange_refactored.app import create_app
 from edurange_refactored.database import db as _db
 from edurange_refactored.user.models import User, StudentGroups
 
-from .factories import UserFactory
+from .factories import UserFactory, GroupFactory
 
 
 @pytest.fixture
@@ -76,3 +78,29 @@ def user(db):
     user = UserFactory(password="myprecious")
     db.session.commit()
     return user
+
+@pytest.fixture
+def admin(db, testapp):
+    """Create admin user for the tests."""
+    admin = UserFactory(username="admin", password="myprecious")
+    admin.is_admin = True
+    db.session.commit()
+
+    # Goes to homepage
+    res = testapp.get("/")
+    # Fills out login form in navbar
+    form = res.forms["loginForm"]
+    form["username"] = admin.username
+    form["password"] = "myprecious"
+    # Submits
+    res = form.submit().follow()
+    assert res.status_code == 200
+    return admin
+
+@pytest.fixture
+def group(db):
+    """Create group for the tests."""
+    group = GroupFactory()
+    db.session.commit()
+    return group
+
