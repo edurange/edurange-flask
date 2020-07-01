@@ -165,9 +165,9 @@ resource "docker_container" "nat2" {
 @login_required
 def create_scenarios():
     check_admin()
-    os.chdir('/home/jack/edurange-flask/scenarios/prod')
+    os.chdir('/Users/nguyenhuy/workspace/edurange-flask/scenarios/prod')
     for dir in os.listdir(os.getcwd()):
-        os.chdir(os.path.join('/home/jack/edurange-flask/scenarios/prod/', dir))
+        os.chdir(os.path.join('/Users/nguyenhuy/workspace/edurange-flask/scenarios/prod/', dir))
         for filename in os.listdir(os.path.join(os.getcwd())):
             with open(os.path.join(os.getcwd(), filename), 'r') as f:
                 print(filename)
