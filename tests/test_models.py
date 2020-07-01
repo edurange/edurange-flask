@@ -4,9 +4,11 @@ import datetime as dt
 
 import pytest
 
-from edurange_refactored.user.models import User
+from edurange_refactored.user.models import User, StudentGroups
 
-from .factories import UserFactory
+from .factories import UserFactory, GroupFactory
+from sqlalchemy import exc
+from edurange_refactored.user.models import generate_registration_code as grc
 
 
 @pytest.mark.usefixtures("db")
@@ -51,4 +53,42 @@ class TestUser:
         assert user.check_password("foobarbaz123") is True
         assert user.check_password("barfoobaz") is False
 
+@pytest.mark.usefixtures("db")
+class TestGroup:
+    """Group tests."""
 
+    def test_get_by_id(self):
+        """Get group by ID."""
+        group = StudentGroups.create(name="testgroup", owner_id=1)
+        group.save()
+
+        retrieved = StudentGroups.get_by_id(group.id)
+        assert retrieved == group
+
+    def test_groupname_is_unique(self, db):
+        """Test unique group names only"""
+        group = StudentGroups.create(name="testgroup", owner_id=1, code=grc())
+        group.save()
+        group2 = None
+        with pytest.raises(exc.IntegrityError):
+            group2 = StudentGroups.create(name="testgroup", owner_id=2, code=grc())
+            group2.save()
+
+        assert group is not None
+        assert group2 is None
+
+    def test_hidden_defaults_to_false(self):
+        """Test that hidden attribute defaults to false"""
+        group = StudentGroups.create(name="testgroup", owner_id=1, code=grc())
+        group.save()
+
+        assert group.hidden is False
+
+    def test_factory(self, db):
+        """Test group factory"""
+        group = GroupFactory()
+        db.session.commit()
+        assert bool(group.name)
+        assert bool(group.owner_id)
+        assert bool(group.owner)
+        assert bool(group.hidden) is False
