@@ -79,3 +79,5 @@ data/tmp/Foo/terraform.tfstate.backup
 *.info
 
 *.tfstate
+
+data/tmp/
