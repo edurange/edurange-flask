@@ -75,8 +75,8 @@ def scenarios():
                 f.write("""provider "docker" {}
 provider "template" {}
 
-resource "docker_container" "nat2" {
-  name = "nat2"
+resource "docker_container" """ + "\""+ name + "\"" """ {
+  name = """ + "\""+ name + "\"" """
   image = "rastasheep/ubuntu-sshd:18.04"
   restart = "always"
   hostname  = "NAT"
