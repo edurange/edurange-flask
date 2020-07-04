@@ -1,0 +1,18 @@
+<!-- Seperate sidebar -->
+<div class="bg-secondary" id="sidebar">
+    <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.home') }}">Home
+            <span class="sr-only">(current)</span>
+        </a>
+        {% if current_user and current_user.is_authenticated and Aid() %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.admin') }}">Admin Dashboard</a>
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a>
+        {% elif current_user and current_user.is_authenticated and Iid() %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.instructor') }}">Instructor Dashboard</a>
+        <!-- <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a> -->
+        {% elif current_user and current_user.is_authenticated and not Aid() and not Iid() %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.student') }}">Dashboard</a>
+        {% endif %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.about') }}">About</a>
+    </div>
+</div>
