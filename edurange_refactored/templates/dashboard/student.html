@@ -6,7 +6,8 @@
         <h3>This is where your scenarios will show up</h3>
     </div>
 
-    <div class="container-narrow" id="accordion">
+    <div class="container-narrow" id="accordion"> {# Allows tables to collapse as an accordion #}
+
 	    <div class="card"> <!--info table collapse-->
 		    <div class="card-header" id="headingInfo">
 			    <h5 class="mb-0">
@@ -77,12 +78,37 @@
 			    <div class="card-body">
 				    <!--scenario table stuff-->
 				    <div class="col" style="height:300px;overflow-y:scroll;">
-				    	<!--{{ scenTable }}-->
-					<p> Scenario Table Here </p>
+				    	<div>
+							<table class="table">
+								<thead class="thead-dark">
+								<tr>
+									<th> Name </th>
+									<th> Type </th>
+									<th> Group </th>
+									<th> Instructor </th>
+									<th> Port </th>
+									<th> Responses </th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for entry in scenariosTable %}
+								<tr>
+									<td> {{ entry.sname }} </td>
+									<td> {{ entry.type }} </td>
+									<td> {{ entry.gname }} </td>
+									<td> {{ entry.iname }} </td>
+									<td> 00000 </td> {# pull the scenario port from somewhere #}
+									<td><button class="btn btn-dark" type="button" value="response" id=""/></td> {# button linking to response page #}
+								</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
 				    </div>
 				    <!--scenario table stuff-->
 			    </div>
 		    </div>
 	    </div> <!--scenario table collapse-->
+
 {% endblock %}
 

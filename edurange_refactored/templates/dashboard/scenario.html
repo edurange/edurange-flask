@@ -6,7 +6,8 @@
         <h3>This is where your scenarios will show up</h3>
     </div>
 
-    <div class="container-narrow" id="accordion">
+    <div class="container-narrow" id="accordion"> {# Allows tables to collapse as an accordion #}
+
 	    <div class="card"> <!--info table collapse-->
 		    <div class="card-header" id="headingInfo">
 			    <h5 class="mb-0">
@@ -20,7 +21,7 @@
 			    <div class="card-body">
 				    <!--info table stuff-->
 				    <div class="col" style="height:300px;overflow-y:scroll;">
-				    	{{ infoTable }}	
+				    	{{ infoTable }}
 				    </div>
 				    <!--info table stuff-->
 			    </div>
@@ -47,5 +48,6 @@
 			    </div>
 		    </div>
 	    </div> <!--scenario table collapse-->
+
 {% endblock %}
 

@@ -10,10 +10,15 @@
 
                     </div>
                 </div>
-                <form id="createScenario" method="POST" action="" role="">
-                    {{ form.csrf_token }}
+                <form id="createScenario" method="POST" action="" role=""> {# Form to create a new scenario instance #}
+                    {{ scenarioMaker.csrf_token }}
                     <div class="form-group">
                         <input class="form-control"id="scenario_name" name="scenario_name" placeholder="Scenario name" required type="text" value="">
+						<select name="scenario_group" title="Group">
+							{% for group in groups %}
+							<option value="{{group.name}}" SELECTED>{{group.name}}</option>
+							{% endfor %}
+						</select>
                     </div>
                     <input name="create_scenario" class="btn btn-dark" type="submit" value="Create Scenario">
                 </form>
@@ -44,11 +49,11 @@
 							<td>{{scenario.status}}</td>
                             <td>
                             <form id="startScenario" method="POST" action="" role="">
-                                {{ form.csrf_token }}
+                                {{ scenarioMaker.csrf_token }}
                                 <input name="start_scenario" class="btn btn-success" type="submit" value="Start">
                             </form>
                                 <form id="startScenario" method="POST" action="" role="">
-                                    {{ form.csrf_token }}
+                                    {{ scenarioMaker.csrf_token }}
                                     <input name="stop_scenario" class="btn btn-danger" type="submit" value="Stop">
                                 </form>
                             </td>
