@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="createGroup" method="POST" action="" role="form">
-                        {{  form.csrf_token }}
+                        {{ form.csrf_token }}
                         <div class="form-group">
                             <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
                         </div>
@@ -44,7 +44,7 @@
 
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students [WIP] </div>
+                <div class="card-header">Manage Students [WIP]</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="deleteStudent" method="POST" action="" role="form">
@@ -60,13 +60,13 @@
 
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Instructors </div>
+                <div class="card-header">Manage Instructors</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="makeInstructor" method="POST" action="" role="form">
                         {{ form.csrf_token }}
                         <div class="form-group">
-                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                            <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
                         </div>
                         <input name="make_instructor" class="btn btn-dark" type="submit" value="Promote to Instructor">
                     </form>
@@ -177,16 +177,16 @@
     </div> <!--instructors table collapse-->
 
     <div class="card">
-        <div class="card-header" id="headingGroups">
+        <div class="card-header" id="headingUsers">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
             </h5>
             <div class="card-body">
             {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
-                    Show/Collapse {{ group.name }}
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="{{ group.name }}-table" aria-expanded="false" aria-controls="collapseUsers">
+                    Show/Collapse
                 </button>
-                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
+                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
 
@@ -213,6 +213,19 @@
                 </div>
             {% endfor %}
         </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        function selectUser(uid) {
+          if (document.forms['addGroupUsers']['selection'].value.includes(uid) == true) {
+            document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace(uid + ',', '');
+          } else { document.forms['addGroupUsers']['selection'].value += uid + ','; }
+        }
+    </script>
 
         </div>
 
