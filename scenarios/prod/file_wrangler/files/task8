@@ -1,0 +1,14 @@
+  _______        _       ___
+ |__   __|      | |     / _ \ 
+    | | __ _ ___| | __ | (_) |
+    | |/ _` / __| |/ /  > _ < 
+    | | (_| \__ \   <  | (_) |
+    |_|\__,_|___/_|\_\  \___/ 
+                              
+You can chain options for a single command. So, for example, you could include both the options for long listing and listing hidden files by simply adding each option after the ls command.
+
+Steps:
+1. Type this chained command now. You should now see all files and folders, including those that are hidden, and all of the details about them.
+2. Answer question 10 in EDURange
+3. Go to the next task by typing the following into the prompt: cat task9
+==========================================================================

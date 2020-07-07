@@ -1,0 +1,14 @@
+---
+Name: Strace
+Description: This game uses strace to examine executable files.
+#Roles:
+Groups:
+- Name: Students
+  Instructions: First ssh into strace with the Public IP Address and credentials. Then follow the instructions in the guide.
+  Access:
+  - Instance: strace
+  Users:
+  - Login: student
+Instances:
+- Name: strace
+

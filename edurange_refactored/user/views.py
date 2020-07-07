@@ -6,7 +6,9 @@ from flask_table import BoolCol
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
+from .. import scenario_utils
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
+from ..scenario_utils import populate_catalog
 from edurange_refactored.tasks import send_async_email
 from edurange_refactored.extensions import db
 import os
@@ -46,6 +48,13 @@ def student():
     memberOf = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers).filter(GroupUsers.user_id == curId).filter(GroupUsers.group_id == StudentGroups.id)
     return render_template("dashboard/student.html", infoTable=infoTable, memberOf=memberOf)
 
+@blueprint.route("/catalog", methods=['GET'])
+@login_required
+def catalog():
+    scenarios = populate_catalog()
+    print(scenarios)
+
+    return render_template("dashboard/catalog.html", scenarios=scenarios)
 
 @blueprint.route("/scenarios", methods=['GET', 'POST'])
 @login_required
@@ -55,55 +64,21 @@ def scenarios():
     form = makeScenarioForm()
     scenarios = Scenarios.query.all()
     db_ses = db.session
+    groups = StudentGroups.query.all()
 
 
     if request.form.get('scenario_name') is not None:
-        form = makeScenarioForm(request.form)
-        if form.validate_on_submit():
-            name = form.scenario_name.data
-            name = ''.join(e for e in name if e.isalnum())
-            desc = 'Getting Started'
-            own_id = session.get('_user_id')
-            Scenarios.create(name=name, description=desc, owner_id=own_id)
-
-            os.mkdir('./data/tmp/' + name)
-            os.chdir('./data/tmp/' + name)
-
-            #copy_directory('scenarios/templates/' + SELECTION, os.curdir)
-
-            with open('example.tf', 'w') as f:
-                f.write("""provider "docker" {}
-provider "template" {}
-
-resource "docker_container" """ + "\""+ name + "\"" """ {
-  name = """ + "\""+ name + "\"" """
-  image = "rastasheep/ubuntu-sshd:18.04"
-  restart = "always"
-  hostname  = "NAT"
-
-  connection {
-    host = self.ip_address  
-    type = "ssh"
-    user = "root"
-    password = "root"
-  }
-
-  ports {
-    internal = 22
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-    "useradd --home-dir /home/jack --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) jack",
-    ]
-  }
-}""")
-
-
-            os.system('terraform init')
-        os.chdir('../../..')
-
         return redirect(url_for('dashboard.scenarios'))
+       # form = makeScenarioForm(request.form)
+       # if form.validate_on_submit():
+       #     name = request.form.get('scenario_name')
+       #     scenario_utils.create_scenario(name, infoFile, owner, group)
+
+
+        #    os.system('terraform init')
+       # os.chdir('../../..')
+
+       # return redirect(url_for('dashboard.scenarios'))
 
     # scenarioTable = ScenarioTable(scenarios)
 
@@ -158,7 +133,7 @@ resource "docker_container" """ + "\""+ name + "\"" """ {
         os.chdir('../..')
         return redirect(url_for('dashboard.scenarios'))
 
-    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
+    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form, groups=groups)
 
 
 @blueprint.route("/create_scenario")
