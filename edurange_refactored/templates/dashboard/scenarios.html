@@ -10,12 +10,9 @@
 
                     </div>
                 </div>
-                <form id="createScenario" method="POST" action="" role="">
-                    {{ form.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control"id="scenario_name" name="scenario_name" placeholder="Scenario name" required type="text" value="">
-                    </div>
-                    <input name="create_scenario" class="btn btn-dark" type="submit" value="Create Scenario">
+                <form action="/dashboard/catalog" method="get">
+                    <input class="btn btn-dark" type="submit" value="New Scenario"
+                           name="Submit" id="new_scenario" />
                 </form>
 			</div>
 

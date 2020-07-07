@@ -1,0 +1,40 @@
+// The first line of this trace (starting "execve...") has been deleted
+brk(0)                                  = 0x98a6000
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7742000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=23284, ...}) = 0
+mmap2(NULL, 23284, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb773c000
+close(3)                                = 0
+open("/lib/i686/nosegneg/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\1\1\1\3\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\340\227\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1966780, ...}) = 0
+mmap2(NULL, 1727132, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7596000
+mprotect(0xb7735000, 4096, PROT_NONE)   = 0
+mmap2(0xb7736000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19f) = 0xb7736000
+mmap2(0xb7739000, 10908, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7739000
+close(3)                                = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7595000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xb75956c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0xb7736000, 8192, PROT_READ)   = 0
+mprotect(0xb7761000, 4096, PROT_READ)   = 0
+munmap(0xb773c000, 23284)               = 0
+getuid32()                              = 501
+getgid32()                              = 502
+geteuid32()                             = 501
+getegid32()                             = 502
+brk(0)                                  = 0x98a6000
+brk(0x98c7000)                          = 0x98c7000
+brk(0)                                  = 0x98c7000
+stat64("/usr/local/bin/start", 0xbff20a50) = -1 ENOENT (No such file or directory)
+stat64("/bin/start", 0xbff20a50)        = -1 ENOENT (No such file or directory)
+stat64("/usr/bin/start", 0xbff20a50)    = -1 ENOENT (No such file or directory)
+stat64("/usr/local/sbin/start", 0xbff20a50) = -1 ENOENT (No such file or directory)
+stat64("/usr/sbin/start", 0xbff20a50)   = -1 ENOENT (No such file or directory)
+stat64("/sbin/start", {st_mode=S_IFREG|0755, st_size=145552, ...}) = 0
+getgroups32(64, [502])                  = 1
+fstat64(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 2), ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7741000
+write(1, "/sbin/start\n", 12/sbin/start)           = 12
+exit_group(0)                           = ?
+

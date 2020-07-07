@@ -1,0 +1,4 @@
+#!/bin/bash
+%{ for player in players ~}
+echo "${player.login} ALL=(root)NOPASSWD:/usr/bin/nmap" >> /etc/sudoers
+%{ endfor ~}

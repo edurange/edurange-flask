@@ -1,0 +1,30 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+ssh_pwauth: yes
+hostname: ${hostname}
+packages:
+%{ for package in packages ~}
+- ${package}
+%{ endfor ~}
+users:
+- default
+%{ for player in players ~}
+- name: ${player.login}
+  lock_passwd: false
+  passwd: ${player.password.hash}
+  shell: /bin/bash
+  # sudo: ALL=(ALL) NOPASSWD:ALL
+%{ endfor ~}
+write_files:
+- path: /etc/motd
+  encoding: b64
+  content: ${base64encode(motd)}
+runcmd:
+- rm /etc/update-motd.d/*
+- rm /etc/legal
+%{ for ip_address in ip_addresses ~}
+- echo ${ip_address} | tee -a /usr/local/src/addr
+%{ endfor ~}
+- hostname ${hostname}
+- service ssh restart
