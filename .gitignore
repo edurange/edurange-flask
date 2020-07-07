@@ -80,4 +80,4 @@ data/tmp/Foo/terraform.tfstate.backup
 
 *.tfstate
 
-data/tmp/
+data/
