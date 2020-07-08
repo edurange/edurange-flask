@@ -41,14 +41,12 @@
 							<td>{{scenario.status}}</td>
                             <td>
                             <form id="startScenario" method="POST" action="" role="">
-                                {{ form.csrf_token }}
-                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                {{ scenarioMaker.csrf_token }}
                                 <input name="start_scenario" class="btn btn-success" type="submit" value="Start">
                             </form>
-                                <form id="stopScenario" method="POST" action="" role="">
-                                    {{ form.csrf_token }}
-                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="stop_scenario" class="btn btn-dark" type="submit" value="Stop">
+                                <form id="startScenario" method="POST" action="" role="">
+                                    {{ scenarioMaker.csrf_token }}
+                                    <input name="stop_scenario" class="btn btn-danger" type="submit" value="Stop">
                                 </form>
                                 <form id="destroyScenario" method="POST" action="" role="">
                                     {{ form.csrf_token }}

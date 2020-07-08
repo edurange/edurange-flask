@@ -1,9 +1,13 @@
 """Helper utilities and decorators."""
-from flask import flash
-from flask_table import Table, Col, BoolCol
-from wtforms.fields import BooleanField
-from jwt.jwa import HS256
+from flask import flash, abort, request, session, redirect, url_for
+from flask_login import current_user
+from flask_table import Table, Col
 from jwt.jwk import jwk_from_dict, OctetJWK
+
+from .user.models import User, Scenarios, StudentGroups, GroupUsers
+from .user.models import generate_registration_code as grc
+from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, makeScenarioForm, deleteStudentForm
+from edurange_refactored.extensions import db
 
 import json
 import os
@@ -44,6 +48,8 @@ class CheckCol(Col):
         return '<div class="form-check">\n\t<input type="checkbox" class="form-check-input" value="">\n</div>'
 
 
+# Old code for tables on the dashboards (possibly not used anymore? [tbd])------
+
 class StudentTable(Table):
     classes = ['table']
     thead_classes = ['thead-dark']
@@ -57,7 +63,7 @@ class StudentTable(Table):
         'data-show-columns': 'true',
         'data-multiple-select-row': 'true',
         'data-click-to-select': 'true',
-        'overflow-y': 'scroll'}
+        'overflow-y': 'scroll'} # html_attrs probably don't do anything
 
 
 class Student(object):
@@ -141,3 +147,214 @@ class Scenario(object):
         self.name = name
         self.created_at = created_at
         self.status = status
+
+#----------------------------------------------------------
+
+# WARNING:
+# This check is actually vulnerable to attacks.
+# Since we're retrieving user id from the session request variables, it can be spoofed
+# Although it requires knowledge of the admin user_id #, it will often just be '1'
+# TODO: Harden check_admin()
+
+def check_admin():
+    #number = session.get('user_id')
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_admin:
+        abort(403)
+
+def check_instructor():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor:
+        abort(403)
+
+
+def process_request(form):  # Input must be request.form  # WIP
+    dataKeys = []
+    for k in form.keys():
+        dataKeys.append(k)
+
+    form_switch = {
+        "makeScenarioForm":         ["csrf_token", "scenario_name", "scenario_group", "create_scenario"],
+        "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
+        "GroupForm":                ["csrf_token", "name", "create"],
+        "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
+        "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
+        # "unmakeInstructorForm": ["csrf_token", "iName", "unmake_instructor"],
+        "addUsersForm":             ["csrf_token", "add", "groups", "remove", "uids"]
+    }
+
+    switchVals = []
+    for v in form_switch.values():
+        switchVals.append(v)
+    switchKeys = []
+    for k in form_switch.keys():
+        switchKeys.append(k)
+
+    i = 0
+    for l in switchVals:
+        if l == dataKeys:
+            i = switchVals.index(l)
+    f = switchKeys[i]
+    # print(f)
+
+    process_switch = {
+        "makeScenarioForm":         process_scenarioMaker(),
+        "startScenario":            process_scenarioStarter(),
+        "GroupForm":                process_groupMaker(),
+        "deleteStudentForm":        process_delStu(),
+        "manageInstructorForm":     process_manInst(),
+        # "unmakeInstructorForm": process_instDest(),
+        "addUsersForm":             process_addUser()
+    }
+    proc = process_switch.get(f, "ERROR")
+    return proc
+
+
+def process_scenarioMaker():  # Form submitted to create a scenario |  # makeScenarioForm
+    sM = makeScenarioForm(request.form)
+    if sM.validate_on_submit():
+        name = sM.scenario_name.data
+        # type = sM.scenario_type.data
+        group = sM.scenario_group.data
+        desc = 'Getting Started'
+        own_id = session.get('_user_id')
+        Scenarios.create(name=name, description=desc, owner_id=own_id)
+        # code to add users in group to scenario users
+
+        # testgroup = 1
+        # testquery = db_ses.query(User.username).filter(StudentGroups.id == testgroup).filter(GroupUsers.group_id == StudentGroups.id).filter(User.id == GroupUsers.user_id)
+        # testList = []
+        # for u in testquery:
+        #       testList.append(u)
+        # print(testList)
+
+        # os.mkdir('./data.tmp/' + name)
+        # os command for copying files into new dir
+
+
+def process_scenarioStarter():  # Form submitted to start or stop an existing scenario
+    if request.form.get('start_scenario') is not None:
+        os.chdir('/home/xennos/Desktop/edurange-flask/data/tmp/Foo')
+        os.system('terraform apply -auto-approve')
+
+    elif request.form.get('stop_scenario') is not None:
+        os.chdir('/home/xennos/Desktop/edurange-flask/data/tmp/Foo')
+        os.system('terraform destroy -auto-approve')
+
+
+def process_groupMaker():  # Form to create a new group |  # GroupForm
+    gM = GroupForm(request.form)
+    if gM.validate_on_submit():
+        code = grc()
+        name = gM.name.data
+        StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
+        flash('Created group {0}'.format(name))
+
+        #return redirect(url_for('dashboard.admin'))
+
+
+def process_manInst():  # Form to give a specified user instructor permissions |  # manageInstructorForm
+    mI = manageInstructorForm(request.form)
+    if request.form.get('promote') is not None:
+        if mI.validate_on_submit():
+            uName = mI.uName.data
+            user = User.query.filter_by(username=uName).first()
+            user.update(is_instructor=True)
+
+            flash('Made {0} an Instructor.'.format(uName))
+            #return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(mI)
+        #return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('demote') is not None:
+        if mI.validate_on_submit():
+            uName = mI.uName.data
+            user = User.query.filter_by(username=uName).first()
+            user.update(is_instructor=False)
+
+            flash('Demoted {0} from Instructor status.'.format(uName))
+            #return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(mI)
+        #return redirect(url_for('dashboard.admin'))
+
+
+def process_delStu():  # WIP Form to delete a specified student from the database |  # deleteStudentForm
+    db_ses = db.session
+    uD = deleteStudentForm(request.form)
+    if uD.validate_on_submit():
+        stuName = uD.stuName.data
+        user = User.query.filter_by(username=stuName).first()
+        stuId = db_ses.query(User.id).filter(User.username == stuName)
+        gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)
+        gu.delete()
+        user.delete()
+
+        flash('User {0} has been deleted.'.format(stuName))
+        #return redirect(url_for('dashboard.admin'))
+    else:
+        flash_errors(uD)
+    #return redirect(url_for('dashboard.admin'))
+
+
+def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
+    uA = addUsersForm(request.form)
+    if request.form.get('add') is not None:
+        if uA.validate_on_submit():
+            db_ses = db.session
+
+            if len(uA.groups.data) < 1:
+                flash('A group must be selected')
+                #return redirect(url_for('dashboard.admin'))
+
+            group = uA.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = uA.uids.data  # string form
+            if uids[-1] == ',':
+                uids = uids[:-1]  # slice last comma to avoid empty string after string split
+            uids = uids.split(',')
+            for i, uid in enumerate(uids):
+                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
+                if any(check):
+                    flash('User already in group.', 'error')
+                    uids.pop(i-1)
+                    pass
+                else:
+                    GroupUsers.create(user_id=uid, group_id=gid)
+            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
+            #return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(uA)
+        #return redirect(url_for('dashboard.admin'))
+
+    elif request.form.get('remove') is not None:
+        if uA.validate_on_submit():
+            db_ses = db.session
+            group = uA.groups.data
+
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            uids = uA.uids.data  # string form
+            if uids[-1] == ',':
+                uids = uids[:-1]  # slice last comma to avoid empty string after string split
+
+            miss = 0  # count user ids that are not in group
+            uids = uids.split(',')
+
+            for i, uid in enumerate(uids):
+                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
+                if user is not None:  # if user is in group
+                    user.delete()
+                else:
+                    miss += 1
+
+            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
+            #return redirect(url_for('dashboard.admin'))
+        else:
+            flash_errors(uA)
+        #return redirect(url_for('dashboard.admin'))
+
+#

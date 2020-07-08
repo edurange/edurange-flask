@@ -6,15 +6,16 @@
 		<h3>This is your Instructor Dashboard</h3>
 	</div>
 
-	<div class="container-narrow" id="accordion">
+	<div class="container-narrow" id="accordion"> {# Allows tables to collapse as an accordion #}
+
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-6"> {# Front end for form to create a student group #}
 				<div class="card bg-light mb-3">
 					<div class="card-header">Create Student Group</div>
 					<div class="card-body">
 						<h5 class="card-text"></h5>
 						<form id="createGroup" method="POST" action="" role="form">
-							{{ form.csrf_token }}
+							{{ groupMaker.csrf_token }}
 							<div class="form-group">
 								<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
 							</div>

@@ -46,7 +46,7 @@ resource "docker_container" "nat" {
   }
 
 
-  
+
   provisioner "file" {
     source      = "${path.module}/images"
     destination = "/home/ubuntu"
@@ -84,7 +84,11 @@ resource "docker_container" "nat" {
 
   provisioner "remote-exec" {
     inline = [
+<<<<<<< HEAD
     "useradd --home-dir /Users/nguyenhuy/workspace --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) jack",
+=======
+    "useradd --home-dir /home/xennos --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) xennos",
+>>>>>>> xen_brnc
     "chmod +x /home/ubuntu/install",
     "chmod +x /home/ubuntu/setup_home",
     "chmod +x /home/ubuntu/motd_nat",
