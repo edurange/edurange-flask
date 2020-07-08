@@ -4,28 +4,36 @@
         <h1>Choose a Scenario to Create</h1>
     </div>
 <div class="container">
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th> Scenario </th>
-        <th> Description </th>
-        <th> Action </th>
-    </tr>
-    </thead>
+    <form action="/dashboard/make_scenario" method="post">
+    {{ form.csrf_token }}
+        <input class="form-control" name="scenario_name" type="text" id="scenario_name" placeholder="Scenario Name">
+        <select name="groups" title="Group">
+            {% for group in groups %}
+                <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+            {% endfor %}
+        </select>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th> Scenario </th>
+            <th> Description </th>
+            <th> Action </th>
+        </tr>
+        </thead>
     <tbody>
         {% for s in scenarios %}
             <tr>
                 <td> {{ s.name }}</td>
                 <td> {{ s.description }}</td>
-                <td> <form action="/dashboard/catalog" method="get">
-                    <input class="btn btn-dark" type="submit" value="Create"
+                <td>
+                    <input class="btn btn-dark" type="submit" value={{ s.name }}
                            name="Submit" id="new_scenario" />
-                </form>
                 </td>
             </tr>
         {% endfor  %}
     </tbody>
-</table>
+    </table>
+    </form>
 </div>
 
 {%  endblock %}

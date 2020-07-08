@@ -6,10 +6,9 @@ from flask_table import BoolCol
 from edurange_refactored.user.forms import EmailForm, GroupForm, GroupFinderForm, addUsersForm, makeInstructorForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios
 from .models import generate_registration_code as grc
-from .. import scenario_utils
 from ..utils import StudentTable, Student, GroupTable, Group, GroupUserTable, GroupUser, flash_errors, ScenarioTable, UserInfoTable
 from ..scenario_utils import populate_catalog
-from edurange_refactored.tasks import send_async_email
+from edurange_refactored.tasks import send_async_email, CreateScenarioTask
 from edurange_refactored.extensions import db
 import os
 import glob
@@ -51,10 +50,29 @@ def student():
 @blueprint.route("/catalog", methods=['GET'])
 @login_required
 def catalog():
+    check_admin()
     scenarios = populate_catalog()
-    print(scenarios)
+    groups = StudentGroups.query.all()
+    form = makeScenarioForm(request.form)
 
-    return render_template("dashboard/catalog.html", scenarios=scenarios)
+    return render_template("dashboard/catalog.html", scenarios=scenarios, groups=groups, form=form)
+
+@blueprint.route("/make_scenario", methods=['POST'])
+@login_required
+def make_scenario():
+    check_admin()
+    form = makeScenarioForm(request.form)
+    if form.validate_on_submit():
+        name = request.form.get('scenario_name')
+        infoFile = './scenarios/prod/' + name + '/' + name + '.yml'
+        owner = session.get('_user_id')
+        group = request.form.get('group')
+        CreateScenarioTask(name, infoFile, owner, group)
+    else:
+        flash_errors(form)
+    return redirect(url_for('dashboard.scenarios'))
+
+
 
 @blueprint.route("/scenarios", methods=['GET', 'POST'])
 @login_required
@@ -64,7 +82,7 @@ def scenarios():
     form = makeScenarioForm()
     scenarios = Scenarios.query.all()
     db_ses = db.session
-    groups = StudentGroups.query.all()
+
 
 
     if request.form.get('scenario_name') is not None:
@@ -133,7 +151,7 @@ def scenarios():
         os.chdir('../..')
         return redirect(url_for('dashboard.scenarios'))
 
-    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form, groups=groups)
+    return render_template("dashboard/scenarios.html", scenarios=scenarios, form=form)
 
 
 @blueprint.route("/create_scenario")
