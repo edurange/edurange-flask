@@ -2,9 +2,12 @@
 """User views."""
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import login_required
-from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, makeScenarioForm, deleteStudentForm
+from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
+    deleteStudentForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioUsers
-from ..utils import UserInfoTable, check_admin, check_instructor, process_request
+from ..tasks import CreateScenarioTask
+from ..utils import UserInfoTable, check_admin, check_instructor, process_request, flash_errors
+from ..scenario_utils import populate_catalog
 from edurange_refactored.extensions import db
 import os
 
@@ -25,16 +28,16 @@ def student():
     memberOf = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers).filter(GroupUsers.user_id == curId).filter(GroupUsers.group_id == StudentGroups.id)
 
     scenarioTable = db_ses.query(Scenarios.name.label('sname'), Scenarios.description.label('type'), StudentGroups.name.label('gname'), User.username.label('iname')).filter(GroupUsers.user_id == curId).filter(StudentGroups.id == GroupUsers.group_id).filter(ScenarioUsers.user_id == GroupUsers.user_id).filter(Scenarios.owner_id == User.id)
+
+    return render_template("dashboard/student.html", infoTable=infoTable, memberOf=memberOf, scenarioTable=scenarioTable)
+
 @blueprint.route("/catalog", methods=['GET'])
 @login_required
 def catalog():
     check_admin()
     scenarios = populate_catalog()
     groups = StudentGroups.query.all()
-    form = makeScenarioForm(request.form)
-
-    return render_template("dashboard/student.html", infoTable=infoTable, memberOf=memberOf, scenarioTable=scenarioTable)
-
+    form = modScenarioForm(request.form)
 
     return render_template("dashboard/catalog.html", scenarios=scenarios, groups=groups, form=form)
 
@@ -47,8 +50,8 @@ def make_scenario():
         name = request.form.get('scenario_name')
         infoFile = './scenarios/prod/' + name + '/' + name + '.yml'
         owner = session.get('_user_id')
-        group = request.form.get('group')
-        CreateScenarioTask(name, infoFile, owner, group)
+        group = request.form.get('scenario_group')
+        CreateScenarioTask.delay(name, infoFile, owner, group)
     else:
         flash_errors(form)
     return redirect(url_for('dashboard.scenarios'))
@@ -60,16 +63,16 @@ def make_scenario():
 def scenarios():
     """List of scenarios and scenario controls"""
     check_admin()
-    scenarioMaker = makeScenarioForm()
+    scenarioModder = modScenarioForm()
     scenarios = Scenarios.query.all()
     groups = StudentGroups.query.all()
 
     if request.method == 'GET':
-        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioMaker=scenarioMaker, groups=groups)
+        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioModder=scenarioModder, groups=groups)
 
     elif request.method == 'POST':
         process_request(request.form)
-        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioMaker=scenarioMaker, groups=groups)
+        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioModder=scenarioModder, groups=groups)
 
 
 @blueprint.route("/create_scenario")

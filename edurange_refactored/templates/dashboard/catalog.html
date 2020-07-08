@@ -7,7 +7,7 @@
     <form action="/dashboard/make_scenario" method="post">
     {{ form.csrf_token }}
         <input class="form-control" name="scenario_name" type="text" id="scenario_name" placeholder="Scenario Name">
-        <select name="groups" title="Group">
+        <select name="scenario_group" title="Group">
             {% for group in groups %}
                 <option value="{{group.name}}" SELECTED>{{group.name}}</option>
             {% endfor %}

@@ -4,9 +4,10 @@ from flask_login import current_user
 from flask_table import Table, Col
 from jwt.jwk import jwk_from_dict, OctetJWK
 
+from . import tasks
 from .user.models import User, Scenarios, StudentGroups, GroupUsers
 from .user.models import generate_registration_code as grc
-from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, makeScenarioForm, deleteStudentForm
+from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, deleteStudentForm
 from edurange_refactored.extensions import db
 
 import json
@@ -176,7 +177,7 @@ def process_request(form):  # Input must be request.form  # WIP
         dataKeys.append(k)
 
     form_switch = {
-        "makeScenarioForm":         ["csrf_token", "scenario_name", "scenario_group", "create_scenario"],
+        "modScenarioForm":         ["csrf_token", "sid", "mod_scenario"],
         "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
         "GroupForm":                ["csrf_token", "name", "create"],
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
@@ -200,38 +201,28 @@ def process_request(form):  # Input must be request.form  # WIP
     # print(f)
 
     process_switch = {
-        "makeScenarioForm":         process_scenarioMaker(),
-        "startScenario":            process_scenarioStarter(),
-        "GroupForm":                process_groupMaker(),
-        "deleteStudentForm":        process_delStu(),
-        "manageInstructorForm":     process_manInst(),
+        "modScenarioForm":         process_scenarioModder,
+        "startScenario":            process_scenarioStarter,
+        "GroupForm":                process_groupMaker,
+        "deleteStudentForm":        process_delStu,
+        "manageInstructorForm":     process_manInst,
         # "unmakeInstructorForm": process_instDest(),
-        "addUsersForm":             process_addUser()
+        "addUsersForm":             process_addUser
     }
-    proc = process_switch.get(f, "ERROR")
-    return proc
+    return process_switch[f]()
 
 
-def process_scenarioMaker():  # Form submitted to create a scenario |  # makeScenarioForm
-    sM = makeScenarioForm(request.form)
+
+def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
+    sM = modScenarioForm(request.form)
     if sM.validate_on_submit():
-        name = sM.scenario_name.data
-        # type = sM.scenario_type.data
-        group = sM.scenario_group.data
-        desc = 'Getting Started'
-        own_id = session.get('_user_id')
-        Scenarios.create(name=name, description=desc, owner_id=own_id)
-        # code to add users in group to scenario users
+        sid = sM.sid.data
+        action = sM.mod_scenario.data
 
-        # testgroup = 1
-        # testquery = db_ses.query(User.username).filter(StudentGroups.id == testgroup).filter(GroupUsers.group_id == StudentGroups.id).filter(User.id == GroupUsers.user_id)
-        # testList = []
-        # for u in testquery:
-        #       testList.append(u)
-        # print(testList)
-
-        # os.mkdir('./data.tmp/' + name)
-        # os command for copying files into new dir
+        return {"Start": tasks.start,
+                "Stop" : tasks.stop,
+                "Destroy" : tasks.destroy
+                }[action].delay(sid)
 
 
 def process_scenarioStarter():  # Form submitted to start or stop an existing scenario
