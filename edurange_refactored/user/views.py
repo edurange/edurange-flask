@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask import Blueprint, redirect, render_template, request, url_for, session, flash
 from flask_login import login_required
 from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
     deleteStudentForm, makeScenarioForm
@@ -52,8 +52,10 @@ def make_scenario():
         owner = session.get('_user_id')
         group = request.form.get('scenario_group')
         CreateScenarioTask.delay(name, infoFile, owner, group)
+        flash("Success, your scenario will appear shortly. This page will automatically update.", "success")
     else:
         flash_errors(form)
+
     return redirect(url_for('dashboard.scenarios'))
 
 
@@ -73,21 +75,6 @@ def scenarios():
     elif request.method == 'POST':
         process_request(request.form)
         return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioModder=scenarioModder, groups=groups)
-
-
-@blueprint.route("/create_scenario")
-@login_required
-def create_scenarios():
-    """List of Scenarios"""
-    check_admin()
-    os.chdir('/home/jack/edurange-flask/scenarios/prod') # directory needs to be personalized
-    for dir in os.listdir(os.getcwd()):
-        os.chdir(os.path.join('/home/jack/edurange-flask/scenarios/prod/', dir)) # dir needs to be personalized
-        for filename in os.listdir(os.path.join(os.getcwd())):
-            with open(os.path.join(os.getcwd(), filename), 'r') as f:
-                print(filename)
-
-    return render_template("dashboard/create_scenario.html")
 
 
 @blueprint.route("/instructor", methods=['GET', 'POST'])

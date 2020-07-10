@@ -79,7 +79,13 @@
 
 <!-- JavaScript at the bottom for fast page loading -->
 <script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
-{% block js %}{% endblock %}
+{% block js %}
+    <script>
+      function refresh() {
+        $('#body').load('/dashboard/scenarios #scenarios');
+      }
+    </script>
+{% endblock %}
 <!-- end scripts -->
 {% endblock %}
 </body>

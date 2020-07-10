@@ -18,16 +18,18 @@
 
             <p></p>
 
-            <div class="container-fluid px-4" id="accordion"> <!--scenarios table-->
+
+            <div id="body">
+            <div class="container container-fluid" id="scenarios"><!--scenarios table-->
 				<table class="table">
 					<caption>List of scenarios</caption>
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">NAME</th>
-							<th scope="col">DESCRIPTION</th>
-							<th scope="col">OWNER</th>
-							<th scope="col">CREATED AT</th>
-							<th scope="col">STATUS</th>
+							<th data-sort="string" scope="col">NAME</th>
+							<th data-sort="string" scope="col">DESCRIPTION</th>
+							<th data-sort="string" scope="col">OWNER</th>
+							<th data-sort="float" scope="col">CREATED AT</th>
+							<th data-sort="int" scope="col">STATUS</th>
                             <th scope="col">CONTROL</th>
 						</tr>
 					</thead>
@@ -37,7 +39,7 @@
 							<td>{{scenario.name}}</td>
 							<td>{{scenario.description}}</td>
 							<td>{{scenario.owner}}</td>
-							<td>{{scenario.created_at}}</td>
+							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
 							<td>{{scenario.status}}</td>
                             <td>
                             <form id="startScenario" method="POST" action="" role="">
@@ -61,5 +63,13 @@
 					</tbody> <!--Content of scenario table-->
 				</table>
 			</div> <!--scenario table-->
+            </div>
+            <script src="/static/build/main_js.bundle.js"></script>
 
+            <script>
+              $(document).ready( function () {
+                window.setInterval(refresh, 5000);
+              });
+              $("table").stupidtable();
+            </script>
         {% endblock %}
