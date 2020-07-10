@@ -1,0 +1,48 @@
+***********************************************************************************
+***********************************************************************************
+ ______  _______    _   _____    _    _______        ______   ______ _______    ______            _    _______ 
+(_____ \(_______)  | | (_____)  | |  (_______)  /\  |  ___ \ / _____|_______)  (____  \   /\     | |  (_______)
+ _____) )_____      \ \   _      \ \  _        /  \ | |   | | /      _____      ____)  ) /  \     \ \  _____   
+(_____ (|  ___)      \ \ | |      \ \| |      / /\ \| |   | | |     |  ___)    |  __  ( / /\ \     \ \|  ___)  
+      | | |_____ _____) )| |_ _____) ) |_____| |__| | |   | | \_____| |_____   | |__)  ) |__| |_____) ) |_____ 
+      |_|_______|______(_____|______/ \______)______|_|   |_|\______)_______)  |______/|______(______/|_______)
+                                                                                                               
+
+Nmap has a variety of methods to scan ports. The most basic (and default for non-root users)
+ port scan simply attempts to connect() to each port, which attempts to perform the 3-way 
+handshake and make a connection. A slightly more sophisticated scan is the TCP SYN scan,
+[ nmap -Ss host ] 
+This scan sends an initial TCP packet with the SYN flag, but then does not respond to the
+hosts SYN/AWK packet. While slightly less obvious than the TCP connect() scan, it doesn't
+take much to figure out when this kind of scan is occuring.
+
+To have a better chance of scanning undetected, it is better to use FIN, Null and 
+Xmas Tree Scans. 
+                                 |L   
+                                ,' `  
+                               /.o `,    
+                               `, |-`,   
+                              -',    '   
+                             `,'_)   '\  
+                             ,'    `-`,  
+                            _`o,-   (_)/ 
+                           '_ '    o  `-,
+                           /   ,-L   `-' 
+                          _`-`_     ,  `'.
+                         ;.  (,'  `| `.-. \
+                         ,``_'    (_)  o `'
+                        ,` '_  ,|\   o   _ \ 
+                       /..-(_)' |','..-`(_)-`
+                                |  |        
+                              --'  `--
+The hosts in the range 10.0.233.34 - 38 have been configured to block some, but not all
+stealth scans. Which scans work on which hosts?
+
+To learn how to use these stealth scans, check out the man page or this helpful tutorial:
+
+https://nmap.org/bennieston-tutorial/ 
+
+When you're done with that, head over to the Control Room -- the IP ends in .3
+
+***********************************************************************************
+***********************************************************************************

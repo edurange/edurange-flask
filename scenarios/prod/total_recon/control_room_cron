@@ -1,0 +1,26 @@
+# Planning doc for cron job and the end script
+
+# I believe the cron job should be pretty simple. It should be set to run a script every minute.
+
+# This should be the cron entry in every user's crontab
+# No, this will need to be run as root, nvm
+# So in the system crontab:
+
+* * * * * root /root/countdown
+
+# Will run this script as root every minute
+
+# THE SCRIPT ITSELF
+
+# Now, things the script should do...
+
+# Check / create the environmental variable $COUNTDOWN
+# setenv will do this, and getenv can reference them
+# Not sure if this is necessary at all
+
+if $COUNTDOWN==5
+   do 
+
+if $COUNTDOWN < 5 
+   do COUNTDOWN=$COUNTDOWN+1
+done

@@ -149,14 +149,14 @@ class manageInstructorForm(FlaskForm):
             return False
         return True
 
-
 class makeScenarioForm(FlaskForm):
     """Creates a Scenario"""
     scenario_name = StringField(
-        "Scenario Name", validators=[DataRequired()]
+        "Scenario", validators=[DataRequired()]
     )
+
     scenario_group = StringField(
-        "Group Name", validators=[DataRequired()]
+        "Group", validators=[DataRequired()]
     )
 
     def __init__(self, *args, **kwargs):
@@ -164,6 +164,24 @@ class makeScenarioForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(makeScenarioForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+class modScenarioForm(FlaskForm):
+    """Creates a Scenario"""
+    sid = StringField(
+        "Scenario ID", validators=[DataRequired()]
+    )
+
+    mod_scenario = StringField(
+        "Action", validators=[DataRequired()]
+    )
+    def __init__(self, *args, **kwargs):
+        super(modScenarioForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(modScenarioForm, self).validate()
         if not initial_validation:
             return False
         return True

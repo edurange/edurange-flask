@@ -10,32 +10,26 @@
 
                     </div>
                 </div>
-                <form id="createScenario" method="POST" action="" role=""> {# Form to create a new scenario instance #}
-                    {{ scenarioMaker.csrf_token }}
-                    <div class="form-group">
-                        <input class="form-control"id="scenario_name" name="scenario_name" placeholder="Scenario name" required type="text" value="">
-						<select name="scenario_group" title="Group">
-							{% for group in groups %}
-							<option value="{{group.name}}" SELECTED>{{group.name}}</option>
-							{% endfor %}
-						</select>
-                    </div>
-                    <input name="create_scenario" class="btn btn-dark" type="submit" value="Create Scenario">
+                <form action="/dashboard/catalog" method="get">
+                    <input class="btn btn-dark" type="submit" value="New Scenario"
+                           name="Submit" id="new_scenario" />
                 </form>
 			</div>
 
             <p></p>
 
-            <div class="container-fluid px-4" id="accordion"> <!--scenarios table-->
+
+            <div id="body">
+            <div class="container container-fluid" id="scenarios"><!--scenarios table-->
 				<table class="table">
 					<caption>List of scenarios</caption>
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">NAME</th>
-							<th scope="col">DESCRIPTION</th>
-							<th scope="col">OWNER</th>
-							<th scope="col">CREATED AT</th>
-							<th scope="col">STATUS</th>
+							<th data-sort="string" scope="col">NAME</th>
+							<th data-sort="string" scope="col">DESCRIPTION</th>
+							<th data-sort="string" scope="col">OWNER</th>
+							<th data-sort="float" scope="col">CREATED AT</th>
+							<th data-sort="int" scope="col">STATUS</th>
                             <th scope="col">CONTROL</th>
 						</tr>
 					</thead>
@@ -45,16 +39,23 @@
 							<td>{{scenario.name}}</td>
 							<td>{{scenario.description}}</td>
 							<td>{{scenario.owner}}</td>
-							<td>{{scenario.created_at}}</td>
+							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
 							<td>{{scenario.status}}</td>
                             <td>
                             <form id="startScenario" method="POST" action="" role="">
-                                {{ scenarioMaker.csrf_token }}
-                                <input name="start_scenario" class="btn btn-success" type="submit" value="Start">
+                                {{ scenarioModder.csrf_token }}
+                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                <input name="mod_scenario" class="btn btn-success" type="submit" value="Start">
                             </form>
-                                <form id="startScenario" method="POST" action="" role="">
-                                    {{ scenarioMaker.csrf_token }}
-                                    <input name="stop_scenario" class="btn btn-danger" type="submit" value="Stop">
+                                <form id="stopScenario" method="POST" action="" role="">
+                                    {{ scenarioModder.csrf_token }}
+                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                    <input name="mod_scenario" class="btn btn-dark" type="submit" value="Stop">
+                                </form>
+                                <form id="destroyScenario" method="POST" action="" role="">
+                                    {{ scenarioModder.csrf_token }}
+                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                    <input name="mod_scenario" class="btn btn-danger" type="submit" value="Destroy">
                                 </form>
                             </td>
 						</tr>
@@ -62,4 +63,13 @@
 					</tbody> <!--Content of scenario table-->
 				</table>
 			</div> <!--scenario table-->
-		{% endblock %}
+            </div>
+            <script src="/static/build/main_js.bundle.js"></script>
+
+            <script>
+              $(document).ready( function () {
+                window.setInterval(refresh, 5000);
+              });
+              $("table").stupidtable();
+            </script>
+        {% endblock %}

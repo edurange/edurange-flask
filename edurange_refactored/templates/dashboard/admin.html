@@ -46,7 +46,7 @@
 
         <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students [WIP] </div>
+                <div class="card-header">Manage Students [WIP]</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="deleteStudent" method="POST" action="" role="form">
@@ -62,13 +62,13 @@
 
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
-                <div class="card-header">Manage Instructors </div>
+                <div class="card-header">Manage Instructors</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="makeInstructor" method="POST" action="" role="form"> {# Front end for form to manage instructor permissions of specified users #}
                         {{ instructorManager.csrf_token }}
                         <div class="form-group">
-                            <input class="form-control"id="uName" name="uName" placeholder="Username" required type="text" value="">
+                            <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
                         </div>
                         <input name="promote" class="btn btn-dark" type="submit" value="Promote to Instructor">
                         <input name="demote" class="btn btn-dark" type="submit" value="Demote from Instructor">
@@ -184,7 +184,7 @@
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
                     Show/Collapse {{ group.name }}
                 </button>
-                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingGroups" data-parent="#accordion">
+                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
 
@@ -197,7 +197,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for student in usersPGroup.get(group.name) %}
+                            {% for student in usersPGroup %}
                             <tr>
                                 <td> {{ student.id }}</td>
                                 <td> {{ student.username }}</td>
@@ -213,6 +213,23 @@
             </div>
         </div>
     </div> <!-- groups table collapse -->
+
+        </div>
+
+    </div>
+
+
+    <script>
+        function selectUser(uid) {
+          if (document.forms['addGroupUsers']['selection'].value.includes(uid) == true) {
+            document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace(uid + ',', '');
+          } else { document.forms['addGroupUsers']['selection'].value += uid + ','; }
+        }
+    </script>
+
+        </div>
+
+    </div>
 
 </div>
 
