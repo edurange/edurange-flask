@@ -90,3 +90,10 @@ input[type="radio"], input[type="checkbox"] {
   padding: 0;
   transform: scale(2);
 }
+
+table, th, td {
+  border: 1px solid black;
+}
+th {
+  cursor: pointer;
+}

@@ -21,13 +21,13 @@
 
             <div id="body">
             <div class="container container-fluid" id="scenarios"><!--scenarios table-->
-				<table class="table">
+				<table class="table" id="s_table">
 					<caption>List of scenarios</caption>
 					<thead class="thead-dark">
 						<tr>
-							<th data-sort="string" scope="col">NAME</th>
-							<th data-sort="string" scope="col">DESCRIPTION</th>
-							<th data-sort="string" scope="col">OWNER</th>
+							<th data-sort="string"scope="col">NAME</th>
+							<th data-sort="string"scope="col">DESCRIPTION</th>
+							<th data-sort="string"scope="col">OWNER</th>
 							<th data-sort="float" scope="col">CREATED AT</th>
 							<th data-sort="int" scope="col">STATUS</th>
                             <th scope="col">CONTROL</th>
@@ -40,7 +40,13 @@
 							<td>{{scenario.description}}</td>
 							<td>{{scenario.owner}}</td>
 							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
-							<td>{{scenario.status}}</td>
+							<td> {% if scenario.status==0 %}
+                                <img src="/static/build/img/stopped.png">
+                            {% elif scenario.status==1 %}
+                                <img src="/static/build/img/started.png">
+                            {% else %}
+                                {{ super() }}
+                            {% endif %} </td>
                             <td>
                             <form id="startScenario" method="POST" action="" role="">
                                 {{ scenarioModder.csrf_token }}
@@ -62,14 +68,37 @@
 						{% endfor %}
 					</tbody> <!--Content of scenario table-->
 				</table>
+            <script>
+                function sort(index, sort_mode) {
+                  console.log(index, sort_mode);
+
+                  var $table = $("#s_table").stupidtable();
+                  var $th_to_sort = $table.find("thead th").eq(index);
+
+                  switch(sort_mode) {
+                    case 1:
+                      $th_to_sort.stupidsort('asc')
+                      break;
+                    case 2:
+                      $th_to_sort.stupidsort('desc')
+                      break;
+                    default:
+                      $('table').stupidsort();
+                  }
+                }
+            </script>
 			</div> <!--scenario table-->
             </div>
             <script src="/static/build/main_js.bundle.js"></script>
 
             <script>
+
               $(document).ready( function () {
-                window.setInterval(refresh, 5000);
+                $("table").stupidtable()
+                window.setInterval( function() {
+                  refresh();
+                }, 5000);
               });
-              $("table").stupidtable();
+
             </script>
         {% endblock %}
