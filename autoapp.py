@@ -12,15 +12,24 @@ db.create_all()
 
 @app.context_processor
 def utility_processor():
-    def navigation(role, view=None):
-        if role in ['a', 'a/i'] and not view:
-            return (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
-        elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
-            return (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
-        elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
-            return (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+    def navigation(role, view=session.get('viewMode')):
+        if role in ['a', 'a/i']:
+            views = (('?mode=adminView', 'Admin View'), ('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
+        elif role == 'i':
+            views = (('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
         else:
-            return (('public.home', 'Home'), ('public.about', 'About'))
+            views = None
+
+        if role in ['a', 'a/i'] and not view:
+            links = (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+        elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
+            links = (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+        elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
+            links = (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+        else:
+            links = (('public.home', 'Home'), ('public.about', 'About'))
+
+        return {'views': views, 'links': links}
     return dict(navigation=navigation)
 
 

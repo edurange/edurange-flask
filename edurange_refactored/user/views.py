@@ -14,7 +14,7 @@ import os
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
 
-@blueprint.route("/set_view", methods=['GET']) # @app.route("/set_view") ?
+@blueprint.route("/set_view", methods=['GET'])
 @login_required
 def set_view():
     if check_role_view(request.args['mode']):

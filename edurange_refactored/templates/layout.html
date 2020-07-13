@@ -58,7 +58,7 @@
 <body class="{% block body_class %}{% endblock %}">
     {% block body %}
     {% with role=get_role() %}
-        {% with view=session.get('viewMode') if role else none %} <!-- False role == student, no viewMode -->
+        {% with nav=navigation(role) %}
             {% with form=form if role is none %} <!-- None role == not logged in, push the login form -->
                 {% include "nav.html" %}
             {% endwith %}
