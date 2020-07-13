@@ -10,7 +10,7 @@ from flask.testing import FlaskClient
 
 from webtest import TestApp
 
-from autoapp import Aid, Iid, create_all_group, create_admin
+from autoapp import Aid, Iid, get_role, create_all_group, create_admin
 from edurange_refactored.app import create_app
 from edurange_refactored.database import db as _db
 from edurange_refactored.user.models import User, StudentGroups
@@ -26,8 +26,22 @@ def app():
     ctx = _app.test_request_context()
     ctx.push()
 
+    @_app.context_processor
+    def utility_processor():
+        def navigation(role, view=None):
+            if role in ['a', 'a/i'] and not view:
+                return (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+            elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
+                return (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+            elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
+                return (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+            else:
+                return (('public.home', 'Home'), ('public.about', 'About'))
+        return dict(navigation=navigation)
+
     _app.jinja_env.globals.update(Aid=Aid)
     _app.jinja_env.globals.update(Iid=Iid)
+    _app.jinja_env.globals.update(get_role=get_role)
 
     yield _app
 
