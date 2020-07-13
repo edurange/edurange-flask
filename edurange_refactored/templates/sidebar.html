@@ -4,14 +4,15 @@
         <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.home') }}">Home
             <span class="sr-only">(current)</span>
         </a>
-        {% if current_user and current_user.is_authenticated and Aid() %}
+        {% if role is none %} <!-- User not logged in... do nothing -->
+        {% elif role is false or (role in ['a', 'a/i', 'i'] and view == "studentView") %} <!-- (Logged in student) or (admin/inst with student view selected) -->
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.student') }}">Dashboard</a>
+        {% elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == "instructorView") %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.instructor') }}">Instructor Dashboard</a>
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a>
+        {% elif role in ['a', 'a/i'] and not view %}
         <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.admin') }}">Admin Dashboard</a>
         <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a>
-        {% elif current_user and current_user.is_authenticated and Iid() %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.instructor') }}">Instructor Dashboard</a>
-        <!-- <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a> -->
-        {% elif current_user and current_user.is_authenticated and not Aid() and not Iid() %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.student') }}">Dashboard</a>
         {% endif %}
         <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.about') }}">About</a>
     </div>

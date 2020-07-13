@@ -29,8 +29,9 @@
 
     <style type="text/css">
         #pageWrapper {
-            overflow-x: hidden;
             margin-top: -4px;
+            allign-items: stretch;
+            width: 100%;
         }
         #sidebar {
             margin-left: -15rem;
@@ -47,6 +48,7 @@
             transition: margin 0s;
         }*/
         #pageContent {
+            overflow-x: scroll;
             min-width: 100vw;
         }
     </style>
@@ -54,9 +56,15 @@
     {% block css %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
-    {% block body %} {% with form=form %} {% include "nav.html" %} {% endwith %}
+    {% block body %}
+    {% with role=get_role() %}
+        {% with view=session.get('viewMode') if role else none %} <!-- False role == student, no viewMode -->
+            {% with form=form if role is none %} <!-- None role == not logged in, push the login form -->
+                {% include "nav.html" %}
+            {% endwith %}
     <div class="d-flex visible" id="pageWrapper">
         {% include "sidebar.html" %}
+        {% endwith %}
         <header>{% block header %}{% endblock %}</header>
 
         <main role="main">
@@ -75,6 +83,7 @@
             <div id="pageContent">{% block content %}{% endblock %}</div>
         </main>
     </div>
+    {% endwith %}
     {% include "footer.html" %}
 
 <!-- JavaScript at the bottom for fast page loading -->

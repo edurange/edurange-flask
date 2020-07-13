@@ -42,6 +42,22 @@ def Iid():
         return True
     return False
 
+def get_role():
+    if current_user and current_user.is_authenticated:
+        number = current_user.id
+        user = User.query.filter_by(id=number).first()
+        if user.is_admin and user.is_instructor:
+            return 'a/i' # this option may not be needed
+        elif user.is_admin:
+            return 'a'
+        elif user.is_instructor:
+            return 'i'
+        else:
+            return False # false role --> student
+    else:
+        return None # no role --> not logged in
+
+
 admin = User.query.limit(1).all()
 print(admin)
 print(admin)
@@ -56,4 +72,5 @@ if not group:
     create_all_group()
 app.jinja_env.globals.update(Aid=Aid)
 app.jinja_env.globals.update(Iid=Iid)
+app.jinja_env.globals.update(get_role=get_role)
 
