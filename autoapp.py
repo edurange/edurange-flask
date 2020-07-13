@@ -10,6 +10,20 @@ app = create_app()
 app.app_context().push()
 db.create_all()
 
+@app.context_processor
+def utility_processor():
+    def navigation(role, view=None):
+        if role in ['a', 'a/i'] and not view:
+            return (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+        elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
+            return (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+        elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
+            return (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+        else:
+            return (('public.home', 'Home'), ('public.about', 'About'))
+    return dict(navigation=navigation)
+
+
 def create_admin():
     username=os.environ['USERNAME']
     email=os.environ['EMAIL']
