@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euxo pipefail
+echo exit >> /home/$1/.bashrc
+echo "CONGRATS YOU ARE THE SSH INCEPTION MASTER. Here is your proof: $2" | tr '[A-Za-z]' '[X-ZA-Wx-za-w]' > /home/$1/secret

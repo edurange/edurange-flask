@@ -35,9 +35,9 @@ def create_admin():
                 is_admin=True,
                 is_instructor=True)
 
-def create_all_group():
+def create_all_group(id):
     StudentGroups.create(name="ALL",
-                         owner_id=a_id,
+                         owner_id=id,
                          code="",
                          hidden=True)
 
@@ -83,8 +83,16 @@ group = StudentGroups.query.limit(1).all()
 admin = User.query.filter_by(username=os.environ['USERNAME']).first()
 a_id = admin.get_id()
 if not group:
-    create_all_group()
+    create_all_group(a_id)
 app.jinja_env.globals.update(Aid=Aid)
 app.jinja_env.globals.update(Iid=Iid)
 app.jinja_env.globals.update(get_role=get_role)
+
+def format_datetime(value, format="%d %b %Y %I:%M %p"):
+    """Format a date time to (Default): d Mon YYYY HH:MM P"""
+    if value is None:
+        return ""
+    return value.strftime(format)
+
+app.jinja_env.filters['formatdatetime'] = format_datetime
 

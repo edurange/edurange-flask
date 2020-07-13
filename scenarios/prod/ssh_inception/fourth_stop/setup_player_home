@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euxo pipefail
+login=$1
+fifth_stop_password=$2
+fifth_stop_password_key=$3
+cp /root/decrypt_password /home/$login/decrypt_password
+chown $login:$login /home/$login/decrypt_password
+chmod 550 /home/$login/decrypt_password
+echo $fifth_stop_password |  openssl aes-256-cbc -e -pass pass:$fifth_stop_password_key -out /home/$login/encrypted_password -pbkdf2
+chown $login:$login /home/$login/encrypted_password
+chmod 440 /home/$login/encrypted_password

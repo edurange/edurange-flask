@@ -1,0 +1,3 @@
+#!/bin/bash
+iptables -A INPUT -p tcp --destination-port 443 -j DROP
+iptables -I INPUT -p tcp --destination-port 80 -j DROP

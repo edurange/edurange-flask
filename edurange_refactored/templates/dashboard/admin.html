@@ -4,35 +4,37 @@
         <h1>User and Group Management</h1>
     </div>
 
-<div class="container" id="accordion">
+<div class="container" id="accordion"> {# Allows tables to collapse as an accordion #}
+
 {##}
-{#    <div class="container-narrow">#}
-{#        <form id="emailForm" method="POST" action="" role="form">#}
-{#            {{ form.csrf_token}}#}
-{#            <div class="form-group">#}
-{#                <label for="to">Recipient</label>#}
-{#                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">#}
-{#            </div>#}
-{#            <div class="form-group">#}
-{#                <label for="subject">Subject</label>#}
-{#                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">#}
-{#            </div>#}
-{#            <div class="form-group">#}
-{#                <label for="body">Message </label>#}
-{#                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">#}
-{#            </div>#}
-{#            <input name="submit" class="btn btn-dark" type="submit" value="Send">#}
-{#            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">#}
-{#        </form>#}
-{#    </div>#}
+{#    <div class="container-narrow">                                                                                            #}
+{#        <form id="emailForm" method="POST" action="" role="form">                                                             #}
+{#            {{ form.csrf_token}}                                                                                              #}
+{#            <div class="form-group">                                                                                          #}
+{#                <label for="to">Recipient</label>                                                                             #}
+{#                <input class="form-control" id="to" name="to" placeholder="Recipient" required type="text" value="">          #}
+{#            </div>                                                                                                            #}
+{#            <div class="form-group">                                                                                          #}
+{#                <label for="subject">Subject</label>                                                                          #}
+{#                <input class="form-control" id="subject" name="subject" placeholder="Subject" required type="text" value="">  #}
+{#            </div>                                                                                                            #}
+{#            <div class="form-group">                                                                                          #}
+{#                <label for="body">Message </label>                                                                            #}
+{#                <input class="form-control" id="body" name="body" placeholder="Body" required type="text" value="">           #}
+{#            </div>                                                                                                            #}
+{#            <input name="submit" class="btn btn-dark" type="submit" value="Send">                                             #}
+{#            <input name="submit" class="btn btn-dark" type="submit" value="Send in 1 minute">                                 #}
+{#        </form>                                                                                                               #}
+{#    </div>                                                                                                                    #}
+
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6"> {# Front end for form to create a student group #}
             <div class="card bg-light mb-3">
                 <div class="card-header">Create Student Group</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="createGroup" method="POST" action="" role="form">
-                        {{ form.csrf_token }}
+                        {{  groupMaker.csrf_token }}
                         <div class="form-group">
                             <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
                         </div>
@@ -42,13 +44,13 @@
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
             <div class="card bg-light mb-3">
                 <div class="card-header">Manage Students [WIP]</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
                     <form id="deleteStudent" method="POST" action="" role="form">
-                        {{ form.csrf_token }}
+                        {{ userDropper.csrf_token }}
                         <div class="form-group">
                             <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
                         </div>
@@ -63,25 +65,20 @@
                 <div class="card-header">Manage Instructors</div>
                 <div class="card-body">
                     <h5 class="card-text"></h5>
-                    <form id="makeInstructor" method="POST" action="" role="form">
-                        {{ form.csrf_token }}
+                    <form id="makeInstructor" method="POST" action="" role="form"> {# Front end for form to manage instructor permissions of specified users #}
+                        {{ instructorManager.csrf_token }}
                         <div class="form-group">
                             <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
                         </div>
-                        <input name="make_instructor" class="btn btn-dark" type="submit" value="Promote to Instructor">
-                    </form>
-                    <br>
-                    <form id="unmakeInstructor" method="POST" action="" role="form">
-                        {{ form.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="iName" name="iName" placeholder="Instructor Username" required type="text" value="">
-                        </div>
-                        <input name="unmake_instructor" class="btn btn-dark" type="submit" value="Demote from Instructor">
+                        <input name="promote" class="btn btn-dark" type="submit" value="Promote to Instructor">
+                        <input name="demote" class="btn btn-dark" type="submit" value="Demote from Instructor">
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Code for tables begins -->
 
     <div class="card"> <!--user table collapse-->
         <div class="card-header" id="headingUsers">
@@ -96,7 +93,7 @@
             <div class="card-body">
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
-                    {{ form.csrf_token}}
+                    {{ userAdder.csrf_token}}
                     <input name="add" class="btn btn-dark" type="submit" value="Add Selected To:">
                     <select name="groups" title="Group">
                         {% for group in groups %}
@@ -176,15 +173,16 @@
         </div>
     </div> <!--instructors table collapse-->
 
-    <div class="card">
-        <div class="card-header" id="headingUsers">
+    <div class="card"> <!-- groups table collapse -->
+        <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
             </h5>
             <div class="card-body">
-            {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="{{ group.name }}-table" aria-expanded="false" aria-controls="collapseUsers">
-                    Show/Collapse
+                <!-- groups table stuff -->
+                {% for group in groups if not group.hidden %}
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
+                    Show/Collapse {{ group.name }}
                 </button>
                 <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
@@ -199,20 +197,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for student in usersPGroup.get(group.name) %}
-                                <tr>
-                                    <td> {{ student.id }}</td>
-                                    <td> {{ student.username }}</td>
-                                    <td> {{ student.email }}</td>
-                                </tr>
+                            {% for student in usersPGroup %}
+                            <tr>
+                                <td> {{ student.id }}</td>
+                                <td> {{ student.username }}</td>
+                                <td> {{ student.email }}</td>
+                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+                <!-- groups table stuff -->
+            </div>
         </div>
+    </div> <!-- groups table collapse -->
 
         </div>
 
@@ -226,6 +226,10 @@
           } else { document.forms['addGroupUsers']['selection'].value += uid + ','; }
         }
     </script>
+
+        </div>
+
+    </div>
 
 </div>
 

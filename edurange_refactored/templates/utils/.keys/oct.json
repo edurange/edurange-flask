@@ -1,0 +1,7 @@
+{
+    "kty": "oct",
+    "use": "enc",
+    "kid": "reset-password",
+    "k": "bARFd5Rs6taTZpYN6yU5zCDOR6uV5nouyqNCfIh7Ogn2tKxdTY6gW5IJYmbpra26nQmCoZDpRGdngmTAoFVQuEBc9MO3Iq1P0Mo0CrAXwEivcK5Si-wDLlSPlUbhOXFrzadwpj3QMcSD22p014gatYn8urfQhNyKP7XgrymzdF2Uz8h12vb-Yhjlt_wlSysm6sUZE38T-dwLNIwyKQAYrnyXfVSHknN8-t-59SVrUc_liECrsush-SxIqISv3bld1JL652cQeWzkuzebldItyLP6UZA2G769oVy2PrIF8RVp9Tvg7eKhTY101rdX38vEYyhNaeRWQ61NHd1uh8brwQ",
+	"alg": "HS256"
+}

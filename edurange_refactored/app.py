@@ -4,6 +4,7 @@ import logging
 import sys
 
 from flask import Flask, render_template
+from celery import Celery
 
 from edurange_refactored import commands, public, user
 from edurange_refactored.user.models import User
@@ -17,6 +18,7 @@ from edurange_refactored.extensions import (
     login_manager,
     migrate,
 )
+from edurange_refactored.settings import CELERY_BROKER_URL
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -32,6 +34,7 @@ def create_app(config_object="edurange_refactored.settings"):
     register_shellcontext(app)
     register_commands(app)
     configure_logger(app)
+
     return app
 
 

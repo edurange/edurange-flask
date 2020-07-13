@@ -6,7 +6,26 @@
 		<h3>This is your Instructor Dashboard</h3>
 	</div>
 
-	<div class="container-narrow" id="accordion">
+	<div class="container-narrow" id="accordion"> {# Allows tables to collapse as an accordion #}
+
+		<div class="row">
+			<div class="col-sm-6"> {# Front end for form to create a student group #}
+				<div class="card bg-light mb-3">
+					<div class="card-header">Create Student Group</div>
+					<div class="card-body">
+						<h5 class="card-text"></h5>
+						<form id="createGroup" method="POST" action="" role="form">
+							{{ groupMaker.csrf_token }}
+							<div class="form-group">
+								<input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+							</div>
+							<input name="create" class="btn btn-dark" type="submit" value="Create">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="card"> <!--owned groups-->
 			<div class="card-header" id="headingOwned">
 				<h5 class="mb-0">
@@ -27,18 +46,14 @@
 									<th> Group ID </th>
 									<th> Group Name </th>
 									<th> Code </th>
-									<th> User ID </th>
-									<th> Username </th>
 								</tr>
 								</thead>
 								<tbody>
 								{% for group in groups %}
 								<tr>
-									<td> {{ group.gid }} </td>
+									<td> {{ group.id }} </td>
 									<td> {{ group.name }} </td>
 									<td> {{ group.code }}</td>
-									<td> {{ group.uid }} </td>
-									<td> {{ group.username }} </td>
 								</tr>
 								{% endfor %}
 								</tbody>

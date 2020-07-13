@@ -1,0 +1,40 @@
+
+         /$$$$$$$$                              /$$     /$$
+        | $$_____/                             | $$    | $$
+        | $$     /$$$$$$  /$$   /$$  /$$$$$$  /$$$$$$  | $$$$$$$
+        | $$$$$ /$$__  $$| $$  | $$ /$$__  $$|_  $$_/  | $$__  $$
+        | $$__/| $$  \ $$| $$  | $$| $$  \__/  | $$    | $$  \ $$
+        | $$   | $$  | $$| $$  | $$| $$        | $$ /$$| $$  | $$
+        | $$   |  $$$$$$/|  $$$$$$/| $$        |  $$$$/| $$  | $$
+        |__/    \______/  \______/ |__/         \___/  |__/  |__/
+
+                /$$$$$$   /$$
+               /$$__  $$ | $$
+              | $$  \__//$$$$$$    /$$$$$$   /$$$$$$
+              |  $$$$$$|_  $$_/   /$$__  $$ /$$__  $$
+               \____  $$ | $$    | $$  \ $$| $$  \ $$
+               /$$  \ $$ | $$ /$$| $$  | $$| $$  | $$
+              |  $$$$$$/ |  $$$$/|  $$$$$$/| $$$$$$$/
+               \______/   \___/   \______/ | $$____/
+                                           | $$
+                                           | $$
+                                           |__/
+
+"It's been six hours. Dreams move one... one-hundredth the speed of reality,
+and dog time is one-seventh human time. So y'know, every day here is like a
+minute. It's like Inception, Morty, so if it's confusing and stupid, then
+so is everyone's favorite movie."
+
+There is an ftp server on the network. Find some useful credentials there
+to run decryptpass to get your next password. If you can make nmap more aggressive
+it may be easier to learn how to log in to the ftp server. 
+
+(The file on the ftp server will give you credentials to use when running
+decryptpass. The files in this directory will not help you get to the ftp
+server.)
+
+Helpful commands: nmap, ftp, help, man
+
+Helpful hint: When connected to the ftp interpreter, type '?' for a list of 
+available commands. 
+

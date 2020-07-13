@@ -1,0 +1,33 @@
+*****************************************************************************************************************
+*****************************************************************************************************************
+
+                      _       ____  _     __    ___   _      ____     _____  ___
+                     \ \    /| |_  | |   / /`  / / \ | |\/| | |_       | |  / / \
+                      \_\/\/ |_|__ |_|__ \_\_, \_\_/ |_|  | |_|__      |_|  \_\_/
+
+.___________.  ______   .___________.    ___       __         .______       _______   ______   ______   .__   __.
+|           | /  __  \  |           |   /   \     |  |        |   _  \     |   ____| /      | /  __  \  |  \ |  |
+`---|  |----`|  |  |  | `---|  |----`  /  ^  \    |  |        |  |_)  |    |  |__   |  ,----'|  |  |  | |   \|  |
+    |  |     |  |  |  |     |  |      /  /_\  \   |  |        |      /     |   __|  |  |     |  |  |  | |  . `  |
+    |  |     |  `--'  |     |  |     /  _____  \  |  `----.   |  |\  \----.|  |____ |  `----.|  `--'  | |  |\   |
+    |__|      \______/      |__|    /__/     \__\ |_______|   | _| `._____||_______| \______| \______/  |__| \__|
+
+Your name is Quaid. You have been having troubling reoccurring dreams of Mars. Your spouse tells you to
+stop worrying about them but you can't shake how real they feel. In your dreams, Mars a troubling place where the
+governor is fighting a group of rebels -- while both search for a rumored alien artifact. One day you see an ad for
+a place called Rekall which offers a memory implanted vacation. That sounds fun, perhaps it could help you sleep
+better? Your best friend Harry tells you this is a bad idea, a really bad idea, but what does Harry know?
+
+The next day you arrive at Rekall but can't find an obvious door inside. Your first task is to enter into Rekall
+it's IP Address is 10.0.0.4 although it's port is unusual. Be careful, it could be dangerous.
+
+Helpful commands: nmap, ssh -p port_number user@ip_address
+
+Total Recon is a hacking game designed to teach network reconnaissance with the network scanning tool nmap. You
+will use nmap to learn things about other hosts on the network, and progress levels using ssh. Each machine you
+log into will use the same username and password. On each machine, cat ~/instructions.txt to see this message again.
+
+Unless otherwise noted, you will be using the same password that brought you here.
+
+*****************************************************************************************************************
+*****************************************************************************************************************

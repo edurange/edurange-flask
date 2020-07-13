@@ -35,7 +35,7 @@ class TestRegisterForm:
             username="newusername",
             email="new@test.test",
             password="example",
-            confirm="example",
+            confirm="example"
         )
         assert form.validate() is True
 
