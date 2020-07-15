@@ -81,3 +81,5 @@ data/tmp/Foo/terraform.tfstate.backup
 *.tfstate
 
 data/
+
+npm-debug.log

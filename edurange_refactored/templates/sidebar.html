@@ -1,8 +1,15 @@
 <!-- Seperate sidebar -->
-<div class="bg-secondary" id="sidebar">
+<div id="sidebar" class="sidebar bg-secondary">
     <div class="list-group list-group-flush">
         {% for link in nav['links'] %}
         <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for(link[0]) }}">{{ link[1] }}</a>
         {% endfor %}
     </div>
 </div>
+<script type="text/javascript">
+  /* Update sidebar class list if sidebar is true (hidden) in local storage */
+  var bar = document.getElementById("sidebar");
+  if (localStorage.getItem("sidebar") === 'true') {
+    bar.classList.add("pausetransition"); bar.classList.add("hidden"); bar.offsetHeight; bar.classList.remove("pausetransition");
+  } //offsetHeight to force the application of css changes in modern browsers before script is finished executing
+</script>

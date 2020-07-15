@@ -24,34 +24,8 @@
     <link
             rel="stylesheet"
             type="text/css"
-            href="{{ static_url_for('static', filename='build/main_css.bundle.css') }}"
+            href="{{ url_for('static', filename='build/main_css.bundle.css') }}"
     />
-
-    <style type="text/css">
-        #pageWrapper {
-            margin-top: -4px;
-            allign-items: stretch;
-            width: 100%;
-        }
-        #sidebar {
-            margin-left: -15rem;
-            transition: margin .25s ease-out;
-        }
-        #sidebar .list-group {
-            width: 15rem;
-        }
-        #pageWrapper.visible #sidebar {
-            margin-left: 0;
-        }
-        /*#pageWrapper.visible #pageContent{
-            margin-left: -15rem;
-            transition: margin 0s;
-        }*/
-        #pageContent {
-            overflow-x: scroll;
-            min-width: 100vw;
-        }
-    </style>
 
     {% block css %}{% endblock %}
 </head>
@@ -62,7 +36,6 @@
             {% with form=form if role is none %} <!-- None role == not logged in, push the login form -->
                 {% include "nav.html" %}
             {% endwith %}
-    <div class="d-flex visible" id="pageWrapper">
         {% include "sidebar.html" %}
         {% endwith %}
         <header>{% block header %}{% endblock %}</header>
@@ -80,14 +53,13 @@
                 </div><!-- end col-md -->
             </div><!-- end row -->
             {% endif %} {% endwith %}
-            <div id="pageContent">{% block content %}{% endblock %}</div>
+            {% block content %}{% endblock %}
         </main>
-    </div>
     {% endwith %}
     {% include "footer.html" %}
 
 <!-- JavaScript at the bottom for fast page loading -->
-<script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='build/main_js.bundle.js') }}"></script>
 {% block js %}
     <script>
 
@@ -115,7 +87,18 @@
         return 0
       }
 
+      /* Event listener to toggle sidebar visibility when "Navigate" button is clicked */
+      $("#toggleSidebar").on("click", function() {
+        $("#sidebar").toggleClass("hidden");
+      });
+
+      /* Store sidebar state in local storage upon page reload/redirect */
+      $(window).on('unload', function() {
+        localStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
+      });
+
     </script>
+
 {% endblock %}
 <!-- end scripts -->
 {% endblock %}

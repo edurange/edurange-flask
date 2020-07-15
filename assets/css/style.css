@@ -97,3 +97,23 @@ table, th, td {
 th {
   cursor: pointer;
 }
+
+.sidebar {
+  height: 100%;
+  margin-left: 0;
+  transition: margin .25s ease-out;
+  padding-top: 55px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+.sidebar .list-group {
+  width: 20rem;
+}
+.sidebar.hidden {
+  margin-left: -20rem;
+}
+.sidebar.pausetransition {
+  transition: margin 0s;
+}
