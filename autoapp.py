@@ -21,15 +21,15 @@ def utility_processor():
             views = None
 
         if role in ['a', 'a/i'] and not view:
-            links = (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.admin', 'fa fa-desktop', 'Admin Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
         elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
-            links = (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.instructor', 'fa fa-desktop', 'Instructor Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
         elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
-            links = (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.student', 'fa fa-desktop', 'Dashboard'), ('public.about', 'fa fa-info', 'About'))
         else:
-            links = (('public.home', 'Home'), ('public.about', 'About'))
+            links = (('public.home', 'fa fa-home', 'Home'), ('public.about', 'fa fa-info', 'About'))
 
-        return {'views': views, 'links': links}
+        return {'views': views, 'links': links} # format: { views: (route path, label to print)  links: (route passed to url_for, icon class, label to print) }
     return dict(navigation=navigation)
 
 

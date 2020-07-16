@@ -111,6 +111,11 @@ th {
 .sidebar .list-group {
   width: 20rem;
 }
+.list-group-item .fa-info {
+  position: relative;
+  right: -5px;
+  padding-right: 12px;
+}
 .sidebar.hidden {
   margin-left: -20rem;
 }

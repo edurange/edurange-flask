@@ -1,15 +1,22 @@
 <!-- Seperate sidebar -->
 <div id="sidebar" class="sidebar bg-secondary">
-    <div class="list-group list-group-flush">
+    <div id="links" class="list-group list-group-flush">
         {% for link in nav['links'] %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for(link[0]) }}">{{ link[1] }}</a>
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for(link[0]) }}">
+            <i class="{{ link[1] }}" aria-hidden="true"></i>
+            &nbsp;&nbsp;{{ link[2] }}
+        </a>
         {% endfor %}
     </div>
 </div>
 <script type="text/javascript">
-  /* Update sidebar class list if sidebar is true (hidden) in local storage */
-  var bar = document.getElementById("sidebar");
-  if (localStorage.getItem("sidebar") === 'true') {
+  /* Update sidebar class list if sidebar is true (for hidden) in session storage */
+  if (sessionStorage.getItem("sidebar") === 'true') {
+    let bar = document.getElementById("sidebar");
     bar.classList.add("pausetransition"); bar.classList.add("hidden"); bar.offsetHeight; bar.classList.remove("pausetransition");
   } //offsetHeight to force the application of css changes in modern browsers before script is finished executing
+
+  /* Change bg color of link to the currently loaded page */
+  let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
+  currLink.classList.replace('bg-secondary', 'bg-dark');
 </script>

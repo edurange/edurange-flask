@@ -92,9 +92,9 @@
         $("#sidebar").toggleClass("hidden");
       });
 
-      /* Store sidebar state in local storage upon page reload/redirect */
+      /* Store sidebar state in client session storage upon page reload/redirect */
       $(window).on('unload', function() {
-        localStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
+        sessionStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
       });
 
     </script>
