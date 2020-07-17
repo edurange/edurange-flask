@@ -85,7 +85,7 @@
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Students </h2>
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                    Show/Collapse
+                    Hide / Show Table
                 </button>
             </h5>
         </div>
@@ -182,7 +182,7 @@
                 <!-- groups table stuff -->
                 {% for group in groups if not group.hidden %}
                 <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
-                    Show/Collapse {{ group.name }}
+                    Hide / Show {{ group.name }}
                 </button>
                 <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>

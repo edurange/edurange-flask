@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}">
     <title>
         {% block page_title %}
-        Edurange_Refactored
+            Edurange_Refactored
         {% endblock %}
     </title>
     <meta name="description" content="{% block meta_description %}{% endblock %}"/>
@@ -54,39 +54,39 @@
     {% block css %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
-    {% block body %} {% with form=form %} {% include "nav.html" %} {% endwith %}
+{% block body %} {% with form=form %} {% include "nav.html" %} {% endwith %}
     <div class="d-flex visible" id="pageWrapper">
         {% include "sidebar.html" %}
         <header>{% block header %}{% endblock %}</header>
 
         <main role="main">
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-                        {{ message }}
-                    </div><!-- end .alert -->
-                    {% endfor %}
-                </div><!-- end col-md -->
-            </div><!-- end row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+                                {{ message }}
+                            </div><!-- end .alert -->
+                        {% endfor %}
+                    </div><!-- end col-md -->
+                </div><!-- end row -->
             {% endif %} {% endwith %}
             <div id="pageContent">{% block content %}{% endblock %}</div>
         </main>
     </div>
     {% include "footer.html" %}
 
-<!-- JavaScript at the bottom for fast page loading -->
-<script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
-{% block js %}
-    <script>
-      function refresh() {
-        $('#body').load('/dashboard/scenarios #scenarios');
-      }
-    </script>
-{% endblock %}
-<!-- end scripts -->
+    <!-- JavaScript at the bottom for fast page loading -->
+    <script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
+    {% block js %}
+        <script>
+            function refresh() {
+                $('#body').load('/dashboard/scenarios #scenarios');
+            }
+        </script>
+    {% endblock %}
+    <!-- end scripts -->
 {% endblock %}
 </body>
 </html>

@@ -87,18 +87,16 @@
 									<th> Group </th>
 									<th> Instructor </th>
 									<th> Port </th>
-									<th> Responses </th>
 								</tr>
 								</thead>
 								<tbody>
-								{% for entry in scenariosTable %}
+								{% for entry in scenarioTable %}
 								<tr>
-									<td> {{ entry.sname }} </td>
+									<td> <a class="btn btn-dark" style="color:White" href="{{ '/dashboard/student_scenario/%s'%entry.id }}"> {{ entry.sname }} </a> </td> {# button linking to response page #}
 									<td> {{ entry.type }} </td>
 									<td> {{ entry.gname }} </td>
 									<td> {{ entry.iname }} </td>
 									<td> 00000 </td> {# pull the scenario port from somewhere #}
-									<td><button class="btn btn-dark" type="button" value="response" id=""/></td> {# button linking to response page #}
 								</tr>
 								{% endfor %}
 								</tbody>

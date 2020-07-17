@@ -3,6 +3,7 @@ import yaml
 from flask import session
 from edurange_refactored.user.models import Scenarios
 
+
 class CatalogEntry:
     def __init__(self, name, description):
         self.name = name
