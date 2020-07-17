@@ -80,14 +80,18 @@
 
     <!-- Code for tables begins -->
 
-    <div class="card"> <!--user table collapse-->
-        <div class="card-header" id="headingUsers">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Students </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                    Show/Collapse
-                </button>
-            </h5>
+    <div class="card mb-2 mt-2"> <!--user table collapse-->
+        <div class="card-header container-fluid p-4" id="headingUsers">
+          <div class="row">
+             <!--<div class="col-md-10">-->
+                <!-- <h5 class="mb-0"> -->
+                    <h2> <i class="fa fa-user"></i> Add Student to Group </h2>
+                    <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                      <i class="fa fa-caret-down"></i>
+                    </button>
+                <!-- </h5> -->
+            <!--  </div> -->
+            </div>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
             <div class="card-body">
@@ -136,14 +140,16 @@
         </div>
     </div> <!--user table collapse-->
 
-    <div class="card"> <!--instructors table collapse-->
+    <div class="card mb-2 mt-2"> <!--instructors table collapse-->
         <div class="card-header" id="headingInstructors">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Instructors </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                    Hide / Show Table
-                </button>
-            </h5>
+            <div class="row">
+              <h5 class="mb-0">
+                  <h2> <i class="fa fa-user"></i> All Instructors </h2>
+                  <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                      <i class="fa fa-caret-down"></i>
+                  </button>
+              </h5>
+            </div>
         </div>
         <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
             <div class="card-body">
@@ -175,17 +181,20 @@
         </div>
     </div> <!--instructors table collapse-->
 
-    <div class="card"> <!-- groups table collapse -->
+    <div class="card mb-2 mt-2"> <!-- groups table collapse -->
         <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
             </h5>
+          </div>
             <div class="card-body">
                 <!-- groups table stuff -->
                 {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
-                    Show/Collapse {{ group.name }}
+                <div>
+                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false" aria-controls="{{ group.name.replace(' ', '') }}-table">
+                      {{ group.name }} <i class="fa fa-caret-down"></i>
                 </button>
+                </div>
                 <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
@@ -214,12 +223,11 @@
                 <!-- groups table stuff -->
             </div>
         </div>
-    </div> <!-- groups table collapse -->
+  </div> <!--groups table collapse -->
 
-        </div>
+      </div>
 
-    </div>
-
+   </div>
 
     <script>
         function selectUser(uid) {
@@ -229,7 +237,7 @@
         }
     </script>
 
-        </div>
+  </div>
 
     </div>
 
