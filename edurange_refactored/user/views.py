@@ -124,9 +124,7 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = []
-        groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
-        users_per_group[name].append(groupUsers)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
 
     if request.method == 'GET':
         groupMaker = GroupForm()

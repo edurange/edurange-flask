@@ -207,9 +207,9 @@ def process_request(form):  # Input must be request.form  # WIP
         "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
         "GroupForm":                ["csrf_token", "name", "create"],
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
-        "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
+        "manageInstructorForm":     ["csrf_token", "uName", "promote"],
         # "unmakeInstructorForm": ["csrf_token", "iName", "unmake_instructor"],
-        "addUsersForm":             ["csrf_token", "add", "groups", "remove", "uids"]
+        "addUsersForm":             ["csrf_token", "add", "groups", "uids"]
     }
 
     switchVals = []
@@ -274,7 +274,7 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
 
 def process_manInst():  # Form to give a specified user instructor permissions |  # manageInstructorForm
     mI = manageInstructorForm(request.form)
-    if request.form.get('promote') is not None:
+    if request.form.get('promote') == "true":
         if mI.validate_on_submit():
             uName = mI.uName.data
             user = User.query.filter_by(username=uName).first()
@@ -286,7 +286,7 @@ def process_manInst():  # Form to give a specified user instructor permissions |
             flash_errors(mI)
         #return redirect(url_for('dashboard.admin'))
 
-    elif request.form.get('demote') is not None:
+    elif request.form.get('promote') == "false":
         if mI.validate_on_submit():
             uName = mI.uName.data
             user = User.query.filter_by(username=uName).first()
@@ -319,26 +319,26 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
     uA = addUsersForm(request.form)
-    if request.form.get('add') is not None:
+    if request.form.get('add') == "true":
         if uA.validate_on_submit():
             db_ses = db.session
 
             if len(uA.groups.data) < 1:
                 flash('A group must be selected')
-                #return redirect(url_for('dashboard.admin'))
+                return
 
             group = uA.groups.data
 
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
             uids = uA.uids.data  # string form
             if uids[-1] == ',':
                 uids = uids[:-1]  # slice last comma to avoid empty string after string split
             uids = uids.split(',')
-            for i, uid in enumerate(uids):
-                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
-                if any(check):
+            for i, uid in reversed(list(enumerate(uids))):
+                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
+                if check is not None:
                     flash('User already in group.', 'error')
-                    uids.pop(i-1)
+                    uids.pop(i)
                     pass
                 else:
                     GroupUsers.create(user_id=uid, group_id=gid)
@@ -348,12 +348,17 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             flash_errors(uA)
         #return redirect(url_for('dashboard.admin'))
 
-    elif request.form.get('remove') is not None:
+    elif request.form.get('add') == "false":
         if uA.validate_on_submit():
             db_ses = db.session
+
+            if len(uA.groups.data) < 1:
+                flash('A group must be selected')
+                return
+
             group = uA.groups.data
 
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
+            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
             uids = uA.uids.data  # string form
             if uids[-1] == ',':
                 uids = uids[:-1]  # slice last comma to avoid empty string after string split
@@ -361,14 +366,16 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             miss = 0  # count user ids that are not in group
             uids = uids.split(',')
 
-            for i, uid in enumerate(uids):
-                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
-                if user is not None:  # if user is in group
-                    user.delete()
+            for i, uid in reversed(list(enumerate(uids))):
+                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
+                if check is not None:  # if user is in group
+                    check.delete()
                 else:
                     miss += 1
+                    flash('User ID {0} not in group.'.format(uid), 'error')
+                    uids.pop(i)
 
-            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
+            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids) - miss, group, uids))
             #return redirect(url_for('dashboard.admin'))
         else:
             flash_errors(uA)

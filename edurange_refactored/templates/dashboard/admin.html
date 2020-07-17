@@ -70,8 +70,8 @@
                         <div class="form-group">
                             <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
                         </div>
-                        <input name="promote" class="btn btn-dark" type="submit" value="Promote to Instructor">
-                        <input name="demote" class="btn btn-dark" type="submit" value="Demote from Instructor">
+                        <button type="submit" name="promote" value="true" class="btn btn-dark">Promote to Instructor</button>
+                        <button type="submit" name="promote" value="false" class="btn btn-dark">Demote from Instructor</button>
                     </form>
                 </div>
             </div>
@@ -94,13 +94,15 @@
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ userAdder.csrf_token}}
-                    <input name="add" class="btn btn-dark" type="submit" value="Add Selected To:">
+                    <button name="add" class="btn btn-dark" type="submit" value="true">Add Selected To</button>
+                    or
+                    <button name="add" class="btn btn-dark" type="submit" value="false">Remove Selected From</button>
                     <select name="groups" title="Group">
                         {% for group in groups %}
                             <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
-                    <input name="remove" class="btn btn-dark" type="submit" value="Remove Selected From:"><p></p>
+                    <p></p>
 
                     <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
 
@@ -181,10 +183,10 @@
             <div class="card-body">
                 <!-- groups table stuff -->
                 {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
                     Show/Collapse {{ group.name }}
                 </button>
-                <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+                <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
 
@@ -197,7 +199,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for student in usersPGroup %}
+                            {% for student in usersPGroup[group.name] %}
                             <tr>
                                 <td> {{ student.id }}</td>
                                 <td> {{ student.username }}</td>
