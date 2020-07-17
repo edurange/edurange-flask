@@ -19,57 +19,94 @@
     <p></p>
 
 
-    <div id="body">
-        <div class="container container-fluid" id="scenarios"><!--scenarios table-->
-            <table class="table">
-                <caption>List of scenarios</caption>
-                <thead class="thead-dark">
-                <tr>
-                    <th data-sort="string" scope="col">NAME</th>
-                    <th data-sort="string" scope="col">DESCRIPTION</th>
-                    <th data-sort="string" scope="col">OWNER</th>
-                    <th data-sort="float" scope="col">CREATED AT</th>
-                    <th data-sort="int" scope="col">STATUS</th>
-                    <th scope="col">CONTROL</th>
-                </tr>
-                </thead>
-                <tbody> <!--Content of scenario table-->
-                {% for scenario in scenarios%}
-                    <tr>
-                        <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}">{{scenario.name}}</a></td>
-                        <td>{{scenario.description}}</td>
-                        <td>{{scenario.owner}}</td>
-                        <td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
-                        <td>{{scenario.status}}</td>
-                        <td>
+            <div id="body">
+            <div class="container container-fluid" id="scenarios"><!--scenarios table-->
+				<table class="table" id="s_table">
+					<caption>List of scenarios</caption>
+					<thead class="thead-dark">
+						<tr>
+							<th data-sort="string"scope="col">NAME</th>
+							<th data-sort="string"scope="col">DESCRIPTION</th>
+							<th data-sort="string"scope="col">OWNER</th>
+							<th data-sort="float" scope="col">CREATED AT</th>
+							<th data-sort="int" scope="col">STATUS</th>
+                            <th scope="col">CONTROL</th>
+						</tr>
+					</thead>
+					<tbody> <!--Content of scenario table-->
+						{% for scenario in scenarios%}
+						<tr>
+							<td>{{scenario.name}}</td>
+							<td>{{scenario.description}}</td>
+							<td>{{scenario.owner}}</td>
+							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
+							<td> {% if scenario.status==0 %}
+                                <img src="/static/build/img/stopped.png">
+                            {% elif scenario.status==1 %}
+                                <img src="/static/build/img/started.png">
+                            {% else %}
+                                {{ super() }}
+                            {% endif %} </td>
+                            <td>
                             <form id="startScenario" method="POST" action="" role="">
                                 {{ scenarioModder.csrf_token }}
                                 <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
                                 <input name="mod_scenario" class="btn btn-success" type="submit" value="Start">
                             </form>
-                            <form id="stopScenario" method="POST" action="" role="">
-                                {{ scenarioModder.csrf_token }}
-                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                <input name="mod_scenario" class="btn btn-dark" type="submit" value="Stop">
-                            </form>
-                            <form id="destroyScenario" method="POST" action="" role="">
-                                {{ scenarioModder.csrf_token }}
-                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                <input name="mod_scenario" class="btn btn-danger" type="submit" value="Destroy">
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody> <!--Content of scenario table-->
-            </table>
-        </div> <!--scenario table-->
-    </div>
-    <script src="/static/build/main_js.bundle.js"></script>
+                                <form id="stopScenario" method="POST" action="" role="">
+                                    {{ scenarioModder.csrf_token }}
+                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                    <input name="mod_scenario" class="btn btn-dark" type="submit" value="Stop">
+                                </form>
+                                <form id="destroyScenario" method="POST" action="" role="">
+                                    {{ scenarioModder.csrf_token }}
+                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                    <input name="mod_scenario" class="btn btn-danger" type="submit" value="Destroy">
+                                </form>
+                            </td>
+						</tr>
+						{% endfor %}
+					</tbody> <!--Content of scenario table-->
+				</table>
+            <script>
+                function sort(index, sort_mode) {
+                  console.log(index, sort_mode);
 
-    <script>
-        $(document).ready( function () {
-            window.setInterval(refresh, 5000);
-        });
-        $("table").stupidtable();
-    </script>
-{% endblock %}
+                  var $table = $("#s_table")
+                    .stupidtable();
+                  var $th_to_sort = $table.find("thead th")
+                    .eq(index);
+
+                  switch (sort_mode) {
+                    case 1:
+                      $th_to_sort.stupidsort('asc')
+                      break;
+                    case 2:
+                      $th_to_sort.stupidsort('desc')
+                      break;
+                    default:
+                      $('table')
+                        .stupidsort();
+                  }
+                }
+            </script>
+			</div> <!--scenario table-->
+            </div>
+
+            <div class="container-narrow" id="tasks-monitor">
+                <p>Foo</p>
+            </div>
+
+            <script src="/static/build/main_js.bundle.js"></script>
+
+            <script>
+
+              $(document).ready( function () {
+                $("table").stupidtable()
+                window.setInterval( function() {
+                  refresh();
+                }, 5000);
+              });
+
+            </script>
+        {% endblock %}

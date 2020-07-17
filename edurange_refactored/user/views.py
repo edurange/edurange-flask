@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort
+from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort, current_app
 from flask_login import login_required
 from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
     deleteStudentForm, makeScenarioForm
@@ -62,12 +62,16 @@ def make_scenario():
     check_admin()
     form = makeScenarioForm(request.form)
     if form.validate_on_submit():
+        db_ses = db.session
         name = request.form.get('scenario_name')
         infoFile = './scenarios/prod/' + name + '/' + name + '.yml'
         owner = session.get('_user_id')
         group = request.form.get('scenario_group')
-        CreateScenarioTask.delay(name, infoFile, owner, group)
-        flash("Success, your scenario will appear shortly. This page will automatically update.", "success")
+        students = db_ses.query(User.username).filter(StudentGroups.name == group).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id).all()
+        print(students)
+        print(students)
+        CreateScenarioTask.delay(name, infoFile, owner, students)
+        flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
     else:
         flash_errors(form)
 
