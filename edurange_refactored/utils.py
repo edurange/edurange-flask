@@ -1,5 +1,5 @@
 """Helper utilities and decorators."""
-from flask import flash, abort, request, session, redirect, url_for
+from flask import flash, abort, request, session, redirect, url_for, current_app
 from flask_login import current_user
 from flask_table import Table, Col
 from jwt.jwk import jwk_from_dict, OctetJWK
@@ -182,8 +182,8 @@ def process_request(form):  # Input must be request.form  # WIP
         "GroupForm":                ["csrf_token", "name", "create"],
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
         "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
-        # "unmakeInstructorForm": ["csrf_token", "iName", "unmake_instructor"],
-        "addUsersForm":             ["csrf_token", "add", "groups", "remove", "uids"]
+        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
+        "removeUsersForm":             ["csrf_token", "groups", "remove", "uids"]
     }
 
     switchVals = []
@@ -207,7 +207,8 @@ def process_request(form):  # Input must be request.form  # WIP
         "deleteStudentForm":        process_delStu,
         "manageInstructorForm":     process_manInst,
         # "unmakeInstructorForm": process_instDest(),
-        "addUsersForm":             process_addUser
+        "addUsersForm":             process_addUser,
+        "removeUsersForm":          process_addUser
     }
     return process_switch[f]()
 
@@ -293,6 +294,7 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
     uA = addUsersForm(request.form)
+    current_app.logger.info("Test")
     if request.form.get('add') is not None:
         if uA.validate_on_submit():
             db_ses = db.session
@@ -302,6 +304,8 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 #return redirect(url_for('dashboard.admin'))
 
             group = uA.groups.data
+
+            current_app.logger.info("Test2")
 
             gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
             uids = uA.uids.data  # string form

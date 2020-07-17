@@ -72,10 +72,12 @@
                 function sort(index, sort_mode) {
                   console.log(index, sort_mode);
 
-                  var $table = $("#s_table").stupidtable();
-                  var $th_to_sort = $table.find("thead th").eq(index);
+                  var $table = $("#s_table")
+                    .stupidtable();
+                  var $th_to_sort = $table.find("thead th")
+                    .eq(index);
 
-                  switch(sort_mode) {
+                  switch (sort_mode) {
                     case 1:
                       $th_to_sort.stupidsort('asc')
                       break;
@@ -83,12 +85,18 @@
                       $th_to_sort.stupidsort('desc')
                       break;
                     default:
-                      $('table').stupidsort();
+                      $('table')
+                        .stupidsort();
                   }
                 }
             </script>
 			</div> <!--scenario table-->
             </div>
+
+            <div class="container-narrow" id="tasks-monitor">
+                <p>Foo</p>
+            </div>
+
             <script src="/static/build/main_js.bundle.js"></script>
 
             <script>
