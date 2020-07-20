@@ -8,6 +8,7 @@ from flask import (
     render_template,
     request,
     url_for,
+    session
 )
 from flask_login import login_required, login_user, logout_user, current_user
 from jwt import JWT
@@ -97,6 +98,7 @@ def restore_password(tk):
 @login_required
 def logout():
     """Logout."""
+    session.pop('viewMode', None)
     logout_user()
     flash("You are logged out.", "info")
     return redirect(url_for("public.home"))

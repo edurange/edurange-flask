@@ -2,38 +2,20 @@
     <a class="navbar-brand" href="{{ url_for('public.home') }}">
         Edurange 2: Electric Boogaloo <i class="fa fa-bolt"></i>
     </a>
-    <button class="btn btn-light btn-primary" id="toggleSidebar" type="button" onclick="pageWrapper.classList.toggle('visible');">Navigate</button>
+    <button class="btn btn-light btn-primary mr-auto" id="toggleSidebar" type="button">Navigate</button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    {% if current_user and current_user.is_authenticated %}
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown active">
-                    <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i>
-                        Logged in as {{ current_user.username }}
-                    </a>
-                    <div class="dropdown-menu position-absolute">
-                        <a class="dropdown-item" href="{{ url_for('dashboard.student') }}">
-                            Dashboard
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url_for('public.logout') }}">
-                            <i class="fa fa-sign-out"></i> Logout
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    {% elif form %}
-        <form class="form-inline" id="loginForm" method="POST" action="/" role="login">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% if form %}
+        <form class="form-inline ml-auto" id="loginForm" method="POST" action="/" role="login">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="input-group mb-2 mr-sm-2">
                 {{ form.username(placeholder="Username", class_="form-control mr-sm-1 my-auto") }} {{
-                    form.password(placeholder="Password",
-                    class_="form-control mr-sm-1 my-auto") }}
+                form.password(placeholder="Password",
+                class_="form-control mr-sm-1 my-auto") }}
                 <button class="btn btn-light btn-primary mr-auto" type="submit">Login</button>
             </div>
         </form>
@@ -42,5 +24,30 @@
                 <a class="nav-link navbar-text" href="{{ url_for('public.register') }}">Create account</a>
             </li>
         </ul>
-    {% endif %}
+        {% else %}
+        <ul class="navbar-nav ml-auto">
+            {% if session.get('viewMode') %}
+            <li class="nav-item navbar-text text-center">
+                <i class="font-italic text-white">{{ session.get('viewMode') }}</i>
+            </li>
+            {% endif %}
+            <li class="nav-item dropdown active">
+                <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i>
+                    Logged in as {{ current_user.username }}
+                </a>
+                <div class="dropdown-menu position-absolute">
+                    {% if nav['views'] is not none %}
+                        {% for view in nav['views'] %}
+                    <a class="dropdown-item" href="{{ url_for('dashboard.set_view') }}{{ view[0] }}">{{ view[1] }}</a>
+                        {% endfor %}
+                    <div class="dropdown-divider"></div>
+                    {% endif %}
+                    <a class="dropdown-item" href="{{ url_for('public.logout') }}">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                </div>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
 </nav>

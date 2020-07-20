@@ -1,18 +1,22 @@
 <!-- Seperate sidebar -->
-<div class="bg-secondary" id="sidebar">
-    <div class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.home') }}">Home
-            <span class="sr-only">(current)</span>
+<div id="sidebar" class="sidebar bg-secondary">
+    <div id="links" class="list-group list-group-flush">
+        {% for link in nav['links'] %}
+        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for(link[0]) }}">
+            <i class="{{ link[1] }}" aria-hidden="true"></i>
+            &nbsp;&nbsp;{{ link[2] }}
         </a>
-        {% if current_user and current_user.is_authenticated and Aid() %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.admin') }}">Admin Dashboard</a>
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a>
-        {% elif current_user and current_user.is_authenticated and Iid() %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.instructor') }}">Instructor Dashboard</a>
-        <!-- <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.scenarios') }}">Scenarios</a> -->
-        {% elif current_user and current_user.is_authenticated and not Aid() and not Iid() %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('dashboard.student') }}">Dashboard</a>
-        {% endif %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.about') }}">About</a>
+        {% endfor %}
     </div>
 </div>
+<script type="text/javascript">
+  /* Update sidebar class list if sidebar is true (for hidden) in session storage */
+  if (sessionStorage.getItem("sidebar") === 'true') {
+    let bar = document.getElementById("sidebar");
+    bar.classList.add("pausetransition"); bar.classList.add("hidden"); bar.offsetHeight; bar.classList.remove("pausetransition");
+  } //offsetHeight to force the application of css changes in modern browsers before script is finished executing
+
+  /* Change bg color of link to the currently loaded page */
+  let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
+  currLink.classList.replace('bg-secondary', 'bg-dark');
+</script>

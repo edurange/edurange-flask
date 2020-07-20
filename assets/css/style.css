@@ -97,3 +97,44 @@ table, th, td {
 th {
   cursor: pointer;
 }
+.table td.fit, .table th.fit {
+  white-space: nowrap;
+  width: 5%;
+}
+
+/* Removes active effects from table selection buttons,\
+    may be bad for accessibility, but UIDs can be entered by keyboard if need be */
+button.selector:focus {
+  outline: none;
+  box-shadow: none;
+}
+th.fit button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
+.sidebar {
+  height: 100%;
+  margin-left: 0;
+  transition: margin .25s ease-out;
+  padding-top: 55px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+.sidebar .list-group {
+  width: 20rem;
+}
+.list-group-item .fa-info {
+  position: relative;
+  right: -5px;
+  padding-right: 12px;
+}
+.sidebar.hidden {
+  margin-left: -20rem;
+}
+.sidebar.pausetransition {
+  transition: margin 0s;
+}

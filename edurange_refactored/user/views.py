@@ -6,13 +6,23 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
     deleteStudentForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioUsers
 from ..tasks import CreateScenarioTask
-from ..utils import UserInfoTable, check_admin, check_instructor, process_request, flash_errors
+from ..utils import UserInfoTable, check_admin, check_instructor, check_role_view, process_request, flash_errors
 from ..scenario_utils import populate_catalog
 from edurange_refactored.extensions import db
 import os
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
+
+@blueprint.route("/set_view", methods=['GET'])
+@login_required
+def set_view():
+    if check_role_view(request.args['mode']):
+        session['viewMode'] = request.args['mode']
+        return redirect(url_for('public.home'))
+    else:
+        session.pop('viewMode', None)
+        return redirect(url_for('public.home'))
 
 @blueprint.route("/")
 @login_required
@@ -118,9 +128,7 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = []
-        groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers).filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id)
-        users_per_group[name].append(groupUsers)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
 
     if request.method == 'GET':
         groupMaker = GroupForm()
@@ -131,6 +139,12 @@ def admin():
         return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
 
     elif request.method == 'POST':
-        process_request(request.form)
-        return redirect(url_for('dashboard.admin'))
-
+        ajax = process_request(request.form)
+        if ajax:
+            groupMaker = GroupForm()
+            userAdder = addUsersForm()
+            instructorManager = manageInstructorForm()
+            userDropper = deleteStudentForm()
+            return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
+        else:
+            return redirect(url_for('dashboard.admin'))
