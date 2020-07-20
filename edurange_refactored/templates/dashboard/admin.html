@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-2 mb-2">
         <h1>User and Group Management</h1>
     </div>
 
@@ -80,30 +80,33 @@
 
     <!-- Code for tables begins -->
 
-    <div class="card"> <!--user table collapse-->
-        <div class="card-header" id="headingUsers">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Students </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                    Show/Collapse
-                </button>
-            </h5>
+    <div class="card mb-2 mt-2"> <!--user table collapse-->
+        <div class="card-header container-fluid p-4" id="headingUsers">
+            <div class="row">
+                <h2> <i class="fa fa-user"></i> All Students
+                <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                  <i class="fa fa-caret-down"></i>
+                </button></h2>
+            </div>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
             <div class="card-body">
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ userAdder.csrf_token}}
-                    <input name="add" class="btn btn-dark" type="submit" value="Add Selected To:">
-                    <select name="groups" title="Group">
+                    <div class="row mb-3 mr-3 ">
+                      <h4 class="ml-3">Groups:</h4>
+                    <select name="groups" title="Group" class="ml-3">
                         {% for group in groups %}
-                            <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+                          <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
-                    <input name="remove" class="btn btn-dark" type="submit" value="Remove Selected From:"><p></p>
-
-                    <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
-
+                    </div>
+                    <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
+                    <div class="btn-group-vertical float-right">
+                      <input name="add" class="btn btn-dark float-right mb-3" type="submit" value="Add Students to Group:">
+                      <input name="remove" class="btn btn-dark float-right mb-3" type="submit" value="Remove Students From Group:"><p></p>
+                    </div>
                     <p></p>
                 <div>
 
@@ -122,7 +125,8 @@
                             <td> {{ student.id }}</td>
                             <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
-                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td>
+                            <!-- <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td> -->
+                            <td><input class="form-check-input ml-3" type="checkbox" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -134,14 +138,16 @@
         </div>
     </div> <!--user table collapse-->
 
-    <div class="card"> <!--instructors table collapse-->
+    <div class="card mb-2 mt-2"> <!--instructors table collapse-->
         <div class="card-header" id="headingInstructors">
+          <div class="row">
             <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Instructors </h2>
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                    Hide / Show Table
-                </button>
+                <h2> <i class="fa fa-user"></i> All Instructors
+                <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                    <i class="fa fa-caret-down"></i>
+                </button> </h2>
             </h5>
+          </div>
         </div>
         <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
             <div class="card-body">
@@ -173,7 +179,7 @@
         </div>
     </div> <!--instructors table collapse-->
 
-    <div class="card"> <!-- groups table collapse -->
+    <div class="card mb-2 mt-2"> <!-- groups table collapse -->
         <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
                 <h2> <i class="fa fa-user"></i> All Groups </h2>
@@ -181,13 +187,14 @@
             <div class="card-body">
                 <!-- groups table stuff -->
                 {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
-                    Show/Collapse {{ group.name }}
+                <div>
+                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse" data-target="#{{ group.name }}-table" aria-expanded="false" aria-controls="{{ group.name }}-table">
+                    {{ group.name }} <i class="fa fa-caret-down"></i>
                 </button>
+                </div>
                 <div id="{{ group.name }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
-
                         <table class="table">
                             <thead class="thead-dark">
                             <tr>
@@ -214,7 +221,7 @@
         </div>
     </div> <!-- groups table collapse -->
 
-        </div>
+        </div> <!-- end of accordian container -->
 
     </div>
 
