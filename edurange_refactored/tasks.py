@@ -5,7 +5,7 @@ from flask_mail import Mail, Message
 from flask import current_app, render_template, session, flash
 from os import environ
 
-from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers
+from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers, known_types
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 import os
 import string
@@ -72,9 +72,31 @@ def test_send_async_email(email_data):
     mail.send(msg)
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, type, owner, group):
+def CreateScenarioTask(self, name, s_type, owner, group):
     from edurange_refactored.user.models import Scenarios
     app = current_app
+    s_type = s_type.lower()
+    containers = {}
+
+
+    if os.path.isdir(os.path.join('./scenarios/prod/', s_type)):
+        logger.info('Scenario of type {} Found'.format(s_type))
+        logger.info('Now attempting to load file requirements...')
+        try:
+            with open(os.path.join('./scenarios/prod/', s_type + '/' + s_type + '.json')) as f:
+                data = json.load(f)
+                for i in data['containers']:
+                    logger.info('Identified Container: {} '.format(i))
+                    containers[i['name']] = i['name']
+
+        except FileNotFoundError:
+            logger.warn('Could Not load json file for type: {}'.format(s_type))
+            raise FileNotFoundError
+
+    else:
+        logger.warn('Invalid Scenario Type - Folder Not Found')
+        raise Exception(f'Could not correctly identify scenario type')
+
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
         self.request))
     students = {}
@@ -118,6 +140,7 @@ def CreateScenarioTask(self, name, type, owner, group):
         filenames = ['iamfrustrated']
 
         write_container(name, usernames, passwords, filenames)
+
 
         os.system('terraform init')
         os.chdir('../../..')

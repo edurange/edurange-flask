@@ -6,8 +6,8 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
     deleteStudentForm, makeScenarioForm
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioUsers
 from ..tasks import CreateScenarioTask
+from ..scenario_utils import populate_catalog, identify_type
 from ..utils import UserInfoTable, check_admin, check_instructor, check_role_view, process_request, flash_errors
-from ..scenario_utils import populate_catalog
 from edurange_refactored.extensions import db
 import os
 
@@ -59,13 +59,13 @@ def make_scenario():
     if form.validate_on_submit():
         db_ses = db.session
         name = request.form.get('scenario_name')
-        infoFile = './scenarios/prod/' + name + '/' + name + '.yml'
+        type = identify_type(request.form)
         owner = session.get('_user_id')
         group = request.form.get('scenario_group')
         students = db_ses.query(User.username).filter(StudentGroups.name == group).filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id).all()
         print(students)
         print(students)
-        CreateScenarioTask.delay(name, infoFile, owner, students)
+        CreateScenarioTask.delay(name, type, owner, students)
         flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
     else:
         flash_errors(form)

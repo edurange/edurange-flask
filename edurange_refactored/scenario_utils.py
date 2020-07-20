@@ -2,6 +2,17 @@ import os
 import yaml
 
 
+known_types = [
+    'Ssh_Inception',
+    'Strace',
+    'Getting_Started',
+    'Metasploitable',
+    'File_Wrangler',
+    'Total_Recon',
+    'Treasure_Hunt',
+    'Elf_Infection'
+]
+
 class CatalogEntry:
     def __init__(self, name, description):
         self.name = name
@@ -23,6 +34,15 @@ def populate_catalog():
         entries.append(CatalogEntry(scenarios[i].title(), descriptions[i]))
     return entries
 
+def identify_type(form):
+    found_type = ''
+
+    for i, s_type in enumerate(known_types):
+        if s_type in form.keys():
+            found_type = s_type
+
+    return found_type
+
 
 def begin_tf_and_write_providers(name):
     with open(name + '.tf', 'w') as tf:
@@ -33,7 +53,7 @@ provider "template" {}
 """)
 
 
-def write_bash(tf, filenames):
+def write_global_files(tf, filenames):
     for f in filenames:
         tf.write("""
   provisioner "file" {
@@ -52,7 +72,7 @@ def write_users(tf, usernames, passwords):
                  )
 
 
-def write_run_scripts(tf, filenames):
+def write_run_global(tf, filenames):
     for f in filenames:
         tf.write(
             """
@@ -104,12 +124,12 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
         """
         )
 
-        write_bash(tf, filenames)
+        write_global_files(tf, filenames)
 
         begin_code_block(tf)
 
         write_users(tf, usernames, passwords)
 
-        write_run_scripts(tf, filenames)
+        write_run_global(tf, filenames)
 
         end_code_block(tf)
