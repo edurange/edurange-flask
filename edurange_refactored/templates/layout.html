@@ -42,7 +42,7 @@
 
         <main role="main">
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-            <div class="row">
+            <div class="row" id="flashed">
                 <div class="col-md-12">
                     {% for category, message in messages %}
                     <div class="alert alert-{{ category }}">
@@ -90,6 +90,60 @@
       /* Event listener to toggle sidebar visibility when "Navigate" button is clicked */
       $("#toggleSidebar").on("click", function() {
         $("#sidebar").toggleClass("hidden");
+      });
+
+      /* Event listener to add selected user to uids list */
+      $("button.selector").on("click", function() {
+        var uid = this.id.slice(3);
+        $(this).toggleClass("btn-outline-dark btn-dark");
+        $("#selection").val(function(index, value) {
+          if (value.includes(uid)) {
+            return value.replace(uid + ',', '');
+          } else {
+            return value + uid + ',';
+          }
+        });
+      });
+
+      /* Event listener to select all students when "select all" button is pressed */
+      $("#selectAll").on("click", function() {
+        $("button.selector.btn-outline-dark").trigger("click");
+      });
+
+      $("#clearAll").on("click", function() {
+        $("button.selector.btn-dark").trigger("click");
+      });
+
+      $(document).ready(function() {
+        /* AJAX request for add/removing users from a group */
+        $(".user-button").on("click", function(e) { //add or remove users buttons
+          var csrf_token; var add; var uids; var groups;
+          e.preventDefault(); //prevent form submit
+          csrf_token = $("#csrf_token").val();
+          add = $(this).val();
+          groups = $("#groupSel").val();
+          uids = $("#selection").val();
+          request = $.ajax({
+            type : 'POST',
+            url : "{{ url_for('dashboard.admin') }}",
+            data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
+          });
+          request.done(function(response) {
+            var $data = $(response).find("#" + groups.replace(/ /g, '') + "-table");
+            var table = $("#" + groups.replace(/ /g, '') + "-table");
+            table.replaceWith($data);
+            var flash = $("#flashed");
+            if (flash.length) { //if #flashed exists
+              flash.replaceWith($(response).find("#flashed"));
+            }
+            else {
+              $("#beforeUsers").before($(response).find("#flashed"));
+            } //flash messages above manage users table
+          });
+          request.fail(function(response) {
+            alert("Something went wrong!");
+          });
+        });
       });
 
       /* Store sidebar state in client session storage upon page reload/redirect */

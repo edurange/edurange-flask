@@ -80,7 +80,7 @@
 
     <!-- Code for tables begins -->
 
-    <div class="card mb-2 mt-2"> <!--user table collapse-->
+    <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
         <div class="card-header container-fluid p-4" id="headingUsers">
           <div class="row">
              <!--<div class="col-md-10">-->
@@ -98,10 +98,10 @@
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ userAdder.csrf_token}}
-                    <button name="add" class="btn btn-dark" type="submit" value="true">Add Selected To</button>
+                    <button name="add" class="btn btn-dark user-button" type="submit" value="true">Add Selected To</button>
                     or
-                    <button name="add" class="btn btn-dark" type="submit" value="false">Remove Selected From</button>
-                    <select name="groups" title="Group">
+                    <button name="add" class="btn btn-dark user-button" type="submit" value="false">Remove Selected From</button>
+                    <select name="groups" title="Group" id="groupSel">
                         {% for group in groups %}
                             <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
@@ -111,6 +111,7 @@
                     <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
 
                     <p></p>
+                </form>
                 <div>
 
                     <table class="table">
@@ -119,7 +120,10 @@
                             <th> ID # </th>
                             <th> Username </th>
                             <th> Email </th>
-                            <th> Selection </th>
+                            <th class="fit"> Selection
+                                <button class="btn btn-secondary btn-sm" type="button" id="selectAll">All</button>
+                                <button class="btn btn-secondary btn-sm" type="button" id="clearAll">Clear</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,13 +132,12 @@
                             <td> {{ student.id }}</td>
                             <td> {{ student.username }}</td>
                             <td> {{ student.email }}</td>
-                            <td><button class="btn btn-dark" type="button" value="Select" id="btn{{ student.id }}" onclick="selectUser({{ student.id }});"/></td>
+                            <td class="fit"><button class="btn btn-outline-dark selector" type="button" id="btn{{ student.id }}"/></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                     </table>
                 </div>
-                </form>
                 <!--user table stuff-->
             </div>
         </div>
@@ -226,17 +229,7 @@
   </div> <!--groups table collapse -->
 
       </div>
-
    </div>
-
-    <script>
-        function selectUser(uid) {
-          if (document.forms['addGroupUsers']['selection'].value.includes(uid) == true) {
-            document.forms['addGroupUsers']['selection'].value = document.forms['addGroupUsers']['selection'].value.replace(uid + ',', '');
-          } else { document.forms['addGroupUsers']['selection'].value += uid + ','; }
-        }
-    </script>
-
   </div>
 
     </div>

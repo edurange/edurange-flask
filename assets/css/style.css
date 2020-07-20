@@ -97,6 +97,22 @@ table, th, td {
 th {
   cursor: pointer;
 }
+.table td.fit, .table th.fit {
+  white-space: nowrap;
+  width: 5%;
+}
+
+/* Removes active effects from table selection buttons,\
+    may be bad for accessibility, but UIDs can be entered by keyboard if need be */
+button.selector:focus {
+  outline: none;
+  box-shadow: none;
+}
+th.fit button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 
 .sidebar {
   height: 100%;

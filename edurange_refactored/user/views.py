@@ -135,6 +135,12 @@ def admin():
         return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
 
     elif request.method == 'POST':
-        process_request(request.form)
-        return redirect(url_for('dashboard.admin'))
-
+        ajax = process_request(request.form)
+        if ajax:
+            groupMaker = GroupForm()
+            userAdder = addUsersForm()
+            instructorManager = manageInstructorForm()
+            userDropper = deleteStudentForm()
+            return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
+        else:
+            return redirect(url_for('dashboard.admin'))

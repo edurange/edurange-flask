@@ -343,10 +343,10 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 else:
                     GroupUsers.create(user_id=uid, group_id=gid)
             flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            #return redirect(url_for('dashboard.admin'))
+            return True # this was an ajax request
         else:
             flash_errors(uA)
-        #return redirect(url_for('dashboard.admin'))
+            return True
 
     elif request.form.get('add') == "false":
         if uA.validate_on_submit():
@@ -363,7 +363,6 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             if uids[-1] == ',':
                 uids = uids[:-1]  # slice last comma to avoid empty string after string split
 
-            miss = 0  # count user ids that are not in group
             uids = uids.split(',')
 
             for i, uid in reversed(list(enumerate(uids))):
@@ -371,14 +370,13 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 if check is not None:  # if user is in group
                     check.delete()
                 else:
-                    miss += 1
                     flash('User ID {0} not in group.'.format(uid), 'error')
                     uids.pop(i)
 
-            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids) - miss, group, uids))
-            #return redirect(url_for('dashboard.admin'))
+            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group, uids))
+            return True # this was an ajax request
         else:
             flash_errors(uA)
-        #return redirect(url_for('dashboard.admin'))
+            return True
 
 #
