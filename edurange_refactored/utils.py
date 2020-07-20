@@ -4,7 +4,7 @@ from flask_login import current_user
 from flask_table import Table, Col
 from jwt.jwk import jwk_from_dict, OctetJWK
 
-from .user.models import User, Scenarios, ScenarioGroups
+from .user.models import User, Scenarios, ScenarioGroups, GroupUsers
 from edurange_refactored.extensions import db
 
 import yaml
@@ -172,17 +172,8 @@ def check_instructor():
 
 
 # --------
-"""
-    form_switch = {
-        "modScenarioForm":         ["csrf_token", "sid", "mod_scenario"],
-        "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
-        "GroupForm":                ["csrf_token", "name", "create"],
-        "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
-        "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
-        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
-        "removeUsersForm":             ["csrf_token", "groups", "remove", "uids"]
-    }
-"""
+
+
 def checkEx(d):
     db_ses = db.session
     scenId = db_ses.query(Scenarios).get(d)
@@ -202,25 +193,13 @@ def checkAuth(d):
     else:
         return False
 
-"""
-    process_switch = {
-        "modScenarioForm":         process_scenarioModder,
-        "startScenario":            process_scenarioStarter,
-        "GroupForm":                process_groupMaker,
-        "deleteStudentForm":        process_delStu,
-        "manageInstructorForm":     process_manInst,
-        # "unmakeInstructorForm": process_instDest(),
-        "addUsersForm":             process_addUser,
-        "removeUsersForm":          process_addUser
-    }
-    return process_switch[f]()
-"""
 
 def checkEnr(d):
     db_ses = db.session
     n = current_user.id
-    Enrol = "oops"  # db_ses.query(ScenarioUsers.id).filter(ScenarioUsers.scenario_id == d).filter(ScenarioUsers.user_id == n)
-    if Enrol is not None:
+    enr = db_ses.query(GroupUsers.group_id).filter(ScenarioGroups.scenario_id == d)\
+        .filter(GroupUsers.group_id == ScenarioGroups.group_id).filter(GroupUsers.user_id == n).first()
+    if enr is not None:
         return True
     else:
         return False
@@ -278,66 +257,4 @@ def tempMaker(d, i):
     else:
         return stat, oName, desc, t, nom
 
-"""
-
-def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
-    uA = addUsersForm(request.form)
-    current_app.logger.info("Test")
-    if request.form.get('add') is not None:
-        if uA.validate_on_submit():
-            db_ses = db.session
-
-            if len(uA.groups.data) < 1:
-                flash('A group must be selected')
-                #return redirect(url_for('dashboard.admin'))
-
-            group = uA.groups.data
-
-            current_app.logger.info("Test2")
-
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
-            uids = uA.uids.data  # string form
-            if uids[-1] == ',':
-                uids = uids[:-1]  # slice last comma to avoid empty string after string split
-            uids = uids.split(',')
-            for i, uid in enumerate(uids):
-                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
-                if any(check):
-                    flash('User already in group.', 'error')
-                    uids.pop(i-1)
-                    pass
-                else:
-                    GroupUsers.create(user_id=uid, group_id=gid)
-            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            #return redirect(url_for('dashboard.admin'))
-        else:
-            flash_errors(uA)
-        #return redirect(url_for('dashboard.admin'))
-
-    elif request.form.get('remove') is not None:
-        if uA.validate_on_submit():
-            db_ses = db.session
-            group = uA.groups.data
-
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
-            uids = uA.uids.data  # string form
-            if uids[-1] == ',':
-                uids = uids[:-1]  # slice last comma to avoid empty string after string split
-
-            miss = 0  # count user ids that are not in group
-            uids = uids.split(',')
-
-            for i, uid in enumerate(uids):
-                user = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
-                if user is not None:  # if user is in group
-                    user.delete()
-                else:
-                    miss += 1
-
-            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
-            #return redirect(url_for('dashboard.admin'))
-        else:
-            flash_errors(uA)
-        #return redirect(url_for('dashboard.admin'))
-"""
 #

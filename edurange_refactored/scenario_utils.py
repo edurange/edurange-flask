@@ -11,7 +11,7 @@ class CatalogEntry:
 
 
 def populate_catalog():
-    scenarios = [dI for dI in os.listdir('./scenarios/prod/') if os.path.isdir(os.path.join('./scenarios/prod/',dI))]
+    scenarios = [dI for dI in os.listdir('./scenarios/prod/') if os.path.isdir(os.path.join('./scenarios/prod/', dI))]
     descriptions = []
 
     for s in scenarios:
@@ -24,5 +24,3 @@ def populate_catalog():
     for i in range(len(scenarios)):
         entries.append(CatalogEntry(scenarios[i].title(), descriptions[i]))
     return entries
-
-

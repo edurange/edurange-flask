@@ -1,4 +1,4 @@
-from flask import request, flash, session
+from flask import request, flash, session, current_app
 
 from . import tasks
 from .user.models import User, StudentGroups, GroupUsers
@@ -17,12 +17,13 @@ def process_request(form):  # Input must be request.form
         dataKeys.append(k)
 
     form_switch = {
-        "modScenarioForm":         ["csrf_token", "sid", "mod_scenario"],
+        "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
         "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
         "GroupForm":                ["csrf_token", "name", "create"],
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
         "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
-        "addUsersForm":             ["csrf_token", "add", "groups", "remove", "uids"]
+        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
+        "removeUsersForm":          ["csrf_token", "groups", "remove", "uids"]
     }
 
     switchVals = []
@@ -33,9 +34,9 @@ def process_request(form):  # Input must be request.form
         switchKeys.append(k)
 
     i = 0
-    for l in switchVals:
-        if l == dataKeys:
-            i = switchVals.index(l)
+    for li in switchVals:
+        if li == dataKeys:
+            i = switchVals.index(li)
     f = switchKeys[i]
     # print(f)
 
@@ -45,7 +46,8 @@ def process_request(form):  # Input must be request.form
         "GroupForm":                process_groupMaker,
         "deleteStudentForm":        process_delStu,
         "manageInstructorForm":     process_manInst,
-        "addUsersForm":             process_addUser
+        "addUsersForm":             process_addUser,
+        "removeUsersForm":          process_addUser
     }
     return process_switch[f]()
 
@@ -122,6 +124,7 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
     uA = addUsersForm(request.form)
+    current_app.logger.info("Test")
     if request.form.get('add') is not None:
         if uA.validate_on_submit():
             db_ses = db.session
@@ -130,6 +133,8 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 flash('A group must be selected')
 
             group = uA.groups.data
+
+            current_app.logger.info("Test2")
 
             gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
             uids = uA.uids.data  # string form

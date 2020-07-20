@@ -3,8 +3,9 @@
 import datetime as dt
 
 from flask_login import UserMixin
-import string
-import random
+
+# import string
+# import random
 
 from edurange_refactored.database import (
     Column,

@@ -12,10 +12,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown active">
-                    <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i>
+                    <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown" data-target="#dropdown"><i class="fa fa-user"></i>
                         Logged in as {{ current_user.username }}
                     </a>
-                    <div class="dropdown-menu position-absolute">
+                    <div class="dropdown-menu position-absolute" id="dropdown">
                         <a class="dropdown-item" href="{{ url_for('dashboard.student') }}">
                             Dashboard
                         </a>
@@ -28,6 +28,7 @@
             </ul>
         </div>
     {% elif form %}
+        <hr>
         <form class="form-inline" id="loginForm" method="POST" action="/" role="login">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="input-group mb-2 mr-sm-2">

@@ -50,7 +50,7 @@
 								</tr>
 								</thead>
 								<tbody>
-								{% for group in memberOf %}
+								{% for group in groups %}
 								<tr>
 									<td> {{ group.id }}</td>
 									<td> {{group.name }}</td>
@@ -86,7 +86,6 @@
 									<th> Type </th>
 									<th> Group </th>
 									<th> Instructor </th>
-									<th> Port </th>
 								</tr>
 								</thead>
 								<tbody>
@@ -96,7 +95,6 @@
 									<td> {{ entry.type }} </td>
 									<td> {{ entry.gname }} </td>
 									<td> {{ entry.iname }} </td>
-									<td> 00000 </td> {# pull the scenario port from somewhere #}
 								</tr>
 								{% endfor %}
 								</tbody>
