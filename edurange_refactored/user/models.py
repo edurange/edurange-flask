@@ -3,8 +3,9 @@
 import datetime as dt
 
 from flask_login import UserMixin
-import string
-import random
+
+# import string
+# import random
 
 from edurange_refactored.database import (
     Column,
@@ -31,6 +32,7 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
     owner = relationship("User", backref="groups")
     code = Column(db.String(8), unique=True, nullable=True, default=generate_registration_code())
     hidden = Column(db.Boolean(), nullable=False, default=False)
+
 
 class GroupUsers(UserMixin, SurrogatePK, Model):
     """Users belong to groups"""
@@ -92,10 +94,19 @@ class Scenarios(UserMixin, SurrogatePK, Model):
         return f"<Scenario({self.name!r})>"
 
 
-class ScenarioUsers(UserMixin, SurrogatePK, Model):
-    """Users belong to groups"""
-    ___tablename___ = "scenario_users"
-    user_id = reference_col("users", nullable=False)
-    user = relationship("User", backref="scenario_users")
+# class ScenarioUsers(UserMixin, SurrogatePK, Model):
+#     """Users belong to groups"""
+#     ___tablename___ = "scenario_users"
+#     user_id = reference_col("users", nullable=False)
+#     user = relationship("User", backref="scenario_users")
+#     scenario_id = reference_col("scenarios", nullable=False)
+#     scenario = relationship("Scenarios", backref="scenario_users")
+
+
+class ScenarioGroups(UserMixin, SurrogatePK, Model):
+    """Groups associated with scenarios"""
+    __tablename__ = "scenario_groups"
+    group_id = reference_col("groups", nullable=False)
+    group = relationship("StudentGroups", backref="scenario_groups")
     scenario_id = reference_col("scenarios", nullable=False)
-    scenario = relationship("Scenarios", backref="scenario_users")
+    scenario = relationship("Scenarios", backref="scenario_groups")
