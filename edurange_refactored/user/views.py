@@ -7,7 +7,7 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
 from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr, check_role_view
+    tempMaker, checkAuth, checkEnr, check_role_view, current_user
 from ..form_utils import process_request
 from ..scenario_utils import populate_catalog, identify_type
 from edurange_refactored.extensions import db
@@ -24,6 +24,7 @@ def set_view():
     else:
         session.pop('viewMode', None)
         return redirect(url_for('public.home'))
+
 
 @blueprint.route("/")
 @login_required
@@ -51,12 +52,15 @@ def student():
 @blueprint.route("/student_scenario/<i>")
 @login_required
 def student_scenario(i):
+    db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
             s, o, d, t, n = tempMaker(i, "s")
             p = "00000"
+            ud = current_user.id
+            u = db_ses.query(User.username).filter(User.id == ud).first()
             pw = "_"
-            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, pw=pw)
+            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, u=u[0], pw=pw)
         else:
             return abort(404)
     else:
@@ -127,8 +131,7 @@ def scenariosInfo(i):
         if checkEx(i):
             s, o, b, d, t, n = tempMaker(i, "i")
             p = "00000"
-            pw = "_"
-            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, p=p, pw=pw)
+            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, p=p)
         else:
             return abort(404)
     else:
@@ -178,7 +181,8 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email)\
+            .filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
 
     if request.method == 'GET':
         groupMaker = GroupForm()

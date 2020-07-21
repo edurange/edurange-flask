@@ -6,6 +6,7 @@ from jwt.jwk import jwk_from_dict, OctetJWK
 
 from .user.models import User, Scenarios, ScenarioGroups, GroupUsers
 from edurange_refactored.extensions import db
+from .scenario_utils import item_generator
 
 import yaml
 import json
@@ -170,30 +171,31 @@ def check_instructor():
     if not user.is_instructor:
         abort(403)
 
-def check_role_view(mode): # check if view mode compatible with role (admin/inst/student)
+
+def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_admin and not user.is_instructor:
-        abort(403) # student's don't need their role checked
-        return None # a student has no applicable role. does abort stop the calling/parent function?
+        abort(403)  # student's don't need their role checked
+        return None  # a student has no applicable role. does abort stop the calling/parent function?
     else:
         mode = request.args['mode']
         if mode not in ['studentView', 'instructorView', 'adminView']:
-            abort(400) # only supported views
-        elif user.is_instructor and not user.is_admin: # instructor only
+            abort(400)  # only supported views
+        elif user.is_instructor and not user.is_admin:  # instructor only
             if mode == 'studentView':
-                return True # return true since viewMode should be set
+                return True  # return true since viewMode should be set
             elif mode == 'adminView':
-                abort(403) # instructors can't choose adminView
+                abort(403)  # instructors can't choose adminView
             else:
-                return False # return false since viewMode should be dropped
+                return False  # return false since viewMode should be dropped
         elif user.is_admin:
             if mode in ['studentView', 'instructorView']:
                 return True
             else:
                 return False
         else:
-            abort(403) # who are you?!
+            abort(403)  # who are you?!
             return None
 
 # --------
@@ -282,4 +284,11 @@ def tempMaker(d, i):
     else:
         return stat, oName, desc, t, nom
 
-#
+"""
+def getPass(t):
+    with open('./data/tmp/' + n + '/students.json', 'r') as f:
+        data = json.load(f)
+
+        #item = item_generator(data, 'password')
+    return 0
+"""
