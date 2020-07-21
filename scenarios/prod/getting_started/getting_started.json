@@ -10,5 +10,18 @@
 			"user_files": [
 			]
 		}]
+	}, 
+	{
+	  "name" : "other",
+	  "files" : [{
+	    "global_files": [
+	    ],
+	    "system_files":[
+	      "thing"
+	    ],
+	    "user_files": [
+	      "testing"
+	    ]
+	  }]
 	}]
 }
