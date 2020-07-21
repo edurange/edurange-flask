@@ -83,3 +83,5 @@ data/tmp/Foo/terraform.tfstate.backup
 data/
 
 npm-debug.log
+
+dump.rdb

@@ -1,22 +1,22 @@
 
 
-		{% extends "layout.html" %}
-		{% block content %}
-			<div class="container">
-				<h1>Welcome Instructor {{ current_user.username }}</h1>
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>Welcome Instructor {{ current_user.username }}</h1>
 
-                <div class="row">
-                    <div class="col-sm-6" align="left">
+        <div class="row">
+            <div class="col-sm-6" align="left">
 
-                    </div>
-                </div>
-                <form action="/dashboard/catalog" method="get">
-                    <input class="btn btn-dark" type="submit" value="New Scenario"
-                           name="Submit" id="new_scenario" />
-                </form>
-			</div>
+            </div>
+        </div>
+        <form action="/dashboard/catalog" method="get">
+            <input class="btn btn-dark" type="submit" value="New Scenario"
+                   name="Submit" id="new_scenario" />
+        </form>
+    </div>
 
-            <p></p>
+    <p></p>
 
 
             <div id="body">
@@ -36,7 +36,7 @@
 					<tbody> <!--Content of scenario table-->
 						{% for scenario in scenarios%}
 						<tr>
-							<td>{{scenario.name}}</td>
+                            <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
 							<td>{{scenario.description}}</td>
 							<td>{{scenario.owner}}</td>
 							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>

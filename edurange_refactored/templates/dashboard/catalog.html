@@ -26,8 +26,8 @@
                 <td> {{ s.name }}</td>
                 <td> {{ s.description }}</td>
                 <td>
-                    <input class="btn btn-dark" type="submit" value={{ s.name }}
-                           name="Submit" id="new_scenario" />
+                    <input class="btn btn-dark" type="submit" value="Create"
+                           name={{ s.name }} id="new_scenario" />
                 </td>
             </tr>
         {% endfor  %}

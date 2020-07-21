@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}">
     <title>
         {% block page_title %}
-        Edurange_Refactored
+            Edurange_Refactored
         {% endblock %}
     </title>
     <meta name="description" content="{% block meta_description %}{% endblock %}"/>
@@ -57,6 +57,11 @@
         </main>
     {% endwith %}
     {% include "footer.html" %}
+    {% endblock %}
+    <!-- JavaScript at the bottom for fast page loading -->
+    <script src="/static/build/main_js.bundle.js"></script>
+    {% block js %}
+        <script>
 
 <!-- JavaScript at the bottom for fast page loading -->
     <script src="{{ url_for('static', filename='build/main_js.bundle.js') }}"></script>

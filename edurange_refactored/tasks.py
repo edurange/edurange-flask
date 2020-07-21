@@ -4,9 +4,13 @@ from celery import Celery
 from flask_mail import Mail, Message
 from flask import current_app, render_template, session, flash
 from os import environ
-from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 
+from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers, known_types, gather_files
+from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 import os
+import string
+import random
+import json
 from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
@@ -68,49 +72,56 @@ def test_send_async_email(email_data):
     mail.send(msg)
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, infoFile, owner, students):
+def CreateScenarioTask(self, name, s_type, owner, group):
     from edurange_refactored.user.models import Scenarios
     app = current_app
+    s_type = s_type.lower()
+    c_names, g_files, s_files, u_files = gather_files(s_type, logger)
+
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
         self.request))
+    students = {}
+    usernames = []
+    passwords = []
+
+    for i in range(len(group)):
+        username = ''.join(e for e in group[i]['username'] if e.isalnum())
+        password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
+
+        usernames.append(username)
+        passwords.append(password)
+
+        logger.info("User: {}".format(group[i]['username']))
+        students[username] = []
+        students[username].append({
+            'username': username,
+            'password': password
+        })
+
+
+
+    logger.info("All names: {}".format(students))
+
     with app.test_request_context():
+
         name = ''.join(e for e in name if e.isalnum())
         desc = 'Foo'
         own_id = owner
-        Scenarios.create(name=name, description=desc, owner_id=own_id)
+        Scenarios.create(name=name, description=s_type, owner_id=own_id)
+
 
         os.mkdir('./data/tmp/' + name)
         os.chdir('./data/tmp/' + name)
 
-        #copy_directory('scenarios/templates/' + SELECTION, os.curdir)
+        with open('students.json', 'w') as outfile:
+            json.dump(students, outfile)
 
-        with open('example.tf', 'w') as f:
-            f.write("""provider "docker" {}
-    provider "template" {}
-    
-    resource "docker_container" """ + "\""+ name + "\"" """ {
-      name = """ + "\""+ name + "\"" """
-      image = "rastasheep/ubuntu-sshd:18.04"
-      restart = "always"
-      hostname  = "NAT"
-    
-      connection {
-        host = self.ip_address  
-        type = "ssh"
-        user = "root"
-        password = "root"
-      }
-    
-      ports {
-        internal = 22
-      }
-    
-      provisioner "remote-exec" {
-        inline = [
-        "useradd --home-dir /home/jack --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) jack",
-        ]
-      }
-    }""")
+        begin_tf_and_write_providers(name)
+
+        for i, c in enumerate(c_names):
+            write_container(name + '_' + c, usernames, passwords, g_files[i], s_files[i], u_files[i])
+
+
         os.system('terraform init')
         os.chdir('../../..')
 
@@ -127,13 +138,14 @@ def start(self, sid):
         name = str(scenario.name)
         if int(scenario.status) != 0:
             logger.info('Invalid Status')
-            flash('Scenario is not ready to start', 'warning')
+            raise Exception(f'Scenario must be stopped before starting')
         elif os.path.isdir(os.path.join('./data/tmp/', name)):
+            scenario.update(status=3)
             logger.info('Folder Found')
-            scenario.update(status=1)
             os.chdir('./data/tmp/' + name)
             os.system('terraform apply --auto-approve')
             os.chdir('../../..')
+            scenario.update(status=1)
         else:
             logger.info('Something went wrong')
             flash('Something went wrong', 'warning')
@@ -153,10 +165,11 @@ def stop(self, sid):
             flash('Scenario is not ready to start', 'warning')
         elif os.path.isdir(os.path.join('./data/tmp/', name)):
             logger.info('Folder Found')
+            scenario.update(status=4)
             os.chdir('./data/tmp/' + name)
             os.system('terraform destroy --auto-approve')
-            scenario.update(status=0)
             os.chdir('../../..')
+            scenario.update(status=0)
         else:
             logger.info('Something went wrong')
             flash('Something went wrong', 'warning')
@@ -169,18 +182,21 @@ def destroy(self, sid):
         self.request))
     with app.test_request_context():
         scenario = Scenarios.query.filter_by(id=sid).first()
-        logger.info('Found Scenario: {}'.format(scenario))
-        name = str(scenario.name)
-        if int(scenario.status) != 0:
-            logger.info('Invalid Status')
-            flash('Scenario must be stopped to destroy', 'warning')
-        elif os.path.isdir(os.path.join('./data/tmp/', name)):
-            logger.info('Folder Found, current directory: {}'.format(os.getcwd()))
-            os.chdir('./data/tmp/')
-            shutil.rmtree(name)
-            os.chdir('../..')
-            scenario.delete()
+        if scenario is not None:
+            logger.info('Found Scenario: {}'.format(scenario))
+            name = str(scenario.name)
+            if int(scenario.status) != 0:
+                logger.info('Invalid Status')
+                raise Exception(f'Scenario in an Invalid state for Destruction')
+            elif os.path.isdir(os.path.join('./data/tmp/', name)):
+                logger.info('Folder Found, current directory: {}'.format(os.getcwd()))
+                os.chdir('./data/tmp/')
+                shutil.rmtree(name)
+                os.chdir('../..')
+                scenario.delete()
+            else:
+                logger.info('Something went wrong')
+                flash('Something went wrong', 'warning')
         else:
-            logger.info('Something went wrong')
-            flash('Something went wrong', 'warning')
+            raise Exception(f'Could not find scenario')
 
