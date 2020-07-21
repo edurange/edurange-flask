@@ -164,6 +164,25 @@ def end_code_block(tf):
 }
 """)
 
+def write_output_block(name, c_names):
+    with open(name + '.tf', 'w') as tf:
+        for c in c_names:
+            c = name + '_' + c
+            tf.write(
+                """
+  locals {
+    """ + c + """_extern = tostring(docker_container.""" + c + """.ports[0].external)
+  }
+
+  output """ + "\"" + c + """" {
+    value = [{
+      name = """ + '\"' + c + '\"' + """
+      ip_address_public = join(":", ["localhost", local.""" + c + """_extern])
+    }]
+  }
+                """
+            )
+
 
 def write_container(name, usernames, passwords, g_files, s_files, u_files):
     with open(name + '.tf', 'a') as tf:
@@ -197,3 +216,5 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
         write_run_global(tf, g_files)
 
         end_code_block(tf)
+
+

@@ -5,7 +5,8 @@ from flask_mail import Mail, Message
 from flask import current_app, render_template, session, flash
 from os import environ
 
-from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers, known_types, gather_files
+from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers, known_types, gather_files, \
+    write_output_block
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 import os
 import string
@@ -118,6 +119,8 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
         for i, c in enumerate(c_names):
             write_container(name + '_' + c, usernames, passwords, g_files[i], s_files[i], u_files[i])
+
+        write_output_block(name, c_names)
 
         os.system('terraform init')
         os.chdir('../../..')
