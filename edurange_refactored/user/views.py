@@ -86,16 +86,18 @@ def make_scenario():
     if form.validate_on_submit():
         db_ses = db.session
         name = request.form.get('scenario_name')
-        type = identify_type(request.form)
-        owner = session.get('_user_id')
+        s_type = identify_type(request.form)
+        own_id = session.get('_user_id')
         group = request.form.get('scenario_group')
 
         students = db_ses.query(User.username).filter(StudentGroups.name == group)\
             .filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id).all()
 
-        print(students)
-        print(students)
-        CreateScenarioTask.delay(name, type, owner, students)
+        Scenarios.create(name=name, description=s_type, owner_id=own_id)
+        s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
+        g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+
+        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
         flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
     else:
         flash_errors(form)

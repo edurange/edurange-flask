@@ -72,10 +72,13 @@ def test_send_async_email(email_data):
     mail.send(msg)
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, s_type, owner, group):
-    from edurange_refactored.user.models import Scenarios
+def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
+    from edurange_refactored.user.models import ScenarioGroups
     app = current_app
     s_type = s_type.lower()
+    s_id = s_id['id']
+    g_id = g_id['id']
+
     c_names, g_files, s_files, u_files = gather_files(s_type, logger)
 
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
@@ -98,17 +101,12 @@ def CreateScenarioTask(self, name, s_type, owner, group):
             'password': password
         })
 
-
-
     logger.info("All names: {}".format(students))
 
     with app.test_request_context():
 
         name = ''.join(e for e in name if e.isalnum())
-        desc = 'Foo'
         own_id = owner
-        Scenarios.create(name=name, description=s_type, owner_id=own_id)
-
 
         os.mkdir('./data/tmp/' + name)
         os.chdir('./data/tmp/' + name)
@@ -121,9 +119,11 @@ def CreateScenarioTask(self, name, s_type, owner, group):
         for i, c in enumerate(c_names):
             write_container(name + '_' + c, usernames, passwords, g_files[i], s_files[i], u_files[i])
 
-
         os.system('terraform init')
         os.chdir('../../..')
+
+
+        ScenarioGroups.create(group_id=g_id, scenario_id=s_id)
 
 
 @celery.task(bind=True)
@@ -176,7 +176,7 @@ def stop(self, sid):
 
 @celery.task(bind=True)
 def destroy(self, sid):
-    from edurange_refactored.user.models import Scenarios
+    from edurange_refactored.user.models import Scenarios, ScenarioGroups
     app = current_app
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
         self.request))
@@ -185,6 +185,8 @@ def destroy(self, sid):
         if scenario is not None:
             logger.info('Found Scenario: {}'.format(scenario))
             name = str(scenario.name)
+            s_id = str(scenario.id)
+            s_group = ScenarioGroups.query.filter_by(scenario_id=s_id).first()
             if int(scenario.status) != 0:
                 logger.info('Invalid Status')
                 raise Exception(f'Scenario in an Invalid state for Destruction')
@@ -193,6 +195,7 @@ def destroy(self, sid):
                 os.chdir('./data/tmp/')
                 shutil.rmtree(name)
                 os.chdir('../..')
+                s_group.delete()
                 scenario.delete()
             else:
                 logger.info('Something went wrong')

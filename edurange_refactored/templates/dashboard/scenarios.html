@@ -28,7 +28,7 @@
 							<th data-sort="string"scope="col">NAME</th>
 							<th data-sort="string"scope="col">DESCRIPTION</th>
 							<th data-sort="string"scope="col">OWNER</th>
-							<th data-sort="float" scope="col">CREATED AT</th>
+							<th data-sort="float" data-sort-default="desc" scope="col">CREATED AT</th>
 							<th data-sort="int" scope="col">STATUS</th>
                             <th scope="col">CONTROL</th>
 						</tr>
@@ -68,6 +68,10 @@
 						{% endfor %}
 					</tbody> <!--Content of scenario table-->
 				</table>
+            </div>
+            </div>
+{% endblock %}
+{% block scenarioJS %}
             <script>
                 function sort(index, sort_mode) {
                   console.log(index, sort_mode);
@@ -90,9 +94,6 @@
                   }
                 }
             </script>
-			</div> <!--scenario table-->
-            </div>
-    
             <script>
 
               $(document).ready( function () {
@@ -103,4 +104,4 @@
               });
 
             </script>
-        {% endblock %}
+{% endblock %}
