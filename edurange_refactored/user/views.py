@@ -7,7 +7,7 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
 from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr, check_role_view, current_user
+    tempMaker, checkAuth, checkEnr, check_role_view, current_user, getPass
 from ..form_utils import process_request
 from ..scenario_utils import populate_catalog, identify_type
 from edurange_refactored.extensions import db
@@ -55,12 +55,9 @@ def student_scenario(i):
     db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
-            s, o, d, t, n = tempMaker(i, "s")
+            s, o, d, t, n, u, pw = tempMaker(i, "s")
             p = "00000"
-            ud = current_user.id
-            u = db_ses.query(User.username).filter(User.id == ud).first()
-            pw = "_"
-            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, u=u[0], pw=pw)
+            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, u=u, pw=pw)
         else:
             return abort(404)
     else:

@@ -251,7 +251,7 @@ def statReader(s):
     return statSwitch[s]
 
 
-def descGetter(t):
+def getDesc(t):
     t = t.lower().replace(" ", "_")
     with open('./scenarios/prod/' + t + '/' + t + '.yml', 'r') as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
@@ -259,6 +259,19 @@ def descGetter(t):
             if item == 'Description':
                 d = doc
     return d
+
+
+def getPass(sn, un):
+    with open('./data/tmp/' + sn + '/students.json', 'r') as f:
+        data = json.load(f)
+        d1 = data.get(un)[0]
+        p = d1.get('password')
+    return p
+
+
+def getPort(n):
+    n = 0  # [WIP]
+    return n
 
 
 def tempMaker(d, i):
@@ -272,23 +285,20 @@ def tempMaker(d, i):
     # description
     t = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
     t = t[0]
-    desc = descGetter(t)
-    # name
-    nom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
-    nom = nom[0]
+    desc = getDesc(t)
+    # scenario name
+    sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
+    sNom = sNom[0]
     if i == "i":
         # creation time
         bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
         bTime = bTime[0]
-        return stat, oName, bTime, desc, t, nom
-    else:
-        return stat, oName, desc, t, nom
+        return stat, oName, bTime, desc, t, sNom
+    elif i == "s":
+        # username
+        ud = current_user.id
+        u = db_ses.query(User.username).filter(User.id == ud).first()[0]
+        # password
+        p = getPass(sNom, u)
+        return stat, oName, desc, t, sNom, u, p
 
-"""
-def getPass(t):
-    with open('./data/tmp/' + n + '/students.json', 'r') as f:
-        data = json.load(f)
-
-        #item = item_generator(data, 'password')
-    return 0
-"""
