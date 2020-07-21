@@ -45,7 +45,7 @@
             <div class="row" id="flashed">
                 <div class="col-md-12">
                     {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
+                    <div class="alert alert-{{ category }}" style="z-index: 2;">
                         <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
                         {{ message }}
                     </div><!-- end .alert -->

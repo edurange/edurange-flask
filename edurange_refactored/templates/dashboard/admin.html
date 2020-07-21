@@ -83,14 +83,10 @@
     <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
         <div class="card-header container-fluid p-4" id="headingUsers">
           <div class="row">
-             <!--<div class="col-md-10">-->
-                <!-- <h5 class="mb-0"> -->
-                    <h2> <i class="fa fa-user"></i> Manage Students </h2>
-                    <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                      <i class="fa fa-caret-down"></i>
-                    </button>
-                <!-- </h5> -->
-            <!--  </div> -->
+              <h2> <i class="fa fa-user"></i> Manage Students
+              <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                  <i class="fa fa-caret-down"></i>
+              </button></h2>
             </div>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
@@ -100,7 +96,7 @@
                     {{ userAdder.csrf_token}}
                     <div class="row mb-3 mr-3 ">
                       <h4 class="ml-3">Groups:</h4>
-                    <select name="groups" title="Group" class="ml-3">
+                    <select name="groups" title="Group" id="groupSel" class="ml-3">
                         {% for group in groups %}
                           <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
@@ -108,13 +104,12 @@
                     </div>
                     <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
                     <div class="btn-group-vertical float-right">
-                      <input name="add" class="btn btn-dark float-right mb-3" type="submit" value="Add Students to Group:">
-                      <input name="remove" class="btn btn-dark float-right mb-3" type="submit" value="Remove Students From Group:"><p></p>
+                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">Add Students to Group:</button>
+                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="false">Remove Students From Group:</button><p></p>
                     </div>
                     <p></p>
                 </form>
                 <div>
-
                     <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -188,51 +183,51 @@
     <div class="card mb-2 mt-2"> <!-- groups table collapse -->
         <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Groups </h2>
+                <h2><i class="fa fa-user"></i> All Groups </h2>
             </h5>
-          </div>
-            <div class="card-body">
-                <!-- groups table stuff -->
-                {% for group in groups if not group.hidden %}
-                <div>
-                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false" aria-controls="{{ group.name.replace(' ', '') }}-table">
-                      {{ group.name }} <i class="fa fa-caret-down"></i>
-                </button>
-                </div>
-                <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
-                    <p></p>
-                    <div>
-                        <table class="table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th> ID # </th>
-                                <th> Username </th>
-                                <th> Email </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for student in usersPGroup[group.name] %}
-                            <tr>
-                                <td> {{ student.id }}</td>
-                                <td> {{ student.username }}</td>
-                                <td> {{ student.email }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                {% endfor %}
-                <!-- groups table stuff -->
-            </div>
         </div>
-  </div> <!--groups table collapse -->
-
-        </div> <!-- end of accordian container -->
-
+        <div class="card-body">
+            <!-- groups table stuff -->
+            {% for group in groups if not group.hidden %}
+            <div>
+                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
+                        data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
+                        aria-controls="{{ group.name.replace(' ', '') }}-table">
+                    {{ group.name }} <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers"
+                 data-parent="#accordion">
+                <p></p>
+                <div>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th> ID #</th>
+                            <th> Username</th>
+                            <th> Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for student in usersPGroup[group.name] %}
+                        <tr>
+                            <td> {{ student.id }}</td>
+                            <td> {{ student.username }}</td>
+                            <td> {{ student.email }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- groups table stuff -->
+        </div>
     </div>
+</div> <!--groups table collapse -->
 
-</div>
+</div> <!-- end of accordian container -->
+
 {% endblock %}
 
 {% block js %}
