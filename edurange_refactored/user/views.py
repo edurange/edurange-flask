@@ -7,7 +7,7 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
 from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr
+    tempMaker, checkAuth, checkEnr, check_role_view
 from ..form_utils import process_request
 from ..scenario_utils import populate_catalog, identify_type
 from edurange_refactored.extensions import db

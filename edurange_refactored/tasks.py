@@ -107,7 +107,7 @@ def CreateScenarioTask(self, name, s_type, owner, group):
         name = ''.join(e for e in name if e.isalnum())
         desc = 'Foo'
         own_id = owner
-        Scenarios.create(name=name, description=desc, owner_id=own_id)
+        Scenarios.create(name=name, description=s_type, owner_id=own_id)
 
 
         os.mkdir('./data/tmp/' + name)
