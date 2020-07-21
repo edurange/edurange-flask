@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-2 mb-2">
         <h1>User and Group Management</h1>
     </div>
 
@@ -98,18 +98,19 @@
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ userAdder.csrf_token}}
-                    <button name="add" class="btn btn-dark user-button" type="submit" value="true">Add Selected To</button>
-                    or
-                    <button name="add" class="btn btn-dark user-button" type="submit" value="false">Remove Selected From</button>
-                    <select name="groups" title="Group" id="groupSel">
+                    <div class="row mb-3 mr-3 ">
+                      <h4 class="ml-3">Groups:</h4>
+                    <select name="groups" title="Group" class="ml-3">
                         {% for group in groups %}
-                            <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+                          <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
-                    <p></p>
-
-                    <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
-
+                    </div>
+                    <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
+                    <div class="btn-group-vertical float-right">
+                      <input name="add" class="btn btn-dark float-right mb-3" type="submit" value="Add Students to Group:">
+                      <input name="remove" class="btn btn-dark float-right mb-3" type="submit" value="Remove Students From Group:"><p></p>
+                    </div>
                     <p></p>
                 </form>
                 <div>
@@ -145,14 +146,14 @@
 
     <div class="card mb-2 mt-2"> <!--instructors table collapse-->
         <div class="card-header" id="headingInstructors">
-            <div class="row">
-              <h5 class="mb-0">
-                  <h2> <i class="fa fa-user"></i> All Instructors </h2>
-                  <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                      <i class="fa fa-caret-down"></i>
-                  </button>
-              </h5>
-            </div>
+          <div class="row">
+            <h5 class="mb-0">
+                <h2> <i class="fa fa-user"></i> All Instructors
+                <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                    <i class="fa fa-caret-down"></i>
+                </button> </h2>
+            </h5>
+          </div>
         </div>
         <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
             <div class="card-body">
@@ -201,7 +202,6 @@
                 <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
                     <p></p>
                     <div>
-
                         <table class="table">
                             <thead class="thead-dark">
                             <tr>
@@ -228,9 +228,7 @@
         </div>
   </div> <!--groups table collapse -->
 
-      </div>
-   </div>
-  </div>
+        </div> <!-- end of accordian container -->
 
     </div>
 
