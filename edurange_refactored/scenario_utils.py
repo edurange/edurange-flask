@@ -82,7 +82,7 @@ def gather_files(s_type, logger):
                 for u in list(user_files):
                     u_files.append(u)
 
-                logger.info("Found global files: {}".format(u_files))
+                logger.info("Found user files: {}".format(u_files))
 
                 return c_names, g_files, s_files, u_files
 
