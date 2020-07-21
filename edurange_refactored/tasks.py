@@ -4,8 +4,13 @@ from celery import Celery
 from flask_mail import Mail, Message
 from flask import current_app, render_template, session, flash
 from os import environ
+
+from edurange_refactored.scenario_utils import write_container, begin_tf_and_write_providers, known_types, gather_files
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 import os
+import string
+import random
+import json
 from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
@@ -67,73 +72,56 @@ def test_send_async_email(email_data):
     mail.send(msg)
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, infoFile, owner, group):
+def CreateScenarioTask(self, name, s_type, owner, group):
     from edurange_refactored.user.models import Scenarios
     app = current_app
+    s_type = s_type.lower()
+    c_names, g_files, s_files, u_files = gather_files(s_type, logger)
+
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
         self.request))
+    students = {}
     usernames = []
-    for i in range(len(group)):
-        logger.info("User: {}".format(group[i]['username']))
-        usernames.append(''.join(e for e in group[i]['username'] if e.isalnum()))
+    passwords = []
 
-    logger.info("All names: {}".format(usernames))
+    for i in range(len(group)):
+        username = ''.join(e for e in group[i]['username'] if e.isalnum())
+        password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
+
+        usernames.append(username)
+        passwords.append(password)
+
+        logger.info("User: {}".format(group[i]['username']))
+        students[username] = []
+        students[username].append({
+            'username': username,
+            'password': password
+        })
+
+
+
+    logger.info("All names: {}".format(students))
 
     with app.test_request_context():
 
         name = ''.join(e for e in name if e.isalnum())
         desc = 'Foo'
         own_id = owner
-        Scenarios.create(name=name, description=desc, owner_id=own_id)
+        Scenarios.create(name=name, description=s_type, owner_id=own_id)
 
 
         os.mkdir('./data/tmp/' + name)
         os.chdir('./data/tmp/' + name)
 
-        #create_container(name, stopIndex, students, bastion_port, bastion_host, bastion_name, bastion_pass, fileList)
-        #copy_directory('scenarios/templates/' + SELECTION, os.curdir)
+        with open('students.json', 'w') as outfile:
+            json.dump(students, outfile)
 
-        with open('example.tf', 'w') as f:
-            f.write("""provider "docker" {}
-    provider "template" {}
-    
-    resource "docker_container" """ + "\""+ name + "\"" """ {
-      name = """ + "\""+ name + "\"" """
-      image = "rastasheep/ubuntu-sshd:18.04"
-      restart = "always"
-      hostname  = "NAT"
-    
-      connection {
-        host = self.ip_address  
-        type = "ssh"
-        user = "root"
-        password = "root"
-      }
-    
-      ports {
-        internal = 22
-      }
-    
-      provisioner "file" {
-      source      = "${path.module}/../../../scenarios/iamfrustrated"
-      destination = "/iamfrustrated"
-      }
-      
-      provisioner "remote-exec" {
-        inline = [
-      """)
-            for i, name in enumerate(usernames):
-                f.write(
-        "\"useradd --home-dir /home/" + name + " --create-home --shell /bin/bash --password $(echo passwordfoo | openssl passwd -1 -stdin) " + name + "\",")
-                if i != len(usernames) -1:
-                    f.write("\n")
-            f.write("""
-            \"cp /iamfrustrated /usr/bin\",
-            \"chmod +x /usr/bin/iamfrustrated\",
-          ]   
-        }
-      
-    }""")
+        begin_tf_and_write_providers(name)
+
+        for i, c in enumerate(c_names):
+            write_container(name + '_' + c, usernames, passwords, g_files[i], s_files[i], u_files[i])
+
+
         os.system('terraform init')
         os.chdir('../../..')
 

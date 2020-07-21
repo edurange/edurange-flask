@@ -24,61 +24,41 @@
     <link
             rel="stylesheet"
             type="text/css"
-            href="{{ static_url_for('static', filename='build/main_css.bundle.css') }}"
+            href="{{ url_for('static', filename='build/main_css.bundle.css') }}"
     />
-
-    <style type="text/css">
-        #pageWrapper {
-            overflow-x: hidden;
-            margin-top: -4px;
-        }
-        #sidebar {
-            margin-left: -15rem;
-            transition: margin .25s ease-out;
-        }
-        #sidebar .list-group {
-            width: 15rem;
-        }
-        #pageWrapper.visible #sidebar {
-            margin-left: 0;
-        }
-        /*#pageWrapper.visible #pageContent{
-            margin-left: -15rem;
-            transition: margin 0s;
-        }*/
-        #pageContent {
-            min-width: 100vw;
-        }
-    </style>
 
     {% block css %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
-{% block body %} {% with form=form %} {% include "nav.html" %} {% endwith %}
-    <div class="d-flex visible" id="pageWrapper">
+    {% block body %}
+    {% with role=get_role() %}
+        {% with nav=navigation(role) %}
+            {% with form=form if role is none %} <!-- None role == not logged in, push the login form -->
+                {% include "nav.html" %}
+            {% endwith %}
         {% include "sidebar.html" %}
+        {% endwith %}
         <header>{% block header %}{% endblock %}</header>
 
         <main role="main">
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-                <div class="row">
-                    <div class="col-md-12">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-                                {{ message }}
-                            </div><!-- end .alert -->
-                        {% endfor %}
-                    </div><!-- end col-md -->
-                </div><!-- end row -->
+            <div class="row" id="flashed">
+                <div class="col-md-12">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+                        {{ message }}
+                    </div><!-- end .alert -->
+                    {% endfor %}
+                </div><!-- end col-md -->
+            </div><!-- end row -->
             {% endif %} {% endwith %}
-            <div id="pageContent">{% block content %}{% endblock %}</div>
+            {% block content %}{% endblock %}
         </main>
-    </div>
+    {% endwith %}
     {% include "footer.html" %}
-
+    {% endblock %}
     <!-- JavaScript at the bottom for fast page loading -->
-    <script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
     <script src="/static/build/main_js.bundle.js"></script>
     {% block js %}
         <script>
@@ -107,8 +87,72 @@
                 return 0
             }
 
-        </script>
-    {% endblock %}
+      /* Event listener to toggle sidebar visibility when "Navigate" button is clicked */
+      $("#toggleSidebar").on("click", function() {
+        $("#sidebar").toggleClass("hidden");
+      });
+
+      /* Event listener to add selected user to uids list */
+      $("button.selector").on("click", function() {
+        var uid = this.id.slice(3);
+        $(this).toggleClass("btn-outline-dark btn-dark");
+        $("#selection").val(function(index, value) {
+          if (value.includes(uid)) {
+            return value.replace(uid + ',', '');
+          } else {
+            return value + uid + ',';
+          }
+        });
+      });
+
+      /* Event listener to select all students when "select all" button is pressed */
+      $("#selectAll").on("click", function() {
+        $("button.selector.btn-outline-dark").trigger("click");
+      });
+
+      $("#clearAll").on("click", function() {
+        $("button.selector.btn-dark").trigger("click");
+      });
+
+      $(document).ready(function() {
+        /* AJAX request for add/removing users from a group */
+        $(".user-button").on("click", function(e) { //add or remove users buttons
+          var csrf_token; var add; var uids; var groups;
+          e.preventDefault(); //prevent form submit
+          csrf_token = $("#csrf_token").val();
+          add = $(this).val();
+          groups = $("#groupSel").val();
+          uids = $("#selection").val();
+          request = $.ajax({
+            type : 'POST',
+            url : "{{ url_for('dashboard.admin') }}",
+            data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
+          });
+          request.done(function(response) {
+            var $data = $(response).find("#" + groups.replace(/ /g, '') + "-table");
+            var table = $("#" + groups.replace(/ /g, '') + "-table");
+            table.replaceWith($data);
+            var flash = $("#flashed");
+            if (flash.length) { //if #flashed exists
+              flash.replaceWith($(response).find("#flashed"));
+            }
+            else {
+              $("#beforeUsers").before($(response).find("#flashed"));
+            } //flash messages above manage users table
+          });
+          request.fail(function(response) {
+            alert("Something went wrong!");
+          });
+        });
+      });
+
+      /* Store sidebar state in client session storage upon page reload/redirect */
+      $(window).on('unload', function() {
+        sessionStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
+      });
+
+    </script>
+
 {% endblock %}
 </body>
 </html>

@@ -1,0 +1,4 @@
+[submodule "scenarios/prod/metasploitable"]
+	url = https://github.com/edurange/scenario-metasploitable
+[submodule "scenarios/prod/treasure_hunt"]
+	url = https://github.com/edurange/scenario-treasure-hunt

@@ -7,13 +7,23 @@ from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstru
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
 from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr
+    tempMaker, checkAuth, checkEnr, check_role_view
 from ..form_utils import process_request
-from ..scenario_utils import populate_catalog
+from ..scenario_utils import populate_catalog, identify_type
 from edurange_refactored.extensions import db
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
+
+@blueprint.route("/set_view", methods=['GET'])
+@login_required
+def set_view():
+    if check_role_view(request.args['mode']):
+        session['viewMode'] = request.args['mode']
+        return redirect(url_for('public.home'))
+    else:
+        session.pop('viewMode', None)
+        return redirect(url_for('public.home'))
 
 @blueprint.route("/")
 @login_required
@@ -75,7 +85,7 @@ def make_scenario():
     if form.validate_on_submit():
         db_ses = db.session
         name = request.form.get('scenario_name')
-        infoFile = './scenarios/prod/' + name + '/' + name + '.yml'
+        type = identify_type(request.form)
         owner = session.get('_user_id')
         group = request.form.get('scenario_group')
 
@@ -84,10 +94,8 @@ def make_scenario():
 
         print(students)
         print(students)
-        CreateScenarioTask.delay(name, infoFile, owner, students)
-
-        flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}"
-              .format(students), "success")
+        CreateScenarioTask.delay(name, type, owner, students)
+        flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
     else:
         flash_errors(form)
 
@@ -170,13 +178,7 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = []
-
-        groupUsers = db_ses.query(User.id, User.username, User.email, StudentGroups, GroupUsers)\
-            .filter(StudentGroups.name == name).filter(StudentGroups.id == GroupUsers.group_id)\
-            .filter(GroupUsers.user_id == User.id)
-
-        users_per_group[name].append(groupUsers)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
 
     if request.method == 'GET':
         groupMaker = GroupForm()
@@ -189,6 +191,12 @@ def admin():
                                students=students, instructors=instructors, usersPGroup=users_per_group)
 
     elif request.method == 'POST':
-        process_request(request.form)
-        return redirect(url_for('dashboard.admin'))
-
+        ajax = process_request(request.form)
+        if ajax:
+            groupMaker = GroupForm()
+            userAdder = addUsersForm()
+            instructorManager = manageInstructorForm()
+            userDropper = deleteStudentForm()
+            return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
+        else:
+            return redirect(url_for('dashboard.admin'))

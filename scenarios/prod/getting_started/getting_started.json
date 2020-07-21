@@ -1,0 +1,27 @@
+{
+	"containers": [{
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [
+			],
+			"user_files": [
+			]
+		}]
+	}, 
+	{
+	  "name" : "other",
+	  "files" : [{
+	    "global_files": [
+	    ],
+	    "system_files":[
+	      "thing"
+	    ],
+	    "user_files": [
+	      "testing"
+	    ]
+	  }]
+	}]
+}
