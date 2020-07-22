@@ -108,8 +108,8 @@ def identify_type(form):
     return found_type
 
 def identify_state(name, state):
-    if state == 0:
-        return "Scenario is Not Running"
+    if state == 'Stopped':
+        return {"Nothing to show": "Scenario is Not Running"}
     addresses = {}
     c_names = []
     if os.path.isdir(os.path.join('./data/tmp/', name)):
