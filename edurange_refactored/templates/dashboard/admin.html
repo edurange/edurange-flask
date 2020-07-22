@@ -79,7 +79,7 @@
                     {{ userAdder.csrf_token}}
                     <button name="add" class="btn btn-dark user-button" type="submit" value="true">Add Selected To</button>
                     or
-                    <button name="add" class="btn btn-dark user-button" type="submit" value="false">Remove Selected From</button>
+                    <button name="remove" class="btn btn-dark user-button" type="submit" value="false">Remove Selected From</button>
                     <select name="groups" title="Group" id="groupSel">
                         {% for group in groups %}
                             <option value="{{group.name}}" SELECTED>{{group.name}}</option>

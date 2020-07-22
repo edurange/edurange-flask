@@ -1,5 +1,0 @@
-#!/bin/bash
-set -eoux pipefail
-awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
-
-echo 'ClientAliveInterval 60' | sudo tee --append /etc/ssh/sshd_config

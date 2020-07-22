@@ -125,7 +125,7 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
     uA = addUsersForm(request.form)
     current_app.logger.info("Test")
-    if request.form.get('add') is not None:
+    if request.form.get('add') == 'true':
         if uA.validate_on_submit():
             db_ses = db.session
 
@@ -153,7 +153,7 @@ def process_addUser():  # Form to add or remove selected students from a selecte
         else:
             flash_errors(uA)
 
-    elif request.form.get('remove') is not None:
+    elif request.form.get('add') == 'false':
         if uA.validate_on_submit():
             db_ses = db.session
             group = uA.groups.data
