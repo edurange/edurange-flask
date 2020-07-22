@@ -28,6 +28,6 @@ chown $player -R $studentDIR/permissions/
 # Set python to run as root
 #chown root:root $studentDIR/manipulate/manflag.pyc
 #chmod 4775 $studentDIR/manipulate/manflag.pyc
-#echo "$player ALL=(ALL) NOPASSWD: /usr/bin/perflag" >> /etc/sudoers
-#echo "$player ALL=(ALL) NOPASSWD: /usr/bin/manflag" >> /etc/sudoers
+echo "$player ALL=(ALL) NOPASSWD: /usr/bin/perflag" >> /etc/sudoers
+echo "$player ALL=(ALL) NOPASSWD: /usr/bin/manflag" >> /etc/sudoers
 #echo "$player ALL = (root) NOPASSWD: $studentDIR/permissions/perflag.pyc" >> /etc/sudoers

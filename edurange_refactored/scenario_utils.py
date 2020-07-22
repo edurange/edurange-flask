@@ -224,6 +224,13 @@ def write_prep_user(tf, filenames):
         )
 
 
+def write_run_updates(tf):
+    tf.write("""
+      "sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes",
+      "apt-get update",
+      "apt-get -y install locales sudo man-db manpages-posix",
+    """)
+
 def begin_code_block(tf):
     tf.write(
         """
@@ -293,6 +300,8 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
         write_user_files(tf, s_type, u_files)
 
         begin_code_block(tf)
+
+        write_run_updates(tf)
 
         write_users(tf, usernames, passwords)
 
