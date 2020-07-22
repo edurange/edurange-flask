@@ -4,7 +4,7 @@ from . import tasks
 from .user.models import User, StudentGroups, GroupUsers
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors
-from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm,\
+from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
     deleteStudentForm
 from edurange_refactored.extensions import db
 
@@ -123,52 +123,33 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
     uA = addUsersForm(request.form)
-    if request.form.get('add') == 'true':
-        if uA.validate_on_submit():
-            db_ses = db.session
 
-            if len(uA.groups.data) < 1:
-                flash('A group must be selected')
-                return
+    current_app.logger.info("Test")
+    if uA.validate_on_submit():
+        db_ses = db.session
+        group = uA.groups.data
+        gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
 
-            group = uA.groups.data
+        uids = uA.uids.data  # string form
+        if uids[-1] == ',':
+            uids = uids[:-1]  # slice last comma to avoid empty string after string split
+        uids = uids.split(',')
 
+        if request.form.get('add') == 'true':
+            current_app.logger.info("Test2")
 
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
-            uids = uA.uids.data  # string form
-            if uids[-1] == ',':
-                uids = uids[:-1]  # slice last comma to avoid empty string after string split
-            uids = uids.split(',')
-            for i, uid in reversed(list(enumerate(uids))):
-                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid).first()
-                if check is not None:
+            for i, uid in enumerate(uids):
+                check = db_ses.query(GroupUsers.id).filter(GroupUsers.user_id == uid)
+                if any(check):
                     flash('User already in group.', 'error')
-                    uids.pop(i)
-                    pass
+                    uids.pop(i - 1)
                 else:
                     GroupUsers.create(user_id=uid, group_id=gid)
+
             flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            return True # this was an ajax request
-        else:
-            flash_errors(uA)
-            return True
 
-    elif request.form.get('add') == 'false':
-        if uA.validate_on_submit():
-            db_ses = db.session
-
-            if len(uA.groups.data) < 1:
-                flash('A group must be selected')
-                return
-
-            group = uA.groups.data
-
-            gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
-            uids = uA.uids.data  # string form
-            if uids[-1] == ',':
-                uids = uids[:-1]  # slice last comma to avoid empty string after string split
-
-            uids = uids.split(',')
+        elif request.form.get('add') == 'false':
+            miss = 0  # count user ids that are not in group
 
             for i, uid in reversed(list(enumerate(uids))):
                 check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid and GroupUsers.id == gid).first()
@@ -177,8 +158,6 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 else:
                     uids.pop(i)
 
-            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            return True # this was an ajax request
-        else:
-            flash_errors(uA)
-            return True
+            flash('Removed {0} users from group {1}.'.format(len(uids) - miss, group))
+    else:
+        flash_errors(uA)

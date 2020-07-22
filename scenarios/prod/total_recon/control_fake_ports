@@ -1,4 +1,0 @@
-#!/bin/bash
-%{ for port in ports ~}
-nohup nc -lk ${port} &>/dev/null &
-%{ endfor ~}

@@ -148,14 +148,6 @@ class Scenario(object):
         self.created_at = created_at
         self.status = status
 
-# ----------------------------------------------------------
-
-# WARNING:
-# This check is actually vulnerable to attacks.
-# Since we're retrieving user id from the session request variables, it can be spoofed
-# Although it requires knowledge of the admin user_id #, it will often just be '1'
-# TODO: Harden check_admin(), check_instructor(), checkAuth(), and checkEnr()
-
 
 def check_admin():
     number = current_user.id
