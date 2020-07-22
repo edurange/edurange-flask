@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-2 mb-2">
         <h1>User and Group Management</h1>
     </div>
 
@@ -62,14 +62,10 @@
     <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
         <div class="card-header container-fluid p-4" id="headingUsers">
           <div class="row">
-             <!--<div class="col-md-10">-->
-                <!-- <h5 class="mb-0"> -->
-                    <h2> <i class="fa fa-user"></i> Manage Students </h2>
-                    <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                      <i class="fa fa-caret-down"></i>
-                    </button>
-                <!-- </h5> -->
-            <!--  </div> -->
+              <h2> <i class="fa fa-user"></i> Manage Students
+              <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                  <i class="fa fa-caret-down"></i>
+              </button></h2>
             </div>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
@@ -77,22 +73,22 @@
                 <!--user table stuff-->
                 <form id="addGroupUsers" method="POST" action="" role="form">
                     {{ userAdder.csrf_token}}
-                    <button name="add" class="btn btn-dark user-button" type="submit" value="true">Add Selected To</button>
-                    or
-                    <button name="remove" class="btn btn-dark user-button" type="submit" value="false">Remove Selected From</button>
-                    <select name="groups" title="Group" id="groupSel">
+                    <div class="row mb-3 mr-3 ">
+                      <h4 class="ml-3">Groups:</h4>
+                    <select name="groups" title="Group" id="groupSel" class="ml-3">
                         {% for group in groups %}
-                            <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+                          <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                         {% endfor %}
                     </select><p></p>
-                    <p></p>
-
-                    <input class="form-control" name="uids" type="text" id="selection" placeholder="User ID's..">
-
+                    </div>
+                    <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
+                    <div class="btn-group-vertical float-right">
+                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">Add Students to Group:</button>
+                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="false">Remove Students From Group:</button><p></p>
+                    </div>
                     <p></p>
                 </form>
                 <div>
-
                     <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -124,14 +120,14 @@
 
     <div class="card mb-2 mt-2"> <!--instructors table collapse-->
         <div class="card-header" id="headingInstructors">
-            <div class="row">
-              <h5 class="mb-0">
-                  <h2> <i class="fa fa-user"></i> All Instructors </h2>
-                  <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                      <i class="fa fa-caret-down"></i>
-                  </button>
-              </h5>
-            </div>
+          <div class="row">
+            <h5 class="mb-0">
+                <h2> <i class="fa fa-user"></i> All Instructors
+                <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                    <i class="fa fa-caret-down"></i>
+                </button> </h2>
+            </h5>
+          </div>
         </div>
         <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
             <div class="card-body">
@@ -166,53 +162,110 @@
     <div class="card mb-2 mt-2"> <!-- groups table collapse -->
         <div class="card-header" id="headingGroups">
             <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Groups </h2>
+                <h2><i class="fa fa-user"></i> All Groups </h2>
             </h5>
-          </div>
-            <div class="card-body">
-                <!-- groups table stuff -->
-                {% for group in groups if not group.hidden %}
-                <div>
-                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false" aria-controls="{{ group.name.replace(' ', '') }}-table">
-                      {{ group.name }} <i class="fa fa-caret-down"></i>
-                </button>
-                </div>
-                <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
-                    <p></p>
-                    <div>
-
-                        <table class="table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th> ID # </th>
-                                <th> Username </th>
-                                <th> Email </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for student in usersPGroup[group.name] %}
-                            <tr>
-                                <td> {{ student.id }}</td>
-                                <td> {{ student.username }}</td>
-                                <td> {{ student.email }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                {% endfor %}
-                <!-- groups table stuff -->
-            </div>
         </div>
-  </div> <!--groups table collapse -->
-
-      </div>
-   </div>
-  </div>
-
+        <div class="card-body">
+            <!-- groups table stuff -->
+            {% for group in groups if not group.hidden %}
+            <div>
+                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
+                        data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
+                        aria-controls="{{ group.name.replace(' ', '') }}-table">
+                    {{ group.name }} <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers"
+                 data-parent="#accordion">
+                <p></p>
+                <div>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th> ID #</th>
+                            <th> Username</th>
+                            <th> Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for student in usersPGroup[group.name] %}
+                        <tr>
+                            <td> {{ student.id }}</td>
+                            <td> {{ student.username }}</td>
+                            <td> {{ student.email }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- groups table stuff -->
+        </div>
     </div>
-</div>
+</div> <!--groups table collapse -->
+
+</div> <!-- end of accordian container -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+  /* Event listener to add selected user to uids list */
+  $("button.selector").on("click", function() {
+    var uid = this.id.slice(3);
+    $(this).toggleClass("btn-outline-dark btn-dark");
+    $("#selection").val(function(index, value) {
+      if (value.includes(uid)) {
+        return value.replace(uid + ',', '');
+      } else {
+        return value + uid + ',';
+      }
+    });
+  });
+
+  /* Event listener to select all students when "select all" button is pressed */
+  $("#selectAll").on("click", function() {
+    $("button.selector.btn-outline-dark").trigger("click");
+  });
+
+  /* Event listener to clear all selected students when "clear" button is pressed */
+  $("#clearAll").on("click", function() {
+    $("button.selector.btn-dark").trigger("click");
+  });
 
 
+  $(document).ready(function() {
+    /* AJAX request for add/removing users from a group */
+    $(".user-button").on("click", function(e) { //add or remove users buttons
+      var csrf_token; var add; var uids; var groups;
+      e.preventDefault(); //prevent form submit
+      csrf_token = $("#csrf_token").val();
+      add = $(this).val();
+      groups = $("#groupSel").val();
+      uids = $("#selection").val();
+      request = $.ajax({
+        type : 'POST',
+        url : "{{ url_for('dashboard.admin') }}",
+        data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
+      });
+      request.done(function(response) {
+        var $data = $(response).find("#" + groups.replace(/ /g, '') + "-table");
+        var table = $("#" + groups.replace(/ /g, '') + "-table");
+        table.replaceWith($data);
+        var flash = $("#flashed");
+        if (flash.length) { //if #flashed exists
+          flash.replaceWith($(response).find("#flashed"));
+        }
+        else {
+          $("#beforeUsers").before($(response).find("#flashed"));
+        } //flash messages above manage users table
+      });
+      request.fail(function(response) {
+        alert("Something went wrong!");
+      });
+    });
+  });
+</script>
 {% endblock %}
