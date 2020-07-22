@@ -107,6 +107,37 @@ def identify_type(form):
 
     return found_type
 
+def identify_state(name, state):
+    if state == 0:
+        return "Scenario is Not Running"
+    addresses = {}
+    c_names = []
+    if os.path.isdir(os.path.join('./data/tmp/', name)):
+        try:
+            state_file = open('./data/tmp/' + name + '/terraform.tfstate', 'r')
+            data = json.load(state_file)
+
+            containers = item_generator(data, 'name')
+            for c in list(containers):
+                if c != 'string' and c not in c_names:
+                    c_names.append(c)
+
+            public_ips = item_generator(data, 'ip_address_public')
+            miss = 0
+            for i, a in enumerate(list(public_ips)):
+                if a != 'string':
+                    addresses[c_names[i - miss]] = a
+                else:
+                    miss += 1
+
+
+            return addresses
+
+        except FileNotFoundError:
+            raise Exception(FileNotFoundError)
+
+
+    pass
 
 def begin_tf_and_write_providers(name):
     with open(name + '.tf', 'w') as tf:

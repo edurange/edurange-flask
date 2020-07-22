@@ -9,7 +9,7 @@ from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
     tempMaker, checkAuth, checkEnr, check_role_view
 from ..form_utils import process_request
-from ..scenario_utils import populate_catalog, identify_type
+from ..scenario_utils import populate_catalog, identify_type, identify_state
 from edurange_refactored.extensions import db
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
@@ -128,9 +128,9 @@ def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
             s, o, b, d, t, n = tempMaker(i, "i")
-            p = "00000"
+            address = identify_state(n, s)
             pw = "_"
-            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, p=p, pw=pw)
+            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, pw=pw, add=address)
         else:
             return abort(404)
     else:
