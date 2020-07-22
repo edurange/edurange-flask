@@ -52,30 +52,48 @@ class RegisterForm(FlaskForm):
 
 
 # ---------------------------------- (unused?)
-class EmailForm(FlaskForm):
-    """Email Form."""
-    subject = StringField(
-        "Subject", validators=[DataRequired()]
-    )
-    to = StringField(
-        "Recipient", validators=[DataRequired()]
-    )
-    body = StringField(
-        "Body", validators=[DataRequired()]
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(EmailForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(EmailForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
+# class EmailForm(FlaskForm):
+#     """Email Form."""
+#     subject = StringField(
+#         "Subject", validators=[DataRequired()]
+#     )
+#     to = StringField(
+#         "Recipient", validators=[DataRequired()]
+#     )
+#     body = StringField(
+#         "Body", validators=[DataRequired()]
+#     )
+#
+#     def __init__(self, *args, **kwargs):
+#         super(EmailForm, self).__init__(*args, **kwargs)
+#
+#     def validate(self):
+#         initial_validation = super(EmailForm, self).validate()
+#         if not initial_validation:
+#             return False
+#         return True
 # -----------------------------------------------------
 
 
-class GroupForm(FlaskForm):
+# ----------------------------------------(unused?)
+# class GroupFinderForm(FlaskForm):
+#     """Finds Existing Group"""
+#     group = StringField(
+#         "Group Name", validators=[DataRequired()]
+#     )
+#
+#     def __init__(self, *args, **kwargs):
+#         super(GroupFinderForm, self).__init__(*args, **kwargs)
+#
+#     def validate(self):
+#         initial_validation = super(GroupFinderForm, self).validate()
+#         if not initial_validation:
+#             return False
+#         return True
+# -------------------------------------------
+
+
+class GroupForm(FlaskForm):  # type1
     """Create New Group Form"""
     name = StringField(
         "Group Name", validators=[DataRequired()]
@@ -95,25 +113,7 @@ class GroupForm(FlaskForm):
         return True
 
 
-# ----------------------------------------(unused?)
-class GroupFinderForm(FlaskForm):
-    """Finds Existing Group"""
-    group = StringField(
-        "Group Name", validators=[DataRequired()]
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(GroupFinderForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(GroupFinderForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-# -------------------------------------------
-
-
-class addUsersForm(FlaskForm):
+class addUsersForm(FlaskForm):  # type2
     """Adds selected users to a group"""
     uids = StringField(
         'User IDs', validators=[DataRequired()]
@@ -134,7 +134,7 @@ class addUsersForm(FlaskForm):
         return True
 
 
-class manageInstructorForm(FlaskForm):
+class manageInstructorForm(FlaskForm):  # type1
     """Elevates user to an instructor"""
     uName = StringField(
         "Username", validators=[DataRequired()]
@@ -149,7 +149,8 @@ class manageInstructorForm(FlaskForm):
             return False
         return True
 
-class makeScenarioForm(FlaskForm):
+
+class makeScenarioForm(FlaskForm):  # type2
     """Creates a Scenario"""
     scenario_name = StringField(
         "Scenario", validators=[DataRequired()]
@@ -168,7 +169,7 @@ class makeScenarioForm(FlaskForm):
             return False
         return True
 
-class modScenarioForm(FlaskForm):
+class modScenarioForm(FlaskForm):  # type2
     """Creates a Scenario"""
     sid = StringField(
         "Scenario ID", validators=[DataRequired()]
@@ -187,7 +188,7 @@ class modScenarioForm(FlaskForm):
         return True
 
 
-class deleteStudentForm(FlaskForm):
+class deleteStudentForm(FlaskForm):  # type1
     """Deletes a student from the database"""
     stuName = StringField(
         "Username", validators=[DataRequired()]
@@ -201,3 +202,45 @@ class deleteStudentForm(FlaskForm):
         if not initial_validation:
             return False
         return True
+
+
+# -
+
+
+class type1Form(FlaskForm):                 # GroupForm,    manageInstructorForm,   deleteStudentForm
+    """Type 1 form, one string field"""
+    string1 = StringField(
+        "string1", validators=[DataRequired()]
+    )                                       # name,         uName,                  stuName
+
+    def __init__(self, *args, **kwargs):
+        super(type1Form, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(type1Form, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+class type2Form(FlaskForm):                 # addUsersForm, makeScenarioForm,   modScenarioForm
+    """Type 2 form, two string fields"""
+    string1 = StringField(
+        "string1", validators=[DataRequired()]
+    )                                       # uids,         scenario_name,      sid
+
+    string2 = StringField(
+        "string2", validators=[DataRequired()]
+    )                                       # groups,       scenario_group,     mod_scenario
+
+    def __init__(self, *args, **kwargs):
+        super(type2Form, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(type2Form, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+# -

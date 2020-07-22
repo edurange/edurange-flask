@@ -5,7 +5,7 @@ from .user.models import User, StudentGroups, GroupUsers
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors
 from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm,\
-    deleteStudentForm
+    deleteStudentForm  # , type1Form, type2Form
 from edurange_refactored.extensions import db
 
 import os
@@ -21,7 +21,8 @@ def process_request(form):  # Input must be request.form
         "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
         "GroupForm":                ["csrf_token", "name", "create"],
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
-        "manageInstructorForm":     ["csrf_token", "uName", "promote", "demote"],
+        "promoteInstructorForm":    ["csrf_token", "uName", "promote"],
+        "demoteInstructorForm":     ["csrf_token", "uName", "demote"],
         "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
         "removeUsersForm":          ["csrf_token", "groups", "remove", "uids"]
     }
@@ -41,11 +42,12 @@ def process_request(form):  # Input must be request.form
     # print(f)
 
     process_switch = {
-        "modScenarioForm":         process_scenarioModder,
+        "modScenarioForm":          process_scenarioModder,
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
         "deleteStudentForm":        process_delStu,
-        "manageInstructorForm":     process_manInst,
+        "promoteInstructorForm":    process_manInst,
+        "demoteInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
         "removeUsersForm":          process_addUser
     }
@@ -53,10 +55,10 @@ def process_request(form):  # Input must be request.form
 
 
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
-    sM = modScenarioForm(request.form)
+    sM = modScenarioForm(request.form)  # type2Form(request.form)  #
     if sM.validate_on_submit():
-        sid = sM.sid.data
-        action = sM.mod_scenario.data
+        sid = sM.sid.data  # string1.data  #
+        action = sM.mod_scenario.data  # string2.data  #
 
         return {"Start": tasks.start,
                 "Stop": tasks.stop,
@@ -75,19 +77,19 @@ def process_scenarioStarter():  # Form submitted to start or stop an existing sc
 
 
 def process_groupMaker():  # Form to create a new group |  # GroupForm
-    gM = GroupForm(request.form)
+    gM = GroupForm(request.form)  # type1Form(request.form)  #
     if gM.validate_on_submit():
         code = grc()
-        name = gM.name.data
+        name = gM.name.data  # string1.data  #
         StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
         flash('Created group {0}'.format(name))
 
 
 def process_manInst():  # Form to give a specified user instructor permissions |  # manageInstructorForm
-    mI = manageInstructorForm(request.form)
+    mI = manageInstructorForm(request.form)  # type1Form(request.form)  #
     if request.form.get('promote') is not None:
         if mI.validate_on_submit():
-            uName = mI.uName.data
+            uName = mI.uName.data  # string1.data  #
             user = User.query.filter_by(username=uName).first()
             user.update(is_instructor=True)
 
@@ -97,7 +99,7 @@ def process_manInst():  # Form to give a specified user instructor permissions |
 
     elif request.form.get('demote') is not None:
         if mI.validate_on_submit():
-            uName = mI.uName.data
+            uName = mI.uName.data  # string1.data  #
             user = User.query.filter_by(username=uName).first()
             user.update(is_instructor=False)
 
@@ -108,9 +110,9 @@ def process_manInst():  # Form to give a specified user instructor permissions |
 
 def process_delStu():  # WIP Form to delete a specified student from the database |  # deleteStudentForm
     db_ses = db.session
-    uD = deleteStudentForm(request.form)
+    uD = deleteStudentForm(request.form)  # type1Form(request.form)  #
     if uD.validate_on_submit():
-        stuName = uD.stuName.data
+        stuName = uD.stuName.data  # string1.data  #
         user = User.query.filter_by(username=stuName).first()
         stuId = db_ses.query(User.id).filter(User.username == stuName)
         gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)
@@ -123,7 +125,7 @@ def process_delStu():  # WIP Form to delete a specified student from the databas
 
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
-    uA = addUsersForm(request.form)
+    uA = addUsersForm(request.form)  # type2Form(request.form)  #
     current_app.logger.info("Test")
     if request.form.get('add') is not None:
         if uA.validate_on_submit():
@@ -132,12 +134,12 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             if len(uA.groups.data) < 1:
                 flash('A group must be selected')
 
-            group = uA.groups.data
+            group = uA.groups.data  # string2.data  #
 
             current_app.logger.info("Test2")
 
             gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
-            uids = uA.uids.data  # string form
+            uids = uA.uids.data  # string1.data #   # string form
             if uids[-1] == ',':
                 uids = uids[:-1]  # slice last comma to avoid empty string after string split
             uids = uids.split(',')
@@ -156,10 +158,10 @@ def process_addUser():  # Form to add or remove selected students from a selecte
     elif request.form.get('remove') is not None:
         if uA.validate_on_submit():
             db_ses = db.session
-            group = uA.groups.data
+            group = uA.groups.data  # string2.data  #
 
             gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group)
-            uids = uA.uids.data  # string form
+            uids = uA.uids.data  # string1.data  #   # string form
             if uids[-1] == ',':
                 uids = uids[:-1]  # slice last comma to avoid empty string after string split
 
