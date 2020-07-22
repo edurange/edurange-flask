@@ -94,8 +94,8 @@
 
           function refresh() {
             console.log("refreshing");
-            var index = 0;
-            var sort_mode = 0;
+            var index = 3;
+            var sort_mode = 2;
 
             var x = document.getElementById("s_table").rows[0].cells
             for (var i = 0; i < x.length; i++) {
@@ -111,13 +111,15 @@
             }
 
             $('#body').load('/dashboard/scenarios #scenarios', function() {
+              $('#body').hide()
               sort(index, sort_mode);
+              $('#body').show()
             });
             return 0
           }
 
           $(document).ready( function () {
-            $("table").stupidtable()
+            sort(3, 2)
             window.setInterval( function() {
               refresh();
             }, 5000);

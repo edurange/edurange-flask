@@ -2,6 +2,7 @@ import os
 import yaml
 import json
 
+from flask import flash
 
 known_types = [
     'Ssh_Inception',
@@ -133,11 +134,9 @@ def identify_state(name, state):
 
             return addresses
 
-        except FileNotFoundError:
-            raise Exception(FileNotFoundError)
+        except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+            return {"An error occurred": "Try Refreshing"}
 
-
-    pass
 
 def begin_tf_and_write_providers(name):
     with open(name + '.tf', 'w') as tf:
