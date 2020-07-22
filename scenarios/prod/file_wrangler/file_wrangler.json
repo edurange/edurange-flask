@@ -1,0 +1,21 @@
+{
+	"containers": {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [
+				"setup"
+			],
+			"user_files": [
+				"setup_player",
+				"codes",
+				"files",
+				"motd",
+				"python"
+			]
+		}]
+	}
+}
+
