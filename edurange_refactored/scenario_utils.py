@@ -15,6 +15,7 @@ known_types = [
     'Elf_Infection'
 ]
 
+
 class CatalogEntry:
     def __init__(self, name, description):
         self.name = name
@@ -35,6 +36,7 @@ def populate_catalog():
     for i in range(len(scenarios)):
         entries.append(CatalogEntry(scenarios[i].title(), descriptions[i]))
     return entries
+
 
 def item_generator(json_input, lookup_key):
     if isinstance(json_input, dict):
@@ -96,9 +98,6 @@ def gather_files(s_type, logger):
         raise Exception(f'Could not correctly identify scenario type')
 
 
-
-
-
 def identify_type(form):
     found_type = ''
 
@@ -107,6 +106,7 @@ def identify_type(form):
             found_type = s_type
 
     return found_type
+
 
 def identify_state(name, state):
     if state == 'Stopped':
@@ -131,11 +131,12 @@ def identify_state(name, state):
                 else:
                     miss += 1
 
-
             return addresses
 
-        except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
-            return {"An error occurred": "Try Refreshing"}
+        except FileNotFoundError:
+            return {"No state file found": "Has the scenario been started at least once?"}
+        except json.decoder.JSONDecodeError:
+            return {"State file is still being written": "Try Refreshing"}
 
 
 def begin_tf_and_write_providers(name):
@@ -147,11 +148,31 @@ provider "template" {}
 """)
 
 
-def write_global_files(tf, filenames):
+def write_global_files(tf, s_type, filenames):
     for f in filenames:
         tf.write("""
   provisioner "file" {
-    source      = "${path.module}/../../../scenarios/""" + f + "\"" + "\n" + """
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + "\"" + "\n" + """
+    destination = """ + "\"/" + f + "\"\n" + """
+  }
+""")
+
+
+def write_system_files(tf, s_type, filenames):
+    for f in filenames:
+        tf.write("""
+  provisioner "file" {
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + "\"" + "\n" + """
+    destination = """ + "\"/" + f + "\"\n" + """
+  }
+""")
+
+
+def write_user_files(tf, s_type, filenames):
+    for f in filenames:
+        tf.write("""
+  provisioner "file" {
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + "\"" + "\n" + """
     destination = """ + "\"/" + f + "\"\n" + """
   }
 """)
@@ -161,9 +182,15 @@ def write_users(tf, usernames, passwords):
     for i, name in enumerate(usernames):
         tf.write("""
       "useradd --home-dir /home/""" + name
-            + """ --create-home --shell /bin/bash --password $(echo """ + passwords[i]
-            + """ | openssl passwd -1 -stdin) """ + name + "\","
+                 + """ --create-home --shell /bin/bash --password $(echo """ + passwords[i]
+                 + """ | openssl passwd -1 -stdin) """ + name + "\","
                  )
+
+
+def write_make_dir(tf):
+    tf.write("""
+      "mkdir /home/ubuntu",    
+    """)
 
 
 def write_run_global(tf, filenames):
@@ -172,6 +199,27 @@ def write_run_global(tf, filenames):
             """
       "chmod +x /""" + f + "\"" + """,
       "mv /""" + f + " /usr/bin/" + f + "\"" + """,
+"""
+        )
+
+
+def write_run_system(tf, filenames):
+    for f in filenames:
+        tf.write(
+            """
+      "chmod +x /""" + f + "\"" + """,
+      "mv /""" + f + " /home/ubuntu/" + f + "\"" + """,
+      "/home/ubuntu/""" + f + "\"" + """,
+"""
+        )
+
+
+def write_prep_user(tf, filenames):
+    for f in filenames:
+        tf.write(
+            """
+      "chmod +rwx /""" + f + "\"" + """,
+      "cp -R /""" + f + " /home/ubuntu/" + f + "\"" + """,
 """
         )
 
@@ -194,6 +242,7 @@ def end_code_block(tf):
 }
 """)
 
+
 def write_output_block(name, c_names):
     with open(name + '.tf', 'w') as tf:
         for c in c_names:
@@ -214,7 +263,7 @@ def write_output_block(name, c_names):
             )
 
 
-def write_container(name, usernames, passwords, g_files, s_files, u_files):
+def write_container(name, s_type, usernames, passwords, g_files, s_files, u_files):
     with open(name + '.tf', 'a') as tf:
         tf.write(
             """ 
@@ -236,15 +285,23 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
   }
         """
         )
+        s_type = 'prod/' + s_type
+        write_global_files(tf, s_type, g_files)
 
-        write_global_files(tf, g_files)
+        write_system_files(tf, s_type, s_files)
+
+        write_user_files(tf, s_type, u_files)
 
         begin_code_block(tf)
 
         write_users(tf, usernames, passwords)
 
+        write_make_dir(tf)
+
         write_run_global(tf, g_files)
 
+        write_prep_user(tf, u_files)
+
+        write_run_system(tf, s_files)
+
         end_code_block(tf)
-
-

@@ -118,7 +118,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         begin_tf_and_write_providers(name)
 
         for i, c in enumerate(c_names):
-            write_container(name + '_' + c, usernames, passwords, g_files[i], s_files[i], u_files[i])
+            write_container(name + '_' + c, s_type, usernames, passwords, g_files[i], s_files[i], u_files[i])
 
         write_output_block(name, c_names)
 
