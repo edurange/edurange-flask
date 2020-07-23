@@ -5,5 +5,5 @@
 #include <stdio.h>
 
 int main (int argc, char** args) {
-  execv("/root/treasure-hunt/resetUsers", args);
+  execv("/root/resetUsers", args);
 }

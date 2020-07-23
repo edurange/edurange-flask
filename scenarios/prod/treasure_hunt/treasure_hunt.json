@@ -1,0 +1,30 @@
+{
+	"containers": {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [
+				"install"
+			],
+			"user_files": [
+				"resetFakeUsers.c",
+				"resetUsers",
+				"treasure-hunt-users-fall12.tar"
+			],
+			"packages": [
+				"locales",
+				"sudo",
+				"man-db",
+				"manpages-posix",
+				"gcc",
+				"lynx",
+				"tar",
+				"apache2",
+				"apache2-utils"
+			]
+		}]
+	}
+}
+

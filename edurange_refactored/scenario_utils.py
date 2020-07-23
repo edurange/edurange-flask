@@ -235,7 +235,9 @@ def write_run_updates(tf, packages):
     tf.write("""
       "sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes",
       "apt-get update",
-      "apt-get -y install """ + ' '.join(packages) + "\"" + """,
+      "yes | apt-get install debconf-utils",
+      "echo '* libraries/restart-without-asking boolean true' | debconf-set-selections",
+      "yes | apt-get install """ + ' '.join(packages) + "\"" + """,
     """)
 
 def begin_code_block(tf):
