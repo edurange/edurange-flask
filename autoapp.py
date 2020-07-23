@@ -10,6 +10,29 @@ app = create_app()
 app.app_context().push()
 db.create_all()
 
+@app.context_processor
+def utility_processor():
+    def navigation(role, view=session.get('viewMode')):
+        if role in ['a', 'a/i']:
+            views = (('?mode=adminView', 'Admin View'), ('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
+        elif role == 'i':
+            views = (('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
+        else:
+            views = None
+
+        if role in ['a', 'a/i'] and not view:
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.admin', 'fa fa-desktop', 'Admin Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
+        elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.instructor', 'fa fa-desktop', 'Instructor Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
+        elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
+            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.student', 'fa fa-desktop', 'Dashboard'), ('public.about', 'fa fa-info', 'About'))
+        else:
+            links = (('public.home', 'fa fa-home', 'Home'), ('public.about', 'fa fa-info', 'About'))
+
+        return {'views': views, 'links': links} # format: { views: (route path, label to print)  links: (route passed to url_for, icon class, label to print) }
+    return dict(navigation=navigation)
+
+
 def create_admin():
     username=os.environ['USERNAME']
     email=os.environ['EMAIL']
@@ -42,6 +65,22 @@ def Iid():
         return True
     return False
 
+def get_role():
+    if current_user and current_user.is_authenticated:
+        number = current_user.id
+        user = User.query.filter_by(id=number).first()
+        if user.is_admin and user.is_instructor:
+            return 'a/i' # this option may not be needed
+        elif user.is_admin:
+            return 'a'
+        elif user.is_instructor:
+            return 'i'
+        else:
+            return False # false role --> student
+    else:
+        return None # no role --> not logged in
+
+
 admin = User.query.limit(1).all()
 print(admin)
 print(admin)
@@ -56,4 +95,13 @@ if not group:
     create_all_group(a_id)
 app.jinja_env.globals.update(Aid=Aid)
 app.jinja_env.globals.update(Iid=Iid)
+app.jinja_env.globals.update(get_role=get_role)
+
+def format_datetime(value, format="%d %b %Y %I:%M %p"):
+    """Format a date time to (Default): d Mon YYYY HH:MM P"""
+    if value is None:
+        return ""
+    return value.strftime(format)
+
+app.jinja_env.filters['formatdatetime'] = format_datetime
 

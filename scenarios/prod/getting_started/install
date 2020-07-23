@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euxo pipefail
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+/home/ubuntu/setup_home $line letters1 $line
+done</usr/local/src/user_names.txt
+
+mkdir /usr/special/
+mkdir /usr/special/secrets
+cp /home/ubuntu/final-mission/U348bdks8cowFJS8dJF3hHDFj.jpg /usr/special/secrets/
+cp /home/ubuntu/final-mission/.donthackme /usr/special/secrets/
+chmod 666 /usr/special/secrets/U348bdks8cowFJS8dJF3hHDFj.jpg
+chmod 666 /usr/special/secrets/.donthackme
+#rm -rf /home/ubuntu/install
+#rm -rf /home/ubuntu/setup_home
+#rm -rf /home/ubuntu/stuff
+#rm -rf /home/ubuntu/toLearn
+#rm -rf /home/ubuntu/images
+#rm -rf /home/ubuntu/final-mission

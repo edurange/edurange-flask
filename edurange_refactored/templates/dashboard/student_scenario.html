@@ -1,0 +1,26 @@
+<!-- | -->
+
+{% extends "layout.html" %}
+{% block content %}
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h3> Name : {{ n }} </h3>
+            <h3> Type : {{ t }} </h3>
+        </div>
+        <div class="card-body">
+            <p> Description : {{ de }} </p>
+            <p> Status : {{ s }} </p>
+            <p> Instructor : {{ o }} </p>
+            <p> Port : {{ p }} </p>
+            <p> Password : {{ pw }} </p>
+        </div>
+    </div>
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h3> Response Form </h3>
+        </div>
+        <div class="card-body">
+            <p> responses </p>
+        </div>
+    </div>
+{% endblock %}

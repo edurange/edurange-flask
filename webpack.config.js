@@ -34,7 +34,10 @@ module.exports = {
     chunkFilename: "[id].js",
     filename: "[name].bundle.js",
     path: path.join(__dirname, "edurange_refactored", "static", "build"),
-    publicPath: "/static/build/"
+    publicPath: "/static/build/",
+    library: "lib",
+    libraryTarget: "var"
+
   },
   resolve: {
     extensions: [".js", ".jsx", ".css"]

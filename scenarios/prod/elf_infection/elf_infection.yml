@@ -1,0 +1,32 @@
+---
+Name: Elf_Infection
+Description: This game teaches about infected binaries.
+#Roles:
+#- Name: NAT
+#  Packages:
+#  - git
+#  - gdb
+#  - build-essential
+#  - colordiff
+#  Recipes:
+#  - sshd_password_login
+#  - strace
+Groups:
+#- Name: Instructor
+#  Access:
+#  - Instance: strace
+#    Administrator: true
+#    IP_Visible: true
+#  Users:
+#  - Login: instructor
+- Name: Students
+  Instructions: First ssh into strace with the Public IP Address and credentials. Then follow the instructions in the guide.
+  Access:
+  - Instance: Elf
+#    Administrator: false
+    IP_Visible: true
+  Users:
+  - Login: student
+Instances:
+- Name: Elf
+

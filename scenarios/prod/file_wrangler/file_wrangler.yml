@@ -1,0 +1,125 @@
+---
+Name: File_Wrangler
+Description: File Wrangler teaches the basics of files and directories in the Linux command line.
+Instructions: Follow the instructions in EDURange to log in and then follow the prompts in the environment.
+Codelab: https://edurange.github.io/file_wrangler_tutorial/
+Groups:
+- Name: Students
+  Instructions: Log on to the file_wrangler instance and then follow the prompts in the environment.
+  Access:
+  - Instance: file_wrangler
+    IP_Visible: true
+  Users:
+  - Login: student
+  Variables:
+  - Name: manipulate
+    Type: random
+  - Name: permissions
+    Type: random
+Instances:
+- Name: file_wrangler
+Scoring:
+- Text: What is the full path of your directory when you typed the pwd command?
+  Type: String
+  Options: []
+  Values:
+  - Value: /home/${player.login}
+    Points: '1'
+  Order: 1
+  Points: 1
+- Text: What command would you type into the prompt to see the manual entry for the current directory command?
+  Type: String
+  Options: []
+  Values:
+  - Value: 'man pwd'
+    Points: '1'
+  Order: 2
+  Points: 1
+- Text: How many visible files and directories are in the account home directory?
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '12'
+    Points: '1'
+  Order: 3
+  Points: 1
+- Text: What is the option for the ls command that will provide a long listing format? (Don't forget the -!)
+  Type: String
+  Options: []
+  Values:
+  - Value: '-l'
+    Points: '1'
+  Order: 4
+  Points: 1
+- Text: How many directories are there in the account home directory?
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '4'
+    Points: '1'
+  Order: 5
+  Points: 1
+- Text: How many VISIBLE FILES are in the view directory?
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '8'
+    Points: '1'
+  Order: 6
+  Points: 1
+- Text: What is the complete command for listing all files, including hidden files?
+  Type: String
+  Options: []
+  Values:
+  - Value: 'ls -a'
+    Points: '1'
+  Order: 7
+  Points: 1
+- Text: How many HIDDEN FILES are in the view directory?
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '1'
+    Points: '1'
+  Order: 8
+  Points: 1
+- Text: What is the full path of the directory you are in after typing cd ..?
+  Type: String
+  Options: []
+  Values:
+  - Value: "/home/${player.login}"
+    Points: '1'
+  Order: 9
+  Points: 1
+- Text: How many HIDDEN DIRECTORIES are in the home directory? (. and .. don't count)
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '2'
+    Points: '1'
+  Order: 10
+  Points: 1
+- Text: What is the flag you discovered by running sudo manflag in the manipulate directory?
+  Type: String
+  Values:
+  - Value: "${player.variables.manipulate}"
+    Points: '10'
+  Order: 11
+  Points: 10
+- Text: What is the flag you discovered by running sudo perflag in the permissions directory?
+  Type: String
+  Values:
+  - Value: "${player.variables.permissions}"
+    Points: '10'
+  Order: 12
+  Points: 10

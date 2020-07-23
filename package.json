@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK,CELERY\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -l debug -A edurange_refactored.tasks\"",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -l DEBUG -A edurange_refactored.tasks\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
+    "@babel/helper-call-delegate": "^7.10.4",
     "@babel/preset-env": "^7.9.6",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
@@ -40,6 +41,7 @@
     "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
+    "expose-loader": "^1.0.0",
     "file-loader": "^5.1.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",

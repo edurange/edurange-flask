@@ -1,0 +1,20 @@
+{
+	"containers": {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [
+				"install"
+			],
+			"user_files": [
+				"setup_home",
+				"stuff",
+				"images",
+				"toLearn",
+				"final-mission"
+			]
+		}]
+	}
+}

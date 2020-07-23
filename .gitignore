@@ -79,3 +79,11 @@ data/tmp/Foo/terraform.tfstate.backup
 data/
 
 *.info
+
+*.tfstate
+
+data/
+
+npm-debug.log
+
+dump.rdb

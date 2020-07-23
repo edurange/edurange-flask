@@ -1,0 +1,27 @@
+  _______        _      __  ___  
+ |__   __|      | |    /_ |/ _ \ 
+    | | __ _ ___| | __  | | | | |
+    | |/ _` / __| |/ /  | | | | |
+    | | (_| \__ \   <   | | |_| |
+    |_|\__,_|___/_|\_\  |_|\___/ 
+                                 
+Steps:
+1. run the list (ls) command to view the files in this directory.
+2. Read the following resource on Linux file permissions: http://linuxcommand.org/lc3_lts0090.php
+3. Copy the perm1.txt to copied_perm1.txt
+4. Changing permissions
+   a. Look up the manual entry for the chmod command.
+   b. Use the chmod command to change the permissions of copied_perm1.txt to:
+      i.   Owner = Read + Write
+      ii.  Group = Read + Write
+      iii. User  = No permissions
+   c. Copy the perm2.txt to copied_perm2.txt
+   d. Use the chmod command to change the permissions of copied_perm2.txt to:
+      i.   Owner = Read + Write + Execute
+      ii.  Group = Read + Write
+      iii. User  = Read only
+5. Type the following into the terminal for the flag: sudo perflag
+6. Answer question 12 in EDURange
+
+Exercise Complete!
+==========================================================================
