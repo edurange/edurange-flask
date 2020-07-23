@@ -260,7 +260,7 @@ def end_code_block(tf):
 
 
 def write_output_block(name, c_names):
-    with open(name + '.tf', 'w') as tf:
+    with open(name + '.tf', 'a') as tf:
         for c in c_names:
             c = name + '_' + c
             tf.write(
