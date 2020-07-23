@@ -1,0 +1,7 @@
+#!/bin/bash
+groupadd bots
+
+useradd -c "TelnetBot" -m -G bots -s /bin/bash telnet_bot
+echo "telnet_bot:telnet_is_cool_cba321" | /usr/sbin/chpasswd
+
+#sudo echo 'cat /etc/motd' >> /etc/bash.bashrc

@@ -1,0 +1,16 @@
+---
+Name: Treasure_Hunt
+Description: Treasure Hunt is an exercise that teaches about permissions and other security loopholes in Linux.
+  The goal is to find the passwords of 16 fake users.
+Instructions: Detailed instructions can be found in the student manual. Please look there to get started
+  with this scenario.
+Groups:
+- Name: Students
+  Instructions: Log on to the treasure_hunt instance and use the hints from the student manual to get started.
+  Access:
+  - Instance: treasure_hunt
+    IP_Visible: true
+  Users:
+  - Login: student
+Instances:
+- Name: treasure_hunt

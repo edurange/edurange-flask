@@ -1,5 +1,0 @@
-terraform.tfstate*
-.terraform*
-id_rsa
-*.swp
-graph.png
