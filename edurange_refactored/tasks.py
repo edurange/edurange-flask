@@ -80,7 +80,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     s_id = s_id['id']
     g_id = g_id['id']
 
-    c_names, g_files, s_files, u_files = gather_files(s_type, logger)
+    c_names, g_files, s_files, u_files, packages = gather_files(s_type, logger)
 
     logger.info('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(
         self.request))
@@ -118,7 +118,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         begin_tf_and_write_providers(name)
 
         for i, c in enumerate(c_names):
-            write_container(name + '_' + c, s_type, usernames, passwords, g_files[i], s_files[i], u_files[i])
+            write_container(name + '_' + c, s_type, usernames, passwords, g_files[i], s_files[i], u_files[i], packages[i])
 
         write_output_block(name, c_names)
 

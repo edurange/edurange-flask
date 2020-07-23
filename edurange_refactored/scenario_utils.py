@@ -55,6 +55,7 @@ def gather_files(s_type, logger):
     g_files = []
     s_files = []
     u_files = []
+    package_list = []
 
     if os.path.isdir(os.path.join('./scenarios/prod/', s_type)):
         logger.info('Scenario of type {} Found'.format(s_type))
@@ -87,7 +88,13 @@ def gather_files(s_type, logger):
 
                 logger.info("Found user files: {}".format(u_files))
 
-                return c_names, g_files, s_files, u_files
+                packages = item_generator(data, 'packages')
+                for p in list(packages):
+                    package_list.append(p)
+
+                logger.info("Found required packages: {}".format(package_list))
+
+                return c_names, g_files, s_files, u_files, package_list
 
         except FileNotFoundError:
             logger.warn('Could Not load json file for type: {}'.format(s_type))
@@ -224,11 +231,11 @@ def write_prep_user(tf, filenames):
         )
 
 
-def write_run_updates(tf):
+def write_run_updates(tf, packages):
     tf.write("""
       "sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes",
       "apt-get update",
-      "apt-get -y install locales sudo man-db manpages-posix",
+      "apt-get -y install """ + ' '.join(packages) + "\"" + """,
     """)
 
 def begin_code_block(tf):
@@ -270,7 +277,7 @@ def write_output_block(name, c_names):
             )
 
 
-def write_container(name, s_type, usernames, passwords, g_files, s_files, u_files):
+def write_container(name, s_type, usernames, passwords, g_files, s_files, u_files, packages):
     with open(name + '.tf', 'a') as tf:
         tf.write(
             """ 
@@ -301,7 +308,7 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
 
         begin_code_block(tf)
 
-        write_run_updates(tf)
+        write_run_updates(tf, packages)
 
         write_users(tf, usernames, passwords)
 
