@@ -290,7 +290,8 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
   hostname  = "NAT"
 
   connection {
-    host = self.ip_address
+    host = self.ports[0].ip
+    port = self.ports[0].external
     type = "ssh"
     user = "root"
     password = "root"
