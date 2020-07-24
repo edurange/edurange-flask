@@ -43,17 +43,13 @@ def flash_errors(form, category="warning"):
             flash(f"{getattr(form, field).label.text} - {error}", category)
 
 
-class CheckCol(Col):
-    def td_format(self, content):
-        return '<div class="form-check">\n\t<input type="checkbox" class="form-check-input" value="">\n</div>'
-
 
 # Old code for tables on the dashboards (possibly not used anymore? [tbd])------
 
 class StudentTable(Table):
     classes = ['table']
     thead_classes = ['thead-dark']
-    state = CheckCol('')
+    # state = CheckCol('')
     id = Col('id')
     username = Col('username')
     email = Col('email')

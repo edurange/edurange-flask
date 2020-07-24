@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """User forms."""
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import PasswordField, StringField, IntegerField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired
 from .models import User, StudentGroups
 
 
@@ -80,6 +80,9 @@ class GroupForm(FlaskForm):
     name = StringField(
         "Group Name", validators=[DataRequired()]
     )
+    size = IntegerField(
+        "Group Size", validators=[InputRequired()]
+    )
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
@@ -92,6 +95,8 @@ class GroupForm(FlaskForm):
         if group:
             self.name.errors.append("Group with this name already exists")
             return False
+        if not 0 <= self.size.data < 41:
+            self.size.errors.append("Account generation may not surpass a count of 40 (and must be positive)")
         return True
 
 

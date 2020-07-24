@@ -10,6 +10,47 @@
 
     <!-- Code for tables begins -->
 
+    <div class="card mb-2 mt-2"> <!--instructors table collapse-->
+        <div class="card-header" id="headingInstructors">
+            <div class="row">
+                <h5 class="mb-0">
+                    <h2> <i class="fa fa-user"></i> All Instructors
+                        <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                            <i class="fa fa-caret-down"></i>
+                        </button> </h2>
+                </h5>
+            </div>
+        </div>
+        <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
+            <div class="card-body">
+                <!--instructors table stuff-->
+                <div class="col" style="height:300px;overflow-y:scroll;">
+                    <div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> ID # </th>
+                                <th> Name </th>
+                                <th> Email </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in instructors %}
+                            <tr>
+                                <td> {{ user.id }} </td>
+                                <td> {{ user.username }} </td>
+                                <td> {{ user.email }} </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--instructors table stuff-->
+            </div>
+        </div>
+    </div> <!--instructors table collapse-->
+
     <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
         <div class="card-header container-fluid p-4" id="headingUsers">
             <div class="row">
@@ -96,7 +137,7 @@
                 <p></p>
                 <div>
                     <div class="row mb-3 mr-3">
-                        <h4 class="ml-3"> {{ group.name }} </h4>
+                        <h4 class="ml-3"> {{ group.name }} &emsp;&emsp;|&emsp;&emsp; Registration Code: <i>{{ group.code }}</i></h4>
                     </div>
                     <table class="table">
                         <thead class="thead-dark">
@@ -123,46 +164,6 @@
         </div>
     </div> <!-- groups table collapse -->
 
-    <div class="card mb-2 mt-2"> <!--instructors table collapse-->
-        <div class="card-header" id="headingInstructors">
-            <div class="row">
-                <h5 class="mb-0">
-                    <h2> <i class="fa fa-user"></i> All Instructors
-                        <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                            <i class="fa fa-caret-down"></i>
-                        </button> </h2>
-                </h5>
-            </div>
-        </div>
-        <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
-            <div class="card-body">
-                <!--instructors table stuff-->
-                <div class="col" style="height:300px;overflow-y:scroll;">
-                    <div>
-                        <table class="table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th> ID # </th>
-                                <th> Name </th>
-                                <th> Email </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for user in instructors %}
-                            <tr>
-                                <td> {{ user.id }} </td>
-                                <td> {{ user.username }} </td>
-                                <td> {{ user.email }} </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!--instructors table stuff-->
-            </div>
-        </div>
-    </div> <!--instructors table collapse-->
 
     <div class="row">
         <div class="col-sm-6"> {# Front end for form to create a student group #}
@@ -175,7 +176,16 @@
                         <div class="form-group">
                             <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
                         </div>
-                        <input name="create" class="btn btn-dark" type="submit" value="Create">
+                        <div class="form-inline">
+                            <input name="create" class="btn btn-dark" type="submit" value="Create">&ensp;
+                            <input type="checkbox" class="form-check-input option" value="" id="genGroup">
+                            <label for="genGroup" class="form-check-label text-muted" id="genGroup-label">
+                                &ensp;Generate group of size (0 - 40):&nbsp;
+                            </label>
+                            <input class="form-control-sm" id="size" name="size" placeholder="0-40" value=""
+                                type="number" min="0" max="40" style="width: 70px;" disabled>
+                            <input type="hidden" id="defSize" name="size" value="0">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -223,7 +233,7 @@
 
   $(document).ready(function() {
     /* Event listener to add selected user to uids list */
-    $("button.selector").on("click", function() {
+    $("#studentTable button.selector").on("click", function() {
       var uid = this.id.slice(3);
       $(this).toggleClass("btn-outline-dark btn-dark");
       $("#selection").val(function(index, value) {
@@ -245,7 +255,7 @@
       $("button.selector.btn-dark").trigger("click");
     });
 
-
+    /* Event listener to add 'in group' indicators to student table for students in currently selected group */
     $("#groupSel").on("change", function() {
       $('#studentTable td:last-child span.in-group').remove(); // remove any existing 'In Group' indicators
       var tableID = this.value.replace(/\s+/g, ''); // remove spaces from group name
@@ -294,6 +304,14 @@
         alert("Something went wrong!");
       });
     });
+
+    /* Event listener to activate/deactivate group generation input when option is checked/unchecked */
+    $("#genGroup").on("change", function() {
+      $("#genGroup-label").toggleClass("text-muted");
+      document.getElementById("size").toggleAttribute("disabled");
+      document.getElementById("defSize").toggleAttribute("disabled");
+    });
+
   });
 </script>
 {% endblock %}
