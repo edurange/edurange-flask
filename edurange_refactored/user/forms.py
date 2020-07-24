@@ -3,11 +3,13 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
-from .models import User, StudentGroups
+
+from .models import StudentGroups, User
 
 
 class RegisterForm(FlaskForm):
     """Register form."""
+
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=3, max=25)]
     )
@@ -54,15 +56,10 @@ class RegisterForm(FlaskForm):
 # ---------------------------------- (unused?)
 class EmailForm(FlaskForm):
     """Email Form."""
-    subject = StringField(
-        "Subject", validators=[DataRequired()]
-    )
-    to = StringField(
-        "Recipient", validators=[DataRequired()]
-    )
-    body = StringField(
-        "Body", validators=[DataRequired()]
-    )
+
+    subject = StringField("Subject", validators=[DataRequired()])
+    to = StringField("Recipient", validators=[DataRequired()])
+    body = StringField("Body", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(EmailForm, self).__init__(*args, **kwargs)
@@ -72,14 +69,15 @@ class EmailForm(FlaskForm):
         if not initial_validation:
             return False
         return True
+
+
 # -----------------------------------------------------
 
 
 class GroupForm(FlaskForm):
     """Create New Group Form"""
-    name = StringField(
-        "Group Name", validators=[DataRequired()]
-    )
+
+    name = StringField("Group Name", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
@@ -98,9 +96,8 @@ class GroupForm(FlaskForm):
 # ----------------------------------------(unused?)
 class GroupFinderForm(FlaskForm):
     """Finds Existing Group"""
-    group = StringField(
-        "Group Name", validators=[DataRequired()]
-    )
+
+    group = StringField("Group Name", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(GroupFinderForm, self).__init__(*args, **kwargs)
@@ -110,17 +107,16 @@ class GroupFinderForm(FlaskForm):
         if not initial_validation:
             return False
         return True
+
+
 # -------------------------------------------
 
 
 class addUsersForm(FlaskForm):
     """Adds selected users to a group"""
-    uids = StringField(
-        'User IDs', validators=[DataRequired()]
-    )
-    groups = StringField(
-        'Group Name', validators=[DataRequired()]
-    )
+
+    uids = StringField("User IDs", validators=[DataRequired()])
+    groups = StringField("Group Name", validators=[DataRequired()])
 
     # user id list
 
@@ -136,9 +132,8 @@ class addUsersForm(FlaskForm):
 
 class manageInstructorForm(FlaskForm):
     """Elevates user to an instructor"""
-    uName = StringField(
-        "Username", validators=[DataRequired()]
-    )
+
+    uName = StringField("Username", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(manageInstructorForm, self).__init__(*args, **kwargs)
@@ -149,15 +144,13 @@ class manageInstructorForm(FlaskForm):
             return False
         return True
 
+
 class makeScenarioForm(FlaskForm):
     """Creates a Scenario"""
-    scenario_name = StringField(
-        "Scenario", validators=[DataRequired()]
-    )
 
-    scenario_group = StringField(
-        "Group", validators=[DataRequired()]
-    )
+    scenario_name = StringField("Scenario", validators=[DataRequired()])
+
+    scenario_group = StringField("Group", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(makeScenarioForm, self).__init__(*args, **kwargs)
@@ -168,15 +161,14 @@ class makeScenarioForm(FlaskForm):
             return False
         return True
 
+
 class modScenarioForm(FlaskForm):
     """Creates a Scenario"""
-    sid = StringField(
-        "Scenario ID", validators=[DataRequired()]
-    )
 
-    mod_scenario = StringField(
-        "Action", validators=[DataRequired()]
-    )
+    sid = StringField("Scenario ID", validators=[DataRequired()])
+
+    mod_scenario = StringField("Action", validators=[DataRequired()])
+
     def __init__(self, *args, **kwargs):
         super(modScenarioForm, self).__init__(*args, **kwargs)
 
@@ -189,9 +181,8 @@ class modScenarioForm(FlaskForm):
 
 class deleteStudentForm(FlaskForm):
     """Deletes a student from the database"""
-    stuName = StringField(
-        "Username", validators=[DataRequired()]
-    )
+
+    stuName = StringField("Username", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(deleteStudentForm, self).__init__(*args, **kwargs)
