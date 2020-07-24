@@ -100,21 +100,17 @@ def student_scenario(i):
     # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
-            s, o, d, t, n = tempMaker(i, "s")
-            p = "00000"
-            address = identify_state(n, s)
-            pw = "_"
-            return render_template(
-                "dashboard/student_scenario.html",
-                s=s,
-                o=o,
-                de=d,
-                t=t,
-                n=n,
-                p=p,
-                pw=pw,
-                add=address,
-            )
+            status, owner, desc, s_type, s_name, u_name, pw = tempMaker(i, "stu")
+            port = "00000"
+            return render_template("dashboard/student_scenario.html",
+                                   status=status,
+                                   owner=owner,
+                                   desc=desc,
+                                   s_type=s_type,
+                                   s_name=s_name,
+                                   port=port,
+                                   u_name=u_name,
+                                   pw=pw)
         else:
             return abort(404)
     else:
@@ -213,25 +209,22 @@ def scenarios():
         )
 
 
+
 @blueprint.route("/scenarios/<i>")
 def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
-            s, o, b, d, t, n = tempMaker(i, "i")
-            address = identify_state(n, s)
-            pw = "_"
-            return render_template(
-                "dashboard/scenarios_info.html",
-                i=i,
-                t=t,
-                de=d,
-                s=s,
-                o=o,
-                dt=b,
-                n=n,
-                pw=pw,
-                add=address,
-            )
+            status, owner, bTime, desc, s_type, s_name = tempMaker(i, "ins")
+            port = "00000"
+            return render_template("dashboard/scenarios_info.html",
+                                   i=i,
+                                   s_type=s_type,
+                                   desc=desc,
+                                   status=status,
+                                   owner=owner,
+                                   dt=bTime,
+                                   s_name=s_name,
+                                   port=port)
         else:
             return abort(404)
     else:
