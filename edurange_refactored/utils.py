@@ -9,6 +9,7 @@ from flask_table import Col, Table
 from jwt.jwk import OctetJWK, jwk_from_dict
 
 from edurange_refactored.extensions import db
+from .scenario_utils import item_generator
 
 from .user.models import GroupUsers, ScenarioGroups, Scenarios, User
 
@@ -254,7 +255,7 @@ def statReader(s):
     return statSwitch[s]
 
 
-def descGetter(t):
+def getDesc(t):
     t = t.lower().replace(" ", "_")
     with open(
         "./scenarios/prod/" + t + "/" + t + ".yml", "r"
@@ -264,6 +265,19 @@ def descGetter(t):
             if item == "Description":
                 d = doc
     return d
+
+
+def getPass(sn, un):
+    with open('./data/tmp/' + sn + '/students.json', 'r') as f:
+        data = json.load(f)
+        d1 = data.get(un)[0]
+        p = d1.get('password')
+    return p
+
+
+def getPort(n):
+    n = 0  # [WIP]
+    return n
 
 
 def tempMaker(d, i):
@@ -280,19 +294,24 @@ def tempMaker(d, i):
     )
     oName = oName[0]
     # description
-    t = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
-    t = t[0]
-    desc = descGetter(t)
-    # name
-    nom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
-    nom = nom[0]
-    if i == "i":
+    ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
+    ty = ty[0]
+    desc = getDesc(ty)
+    # scenario name
+    sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
+    sNom = sNom[0]
+    if i == "ins":
         # creation time
         bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
         bTime = bTime[0]
-        return stat, oName, bTime, desc, t, nom
-    else:
-        return stat, oName, desc, t, nom
+        return stat, oName, bTime, desc, ty, sNom
+    elif i == "stu":
+        # username
+        ud = current_user.id
+        usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
+        # password
+        pw = getPass(sNom, usr)
+        return stat, oName, desc, ty, sNom, usr, pw
 
 
 #

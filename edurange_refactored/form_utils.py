@@ -46,11 +46,12 @@ def process_request(form):  # Input must be request.form
     # print(f)
 
     process_switch = {
-        "modScenarioForm":         process_scenarioModder,
+        "modScenarioForm":          process_scenarioModder,
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
         "deleteStudentForm":        process_delStu,
-        "manageInstructorForm":     process_manInst,
+        "promoteInstructorForm":    process_manInst,
+        "demoteInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
         "removeUsersForm":          process_addUser
     }
@@ -58,10 +59,10 @@ def process_request(form):  # Input must be request.form
 
 
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
-    sM = modScenarioForm(request.form)
+    sM = modScenarioForm(request.form)  # type2Form(request.form)  #
     if sM.validate_on_submit():
-        sid = sM.sid.data
-        action = sM.mod_scenario.data
+        sid = sM.sid.data  # string1.data  #
+        action = sM.mod_scenario.data  # string2.data  #
 
         return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[
             action
@@ -79,7 +80,7 @@ def process_scenarioStarter():  # Form submitted to start or stop an existing sc
 
 
 def process_groupMaker():  # Form to create a new group |  # GroupForm
-    gM = GroupForm(request.form)
+    gM = GroupForm(request.form)  # type1Form(request.form)  #
     if gM.validate_on_submit():
         code = grc()
         name = gM.name.data
@@ -91,7 +92,7 @@ def process_manInst():  # Form to give a specified user instructor permissions |
     mI = manageInstructorForm(request.form)
     if request.form.get("promote") == "true":
         if mI.validate_on_submit():
-            uName = mI.uName.data
+            uName = mI.uName.data  # string1.data  #
             user = User.query.filter_by(username=uName).first()
             user.update(is_instructor=True)
 
@@ -101,7 +102,7 @@ def process_manInst():  # Form to give a specified user instructor permissions |
 
     elif request.form.get("promote") == "false":
         if mI.validate_on_submit():
-            uName = mI.uName.data
+            uName = mI.uName.data  # string1.data  #
             user = User.query.filter_by(username=uName).first()
             user.update(is_instructor=False)
 
@@ -112,9 +113,9 @@ def process_manInst():  # Form to give a specified user instructor permissions |
 
 def process_delStu():  # WIP Form to delete a specified student from the database |  # deleteStudentForm
     db_ses = db.session
-    uD = deleteStudentForm(request.form)
+    uD = deleteStudentForm(request.form)  # type1Form(request.form)  #
     if uD.validate_on_submit():
-        stuName = uD.stuName.data
+        stuName = uD.stuName.data  # string1.data  #
         user = User.query.filter_by(username=stuName).first()
         stuId = db_ses.query(User.id).filter(User.username == stuName)
         gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)

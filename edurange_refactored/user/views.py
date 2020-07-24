@@ -97,6 +97,7 @@ def student():
 @blueprint.route("/student_scenario/<i>")
 @login_required
 def student_scenario(i):
+    # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
             s, o, d, t, n = tempMaker(i, "s")
@@ -129,7 +130,7 @@ def catalog():
     check_admin()
     scenarios = populate_catalog()
     groups = StudentGroups.query.all()
-    form = modScenarioForm(request.form)
+    scenarioModder = modScenarioForm(request.form)  # type2Form()  #
 
     return render_template(
         "dashboard/catalog.html", scenarios=scenarios, groups=groups, form=form
@@ -140,7 +141,7 @@ def catalog():
 @login_required
 def make_scenario():
     check_admin()
-    form = makeScenarioForm(request.form)
+    form = makeScenarioForm(request.form)  # type2Form()  #
     if form.validate_on_submit():
         db_ses = db.session
         name = request.form.get("scenario_name")
@@ -190,7 +191,7 @@ def make_scenario():
 def scenarios():
     """List of scenarios and scenario controls"""
     check_admin()
-    scenarioModder = modScenarioForm()
+    scenarioModder = modScenarioForm()  # type2Form()  #
     scenarios = Scenarios.query.all()
     groups = StudentGroups.query.all()
 
