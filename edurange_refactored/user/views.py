@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort
+from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort, current_app
 from flask_login import login_required
 from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
     deleteStudentForm, makeScenarioForm
@@ -95,6 +95,18 @@ def make_scenario():
         Scenarios.create(name=name, description=s_type, owner_id=own_id)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
         g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+        # collection result object
+        for i, s, in enumerate(students):
+            students[i] = s._asdict()
+        s_id = s_id._asdict()
+        g_id = g_id._asdict()
+
+
+
+        current_app.logger.info("students: {}".format(students))
+        current_app.logger.info("s_id: {}".format(s_id))
+        current_app.logger.info("g_id: {}".format(g_id))
+
 
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
         flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
@@ -128,6 +140,8 @@ def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
             s, o, b, d, t, n = tempMaker(i, "i")
+            #n = name
+            # s = state -> status 
             address = identify_state(n, s)
             pw = "_"
             return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, pw=pw, add=address)

@@ -205,4 +205,3 @@ def destroy(self, sid):
                 flash('Something went wrong', 'warning')
         else:
             raise Exception(f'Could not find scenario')
-

@@ -4,20 +4,37 @@
 {% block content %}
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h3> ID : {{ i }} </h3>
-            <h3> Name : {{ n }} </h3>
-            <h3> Type : {{ t }} </h3>
+            <p> Scenario ID : {{ i }} </p>
+            <h5> Scenario Name : {{ n }} </h5>
+            <h5> Scenario Type : {{ t }} </h5>
         </div>
-        <div class="card-body">
-            <p> Description : {{ de }} </p>
-            <p> Status : {{ s }} </p>
-            <p> Created by : {{ o }} </p>
-            <p> Created at : {{ dt }} </p>
-            <p> Password : {{ pw }} </p>
-            <b> Connection Information: </b>
-            {% for container in add %}
-                <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
-            {% endfor %}
+        <div>
+          <ul class="nav nav-tabs mt-3 ml-3">
+            <li class="nav-item active">
+              <a href="#home" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab"  aria-selected="true">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="#Guide" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Guide</a>
+            </li>
+          </ul>
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade show active">
+            <div class="card-body">
+              <div class="container">
+                <p> Description : {{ de }} </p>
+                <p> Status : {{ s }} </p>
+                <p> Created by : {{ o }} </p>
+                <p> Created at : {{ dt }} </p>
+                <p> Password : {{ pw }} </p>
+                <b> Connection Information: </b>
+                {% for container in add %}
+                  <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                  {% endfor %}
+                </div>
+            </div>
         </div>
+      <div id="Guide" class="tab-pane fade">
+        <h3>Codelab</h3>
+      </div>
     </div>
 {% endblock %}
