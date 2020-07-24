@@ -102,6 +102,7 @@ def student_scenario(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw = tempMaker(i, "stu")
             port = "00000"
+            addresses = identify_state(s_name, status)
             return render_template("dashboard/student_scenario.html",
                                    status=status,
                                    owner=owner,
@@ -110,7 +111,8 @@ def student_scenario(i):
                                    s_name=s_name,
                                    port=port,
                                    u_name=u_name,
-                                   pw=pw)
+                                   pw=pw,
+                                   add=addresses)
         else:
             return abort(404)
     else:
@@ -129,7 +131,7 @@ def catalog():
     scenarioModder = modScenarioForm(request.form)  # type2Form()  #
 
     return render_template(
-        "dashboard/catalog.html", scenarios=scenarios, groups=groups, form=form
+        "dashboard/catalog.html", scenarios=scenarios, groups=groups, form=scenarioModder
     )
 
 
@@ -216,6 +218,7 @@ def scenariosInfo(i):
         if checkEx(i):
             status, owner, bTime, desc, s_type, s_name = tempMaker(i, "ins")
             port = "00000"
+            addresses = identify_state(s_name, status)
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -224,7 +227,8 @@ def scenariosInfo(i):
                                    owner=owner,
                                    dt=bTime,
                                    s_name=s_name,
-                                   port=port)
+                                   port=port,
+                                   add=addresses)
         else:
             return abort(404)
     else:
