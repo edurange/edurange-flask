@@ -13,6 +13,10 @@
             <p> Instructor : {{ o }} </p>
             <p> Port : {{ p }} </p>
             <p> Password : {{ pw }} </p>
+            <b> Connection Information: </b>
+            {% for container in add %}
+                <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+            {% endfor %}
         </div>
     </div>
     <div class="card bg-light mb-3">

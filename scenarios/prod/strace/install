@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euxo pipefail
+cd /home/ubuntu/files
+strace which start 2>&1 | tail -n +2 > strace-identify || :
+gcc -o mystery mystery.c
+rm mystery.c
+gcc -o cat trojaned_cat.c
+chmod 4771 cat
+mv cat /usr/local/bin
+rm trojaned_cat.c
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+f=/home/$line
+cp copy.c $f
+cp empty.c $f
+cp hello.c $f
+cp strace-identify $f
+cp tiger.txt $f
+cp mystery $f
+cp script.sh $f
+chown $line:$line $f/*
+chmod 644 $f/copy.c $f/empty.c $f/hello.c $f/strace-identify $f/tiger.txt
+chmod 755 $f/mystery $f/script.sh
+chmod go-rx $f
+done</usr/local/src/user_names.txt
+
+if [ ! -d "/tmp/data" ]; then
+  mkdir /tmp/data
+fi
+chmod 711 /tmp/data
+touch /tmp/data/filenames
+chmod 774 /tmp/data/filenames
+
+chmod 4751 /usr/bin/strace

@@ -1,0 +1,6 @@
+#!/bin/bash
+echo 'ALL: ALL' > /etc/hosts.deny
+echo 'ALL: localhost' > /etc/hosts.allow
+%{for ip_address in ip_addresses ~}
+echo 'sshd: ${ip_address}' > /etc/hosts.allow
+%{ endfor ~}

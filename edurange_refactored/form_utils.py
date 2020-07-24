@@ -129,33 +129,34 @@ def process_addUser():  # Form to add or remove selected students from a selecte
         group = uA.groups.data
         gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
         uids = uA.uids.data  # string form
+        adding = False
+
         if uids[-1] == ',':
             uids = uids[:-1]  # slice last comma to avoid empty string after string split
         uids = uids.split(',')
 
         if request.form.get('add') == 'true':
+            adding = True
 
-            for i, uid in reversed(list(enumerate(uids))):
-                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
-                if check is not None:
-                    flash('User already in group.', 'error')
+        for i, uid in reversed(list(enumerate(uids))):
+            check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
+            if check is not None:
+                if adding:
+                    flash('User already in group.', 'warning')
                     uids.pop(i)
-                    pass
                 else:
-                    GroupUsers.create(user_id=uid, group_id=gid)
-            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids))
-            return True # this was an ajax request
-
-        elif request.form.get('add') == 'false':
-
-            for i, uid in reversed(list(enumerate(uids))):
-                check = db_ses.query(GroupUsers).filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid).first()
-                if check is not None:  # if user is in group
                     check.delete()
+            else:
+                if adding:
+                    GroupUsers.create(user_id=uid, group_id=gid)
                 else:
-                    flash('User {0} not in group.'.format(uid), 'error')
+                    flash('User {0} not in group.'.format(uid), 'warning')
                     uids.pop(i)
 
-            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group, uids))
+        if adding:
+            flash('Added {0} users to group {1}. DEBUG: {2}'.format(len(uids), group, uids), 'success')
+        else:
+            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group, uids), 'success')
+
     else:
         flash_errors(uA)

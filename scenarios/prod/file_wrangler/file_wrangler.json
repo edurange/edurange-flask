@@ -6,14 +6,14 @@
 				"iamfrustrated"
 			],
 			"system_files": [
-				"install"
+				"setup"
 			],
 			"user_files": [
-				"setup_home",
-				"stuff",
-				"images",
-				"toLearn",
-				"final-mission"
+				"setup_player",
+				"codes",
+				"files",
+				"motd",
+				"python"
 			],
 			"packages": [
 				"locales",
@@ -24,3 +24,4 @@
 		}]
 	}
 }
+

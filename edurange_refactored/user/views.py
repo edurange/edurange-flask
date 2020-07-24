@@ -9,7 +9,7 @@ from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
     tempMaker, checkAuth, checkEnr, check_role_view
 from ..form_utils import process_request
-from ..scenario_utils import populate_catalog, identify_type
+from ..scenario_utils import populate_catalog, identify_type, identify_state
 from edurange_refactored.extensions import db
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
@@ -55,8 +55,9 @@ def student_scenario(i):
         if checkEx(i):
             s, o, d, t, n = tempMaker(i, "s")
             p = "00000"
+            address = identify_state(n, s)
             pw = "_"
-            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, pw=pw)
+            return render_template("dashboard/student_scenario.html", s=s, o=o, de=d, t=t, n=n, p=p, pw=pw, add=address)
         else:
             return abort(404)
     else:
@@ -96,6 +97,16 @@ def make_scenario():
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
         g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
 
+        # JUSTIFICATION:
+        # Above queries return sqlalchemy collections.result objects
+        # _asdict() method is needed in case celery serializer fails
+        # Unknown exactly when this may occur, maybe version differences between Mac/Linux
+
+        for i, s, in enumerate(students):
+            students[i] = s._asdict()
+        s_id = s_id._asdict()
+        g_id = g_id._asdict()
+
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
         flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(students), "success")
     else:
@@ -128,9 +139,9 @@ def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
             s, o, b, d, t, n = tempMaker(i, "i")
-            p = "00000"
+            address = identify_state(n, s)
             pw = "_"
-            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, p=p, pw=pw)
+            return render_template("dashboard/scenarios_info.html", i=i, t=t, de=d, s=s, o=o, dt=b, n=n, pw=pw, add=address)
         else:
             return abort(404)
     else:

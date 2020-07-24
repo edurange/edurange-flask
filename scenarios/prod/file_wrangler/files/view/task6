@@ -1,0 +1,17 @@
+  _______        _        __  
+ |__   __|      | |      / /  
+    | | __ _ ___| | __  / /_  
+    | |/ _` / __| |/ / | '_ \ 
+    | | (_| \__ \   <  | (_) |
+    |_|\__,_|___/_|\_\  \___/ 
+                              
+Hidden files begin with a '.' and are not displayed unless you specify an option with the ls command.
+
+Steps:
+1. View the manual entry for the ls command again.
+2. Scroll through to manual to find the option that will not ignore files that start with a '.'.
+3. Answer question 7 in EDURange
+4. Try this command with the option you found. You should see any hidden files or folders (those beginning with a '.').
+5. Answer question 8 in EDURange
+6. Go to the next task by typing the following into the prompt: cat task7
+==========================================================================
