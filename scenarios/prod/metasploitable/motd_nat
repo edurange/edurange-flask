@@ -1,0 +1,21 @@
+_  _ ____ ___ ____    _  _ ____ ___ 
+|\/| |___  |  |__| __ |\ | |__|  |  
+|  | |___  |  |  |    | \| |  |  |  
+
+#########################################################
+
+Welcome to the metasploitable scenario.
+
+Your first task is to identify the subnets and machines active on this virtual network by using nmap.
+
+Then, use Metasploit to break into the metasploitable machine and find as many card images as you can.
+
+To get started using metasploit, type 'msfconsole'.
+
+The Metasploit database and web service are not configured for this scenario, so unfortunately you may not
+be able to use the convenience commands like 'db_nmap' or 'hosts' and 'services'
+
+Good Luck!
+
+Helpful Commands: nmap, msfconsole, sftp, lynx, exiftool, binwalk
+#########################################################

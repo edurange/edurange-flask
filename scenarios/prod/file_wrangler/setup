@@ -1,12 +1,13 @@
 #!/bin/bash
 set -eoux pipefail
 
-mv /home/ubuntu/file_wrangler/python/perflag /usr/bin/perflag
-mv /home/ubuntu/file_wrangler/python/manflag /usr/bin/manflag
-chmod u+x,g+x,o-rwx /usr/bin/perflag
-chmod u+x,g+x,o-rwx /usr/bin/manflag
+mv /home/ubuntu/python/perflag /usr/bin/perflag
+mv /home/ubuntu/python/manflag /usr/bin/manflag
+chmod u+x,g+x,o+x /usr/bin/perflag
+chmod u+x,g+x,o+x /usr/bin/manflag
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
-%{ for player in players ~}
-/home/ubuntu/file_wrangler/setup_player ${player.login} ${player.variables.manipulate} ${player.variables.permissions}
-%{ endfor ~}
-rm -r /home/ubuntu/file_wrangler
+while read line; do
+/home/ubuntu/setup_player $line $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1) $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+done</usr/local/src/user_names.txt
+#rm -r /home/ubuntu/file_wrangler

@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euxo pipefail
-%{ for player in players }
-/home/ubuntu/setup_home ${player.login} ${player.variables.super_secret} ${player.variables.follow_me_filename}
-%{ endfor ~}
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	/home/ubuntu/setup_home $line $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1) $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+done</usr/local/src/user_names.txt
+
 mkdir /usr/special/
 mkdir /usr/special/secrets
 cp /home/ubuntu/final-mission/U348bdks8cowFJS8dJF3hHDFj.jpg /usr/special/secrets/
@@ -14,4 +18,4 @@ chmod 666 /usr/special/secrets/.donthackme
 #rm -rf /home/ubuntu/stuff
 #rm -rf /home/ubuntu/toLearn
 #rm -rf /home/ubuntu/images
-rm -rf /home/ubuntu/final-mission
+#rm -rf /home/ubuntu/final-mission

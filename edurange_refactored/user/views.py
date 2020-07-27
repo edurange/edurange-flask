@@ -1,29 +1,57 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_login import login_required
-from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
-    deleteStudentForm, makeScenarioForm  # , type1Form, type2Form
-from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
-from ..tasks import CreateScenarioTask
-from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr, check_role_view, current_user
-from ..form_utils import process_request
-from ..scenario_utils import populate_catalog, identify_type
+
 from edurange_refactored.extensions import db
+from edurange_refactored.user.forms import (
+    GroupForm,
+    addUsersForm,
+    deleteStudentForm,
+    makeScenarioForm,
+    manageInstructorForm,
+    modScenarioForm,
+)
 
-blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
+from ..form_utils import process_request
+from ..scenario_utils import identify_state, identify_type, populate_catalog
+from ..tasks import CreateScenarioTask
+from ..utils import (
+    UserInfoTable,
+    check_admin,
+    check_instructor,
+    check_role_view,
+    checkAuth,
+    checkEnr,
+    checkEx,
+    flash_errors,
+    tempMaker,
+)
+from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User
+
+blueprint = Blueprint(
+    "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
+)
 
 
-@blueprint.route("/set_view", methods=['GET'])
+@blueprint.route("/set_view", methods=["GET"])
 @login_required
 def set_view():
-    if check_role_view(request.args['mode']):
-        session['viewMode'] = request.args['mode']
-        return redirect(url_for('public.home'))
+    if check_role_view(request.args["mode"]):
+        session["viewMode"] = request.args["mode"]
+        return redirect(url_for("public.home"))
     else:
-        session.pop('viewMode', None)
-        return redirect(url_for('public.home'))
+        session.pop("viewMode", None)
+        return redirect(url_for("public.home"))
 
 
 @blueprint.route("/")
@@ -32,21 +60,38 @@ def student():
     """List members."""
     # Queries for the user dashboard
     db_ses = db.session
-    curId = session.get('_user_id')
+    curId = session.get("_user_id")
 
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
 
-    groups = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers).filter(GroupUsers.user_id == curId)\
+    groups = (
+        db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers)
+        .filter(GroupUsers.user_id == curId)
         .filter(GroupUsers.group_id == StudentGroups.id)
+    )
 
-    scenarioTable = db_ses.query(Scenarios.id, Scenarios.name.label('sname'),
-                                 Scenarios.description.label('type'), StudentGroups.name.label('gname'),
-                                 User.username.label('iname')).filter(GroupUsers.user_id == curId)\
-        .filter(StudentGroups.id == GroupUsers.group_id).filter(User.id == StudentGroups.owner_id)\
-        .filter(ScenarioGroups.group_id == StudentGroups.id).filter(Scenarios.id == ScenarioGroups.scenario_id)
+    scenarioTable = (
+        db_ses.query(
+            Scenarios.id,
+            Scenarios.name.label("sname"),
+            Scenarios.description.label("type"),
+            StudentGroups.name.label("gname"),
+            User.username.label("iname"),
+        )
+        .filter(GroupUsers.user_id == curId)
+        .filter(StudentGroups.id == GroupUsers.group_id)
+        .filter(User.id == StudentGroups.owner_id)
+        .filter(ScenarioGroups.group_id == StudentGroups.id)
+        .filter(Scenarios.id == ScenarioGroups.scenario_id)
+    )
 
-    return render_template("dashboard/student.html", infoTable=infoTable, groups=groups, scenarioTable=scenarioTable)
+    return render_template(
+        "dashboard/student.html",
+        infoTable=infoTable,
+        groups=groups,
+        scenarioTable=scenarioTable,
+    )
 
 
 @blueprint.route("/student_scenario/<i>")
@@ -57,8 +102,17 @@ def student_scenario(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw = tempMaker(i, "stu")
             port = "00000"
-            return render_template("dashboard/student_scenario.html", status=status, owner=owner, desc=desc,
-                                   s_type=s_type, s_name=s_name, port=port, u_name=u_name, pw=pw)
+            addresses = identify_state(s_name, status)
+            return render_template("dashboard/student_scenario.html",
+                                   status=status,
+                                   owner=owner,
+                                   desc=desc,
+                                   s_type=s_type,
+                                   s_name=s_name,
+                                   port=port,
+                                   u_name=u_name,
+                                   pw=pw,
+                                   add=addresses)
         else:
             return abort(404)
     else:
@@ -68,7 +122,7 @@ def student_scenario(i):
 # ---- scenario routes
 
 
-@blueprint.route("/catalog", methods=['GET'])
+@blueprint.route("/catalog", methods=["GET"])
 @login_required
 def catalog():
     check_admin()
@@ -76,38 +130,61 @@ def catalog():
     groups = StudentGroups.query.all()
     scenarioModder = modScenarioForm(request.form)  # type2Form()  #
 
-    return render_template("dashboard/catalog.html", scenarios=scenarios, groups=groups, scenarioModder=scenarioModder)
+    return render_template(
+        "dashboard/catalog.html", scenarios=scenarios, groups=groups, form=scenarioModder
+    )
 
 
-@blueprint.route("/make_scenario", methods=['POST'])
+@blueprint.route("/make_scenario", methods=["POST"])
 @login_required
 def make_scenario():
     check_admin()
     form = makeScenarioForm(request.form)  # type2Form()  #
     if form.validate_on_submit():
         db_ses = db.session
-        name = request.form.get('scenario_name')  # 'string1'
+        name = request.form.get("scenario_name")
         s_type = identify_type(request.form)
-        own_id = session.get('_user_id')
-        group = request.form.get('scenario_group')  # 'string2'
+        own_id = session.get("_user_id")
+        group = request.form.get("scenario_group")
 
-        students = db_ses.query(User.username).filter(StudentGroups.name == group)\
-            .filter(StudentGroups.id == GroupUsers.group_id).filter(GroupUsers.user_id == User.id).all()
+        students = (
+            db_ses.query(User.username)
+            .filter(StudentGroups.name == group)
+            .filter(StudentGroups.id == GroupUsers.group_id)
+            .filter(GroupUsers.user_id == User.id)
+            .all()
+        )
 
         Scenarios.create(name=name, description=s_type, owner_id=own_id)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
-        g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+        g_id = (
+            db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+        )
+
+        # JUSTIFICATION:
+        # Above queries return sqlalchemy collections.result objects
+        # _asdict() method is needed in case celery serializer fails
+        # Unknown exactly when this may occur, maybe version differences between Mac/Linux
+
+        for i, s, in enumerate(students):
+            students[i] = s._asdict()
+        s_id = s_id._asdict()
+        g_id = g_id._asdict()
 
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
-        flash("Success, your scenario will appear shortly. This page will automatically update. Students Found: {}"
-              .format(students), "success")
+        flash(
+            "Success, your scenario will appear shortly. This page will automatically update. Students Found: {}".format(
+                students
+            ),
+            "success",
+        )
     else:
         flash_errors(form)
 
-    return redirect(url_for('dashboard.scenarios'))
+    return redirect(url_for("dashboard.scenarios"))
 
 
-@blueprint.route("/scenarios", methods=['GET', 'POST'])
+@blueprint.route("/scenarios", methods=["GET", "POST"])
 @login_required
 def scenarios():
     """List of scenarios and scenario controls"""
@@ -116,14 +193,23 @@ def scenarios():
     scenarios = Scenarios.query.all()
     groups = StudentGroups.query.all()
 
-    if request.method == 'GET':
-        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioModder=scenarioModder,
-                               groups=groups)
+    if request.method == "GET":
+        return render_template(
+            "dashboard/scenarios.html",
+            scenarios=scenarios,
+            scenarioModder=scenarioModder,
+            groups=groups,
+        )
 
-    elif request.method == 'POST':
+    elif request.method == "POST":
         process_request(request.form)
-        return render_template("dashboard/scenarios.html", scenarios=scenarios, scenarioModder=scenarioModder,
-                               groups=groups)
+        return render_template(
+            "dashboard/scenarios.html",
+            scenarios=scenarios,
+            scenarioModder=scenarioModder,
+            groups=groups,
+        )
+
 
 
 @blueprint.route("/scenarios/<i>")
@@ -132,8 +218,17 @@ def scenariosInfo(i):
         if checkEx(i):
             status, owner, bTime, desc, s_type, s_name = tempMaker(i, "ins")
             port = "00000"
-            return render_template("dashboard/scenarios_info.html", i=i, s_type=s_type, desc=desc, status=status,
-                                   owner=owner, dt=bTime, s_name=s_name, port=port)
+            addresses = identify_state(s_name, status)
+            return render_template("dashboard/scenarios_info.html",
+                                   i=i,
+                                   s_type=s_type,
+                                   desc=desc,
+                                   status=status,
+                                   owner=owner,
+                                   dt=bTime,
+                                   s_name=s_name,
+                                   port=port,
+                                   add=addresses)
         else:
             return abort(404)
     else:
@@ -143,38 +238,48 @@ def scenariosInfo(i):
 # -----
 
 
-@blueprint.route("/instructor", methods=['GET', 'POST'])
+@blueprint.route("/instructor", methods=["GET", "POST"])
 @login_required
 def instructor():
     """List of an instructors groups"""
     check_instructor()
     # Queries for the owned groups table
-    curId = session.get('_user_id')
+    curId = session.get("_user_id")
     db_ses = db.session
 
-    groups = db_ses.query(StudentGroups.id, StudentGroups.name, StudentGroups.code)\
-        .filter(StudentGroups.owner_id == curId)
+    groups = db_ses.query(
+        StudentGroups.id, StudentGroups.name, StudentGroups.code
+    ).filter(StudentGroups.owner_id == curId)
 
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
-    # infoTable = UserInfoTable(userInfo)           # , infoTable=infoTable)
-    if request.method == 'GET':
-        groupMaker = GroupForm()  # type1Form()  #
-        return render_template('dashboard/instructor.html', groupMaker=groupMaker, groups=groups)
+    infoTable = UserInfoTable(userInfo)
+    if request.method == "GET":
+        groupMaker = GroupForm()
+        return render_template(
+            "dashboard/instructor.html",
+            groupMaker=groupMaker,
+            groups=groups,
+            infoTable=infoTable,
+        )
 
-    elif request.method == 'POST':
+    elif request.method == "POST":
         process_request(request.form)
-        return redirect(url_for('dashboard.admin'))
+        return redirect(url_for("dashboard.admin"))
 
 
-@blueprint.route("/admin", methods=['GET', 'POST'])
+@blueprint.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
     """List of all students and groups. Group, student, and instructor management forms"""
     check_admin()
     db_ses = db.session
     # Queries for the tables of students and groups
-    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False)
-    instructors = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == True)
+    students = db_ses.query(User.id, User.username, User.email).filter(
+        User.is_instructor == False
+    )
+    instructors = db_ses.query(User.id, User.username, User.email).filter(
+        User.is_instructor == True
+    )
     groups = StudentGroups.query.all()
     groupNames = []
     users_per_group = {}
@@ -183,28 +288,47 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = db_ses.query(User.id, User.username, User.email)\
-            .filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(
+            StudentGroups.name == name,
+            StudentGroups.id == GroupUsers.group_id,
+            GroupUsers.user_id == User.id,
+        )
 
-    if request.method == 'GET':
-        groupMaker = GroupForm()  # type1Form()  #
-        userAdder = addUsersForm()  # type2Form()  #
-        instructorManager = manageInstructorForm()  # type1Form()  #
-        userDropper = deleteStudentForm()  # type1Form()  #
+    if request.method == "GET":
+        groupMaker = GroupForm()
+        userAdder = addUsersForm()
+        instructorManager = manageInstructorForm()
+        userDropper = deleteStudentForm()
 
-        return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder,
-                               instructorManager=instructorManager, userDropper=userDropper, groups=groups,
-                               students=students, instructors=instructors, usersPGroup=users_per_group)
+        return render_template(
+            "dashboard/admin.html",
+            groupMaker=groupMaker,
+            userAdder=userAdder,
+            instructorManager=instructorManager,
+            userDropper=userDropper,
+            groups=groups,
+            students=students,
+            instructors=instructors,
+            usersPGroup=users_per_group,
+        )
 
-    elif request.method == 'POST':
+    elif request.method == "POST":
         ajax = process_request(request.form)
         if ajax:
-            groupMaker = GroupForm()  # type1Form()  #
-            userAdder = addUsersForm()  # type2Form()  #
-            instructorManager = manageInstructorForm()  # type1Form()  #
-            userDropper = deleteStudentForm()  # type1Form()  #
-            return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder,
-                                   instructorManager=instructorManager, userDropper=userDropper, groups=groups,
-                                   students=students, instructors=instructors, usersPGroup=users_per_group)
+            groupMaker = GroupForm()
+            userAdder = addUsersForm()
+            instructorManager = manageInstructorForm()
+            userDropper = deleteStudentForm()
+            return render_template(
+                "dashboard/admin.html",
+                groupMaker=groupMaker,
+                userAdder=userAdder,
+                instructorManager=instructorManager,
+                userDropper=userDropper,
+                groups=groups,
+                students=students,
+                instructors=instructors,
+                usersPGroup=users_per_group,
+            )
         else:
-            return redirect(url_for('dashboard.admin'))
+            return redirect(url_for("dashboard.admin"))

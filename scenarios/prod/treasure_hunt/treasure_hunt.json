@@ -9,18 +9,22 @@
 				"install"
 			],
 			"user_files": [
-				"setup_home",
-				"stuff",
-				"images",
-				"toLearn",
-				"final-mission"
+				"resetFakeUsers.c",
+				"resetUsers",
+				"treasure-hunt-users-fall12.tar"
 			],
 			"packages": [
 				"locales",
 				"sudo",
 				"man-db",
-				"manpages-posix"
+				"manpages-posix",
+				"gcc",
+				"lynx",
+				"tar",
+				"apache2",
+				"apache2-utils"
 			]
 		}]
 	}
 }
+

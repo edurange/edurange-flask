@@ -3,12 +3,12 @@
 import datetime as dt
 
 import pytest
-
-from edurange_refactored.user.models import User, StudentGroups
-
-from .factories import UserFactory, GroupFactory
 from sqlalchemy import exc
+
+from edurange_refactored.user.models import StudentGroups, User
 from edurange_refactored.user.models import generate_registration_code as grc
+
+from .factories import GroupFactory, UserFactory
 
 
 @pytest.mark.usefixtures("db")
@@ -52,6 +52,7 @@ class TestUser:
         user = User.create(username="foo", email="foo@bar.com", password="foobarbaz123")
         assert user.check_password("foobarbaz123") is True
         assert user.check_password("barfoobaz") is False
+
 
 @pytest.mark.usefixtures("db")
 class TestGroup:

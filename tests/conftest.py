@@ -5,17 +5,15 @@ import logging
 import os
 
 import pytest
-
 from flask.testing import FlaskClient
-
 from webtest import TestApp
 
-from autoapp import Aid, Iid, get_role, create_all_group, create_admin
+from autoapp import Aid, Iid, create_admin, create_all_group, get_role
 from edurange_refactored.app import create_app
 from edurange_refactored.database import db as _db
-from edurange_refactored.user.models import User, StudentGroups
+from edurange_refactored.user.models import StudentGroups, User
 
-from .factories import UserFactory, GroupFactory
+from .factories import GroupFactory, UserFactory
 
 
 @pytest.fixture
@@ -29,14 +27,33 @@ def app():
     @_app.context_processor
     def utility_processor():
         def navigation(role, view=None):
-            if role in ['a', 'a/i'] and not view:
-                return (('public.home', 'Home'), ('dashboard.admin', 'Admin Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
-            elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
-                return (('public.home', 'Home'), ('dashboard.instructor', 'Instructor Dashboard'), ('dashboard.scenarios', 'Scenarios'), ('public.about', 'About'))
-            elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
-                return (('public.home', 'Home'), ('dashboard.student', 'Dashboard'), ('public.about', 'About'))
+            if role in ["a", "a/i"] and not view:
+                return (
+                    ("public.home", "Home"),
+                    ("dashboard.admin", "Admin Dashboard"),
+                    ("dashboard.scenarios", "Scenarios"),
+                    ("public.about", "About"),
+                )
+            elif (role == "i" and not view) or (
+                role in ["a", "a/i"] and view == "instructorView"
+            ):
+                return (
+                    ("public.home", "Home"),
+                    ("dashboard.instructor", "Instructor Dashboard"),
+                    ("dashboard.scenarios", "Scenarios"),
+                    ("public.about", "About"),
+                )
+            elif (role is not None) or (
+                role in ["a", "a/i", "i"] and view == "studentView"
+            ):
+                return (
+                    ("public.home", "Home"),
+                    ("dashboard.student", "Dashboard"),
+                    ("public.about", "About"),
+                )
             else:
-                return (('public.home', 'Home'), ('public.about', 'About'))
+                return (("public.home", "Home"), ("public.about", "About"))
+
         return dict(navigation=navigation)
 
     _app.jinja_env.globals.update(Aid=Aid)
@@ -44,8 +61,6 @@ def app():
     _app.jinja_env.globals.update(get_role=get_role)
 
     yield _app
-
-
 
     ctx.pop()
 
@@ -69,7 +84,7 @@ def db(app):
         create_admin()
 
     group = StudentGroups.query.limit(1).all()
-    admin = User.query.filter_by(username=os.environ['USERNAME']).first()
+    admin = User.query.filter_by(username=os.environ["USERNAME"]).first()
     a_id = admin.get_id()
     if not group:
         create_all_group(a_id)
@@ -87,6 +102,7 @@ def user(db):
     user = UserFactory(password="myprecious")
     db.session.commit()
     return user
+
 
 @pytest.fixture
 def admin(db, testapp):
@@ -106,10 +122,10 @@ def admin(db, testapp):
     assert res.status_code == 200
     return admin
 
+
 @pytest.fixture
 def group(db):
     """Create group for the tests."""
     group = GroupFactory()
     db.session.commit()
     return group
-

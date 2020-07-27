@@ -69,18 +69,11 @@ edurange_refactored/static/cache_manifest.json
 edurange_refactored/templates/utils/.keys/
 package-lock.json
 
-data/tmp/Foo/.terraform/
-data/tmp/Foo/.terraform.tfstate.lock.info
-
-data/tmp/Foo/terraform.tfstate
-
-data/tmp/Foo/terraform.tfstate.backup
+data/tmp/*
 
 *.info
 
 *.tfstate
-
-data/
 
 npm-debug.log
 

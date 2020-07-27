@@ -1,6 +1,0 @@
-.DS_Store
-*.swp
-terraform.tfstate*
-id_rsa
-.terraform
-variables.auto*

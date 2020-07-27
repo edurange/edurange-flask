@@ -1,3 +1,0 @@
-#!/bin/bash
-sed -i '/Port/s/^.*$/Port ${port}/' /etc/ssh/sshd_config
-service ssh restart

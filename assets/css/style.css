@@ -138,3 +138,14 @@ th.fit button:focus {
 .sidebar.pausetransition {
   transition: margin 0s;
 }
+
+.user-button {
+  position: relative;
+}
+.user-button .fa {
+  position: absolute;
+  line-height: 24px;
+  top: 50%;
+  margin-top: -12px;
+  left: 10px;
+}

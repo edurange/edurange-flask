@@ -7,7 +7,7 @@ perm_flag=$3
 studentDIR=/home/$player
 
 # Copy the file hierarchy to each home directory
-cp -R /home/ubuntu/file_wrangler/files/* $studentDIR/
+cp -R /home/ubuntu/files/* $studentDIR/
 
 # Use EDURange variables for flags
 echo "SECRET FLAG: $man_flag \n CONGRATULATIONS! You're a file-wrangling expert!" > $studentDIR/codes/manipulate.txt

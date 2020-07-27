@@ -4,7 +4,7 @@ from factory import PostGenerationMethodCall, Sequence, SubFactory
 from factory.alchemy import SQLAlchemyModelFactory
 
 from edurange_refactored.database import db
-from edurange_refactored.user.models import User, StudentGroups
+from edurange_refactored.user.models import StudentGroups, User
 
 
 class BaseFactory(SQLAlchemyModelFactory):
@@ -31,9 +31,9 @@ class UserFactory(BaseFactory):
 
         model = User
 
+
 class GroupFactory(BaseFactory):
     """Group factory."""
-
 
     name = Sequence(lambda n: f"group{n}")
     owner_id = Sequence(lambda n: f"{n}")

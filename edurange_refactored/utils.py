@@ -1,30 +1,30 @@
 """Helper utilities and decorators."""
-from flask import flash, abort, request, session, redirect, url_for, current_app
-from flask_login import current_user
-from flask_table import Table, Col
-from jwt.jwk import jwk_from_dict, OctetJWK
+import json
+import os
 
-from .user.models import User, Scenarios, ScenarioGroups, GroupUsers
+import yaml
+from flask import abort, current_app, flash, redirect, request, session, url_for
+from flask_login import current_user
+from flask_table import Col, Table
+from jwt.jwk import OctetJWK, jwk_from_dict
+
 from edurange_refactored.extensions import db
 from .scenario_utils import item_generator
 
-import yaml
-import json
-import os
+from .user.models import GroupUsers, ScenarioGroups, Scenarios, User
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
 
-def load_key_data(name, mode='rb'):
-    abspath = os.path.normpath(os.path.join(path_to_key, 'templates/utils/.keys', name))
+def load_key_data(name, mode="rb"):
+    abspath = os.path.normpath(os.path.join(path_to_key, "templates/utils/.keys", name))
     with open(abspath, mode=mode) as fh:
         return fh.read()
 
 
 class TokenHelper:
-
     def __init__(self):
-        self.data = jwk_from_dict(json.loads(load_key_data('oct.json', 'r')))
+        self.data = jwk_from_dict(json.loads(load_key_data("oct.json", "r")))
         self.octet_obj = OctetJWK(self.data.key, self.data.kid)
 
     def get_JWK(self):
@@ -51,20 +51,22 @@ class CheckCol(Col):
 
 # Old code for tables on the dashboards (possibly not used anymore? [tbd])------
 
+
 class StudentTable(Table):
-    classes = ['table']
-    thead_classes = ['thead-dark']
-    state = CheckCol('')
-    id = Col('id')
-    username = Col('username')
-    email = Col('email')
+    classes = ["table"]
+    thead_classes = ["thead-dark"]
+    state = CheckCol("")
+    id = Col("id")
+    username = Col("username")
+    email = Col("email")
     html_attrs = {
-        'data-toggle': 'table',
-        'data-pagination': 'true',
-        'data-show-columns': 'true',
-        'data-multiple-select-row': 'true',
-        'data-click-to-select': 'true',
-        'overflow-y': 'scroll'} # html_attrs probably don't do anything
+        "data-toggle": "table",
+        "data-pagination": "true",
+        "data-show-columns": "true",
+        "data-multiple-select-row": "true",
+        "data-click-to-select": "true",
+        "overflow-y": "scroll",
+    }  # html_attrs probably don't do anything
 
 
 class Student(object):
@@ -75,18 +77,19 @@ class Student(object):
 
 
 class GroupTable(Table):
-    classes = ['table']
-    thead_classes = ['thead-dark']
-    id = Col('id')
-    name = Col('name')
+    classes = ["table"]
+    thead_classes = ["thead-dark"]
+    id = Col("id")
+    name = Col("name")
     html_attrs = {
-        'data-toggle': 'table',
-        'data-search': 'true',
-        'data-search-on-enter-key': 'true',
-        'data-show-columns': 'true',
-        'data-multiple-select-row': 'true',
-        'data-click-to-select': 'true',
-        'data-pagination': 'true'}
+        "data-toggle": "table",
+        "data-search": "true",
+        "data-search-on-enter-key": "true",
+        "data-show-columns": "true",
+        "data-multiple-select-row": "true",
+        "data-click-to-select": "true",
+        "data-pagination": "true",
+    }
 
 
 class Group(object):
@@ -96,19 +99,20 @@ class Group(object):
 
 
 class GroupUserTable(Table):
-    classes = ['table']
-    thead_classes = ['thead-dark']
-    id = Col('id')
-    username = Col('username')
-    email = Col('email')
+    classes = ["table"]
+    thead_classes = ["thead-dark"]
+    id = Col("id")
+    username = Col("username")
+    email = Col("email")
     html_attrs = {
-        'data-toggle': 'table',
-        'data-search': 'true',
-        'data-search-on-enter-key': 'true',
-        'data-show-columns': 'true',
-        'data-multiple-select-row': 'true',
-        'data-click-to-select': 'true',
-        'data-pagination': 'true'}
+        "data-toggle": "table",
+        "data-search": "true",
+        "data-search-on-enter-key": "true",
+        "data-show-columns": "true",
+        "data-multiple-select-row": "true",
+        "data-click-to-select": "true",
+        "data-pagination": "true",
+    }
 
 
 class GroupUser(object):
@@ -119,11 +123,11 @@ class GroupUser(object):
 
 
 class UserInfoTable(Table):
-    classes = ['table']
-    thead_classes = ['thead-dark']
-    id = Col('id')
-    username = Col('username')
-    email = Col('email')
+    classes = ["table"]
+    thead_classes = ["thead-dark"]
+    id = Col("id")
+    username = Col("username")
+    email = Col("email")
 
 
 class UserInfo(object):
@@ -134,12 +138,12 @@ class UserInfo(object):
 
 
 class ScenarioTable(Table):
-    classes = ['table']
-    thead_classes = ['thead_dark']
-    id = Col('id')
-    name = Col('name')
-    created_at = Col('created_at')
-    status = Col('status')
+    classes = ["table"]
+    thead_classes = ["thead_dark"]
+    id = Col("id")
+    name = Col("name")
+    created_at = Col("created_at")
+    status = Col("status")
 
 
 class Scenario(object):
@@ -148,14 +152,6 @@ class Scenario(object):
         self.name = name
         self.created_at = created_at
         self.status = status
-
-# ----------------------------------------------------------
-
-# WARNING:
-# This check is actually vulnerable to attacks.
-# Since we're retrieving user id from the session request variables, it can be spoofed
-# Although it requires knowledge of the admin user_id #, it will often just be '1'
-# TODO: Harden check_admin(), check_instructor(), checkAuth(), and checkEnr()
 
 
 def check_admin():
@@ -172,31 +168,34 @@ def check_instructor():
         abort(403)
 
 
-def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
+def check_role_view(
+    mode,
+):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_admin and not user.is_instructor:
         abort(403)  # student's don't need their role checked
         return None  # a student has no applicable role. does abort stop the calling/parent function?
     else:
-        mode = request.args['mode']
-        if mode not in ['studentView', 'instructorView', 'adminView']:
+        mode = request.args["mode"]
+        if mode not in ["studentView", "instructorView", "adminView"]:
             abort(400)  # only supported views
         elif user.is_instructor and not user.is_admin:  # instructor only
-            if mode == 'studentView':
+            if mode == "studentView":
                 return True  # return true since viewMode should be set
-            elif mode == 'adminView':
+            elif mode == "adminView":
                 abort(403)  # instructors can't choose adminView
             else:
                 return False  # return false since viewMode should be dropped
         elif user.is_admin:
-            if mode in ['studentView', 'instructorView']:
+            if mode in ["studentView", "instructorView"]:
                 return True
             else:
                 return False
         else:
             abort(403)  # who are you?!
             return None
+
 
 # --------
 
@@ -224,8 +223,13 @@ def checkAuth(d):
 def checkEnr(d):
     db_ses = db.session
     n = current_user.id
-    enr = db_ses.query(GroupUsers.group_id).filter(ScenarioGroups.scenario_id == d)\
-        .filter(GroupUsers.group_id == ScenarioGroups.group_id).filter(GroupUsers.user_id == n).first()
+    enr = (
+        db_ses.query(GroupUsers.group_id)
+        .filter(ScenarioGroups.scenario_id == d)
+        .filter(GroupUsers.group_id == ScenarioGroups.group_id)
+        .filter(GroupUsers.user_id == n)
+        .first()
+    )
     if enr is not None:
         return True
     else:
@@ -246,17 +250,19 @@ def statReader(s):
         2: "Something went very wrong",
         3: "Starting",
         4: "Stopping",
-        5: "ERROR"
+        5: "ERROR",
     }
     return statSwitch[s]
 
 
 def getDesc(t):
     t = t.lower().replace(" ", "_")
-    with open('./scenarios/prod/' + t + '/' + t + '.yml', 'r') as yml:  # edurange_refactored/scenarios/prod
+    with open(
+        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+    ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item, doc in document.items():
-            if item == 'Description':
+            if item == "Description":
                 d = doc
     return d
 
@@ -280,7 +286,12 @@ def tempMaker(d, i):
     stat = db_ses.query(Scenarios.status).filter(Scenarios.id == d).first()
     stat = statReader(stat[0])
     # owner name
-    oName = db_ses.query(User.username).filter(Scenarios.id == d).filter(Scenarios.owner_id == User.id).first()
+    oName = (
+        db_ses.query(User.username)
+        .filter(Scenarios.id == d)
+        .filter(Scenarios.owner_id == User.id)
+        .first()
+    )
     oName = oName[0]
     # description
     ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
@@ -301,3 +312,6 @@ def tempMaker(d, i):
         # password
         pw = getPass(sNom, usr)
         return stat, oName, desc, ty, sNom, usr, pw
+
+
+#
