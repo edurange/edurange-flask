@@ -85,11 +85,12 @@ footer .footer-nav {
   list-style: none;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"], input[type="checkbox"]:not(.option) {
   box-sizing: border-box;
   padding: 0;
   transform: scale(2);
 }
+
 
 table, th, td {
   border: 1px solid black;
