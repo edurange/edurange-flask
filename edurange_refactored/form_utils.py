@@ -23,12 +23,12 @@ def process_request(form):  # Input must be request.form
         dataKeys.append(k)
 
     form_switch = {
-        "modScenarioForm": ["csrf_token", "sid", "mod_scenario"],
-        "startScenario": ["csrf_token", "start_scenario", "stop_scenario"],
-        "GroupForm": ["csrf_token", "name", "create"],
-        "deleteStudentForm": ["csrf_token", "stuName", "delete_student"],
-        "manageInstructorForm": ["csrf_token", "uName", "promote"],
-        "addUsersForm": ["csrf_token", "add", "groups", "uids"],
+        "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
+        "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
+        "GroupForm":                ["csrf_token", "name", "create", "size"],
+        "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
+        "manageInstructorForm":     ["csrf_token", "uName", "promote"],
+        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
     }
 
     switchVals = []
@@ -84,8 +84,28 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
     if gM.validate_on_submit():
         code = grc()
         name = gM.name.data
-        StudentGroups.create(name=name, owner_id=session.get("_user_id"), code=code)
-        flash("Created group {0}".format(name))
+        gid = (StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)).get_id()
+        size = gM.size.data
+        if size == 0:
+            flash('Created group {0}'.format(name))
+        else:
+            fName = name # formatted group name
+            name = name.replace(" ", "") # group name with no spaces
+            j = 0
+            for i in range(1, size + 1):
+                username = "{0}-user{1}".format(name, i)
+                password = grc()
+                uid = (User.create(
+                    username=username,
+                    email=username+"@edurange.org".format(i),
+                    password=password,
+                    active=True,
+                )).get_id()
+                GroupUsers.create(user_id=uid, group_id=gid)
+                j += 1
+                current_app.logger.info("User made: {0} | Password: {1}".format(username, password))
+            flash('Created group {0} and populated it with {1} accounts'.format(fName, j))
+
 
 
 def process_manInst():  # Form to give a specified user instructor permissions |  # manageInstructorForm
@@ -158,7 +178,7 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             )
             if check is not None:
                 if adding:
-                    flash("User already in group.", "warning")
+                    # flash('User already in group.', 'warning')
                     uids.pop(i)
                 else:
                     check.delete()
@@ -166,7 +186,7 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 if adding:
                     GroupUsers.create(user_id=uid, group_id=gid)
                 else:
-                    flash("User {0} not in group.".format(uid), "warning")
+                    # flash('User {0} not in group.'.format(uid), 'warning')
                     uids.pop(i)
 
         if adding:

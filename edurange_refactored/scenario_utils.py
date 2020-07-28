@@ -158,7 +158,7 @@ def begin_tf_and_write_providers(name):
     with open(name + ".tf", "w") as tf:
         tf.write(
             """
-provider "docker" {}
+provider "docker" { host = "unix:///var/run/docker.sock"}
 provider "template" {}
 """
         )
@@ -245,11 +245,9 @@ def write_users(tf, usernames, passwords):
 
 
 def write_make_dir(tf):
-    tf.write(
-        """
-      "mkdir /home/ubuntu",    
-    """
-    )
+    tf.write("""
+      "mkdir /home/ubuntu",
+    """)
 
 
 def write_run_global(tf, filenames):
@@ -338,15 +336,15 @@ def begin_code_block(tf):
 def end_code_block(tf):
     tf.write(
         """
-    ]   
-  }      
+    ]
+  }
 }
 """
     )
 
 
 def write_output_block(name, c_names):
-    with open(name + ".tf", "a") as tf:
+    with open(name + '.tf', 'a') as tf:
         for c in c_names:
             c = name + "_" + c
             tf.write(
@@ -383,17 +381,9 @@ def write_container(
 ):
     with open(name + ".tf", "a") as tf:
         tf.write(
-            """ 
-resource "docker_container" """
-            + '"'
-            + name
-            + '"'
-            """ {
-  name = """
-            + '"'
-            + name
-            + '"'
             """
+resource "docker_container" """ + "\"" + name + "\"" """ {
+  name = """ + "\"" + name + "\"" """
   image = "rastasheep/ubuntu-sshd:18.04"
   restart = "always"
   hostname  = "NAT"
