@@ -2,25 +2,47 @@
 
 {% extends "layout.html" %}
 {% block content %}
-    <div class="card bg-light mb-3">
+    <div class="card bg-light ">
         <div class="card-header">
-            <h3> Name : {{ n }} </h3>
-            <h3> Type : {{ t }} </h3>
+            <h5> Name : {{ n }} </h5>
+            <h5> Type : {{ t }} </h5>
         </div>
         <div class="card-body">
-            <p> Description : {{ de }} </p>
-            <p> Status : {{ s }} </p>
-            <p> Instructor : {{ o }} </p>
-            <p> Port : {{ p }} </p>
-            <p> Password : {{ pw }} </p>
+            <p><b> Description:</b> {{ de }} </p>
+            <p><b>Status:</b> {{ s }} </p>
+            <p><b>Instructor:</b> {{ o }} </p>
+            <p><b>Port:</b> {{ p }} </p>
+            <p><b>Password:</b> {{ pw }} </p>
         </div>
-    </div>
-    <div class="card bg-light mb-3">
-        <div class="card-header">
-            <h3> Response Form </h3>
+
+    <ul class="nav nav-tabs mt-3 ml-3">
+      <li class="nav-item active">
+        <a href="#Responses" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab"  aria-selected="true">Responses</a>
+      </li>
+      <li class="nav-item">
+        <a href="#Guide" class="nav-link tab-pane show" data-toggle="tab" aria-selected="false">Guide</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <!--<div class="card bg-light mb-3 mt-0 tab-pane show active" id="Responses">-->
+      <div id="Responses" class="tab-pane show active">
+        <div class="container mt-3">
+          <h3> Response Form </h3>
+          <div class="card-body">
+              <p> responses </p>
+          </div>
         </div>
+      </div>
+      <!--<div class="card bg-light mb-3 tab-pane fade" id="Guide">-->
+      <div class="tab-pane" id="Guide">
+        <div class="container mt-3">
+            <h3> Guide </h3>
         <div class="card-body">
-            <p> responses </p>
+            <p> codelab </p>
         </div>
+      </div>
+      </div>
     </div>
+      </div>
 {% endblock %}
