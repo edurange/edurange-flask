@@ -339,7 +339,7 @@ def write_net_adv(tf, s_name, ip):
 
 
 def write_container(
-    name, s_type, usernames, passwords, g_files, s_files, u_files, packages, ip_addr
+    name, s_type, usernames, passwords, g_files, s_files, u_files, packages
 ):
     with open(name + ".tf", "a") as tf:
         tf.write(
@@ -364,8 +364,8 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
         """
         )
 
-        if ip_addr is not None:
-            write_net_adv(tf, name, ip_addr)
+        #if ip_addr is not None:
+        #    write_net_adv(tf, name, ip_addr)
 
         s_type = "prod/" + s_type
         write_global_files(tf, s_type, g_files)

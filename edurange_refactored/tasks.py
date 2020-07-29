@@ -152,7 +152,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
                 s_files[i],
                 u_files[i],
                 packages[i],
-                ip_addrs[i]
+                #ip_addrs[i]
             )
 
         write_output_block(name, c_names)
