@@ -15,7 +15,7 @@ from edurange_refactored.scenario_utils import (
     gather_files,
     known_types,
     write_container,
-    write_output_block,
+    write_output_block, write_network,
 )
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 
@@ -100,7 +100,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     s_id = s_id["id"]
     g_id = g_id["id"]
 
-    c_names, g_files, s_files, u_files, packages = gather_files(s_type, logger)
+    c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(s_type, logger)
 
     logger.info(
         "Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}".format(
@@ -139,6 +139,9 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
         begin_tf_and_write_providers(name)
 
+        if s_type == "ssh_inception" or s_type == "total_recon":
+            write_network(name)
+
         for i, c in enumerate(c_names):
             write_container(
                 name + "_" + c,
@@ -149,6 +152,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
                 s_files[i],
                 u_files[i],
                 packages[i],
+                ip_addrs[i]
             )
 
         write_output_block(name, c_names)
