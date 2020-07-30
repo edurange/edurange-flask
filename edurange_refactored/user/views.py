@@ -206,10 +206,13 @@ def admin():
     elif request.method == 'POST':
         ajax = process_request(request.form)
         if ajax:
-            groupMaker = GroupForm()
-            userAdder = addUsersForm()
-            instructorManager = manageInstructorForm()
-            userDropper = deleteStudentForm()
-            return render_template('dashboard/admin.html', groupMaker=groupMaker, userAdder=userAdder, instructorManager=instructorManager, userDropper=userDropper, groups=groups, students=students, instructors=instructors, usersPGroup=users_per_group)
+            temp = ajax[0]
+            if temp == 'utils/create_group_response.html':
+                if len(ajax) < 4:
+                    return render_template(temp, group=ajax[1], users=ajax[2])
+                else:
+                    return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])
+            elif temp == 'utils/manage_student_response.html':
+                return render_template(temp, group=ajax[1], users=ajax[2])
         else:
             return redirect(url_for('dashboard.admin'))
