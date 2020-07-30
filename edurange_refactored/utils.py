@@ -262,6 +262,17 @@ def getDesc(t):
                 d = doc
     return d
 
+def getGuide(t):
+    t = t.lower().replace(" ", "_")
+    with open(
+        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+    ) as yml:  # edurange_refactored/scenarios/prod
+        document = yaml.full_load(yml)
+        for item, doc in document.items():
+            if item == "Codelab":
+                g = doc
+                #print(g)
+    return g
 
 def getPass(sn, un):
     with open('./data/tmp/' + sn + '/students.json', 'r') as f:
@@ -293,6 +304,7 @@ def tempMaker(d, i):
     ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
     ty = ty[0]
     desc = getDesc(ty)
+    guide = getGuide(ty)
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
@@ -300,14 +312,14 @@ def tempMaker(d, i):
         # creation time
         bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
         bTime = bTime[0]
-        return stat, oName, bTime, desc, ty, sNom
+        return stat, oName, bTime, desc, ty, sNom, guide
     elif i == "stu":
         # username
         ud = current_user.id
         usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
         # password
         pw = getPass(sNom, usr)
-        return stat, oName, desc, ty, sNom, usr, pw
+        return stat, oName, desc, ty, sNom, usr, pw, guide
 
 
 #
