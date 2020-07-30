@@ -60,6 +60,7 @@ def gather_files(s_type, logger):
     s_files = []
     u_files = []
     package_list = []
+    ip_addrs = []
 
     if os.path.isdir(os.path.join("./scenarios/prod/", s_type)):
         logger.info("Scenario of type {} Found".format(s_type))
@@ -100,7 +101,13 @@ def gather_files(s_type, logger):
 
                 logger.info("Found required packages: {}".format(package_list))
 
-                return c_names, g_files, s_files, u_files, package_list
+                ip_addresses = item_generator(data, "ip_address")
+                for a in list(ip_addresses):
+                    ip_addrs.append(a)
+
+                logger.info("Found addresses: {}".format(ip_addrs))
+
+                return c_names, g_files, s_files, u_files, package_list, ip_addrs
 
         except FileNotFoundError:
             logger.warn("Could Not load json file for type: {}".format(s_type))
@@ -169,17 +176,9 @@ def write_global_files(tf, s_type, filenames):
         tf.write(
             """
   provisioner "file" {
-    source      = "${path.module}/../../../scenarios/"""
-            + s_type
-            + "/"
-            + f
-            + '"'
-            + "\n"
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + '"'
             + """
-    destination = """
-            + '"/'
-            + f
-            + '"\n'
+    destination = """ + '"/' + f + '"'
             + """
   }
 """
@@ -191,17 +190,9 @@ def write_system_files(tf, s_type, filenames):
         tf.write(
             """
   provisioner "file" {
-    source      = "${path.module}/../../../scenarios/"""
-            + s_type
-            + "/"
-            + f
-            + '"'
-            + "\n"
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + '"'
             + """
-    destination = """
-            + '"/'
-            + f
-            + '"\n'
+    destination = """ + '"/' + f + '"'
             + """
   }
 """
@@ -213,17 +204,9 @@ def write_user_files(tf, s_type, filenames):
         tf.write(
             """
   provisioner "file" {
-    source      = "${path.module}/../../../scenarios/"""
-            + s_type
-            + "/"
-            + f
-            + '"'
-            + "\n"
+    source      = "${path.module}/../../../scenarios/""" + s_type + "/" + f + '"'
             + """
-    destination = """
-            + '"/'
-            + f
-            + '"\n'
+    destination = """ + '"/' + f + '"'
             + """
   }
 """
@@ -254,16 +237,8 @@ def write_run_global(tf, filenames):
     for f in filenames:
         tf.write(
             """
-      "chmod +x /"""
-            + f
-            + '"'
-            + """,
-      "mv /"""
-            + f
-            + " /usr/bin/"
-            + f
-            + '"'
-            + """,
+      "chmod +x /""" + f + '"' + """,
+      "mv /""" + f + " /usr/bin/" + f + '"' + """,
 """
         )
 
@@ -272,20 +247,9 @@ def write_run_system(tf, filenames):
     for f in filenames:
         tf.write(
             """
-      "chmod +x /"""
-            + f
-            + '"'
-            + """,
-      "mv /"""
-            + f
-            + " /home/ubuntu/"
-            + f
-            + '"'
-            + """,
-      "/home/ubuntu/"""
-            + f
-            + '"'
-            + """,
+      "chmod +x /""" + f + '"' + """,
+      "mv /""" + f + " /home/ubuntu/" + f + '"' + """,
+      "/home/ubuntu/""" + f + '"' + """,
 """
         )
 
@@ -294,16 +258,8 @@ def write_prep_user(tf, filenames):
     for f in filenames:
         tf.write(
             """
-      "chmod +rwx /"""
-            + f
-            + '"'
-            + """,
-      "cp -R /"""
-            + f
-            + " /home/ubuntu/"
-            + f
-            + '"'
-            + """,
+      "chmod +rwx /""" + f + '"' + """,
+      "cp -R /""" + f + " /home/ubuntu/" + f + '"' + """,
 """
         )
 
@@ -351,29 +307,35 @@ def write_output_block(name, c_names):
                 """
   locals {
     """
-                + c
-                + """_extern = tostring(docker_container."""
-                + c
-                + """.ports[0].external)
+    + c + """_extern = tostring(docker_container.""" + c + """.ports[0].external)
   }
 
-  output """
-                + '"'
-                + c
-                + """" {
+  output """ + '"' + c + """" {
     value = [{
-      name = """
-                + '"'
-                + c
-                + '"'
-                + """
-      ip_address_public = join(":", ["localhost", local."""
-                + c
-                + """_extern])
+      name = """ + '"' + c + '"' + """
+      ip_address_public = join(":", ["localhost", local.""" + c + """_extern])
     }]
   }
-                """
+"""
             )
+
+
+def write_network(s_name):
+    with open("network.tf", "w") as tf:
+        tf.write( """
+resource "docker_network" """ + "\"" + s_name + "_NAT\"" """ {
+  name = """ + "\"" + s_name + "_NAT\"" """
+  driver = "bridge"
+  internal = "false"
+}""")
+
+
+def write_net_adv(tf, s_name, ip):
+    tf.write("""
+  networks_advanced {
+    name = """ + "\"" + s_name.split('_')[0] + "_NAT\"" """
+  }
+""")
 
 
 def write_container(
@@ -401,6 +363,10 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
   }
         """
         )
+
+        #if ip_addr is not None:
+        #    write_net_adv(tf, name, ip_addr)
+
         s_type = "prod/" + s_type
         write_global_files(tf, s_type, g_files)
 
@@ -423,3 +389,6 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
         write_run_system(tf, s_files)
 
         end_code_block(tf)
+
+
+
