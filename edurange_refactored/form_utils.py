@@ -84,27 +84,34 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
     if gM.validate_on_submit():
         code = grc()
         name = gM.name.data
-        gid = (StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)).get_id()
+        group = StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
+        users = []
+        gid = group.get_id()
         size = gM.size.data
         if size == 0:
-            flash('Created group {0}'.format(name))
+            flash('Created group {0}'.format(name), 'success')
+            return 'utils/create_group_response.html', group, users
         else:
+            pairs = []
             fName = name # formatted group name
             name = name.replace(" ", "") # group name with no spaces
             j = 0
             for i in range(1, size + 1):
                 username = "{0}-user{1}".format(name, i)
                 password = grc()
-                uid = (User.create(
+                user = User.create(
                     username=username,
                     email=username+"@edurange.org".format(i),
                     password=password,
                     active=True,
-                )).get_id()
+                )
+                uid = user.get_id()
                 GroupUsers.create(user_id=uid, group_id=gid)
                 j += 1
-                current_app.logger.info("User made: {0} | Password: {1}".format(username, password))
-            flash('Created group {0} and populated it with {1} accounts'.format(fName, j))
+                pairs.append((username, password))
+                users.append(user)
+            flash('Created group {0} and populated it with {1} accounts'.format(fName, j), 'success')
+            return 'utils/create_group_response.html', group, users, pairs
 
 
 
@@ -153,11 +160,8 @@ def process_addUser():  # Form to add or remove selected students from a selecte
     if uA.validate_on_submit():
         db_ses = db.session
         group = uA.groups.data
-        gid = (
-            db_ses.query(StudentGroups.id)
-            .filter(StudentGroups.name == group)
-            .first()[0]
-        )
+        gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
+        group = db_ses.query(StudentGroups).filter(StudentGroups.id == gid).first()
         uids = uA.uids.data  # string form
         adding = False
 
@@ -178,7 +182,6 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             )
             if check is not None:
                 if adding:
-                    # flash('User already in group.', 'warning')
                     uids.pop(i)
                 else:
                     check.delete()
@@ -186,7 +189,6 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 if adding:
                     GroupUsers.create(user_id=uid, group_id=gid)
                 else:
-                    # flash('User {0} not in group.'.format(uid), 'warning')
                     uids.pop(i)
 
         if adding:
@@ -197,12 +199,8 @@ def process_addUser():  # Form to add or remove selected students from a selecte
                 "success",
             )
         else:
-            flash(
-                "Removed {0} users from group {1}. DEBUG: {2}".format(
-                    len(uids), group, uids
-                ),
-                "success",
-            )
-
+            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group.name, uids), 'success')
+        users = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.id == gid, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+        return 'utils/manage_student_response.html', group, users
     else:
         flash_errors(uA)
