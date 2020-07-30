@@ -2,6 +2,8 @@
 
 EDURange
 
+Documentation can be found [here](https://github.com/Xennos-Dis/edurange-flask-docs "EDURange Refactored Documentation")
+
 ## Docker Quickstart
 
 This app can be run completely using `Docker` and `docker-compose`. **Using Docker is recommended, as it guarantees the application is run using compatible versions of Python and Node**.
