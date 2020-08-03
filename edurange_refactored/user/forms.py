@@ -203,6 +203,21 @@ class deleteStudentForm(FlaskForm):  # type1
         return True
 
 
+class scenarioResponseForm(FlaskForm):
+    """records a students response to a scenario question"""
+
+    response = StringField("Response", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(scenarioResponseForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(scenarioResponseForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
 # -
 
 

@@ -262,6 +262,7 @@ def getDesc(t):
                 d = doc
     return d
 
+
 def getGuide(t):
     t = t.lower().replace(" ", "_")
     with open(
@@ -273,6 +274,7 @@ def getGuide(t):
                 g = doc
                 #print(g)
     return g
+
 
 def getPass(sn, un):
     with open('./data/tmp/' + sn + '/students.json', 'r') as f:
@@ -321,5 +323,13 @@ def tempMaker(d, i):
         pw = getPass(sNom, usr)
         return stat, oName, desc, ty, sNom, usr, pw, guide
 
+
+def responseCheck(resp):
+    # read correct response from yaml file
+    ans = "you'll never get this question right, mwa ha ha ha!"
+    if resp == ans:
+        return True
+    else:
+        return False
 
 #
