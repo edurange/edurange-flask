@@ -1,6 +1,7 @@
 import os
 
 from flask import current_app, flash, request, session
+from flask_login import current_user
 
 from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
@@ -9,12 +10,13 @@ from edurange_refactored.user.forms import (
     deleteStudentForm,
     manageInstructorForm,
     modScenarioForm,
+    scenarioResponseForm
 )
 
 from . import tasks
-from .user.models import GroupUsers, StudentGroups, User
+from .user.models import GroupUsers, StudentGroups, User, Responses
 from .user.models import generate_registration_code as grc
-from .utils import flash_errors
+from .utils import flash_errors, responseCheck
 
 
 def process_request(form):  # Input must be request.form
@@ -29,6 +31,7 @@ def process_request(form):  # Input must be request.form
         "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
         "manageInstructorForm":     ["csrf_token", "uName", "promote"],
         "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
+        "scenarioResponseForm":     ["csrf_token", "response", "scenario", "question"]
     }
 
     switchVals = []
@@ -51,9 +54,8 @@ def process_request(form):  # Input must be request.form
         "GroupForm":                process_groupMaker,
         "deleteStudentForm":        process_delStu,
         "promoteInstructorForm":    process_manInst,
-        "demoteInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
-        "removeUsersForm":          process_addUser
+        "scenarioResponseForm":     process_scenarioResponse
     }
     return process_switch[f]()
 
@@ -206,3 +208,19 @@ def process_addUser():  # Form to add or remove selected students from a selecte
 
     else:
         flash_errors(uA)
+
+
+def process_scenarioResponse():
+    sR = scenarioResponseForm()
+    if sR.validate_on_submit():
+        sid = sR.scenario.data
+        qnum = sR.question.data
+        resp = sR.response.data
+        uid = current_user.id
+        # answer checking function in utils
+        gotIt = responseCheck(resp)
+        # get attempt number from somewhere
+        att = 0
+        Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
+
+

@@ -115,3 +115,20 @@ class ScenarioGroups(UserMixin, SurrogatePK, Model):
     group = relationship("StudentGroups", backref="scenario_groups")
     scenario_id = reference_col("scenarios", nullable=False)
     scenario = relationship("Scenarios", backref="scenario_groups")
+
+
+class Responses(UserMixin, SurrogatePK, Model):
+    """Student responses to scenario questions"""
+
+    __tablename__ = "responses"
+    user_id = reference_col("users", nullable=False)
+    user = relationship("User", backref="responses")
+    scenario_id = reference_col("scenarios", nullable=False)
+    scenario = relationship("Scenarios", backref="responses")
+    question = Column(db.Integer, default=0, nullable=False)
+    student_response = Column(db.String(40), unique=False, nullable=True)
+    correct = Column(db.Boolean(), default=False)
+    response_time = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    attempt = Column(db.Integer, default=0, nullable=False)
+    # learning objective field?
+
