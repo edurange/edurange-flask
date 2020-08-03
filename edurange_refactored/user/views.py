@@ -113,7 +113,8 @@ def student_scenario(i):
                                    u_name=u_name,
                                    pw=pw,
                                    add=addresses,
-                                   guide=guide)
+                                   guide=guide,
+                                   questions= questions)
         else:
             return abort(404)
     else:
