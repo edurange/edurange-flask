@@ -286,6 +286,7 @@ def getPass(sn, un):
         p = d1.get('password')
     return p
 
+
 def getQuestions(t):
     questions = []
     t = t.lower().replace(" ", "_")
@@ -295,18 +296,6 @@ def getQuestions(t):
         document = yaml.full_load(yml)
         for item in document:
             questions.append(item['Text'])
-    return questions
-
-def getQuestions(t):
-    questions = []
-    t = t.lower().replace(" ", "_")
-    with open(
-        "./scenarios/prod/" + t + "/" + "questions.yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
-        document = yaml.full_load(yml)
-        for item, doc in document.items():
-            if item== "Text":
-                questions.append(item)
     return questions
 
 
