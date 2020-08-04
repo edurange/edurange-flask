@@ -7,6 +7,40 @@
 
 <div class="container" id="accordion"> {# Allows tables to collapse as an accordion #}
 
+    <div class="row">
+        <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
+            <div class="card bg-light mb-3">
+                <div class="card-header">Manage Students [WIP]</div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                    <form id="deleteStudent" method="POST" action="" role="form">
+                        {{ userDropper.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Manage Instructors</div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                    <form id="makeInstructor" method="POST" action="" role="form"> {# Front end for form to manage instructor permissions of specified users #}
+                        {{ instructorManager.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
+                        </div>
+                        <button type="submit" name="promote" value="true" class="btn btn-dark">Promote to Instructor</button>
+                        <button type="submit" name="promote" value="false" class="btn btn-dark">Demote from Instructor</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Code for tables begins -->
 
@@ -57,7 +91,9 @@
                 <h2> <i class="fa fa-user"></i> Manage Students
                     <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
                         <i class="fa fa-caret-down"></i>
-                    </button></h2>
+                    </button>
+                </h2>
+                <!--<div class="col-sm my-auto text-right" id="stuCount"> Count: {{ student_count }} </div>-->
             </div>
         </div>
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
@@ -73,39 +109,40 @@
                                 <option value="{{group.name}}" SELECTED>{{group.name}}</option>
                                 {% endfor %}
                             </select>
+                            <span id="groupPop"></span>
                         </div>
 
                         <div class="col-sm-4 btn-group-vertical float-right">
                             <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">
-                                <i class="fa fa-plus"></i>Add Students to Group</button>
+                                <i class="fa fa-plus"></i>Add <i class="selCount"></i> Students to Group</button>
                             <button name="add" class="btn btn-dark user-button float-right mb-2" type="submit" value="false">
-                                <i class="fa fa-minus"></i>Remove Students from Group</button>
+                                <i class="fa fa-minus"></i>Remove <i class="selCount"></i> Students from Group</button>
                         </div>
                     </div>
                     <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
                     <p></p>
                 </form>
-                <div>
+                <div style="height: 600px !important; overflow-y: auto;">
                     <table class="table" id="studentTable">
                         <thead class="thead-dark">
                         <tr>
-                            <th> ID # </th>
-                            <th> Username </th>
-                            <th> Email </th>
-                            <th class="fit"> Selection
+                            <th style="position: sticky; top: 0;"> ID # </th>
+                            <th style="position: sticky; top: 0;"> Username </th>
+                            <th style="position: sticky; top: 0;"> Email </th>
+                            <th class="fit" style="position: sticky; top: 0;"> Selection
                                 <button class="btn btn-secondary btn-sm" type="button" id="selectAll">All</button>
                                 <button class="btn btn-secondary btn-sm" type="button" id="clearAll">Clear</button>
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="studentBody">
                         {% for student in students %}
-                        <tr id="uid{{ student.id }}">
-                            <td> {{ student.id }}</td>
-                            <td> {{ student.username }}</td>
-                            <td> {{ student.email }}</td>
-                            <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"/></td>
-                        </tr>
+                            <tr id="uid{{ student.id }}">
+                                <td> {{ student.id }}</td>
+                                <td> {{ student.username }}</td>
+                                <td> {{ student.email }}</td>
+                                <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"/></td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
@@ -115,15 +152,15 @@
         </div>
     </div> <!--user table collapse-->
 
-    <div class="card mb-2 mt-2"> <!-- groups table collapse -->
-        <div class="card-header" id="headingGroups">
+    <div class="card mb-2 mt-2" id="groupStart"> <!-- groups table collapse -->
+        <div class="card-header d-inline-flex" id="headingGroups">
             <h5 class="mb-0">
                 <h2><i class="fa fa-user"></i> All Groups </h2>
             </h5>
         </div>
         <div class="card-body" id="groupTables">
             <!-- groups table stuff -->
-            <div class="btn-group">
+            <div id="groupButtons">
                 {% for group in groups if not group.hidden %}
                 <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
                         data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
@@ -137,7 +174,9 @@
                 <p></p>
                 <div>
                     <div class="row mb-3 mr-3">
-                        <h4 class="ml-3"> {{ group.name }} &emsp;&emsp;|&emsp;&emsp; Registration Code: <i>{{ group.code }}</i></h4>
+                        <h4 class="ml-3"> {{ group.name }} &emsp;&emsp;|&emsp;&emsp;
+                        Registration Code: <i>{{ group.code }}</i> &emsp;&emsp;|&emsp;&emsp;
+                        Size: <i id="{{ group.name.replace(' ', '') }}_size"></i></h4>
                     </div>
                     <table class="table">
                         <thead class="thead-dark">
@@ -165,7 +204,7 @@
     </div> <!-- groups table collapse -->
 
 
-    <div class="row">
+    <div class="row" id="groupRow">
         <div class="col-sm-6"> {# Front end for form to create a student group #}
             <div class="card bg-light mb-3">
                 <div class="card-header">Create Student Group</div>
@@ -177,7 +216,7 @@
                             <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
                         </div>
                         <div class="form-inline">
-                            <input name="create" class="btn btn-dark" type="submit" value="Create">&ensp;
+                            <input id="groupCreate" name="create" class="btn btn-dark" type="submit" value="Create">&ensp;
                             <input type="checkbox" class="form-check-input option" value="" id="genGroup">
                             <label for="genGroup" class="form-check-label text-muted" id="genGroup-label">
                                 &ensp;Generate group of size (0 - 40):&nbsp;
@@ -190,50 +229,23 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
-            <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students [WIP]</div>
-                <div class="card-body">
-                    <h5 class="card-text"></h5>
-                    <form id="deleteStudent" method="POST" action="" role="form">
-                        {{ userDropper.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
-                        </div>
-                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6">
-            <div class="card bg-light mb-3">
-                <div class="card-header">Manage Instructors</div>
-                <div class="card-body">
-                    <h5 class="card-text"></h5>
-                    <form id="makeInstructor" method="POST" action="" role="form"> {# Front end for form to manage instructor permissions of specified users #}
-                        {{ instructorManager.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="uName" name="uName" placeholder="Username" required type="text" value="">
-                        </div>
-                        <button type="submit" name="promote" value="true" class="btn btn-dark">Promote to Instructor</button>
-                        <button type="submit" name="promote" value="false" class="btn btn-dark">Demote from Instructor</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> <!-- end of accordian container -->
-</div>
-
+</div> <!-- end of accordian container -->
 {% endblock %}
 
 {% block js %}
 <script>
 
   $(document).ready(function() {
+    /* Record and display row count for each table (to avoid doubling amount of SQL queries) */
+    $("#groupTables i[id$='_size']").each(function(index, element) {
+      var name = element.id.slice(0, -5);
+      $(element).text($("div[id='" + name + "-table'] tbody tr").length);
+    });
+
     /* Event listener to add selected user to uids list */
-    $("#studentTable button.selector").on("click", function() {
+    $("#studentTable tbody").on("click", "button.selector", function() {
       var uid = this.id.slice(3);
       $(this).toggleClass("btn-outline-dark btn-dark");
       $("#selection").val(function(index, value) {
@@ -243,16 +255,32 @@
           return value + uid + ',';
         }
       });
+      $("#selection").trigger("change");
+    });
+
+    $("#selection").on("change", function() {
+      var string = $(this).val();
+      var count = string.split(",").length - 1;
+      $("#addGroupUsers i.selCount").text(count);
     });
 
     /* Event listener to select all students when "select all" button is pressed */
     $("#selectAll").on("click", function() {
-      $("button.selector.btn-outline-dark").trigger("click");
+      //$("button.selector.btn-outline-dark").trigger("click");
+      var buttons = $("button.selector.btn-outline-dark");
+      var field = $("#selection");
+      buttons.each(function(index, element) {
+        field.val(field.val() + $(element).attr('id').slice(3) + ',');
+        $(element).toggleClass("btn-outline-dark btn-dark");
+      });
+      field.trigger("change");
     });
 
     /* Event listener to clear all selected students when "clear" button is pressed */
     $("#clearAll").on("click", function() {
-      $("button.selector.btn-dark").trigger("click");
+      $("#selection").val('');
+      $("button.selector.btn-dark").toggleClass("btn-outline-dark btn-dark");
+      $("#selection").trigger("change");
     });
 
     /* Event listener to add 'in group' indicators to student table for students in currently selected group */
@@ -269,11 +297,12 @@
             '<span class="in-group"><i class="fa fa-check" aria-hidden="true"></i>  In Group </span>'
         ); // append 'in group' indicator to the 'select' column in row whose id matches the current id
       }
+      $("#groupPop").text($("#" + tableID + "_size").text() + " in group");
     });
     $("#groupSel").trigger("change"); // trigger change on page load to generate 'in group' indicators
 
     /* AJAX request for add/removing users from a group */
-    $(".user-button").on("click", function(e) { //add or remove users buttons
+    $("#addGroupUsers .user-button").on("click", function(e) { //add or remove users buttons
       var csrf_token; var add; var uids; var groups;
       e.preventDefault(); //prevent form submit
       csrf_token = $("#csrf_token").val();
@@ -286,24 +315,81 @@
         data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
       });
       request.done(function(response) {
-        var $data = $(response).find("#" + groups.replace(/\s+/g, '') + "-table");
-        //$data.addClass("show"); //do we want the group table to automatically show?
-        //$("#groupTables .show").removeClass("show"); //collapse any expanded group tables
-        var table = $("#" + groups.replace(/\s+/g, '') + "-table");
-        table.replaceWith($data);
-        $("#groupSel").trigger('change');
-        var flash = $("#flashed");
-        if (flash.length) { //if #flashed exists
-          flash.replaceWith($(response).find("#flashed"));
-        }
-        else {
-          $("#groupHead").append($(response).find("#flashed"));
-        } //flash messages in manage users form/head
+        mergeHTML("manageStudents", groups, response);
       });
       request.fail(function(response) {
         alert("Something went wrong!");
       });
     });
+
+    /* AJAX request for creating groups */
+    $("#groupCreate").on("click", function(e) {
+      var csrf_token; var name; var create; var size;
+      e.preventDefault();
+      csrf_token = $("#csrf_token").val();
+      name = $("#name").val();
+      create = $(this).val();
+      size = $("#size");
+      if (size.prop('disabled')) {
+        size = 0;
+      } else {
+        size = size.val();
+      }
+      request = $.ajax({
+        type : 'POST',
+        url : "{{ url_for('dashboard.admin') }}",
+        data : {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size}
+      });
+      request.done(function(response) {
+        mergeHTML("groupCreate", name, response)
+      });
+      request.fail(function(response) {
+        alert("Something went wrong!");
+      });
+    });
+
+    function mergeHTML(req, arg, response) {
+      $("#flashed").remove();
+      if (req === "groupCreate") {
+        var $table = $(response).filter("div[id$='-table']"); //get new group table
+        var $button = $(response).filter("button[data-target]"); //get group table button
+        var $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
+        var $flash = $(response).filter("#flashed"); //get flashed messages
+        var $users = $(response).find("#studentRows").html();
+        var $count = $(response).filter("#stuCount");
+        $("#groupButtons").append($button); //append new group button
+        $("#groupTables").append($table); //append new group table
+        $("#studentBody").append($users);
+        $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
+        if ($flash.length) {
+          $("#headingGroups").append($flash); //flash new messages
+        }
+        if ($pairs.length) {
+          $("#stuCount").replaceWith($count);
+          var pairs = $("#pairs");
+          if (pairs.length) {
+            pairs.replaceWith($pairs);
+          }
+          else {
+            $("#groupRow").append($pairs);
+          }
+        }
+        $("#groupTables i[id='" + arg + "_size']").text($table.length);
+      }
+      else if (req === "manageStudents") {
+        var group = arg.replace(/\s+/g, '');
+        var $table = $(response).filter("#" + group + "-table").html();
+        var table = $("#" + group + "-table tbody");
+        table.replaceWith($table);
+
+        //var $count = $(response).filter("#" + group + "_size");
+        $("#" + group + "_size").text($("#" + group + "-table tbody tr").length);
+
+        $("#groupHead").append($(response).filter("#flashed"));
+        $("#groupSel").trigger("change");
+      }
+    }
+
 
     /* Event listener to activate/deactivate group generation input when option is checked/unchecked */
     $("#genGroup").on("change", function() {
