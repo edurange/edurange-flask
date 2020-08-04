@@ -283,6 +283,7 @@ def getPass(sn, un):
         p = d1.get('password')
     return p
 
+
 def getQuestions(t):
     questions = []
     t = t.lower().replace(" ", "_")
@@ -294,6 +295,7 @@ def getQuestions(t):
             if item== "Text":
                 questions.append(item)
     return questions
+
 
 def getPort(n):
     n = 0  # [WIP]
@@ -336,6 +338,9 @@ def tempMaker(d, i):
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
 
 
+# --
+
+
 def responseCheck(resp):
     # read correct response from yaml file
     ans = "you'll never get this question right, mwa ha ha ha!"
@@ -343,5 +348,173 @@ def responseCheck(resp):
         return True
     else:
         return False
+
+
+# --
+
+
+def tmpResp():
+    # This is a temporary function to test the instructors student response table
+    resp = [
+        {'id': 1, 'user_id': 2, 'scenario_id': 3, 'question': 1, 'student_response': 'u2,q1,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
+        {'id': 2, 'user_id': 2, 'scenario_id': 3, 'question': 2, 'student_response': 'u2,q2,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
+        {'id': 3, 'user_id': 3, 'scenario_id': 3, 'question': 1, 'student_response': 'u3,q1,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
+        {'id': 4, 'user_id': 3, 'scenario_id': 3, 'question': 2, 'student_response': 'u3,q2,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1}]
+
+    return resp
+
+
+def tmpQ():
+    # This is a temporary function to test the instructor student response table
+    qs = """
+    ---
+    Scoring:
+    - Text: How many subdirectories are in your home directory?
+      Values:
+      - Value: '7'
+        Points: '15'
+      Order: 1
+      Points: 15
+    - Text: In your home directory ... blah blah blah
+      Values:
+      - Value: 'some variable'
+        Points: '15'
+      Order: 2
+      Points: 15
+    """
+    qd = {'Scoring':
+              [{'Text': 'How many subdirectories are in your home directory?',
+                'Values':
+                    [{'Value': '7',
+                      'Points': '15'}],
+                'Order': '1',
+                'Points': '15'},
+               {'Text': 'In your home directory ... blah blah blah',
+                'Values':
+                    [{'Value': 'some variable',
+                      'Points': '15'}],
+                'Order': '2',
+                'Points': '15'}
+               ]
+          }
+    return qd
+
+
+dTest = {'f':
+             [{'nest1': '',
+               'v2':
+                   [{'nest2': '',
+                     'v3': ''}],
+               'v4': '',
+               'v5': ''},
+              {'nest1': '',
+               'v2':
+                   [{'nest2': '',
+                     'v3': ''}],
+               'v4': '',
+               'v5': ''}
+              ]
+         }
+
+# dictionaries:
+#   f, v2
+#   Scoring, Values
+
+# question, answer, number, points
+# Text, Value, Order, Points
+
+# {'number': '', 'question': '', 'answer': '', 'points': '', 'student_response'}
+
+
+def responseQuery(u, a):
+    # makes table
+    # u = user_id, a = attempt
+    finalList = []
+    q = tmpResp()
+    qL = tmpQ()
+    l = []
+    for r in q:
+        if r.get('user_id') == u and r.get('attempt') == a:
+            l.append(r)
+
+    for r in l:
+        qN = r.get('question')
+        for t in qL.get('Scoring'):
+            o = t.get('Order')
+            o = int(o)
+            if o == qN:
+                q = t.get('Text')
+                p = t.get('Points')
+                a = t.get('Values')[0]['Value']
+                sR = r.get('student_response')
+                d = {'number': qN, 'question': q, 'answer': a, 'points': p, 'student_response': sR}
+                finalList.append(d)
+    return finalList
+
+
+def tmpThing(r):
+    # response selector
+    resp = tmpResp()
+    for re in resp:
+        if re['id'] == r:
+            break
+    return re
+
+
+def getScore(u, a):
+    sL = []
+    resp = tmpResp()
+    for re in resp:
+        if u == re['user_id'] and a == re['attempt']:
+            sL.append({'question': (re['question']), 'correct': (re['correct'])})
+    return sL
+
+
+def totalScore():
+    q = tmpQ()
+    tS = 0
+    for t in q['Scoring']:
+        tS += int(t['Points'])
+    return tS
+
+
+def score(li):
+    q = tmpQ()
+    qI = q['Scoring']
+    sS = 0
+    for sR in li:
+        if sR['correct']:
+            n = int(sR['question'])
+            for t in qI:
+                if int(t['Order']) == n:
+                    sS += int(t['Points'])
+    scor = '' + str(sS) + ' / ' + str(totalScore())
+    return scor
+
+
+def responseProcessing(d):
+    # response info getter
+    db_ses = db.session
+    # user info
+    uid = d.get('user_id')
+    uname = db_ses.query(User.username).filter(User.id == uid).first()
+    uname = uname[0]
+    # scenario info
+    sid = d.get('scenario_id')
+    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    sname = sname[0]
+    # question info
+    q = d.get('question')
+    res = d.get('student_response')
+    right = d.get('correct')
+    # other info
+    rTime = d.get('response_time')
+    att = d.get('attempt')
+    return uid, uname, sid, sname, att
+
+
+def queryPolish():
+    return 0
+
 
 #

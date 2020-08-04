@@ -35,6 +35,12 @@ from ..utils import (
     checkEx,
     flash_errors,
     tempMaker,
+    tmpResp,
+    responseProcessing,
+    responseQuery,
+    tmpThing,
+    score,
+    getScore
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User
 
@@ -213,7 +219,6 @@ def scenarios():
         )
 
 
-
 @blueprint.route("/scenarios/<i>")
 def scenariosInfo(i):
     if checkAuth(i):
@@ -221,6 +226,7 @@ def scenariosInfo(i):
             status, owner, bTime, desc, s_type, s_name, guide = tempMaker(i, "ins")
             port = "00000"
             addresses = identify_state(s_name, status)
+            resp = tmpResp()
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -231,7 +237,32 @@ def scenariosInfo(i):
                                    s_name=s_name,
                                    port=port,
                                    add=addresses,
-                                   guide=guide)
+                                   guide=guide,
+                                   resp=resp)
+        else:
+            return abort(404)
+    else:
+        return abort(403)
+
+
+@blueprint.route("/scenarios/<i>/<r>")
+def scenarioResponse(i, r):
+    if checkAuth(i):
+        if checkEx(i):
+            d = tmpThing(r)
+            u_id, uName, s_id, sName, aNum = responseProcessing(d)
+            query = responseQuery(u_id, aNum)
+            scor = score(getScore(u_id, aNum))
+
+            return render_template("dashboard/scenario_response.html",
+                                   u_id=u_id,
+                                   uName=uName,
+                                   s_id=s_id,
+                                   sName=sName,
+                                   aNum=aNum,
+                                   query=query,
+                                   scor=scor)
+
         else:
             return abort(404)
     else:
