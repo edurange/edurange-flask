@@ -283,6 +283,17 @@ def getPass(sn, un):
         p = d1.get('password')
     return p
 
+def getQuestions(t):
+    questions = []
+    t = t.lower().replace(" ", "_")
+    with open(
+        "./scenarios/prod/" + t + "/" + "questions.yml", "r"
+    ) as yml:  # edurange_refactored/scenarios/prod
+        document = yaml.full_load(yml)
+        for item, doc in document.items():
+            if item== "Text":
+                questions.append(item)
+    return questions
 
 def getPort(n):
     n = 0  # [WIP]
@@ -307,6 +318,7 @@ def tempMaker(d, i):
     ty = ty[0]
     desc = getDesc(ty)
     guide = getGuide(ty)
+    questions = getQuestions(ty)
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
@@ -314,14 +326,14 @@ def tempMaker(d, i):
         # creation time
         bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
         bTime = bTime[0]
-        return stat, oName, bTime, desc, ty, sNom, guide
+        return stat, oName, bTime, desc, ty, sNom, guide, questions
     elif i == "stu":
         # username
         ud = current_user.id
         usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
         # password
         pw = getPass(sNom, usr)
-        return stat, oName, desc, ty, sNom, usr, pw, guide
+        return stat, oName, desc, ty, sNom, usr, pw, guide, questions
 
 
 def responseCheck(resp):
