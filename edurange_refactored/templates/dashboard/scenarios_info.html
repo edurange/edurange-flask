@@ -32,6 +32,11 @@
                         {% for container in add %}
                             <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
                         {% endfor %}
+            <p>Questions:</p>
+            {% for q in questions %}
+                <p>{{ q }}</p>
+                <input type="text" class="form-control mb-3" readonly>
+            {% endfor %}
                     </div>
                 </div>
             </div>

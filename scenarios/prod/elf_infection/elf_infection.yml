@@ -11,6 +11,7 @@ Description: This game teaches about infected binaries.
 #  Recipes:
 #  - sshd_password_login
 #  - strace
+Codelab: http://localhost:5000/404
 Groups:
 #- Name: Instructor
 #  Access:
@@ -29,4 +30,3 @@ Groups:
   - Login: student
 Instances:
 - Name: Elf
-

@@ -106,7 +106,7 @@ def student_scenario(i):
     # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
-            status, owner, desc, s_type, s_name, u_name, pw, guide = tempMaker(i, "stu")
+            status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
             port = "00000"
             addresses = identify_state(s_name, status)
             return render_template("dashboard/student_scenario.html",
@@ -120,7 +120,7 @@ def student_scenario(i):
                                    pw=pw,
                                    add=addresses,
                                    guide=guide,
-                                   questions= questions)
+                                   questions=questions)
         else:
             return abort(404)
     else:
@@ -223,7 +223,7 @@ def scenarios():
 def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
-            status, owner, bTime, desc, s_type, s_name, guide = tempMaker(i, "ins")
+            status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
             port = "00000"
             addresses = identify_state(s_name, status)
             resp = tmpResp()
@@ -238,6 +238,7 @@ def scenariosInfo(i):
                                    port=port,
                                    add=addresses,
                                    guide=guide,
+                                   questions=questions, 
                                    resp=resp)
         else:
             return abort(404)

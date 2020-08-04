@@ -1,8 +1,9 @@
 ---
 Name: Metasploitable
-Description: This game teaches the basic usage of the metasploit framework. 
+Description: This game teaches the basic usage of the metasploit framework.
 Instructions: First ssh into the meta_nat with the Public IP Address and credentials provided. Then follow the instructions in the guide.
-InstructionsStudent: Use Metasploit to break into the vulnerable machine and find as many cards as you can. 
+InstructionsStudent: Use Metasploit to break into the vulnerable machine and find as many cards as you can.
+Codelab: http://localhost:5000/404
 Instances:
 - Name: meta_nat
 - Name: metasploitable
