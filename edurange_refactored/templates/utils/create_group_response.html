@@ -11,39 +11,36 @@
 </div><!-- end col -->
 {% endif %} {% endwith %}
 
-<button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
-        data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
-        aria-controls="{{ group.name.replace(' ', '') }}-table">
-    {{ group.name }} <i class="fa fa-caret-down"></i>
-</button>
+<table class="table">
+    <tbody id="groupRow">
+    <tr class="selectable" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table">
+        <td> {{ group.name }}</td>
+        <td> {{ group.code }}</td>
+        <td><i id="{{ group.name.replace(' ', '') }}_size"></i></td>
+    </tr>
+    </tbody>
+</table>
 
-<div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#groupTables">
-    <p></p>
-    <div>
-        <div class="row mb-3 mr-3">
-            <h4 class="ml-3"> {{ group.name }} &emsp;&emsp;|&emsp;&emsp;
-                Registration Code: <i>{{ group.code }}</i> &emsp;&emsp;|&emsp;&emsp;
-                Size: <i id="{{ group.name.replace(' ', '') }}_size">{{ users|length }}</i></h4>
-        </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th> ID #</th>
-                <th> Username</th>
-                <th> Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for student in users %}
-            <tr>
-                <td> {{ student.id }}</td>
-                <td> {{ student.username }}</td>
-                <td> {{ student.email }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div id="{{ group.name.replace(' ', '') }}-table" class="col-sm-8 collapse" aria-labelledby="headingUsers"
+     data-parent="#groupTables" style="overflow-y:scroll;">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th> ID #</th>
+            <th> Username</th>
+            <th> Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in users %}
+        <tr>
+            <td> {{ student.id }}</td>
+            <td> {{ student.username }}</td>
+            <td> {{ student.email }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <table class="table">
@@ -65,6 +62,7 @@
         <div class="card-header"><b>*Save these pairs somewhere. They will not be available again.</b></div>
         <div class="card-body">
             <button id="copyPairs" class="btn btn-dark" onclick="copy_pairs()"><i class="fa fa-clipboard"></i> Copy to Clipboard</button><p></p>
+            <p>Username:  Password</p>
             <textarea cols="30" rows="{{ pairs|length + 1 }}" id="pairValues" readonly="readonly" style="overflow: auto; resize: none;">{% for pair in pairs %}{{ pair[0] }}: {{ pair[1] }}&#10;{% endfor %}</textarea>
         </div>
     </div>

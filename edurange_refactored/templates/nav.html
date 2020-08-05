@@ -41,7 +41,7 @@
                 <div class="dropdown-menu position-absolute">
                     {% if nav['views'] is not none %}
                         {% for view in nav['views'] %}
-                    <a class="dropdown-item" href="{{ url_for('dashboard.set_view') }}{{ view[0] }}">{{ view[1] }}</a>
+                        {{ view }}
                         {% endfor %}
                     <div class="dropdown-divider"></div>
                     {% endif %}

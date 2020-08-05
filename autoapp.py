@@ -3,6 +3,7 @@
 from edurange_refactored.app import create_app
 from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db
+from edurange_refactored.utils import generateNavElements
 import os
 from flask import session
 from flask_login import current_user
@@ -13,23 +14,7 @@ db.create_all()
 @app.context_processor
 def utility_processor():
     def navigation(role, view=session.get('viewMode')):
-        if role in ['a', 'a/i']:
-            views = (('?mode=adminView', 'Admin View'), ('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
-        elif role == 'i':
-            views = (('?mode=instructorView', 'Instructor View'), ('?mode=studentView', 'Student View'))
-        else:
-            views = None
-
-        if role in ['a', 'a/i'] and not view:
-            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.admin', 'fa fa-desktop', 'Admin Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
-        elif (role == 'i' and not view) or (role in ['a', 'a/i'] and view == 'instructorView'):
-            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.instructor', 'fa fa-desktop', 'Instructor Dashboard'), ('dashboard.scenarios', 'fa fa-align-justify', 'Scenarios'), ('public.about', 'fa fa-info', 'About'))
-        elif (role is not None) or (role in ['a', 'a/i', 'i'] and view == 'studentView'):
-            links = (('public.home', 'fa fa-home', 'Home'), ('dashboard.student', 'fa fa-desktop', 'Dashboard'), ('public.about', 'fa fa-info', 'About'))
-        else:
-            links = (('public.home', 'fa fa-home', 'Home'), ('public.about', 'fa fa-info', 'About'))
-
-        return {'views': views, 'links': links} # format: { views: (route path, label to print)  links: (route passed to url_for, icon class, label to print) }
+        return generateNavElements(role, view)
     return dict(navigation=navigation)
 
 
@@ -76,7 +61,7 @@ def get_role():
         elif user.is_instructor:
             return 'i'
         else:
-            return False # false role --> student
+            return 's'
     else:
         return None # no role --> not logged in
 
