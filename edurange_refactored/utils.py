@@ -11,7 +11,7 @@ from jwt.jwk import OctetJWK, jwk_from_dict
 from edurange_refactored.extensions import db
 from .scenario_utils import item_generator
 
-from .user.models import GroupUsers, ScenarioGroups, Scenarios, User
+from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
@@ -356,168 +356,109 @@ def responseCheck(resp):
 # --
 
 
-def tmpResp():
-    # This is a temporary function to test the instructors student response table
-    resp = [
-        {'id': 1, 'user_id': 2, 'scenario_id': 3, 'question': 1, 'student_response': 'u2,q1,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
-        {'id': 2, 'user_id': 2, 'scenario_id': 3, 'question': 2, 'student_response': 'u2,q2,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
-        {'id': 3, 'user_id': 3, 'scenario_id': 3, 'question': 1, 'student_response': 'u3,q1,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1},
-        {'id': 4, 'user_id': 3, 'scenario_id': 3, 'question': 2, 'student_response': 'u3,q2,a1', 'correct': False, 'response_time': 'sometime', 'attempt': 1}]
+def responseQuery(uid, att, query, questions):
+    tableList = []
+    tmpList = []
+    for r in query:
+        if r.user_id == uid and r.attempt == att:
+            tmpList.append(r)
 
-    return resp
-
-
-def tmpQ():
-    # This is a temporary function to test the instructor student response table
-    qs = """
-    ---
-    Scoring:
-    - Text: How many subdirectories are in your home directory?
-      Values:
-      - Value: '7'
-        Points: '15'
-      Order: 1
-      Points: 15
-    - Text: In your home directory ... blah blah blah
-      Values:
-      - Value: 'some variable'
-        Points: '15'
-      Order: 2
-      Points: 15
-    """
-    qd = {'Scoring':
-              [{'Text': 'How many subdirectories are in your home directory?',
-                'Values':
-                    [{'Value': '7',
-                      'Points': '15'}],
-                'Order': '1',
-                'Points': '15'},
-               {'Text': 'In your home directory ... blah blah blah',
-                'Values':
-                    [{'Value': 'some variable',
-                      'Points': '15'}],
-                'Order': '2',
-                'Points': '15'}
-               ]
-          }
-    return qd
+    for r in tmpList:
+        qNum = r.question
+        for t in questions:
+            o = int(t['Order'])
+            if o == qNum:
+                quest = t['Text']
+                poi = t['Points']
+                val = t['Values'][0]['Value']
+                sR = r.student_response
+                d = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
+                tableList.append(d)
+    return tableList
 
 
-dTest = {'f':
-             [{'nest1': '',
-               'v2':
-                   [{'nest2': '',
-                     'v3': ''}],
-               'v4': '',
-               'v5': ''},
-              {'nest1': '',
-               'v2':
-                   [{'nest2': '',
-                     'v3': ''}],
-               'v4': '',
-               'v5': ''}
-              ]
-         }
-
-# dictionaries:
-#   f, v2
-#   Scoring, Values
-
-# question, answer, number, points
-# Text, Value, Order, Points
-
-# {'number': '', 'question': '', 'answer': '', 'points': '', 'student_response'}
-
-
-def responseQuery(u, a):
-    # makes table
-    # u = user_id, a = attempt
-    finalList = []
-    q = tmpResp()
-    qL = tmpQ()
-    l = []
-    for r in q:
-        if r.get('user_id') == u and r.get('attempt') == a:
-            l.append(r)
-
-    for r in l:
-        qN = r.get('question')
-        for t in qL.get('Scoring'):
-            o = t.get('Order')
-            o = int(o)
-            if o == qN:
-                q = t.get('Text')
-                p = t.get('Points')
-                a = t.get('Values')[0]['Value']
-                sR = r.get('student_response')
-                d = {'number': qN, 'question': q, 'answer': a, 'points': p, 'student_response': sR}
-                finalList.append(d)
-    return finalList
-
-
-def tmpThing(r):
+def responseSelector(r):
     # response selector
-    resp = tmpResp()
-    for re in resp:
-        if re['id'] == r:
+    db_ses = db.session
+    query = db_ses.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
+    for re in query:
+        if re.id == int(r):
+            d = re
             break
-    return re
+    return d
 
 
-def getScore(u, a):
+def getScore(u, a, q):
     sL = []
-    resp = tmpResp()
-    for re in resp:
-        if u == re['user_id'] and a == re['attempt']:
-            sL.append({'question': (re['question']), 'correct': (re['correct'])})
+    for re in q:
+        if u == re.user_id and a == re.attempt:
+            sL.append({'question': re.user_id, 'correct': re.correct})
     return sL
 
 
-def totalScore():
-    q = tmpQ()
+def totalScore(questions):
     tS = 0
-    for t in q['Scoring']:
+    for t in questions:
         tS += int(t['Points'])
     return tS
 
 
-def score(li):
-    q = tmpQ()
-    qI = q['Scoring']
+def score(li, questions):
     sS = 0
     for sR in li:
         if sR['correct']:
             n = int(sR['question'])
-            for t in qI:
+            for t in questions:
                 if int(t['Order']) == n:
                     sS += int(t['Points'])
-    scor = '' + str(sS) + ' / ' + str(totalScore())
-    return scor
+    scr = '' + str(sS) + ' / ' + str(totalScore(questions))
+    return scr
+
+
+def questionReader(t):
+    t = t.lower().replace(" ", "_")
+    with open(
+            "./scenarios/prod/" + t + "/questions.yml", "r"
+    ) as yml:
+        document = yaml.full_load(yml)
+    return document
+
+
+def queryPolish(query, sType):
+    qList = []
+    for e in query:
+        i = e.id
+        uid = e.user_id
+        att = e.attempt
+        usr = e.username
+        if qList is None:
+            scr = score(getScore(uid, att, query), questionReader(sType))
+            d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
+            qList.append(d)
+        else:
+            error = 0
+            for l in qList:
+                if uid == l['user_id'] and att == l['attempt']:
+                    error += 1
+            if error == 0:
+                scr = score(getScore(uid, att, query), questionReader(sType))
+                d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
+                qList.append(d)
+    return qList
 
 
 def responseProcessing(d):
     # response info getter
     db_ses = db.session
     # user info
-    uid = d.get('user_id')
+    uid = d.user_id
     uname = db_ses.query(User.username).filter(User.id == uid).first()
     uname = uname[0]
     # scenario info
-    sid = d.get('scenario_id')
+    sid = d.scenario_id
     sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     sname = sname[0]
-    # question info
-    q = d.get('question')
-    res = d.get('student_response')
-    right = d.get('correct')
-    # other info
-    rTime = d.get('response_time')
-    att = d.get('attempt')
+    # response info
+    att = d.attempt
     return uid, uname, sid, sname, att
 
-
-def queryPolish():
-    return 0
-
-
-#

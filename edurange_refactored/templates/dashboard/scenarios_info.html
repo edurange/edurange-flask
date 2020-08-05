@@ -32,11 +32,11 @@
                         {% for container in add %}
                             <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
                         {% endfor %}
-            <p>Questions:</p>
-            {% for q in questions %}
-                <p>{{ q }}</p>
-                <input type="text" class="form-control mb-3" readonly>
-            {% endfor %}
+                        <b>Questions:</b>
+                        {% for q in questions %}
+                            <p>{{ q }}</p>
+                            <input type="text" class="form-control mb-3" readonly>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -79,10 +79,10 @@
                                             <tbody>
                                             {% for r in resp %}
                                                 <tr>
-                                                    <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s/%s' % (i, r.get('id')) }}"> {{ r.get('user_id') }} </a></td>
-                                                    <td> user{{ r.get('user_id') }} </td>
-                                                    <td> 0 / 100 </td>
-                                                    <td> {{ r.get('attempt') }} </td>
+                                                    <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s/%s' % (i, r['id']) }}"> {{ r['user_id'] }} </a></td>
+                                                    <td> {{ r['username'] }} </td>
+                                                    <td> {{ r['score'] }} </td>
+                                                    <td> {{ r['attempt'] }} </td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>

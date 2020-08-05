@@ -35,14 +35,15 @@ from ..utils import (
     checkEx,
     flash_errors,
     tempMaker,
-    tmpResp,
     responseProcessing,
     responseQuery,
-    tmpThing,
-    score,
-    getScore
+    responseSelector,
+    queryPolish,
+    questionReader,
+    getScore,
+    score
 )
-from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User
+from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
@@ -221,12 +222,16 @@ def scenarios():
 
 @blueprint.route("/scenarios/<i>")
 def scenariosInfo(i):
+    # i = scenario_id
     if checkAuth(i):
         if checkEx(i):
             status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
             port = "00000"
             addresses = identify_state(s_name, status)
-            resp = tmpResp()
+            db_ses = db.session
+            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
+                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+            resp = queryPolish(query, s_type)
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -238,7 +243,7 @@ def scenariosInfo(i):
                                    port=port,
                                    add=addresses,
                                    guide=guide,
-                                   questions=questions, 
+                                   questions=questions,
                                    resp=resp)
         else:
             return abort(404)
@@ -248,12 +253,18 @@ def scenariosInfo(i):
 
 @blueprint.route("/scenarios/<i>/<r>")
 def scenarioResponse(i, r):
+    # i = scenario_id, r = responses id
     if checkAuth(i):
         if checkEx(i):
-            d = tmpThing(r)
+            db_ses = db.session
+            d = responseSelector(r)
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
-            query = responseQuery(u_id, aNum)
-            scor = score(getScore(u_id, aNum))
+            s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
+            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
+                                 Responses.correct, Responses.student_response, User.username)\
+                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+            table = responseQuery(u_id, aNum, query, questionReader(s_type[0]))
+            scr = score(getScore(u_id, aNum, query), questionReader(s_type[0]))
 
             return render_template("dashboard/scenario_response.html",
                                    u_id=u_id,
@@ -261,9 +272,8 @@ def scenarioResponse(i, r):
                                    s_id=s_id,
                                    sName=sName,
                                    aNum=aNum,
-                                   query=query,
-                                   scor=scor)
-
+                                   table=table,
+                                   scr=scr)
         else:
             return abort(404)
     else:

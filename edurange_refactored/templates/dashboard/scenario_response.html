@@ -6,7 +6,7 @@
         <div class="card-header">
             <h5> User ID : {{ u_id }}  |  Username : {{ uName }} </h5>
             <h5> Scenario ID : {{ s_id }}  |  Scenario Name : {{ sName }} </h5>
-            <h5> Attempt Number : {{ aNum }} | Score : {{ scor }} </h5>
+            <h5> Attempt Number : {{ aNum }} | Score : {{ scr }} </h5>
         </div>
 
         <div class="card-body">
@@ -36,7 +36,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for d in query %}
+                                    {% for d in table %}
                                         <tr>
                                             <td> {{ d['number'] }} </td>
                                             <td> {{ d['question'] }} </td>
