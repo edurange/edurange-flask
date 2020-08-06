@@ -9,7 +9,7 @@ import os
 import json
 import yaml
 
-from .user.models import GroupUsers, ScenarioGroups, Scenarios, User
+from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
@@ -374,6 +374,7 @@ def getPass(sn, un):
         p = d1.get('password')
     return p
 
+
 def getQuestions(t):
     questions = []
     t = t.lower().replace(" ", "_")
@@ -384,6 +385,7 @@ def getQuestions(t):
         for item in document:
             questions.append(item['Text'])
     return questions
+
 
 def getPort(n):
     n = 0  # [WIP]
@@ -427,6 +429,9 @@ def tempMaker(d, i):
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
 
 
+# --
+
+
 def responseCheck(resp):
     # read correct response from yaml file
     ans = "you'll never get this question right, mwa ha ha ha!"
@@ -435,4 +440,113 @@ def responseCheck(resp):
     else:
         return False
 
-#
+
+# --
+
+
+def responseQuery(uid, att, query, questions):
+    tableList = []
+    tmpList = []
+    for r in query:
+        if r.user_id == uid and r.attempt == att:
+            tmpList.append(r)
+
+    for r in tmpList:
+        qNum = r.question
+        for t in questions:
+            o = int(t['Order'])
+            if o == qNum:
+                quest = t['Text']
+                poi = t['Points']
+                val = t['Values'][0]['Value']
+                sR = r.student_response
+                d = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
+                tableList.append(d)
+    return tableList
+
+
+def responseSelector(r):
+    # response selector
+    db_ses = db.session
+    query = db_ses.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
+    for re in query:
+        if re.id == int(r):
+            d = re
+            break
+    return d
+
+
+def getScore(u, a, q):
+    sL = []
+    for re in q:
+        if u == re.user_id and a == re.attempt:
+            sL.append({'question': re.user_id, 'correct': re.correct})
+    return sL
+
+
+def totalScore(questions):
+    tS = 0
+    for t in questions:
+        tS += int(t['Points'])
+    return tS
+
+
+def score(li, questions):
+    sS = 0
+    for sR in li:
+        if sR['correct']:
+            n = int(sR['question'])
+            for t in questions:
+                if int(t['Order']) == n:
+                    sS += int(t['Points'])
+    scr = '' + str(sS) + ' / ' + str(totalScore(questions))
+    return scr
+
+
+def questionReader(t):
+    t = t.lower().replace(" ", "_")
+    with open(
+            "./scenarios/prod/" + t + "/questions.yml", "r"
+    ) as yml:
+        document = yaml.full_load(yml)
+    return document
+
+
+def queryPolish(query, sType):
+    qList = []
+    for e in query:
+        i = e.id
+        uid = e.user_id
+        att = e.attempt
+        usr = e.username
+        if qList is None:
+            scr = score(getScore(uid, att, query), questionReader(sType))
+            d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
+            qList.append(d)
+        else:
+            error = 0
+            for l in qList:
+                if uid == l['user_id'] and att == l['attempt']:
+                    error += 1
+            if error == 0:
+                scr = score(getScore(uid, att, query), questionReader(sType))
+                d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
+                qList.append(d)
+    return qList
+
+
+def responseProcessing(d):
+    # response info getter
+    db_ses = db.session
+    # user info
+    uid = d.user_id
+    uname = db_ses.query(User.username).filter(User.id == uid).first()
+    uname = uname[0]
+    # scenario info
+    sid = d.scenario_id
+    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    sname = sname[0]
+    # response info
+    att = d.attempt
+    return uid, uname, sid, sname, att
+
