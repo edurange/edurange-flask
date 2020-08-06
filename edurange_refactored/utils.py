@@ -1,15 +1,13 @@
 """Helper utilities and decorators."""
-import json
-import os
-
-import yaml
-from flask import abort, current_app, flash, redirect, request, session, url_for
+from flask import flash, abort, request, session, redirect, url_for, current_app, Markup
 from flask_login import current_user
 from flask_table import Col, Table
 from jwt.jwk import OctetJWK, jwk_from_dict
 
 from edurange_refactored.extensions import db
-from .scenario_utils import item_generator
+import os
+import json
+import yaml
 
 from .user.models import GroupUsers, ScenarioGroups, Scenarios, User
 
@@ -194,6 +192,96 @@ def check_role_view(
 
 
 # --------
+
+def generateNavElements(role, view): # generate all navigational elements
+    """Makes decisions and calls correct generators for navigational links based on role."""
+    views = None
+    links = None
+    if role is None: # user not logged in
+        return {'views': views, 'links': links}
+
+    if role in ['a', 'a/i', 'i']:
+        viewSwitch = {
+            'a': genAdminViews,   #
+            'a/i': genAdminViews, # ^ call generator for admins view links
+            'i': genInstructorViews # call generator for instructors view links
+        }
+        views = viewSwitch[role]() # call view link generator function based on role
+
+    linkSwitch = {
+        'a': genAdminLinks,    # call generator for admin links,
+        'a/i': genAdminLinks,  # ^ pass view so function can redirect to correct link generator
+        'i': genInstructorLinks, # call generator for instructor links
+        's': genStudentLinks # call generator for student links
+    }
+    links = linkSwitch[role](view) # call link generator function based on role
+
+    return {'views': views, 'links': links} # views: dropdown list items for view change, to render in navbar
+                                            # links: redirecting links, to render in sidebar
+
+
+def create_link(route, icon, text):
+    """Create html element for a sidebar link (requires route, icon class (font-awesome), and text to label link)."""
+    html = '''<a class="list-group-item list-group-item-action bg-secondary text-white" href="{0}">
+                <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
+              </a>'''
+    html = html.format(url_for(route), icon, text)
+    return Markup(html)
+
+
+def create_view(route, text):
+    """Create html element for dropdown link items."""
+    html = '<a class="dropdown-item" href="{0}{1}">{2}</a>'.format(url_for('dashboard.set_view'), route, text)
+    return Markup(html)
+
+
+def genAdminViews():
+    """Generate 'select view' elements for admin users."""
+    views = [create_view('?mode=adminView', 'Admin View'),
+             create_view('?mode=instructorView', 'Instructor View'),
+             create_view('?mode=studentView', 'Student View')]
+
+    return views
+
+
+def genInstructorViews():
+    """Generate 'select view' elements for instructors."""
+    views = [create_view('?mode=instructorView', 'Instructor View'),
+             create_view('?mode=studentView', 'Student View')]
+
+    return views
+
+
+def genAdminLinks(view):
+    """Generate links for admin users based on selected view."""
+    if not view:
+        dashboard = create_link('dashboard.admin', 'fa-desktop', 'Admin Dashboard')
+        scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
+        return [dashboard, scenarios]
+    elif view == 'instructorView':
+        return genInstructorLinks(None)
+    elif view == 'studentView':
+        return genStudentLinks()
+    else:
+        return None
+
+
+def genInstructorLinks(view):
+    """Generate links for instructors based on selected view."""
+    if view == 'studentView':
+        return genStudentLinks()
+    elif not view:
+        dashboard = create_link('dashboard.instructor', 'fa-desktop', 'Instructor Dashboard')
+        scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
+        return [dashboard, scenarios]
+    else:
+        return None
+
+
+def genStudentLinks(view=None): # needs common arg for switch statement
+    """Generate links for students."""
+    dashboard = create_link('dashboard.student', 'fa-desktop', 'Dashboard')
+    return [dashboard] # return array to avoid character print in template's for loop
 
 
 def checkEx(d):
