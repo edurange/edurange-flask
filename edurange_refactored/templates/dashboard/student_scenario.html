@@ -34,7 +34,12 @@
                 <div class="container mt-3">
                     <h3> Response Form </h3>
                     <div class="card-body">
-                        <p> responses </p>
+                        <div class="container">
+                          {% for q in questions %}
+                              <p>{{ q }}</p>
+                              <input type="text" class="form-control mb-3">
+                          {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

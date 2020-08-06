@@ -1,4 +1,3 @@
-Scoring:
 - Text: What is the full path of your directory when you typed the pwd command?
   Type: String
   Options: []

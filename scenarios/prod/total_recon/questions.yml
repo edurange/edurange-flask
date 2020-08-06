@@ -1,4 +1,3 @@
-Scoring:
 - Text: What port is open at 10.0.0.4?
   Type: Number
   Options:
