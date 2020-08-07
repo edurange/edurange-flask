@@ -1,16 +1,50 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_login import login_required
-from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
-    deleteStudentForm, makeScenarioForm, changeEmailForm
-from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
-from ..tasks import CreateScenarioTask
-from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
-    tempMaker, checkAuth, checkEnr, check_role_view
-from ..form_utils import process_request
-from ..scenario_utils import populate_catalog, identify_type, identify_state
+
 from edurange_refactored.extensions import db
+from edurange_refactored.user.forms import (
+    GroupForm,
+    addUsersForm,
+    deleteStudentForm,
+    makeScenarioForm,
+    manageInstructorForm,
+    modScenarioForm,
+    changeEmailForm
+)
+
+from ..form_utils import process_request
+from ..scenario_utils import identify_state, identify_type, populate_catalog
+from ..tasks import CreateScenarioTask
+from ..utils import (
+    UserInfoTable,
+    check_admin,
+    check_instructor,
+    check_role_view,
+    checkAuth,
+    checkEnr,
+    checkEx,
+    flash_errors,
+    tempMaker,
+    responseProcessing,
+    responseQuery,
+    responseSelector,
+    queryPolish,
+    questionReader,
+    getScore,
+    score
+)
+from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
 blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
 
