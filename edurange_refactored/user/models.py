@@ -55,6 +55,7 @@ class User(UserMixin, SurrogatePK, Model):
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
     is_instructor = Column(db.Boolean(), default=False)
+    is_static = Column(db.Boolean(), default=False) # static: user belongs to one group only (for generated groups)
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""

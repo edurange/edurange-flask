@@ -11,6 +11,7 @@
 </div><!-- end col -->
 {% endif %} {% endwith %}
 
+{% if group %}
 <table class="table">
     <tbody id="groupRow">
     <tr class="selectable" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table">
@@ -22,7 +23,7 @@
 </table>
 
 <div id="{{ group.name.replace(' ', '') }}-table" class="col-sm-8 collapse" aria-labelledby="headingUsers"
-     data-parent="#groupTables" style="overflow-y:scroll;">
+     data-parent="#groupTables" style="overflow-y:scroll;min-height:300px;">
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -43,9 +44,9 @@
     </table>
 </div>
 
-<table class="table">
+{#<table class="table">
     <tbody id="studentRows">
-    {% for student in users %}
+    {% for student in users if users is defined %}
         <tr id="uid{{ student.id }}">
             <td> {{ student.id }}</td>
             <td> {{ student.username }}</td>
@@ -54,7 +55,7 @@
         </tr>
     {% endfor %}
     </tbody>
-</table>
+</table>#}
 
 {% if pairs %}
 <div class="col-sm-6" id="pairs">
@@ -74,4 +75,6 @@
       }
     </script>
 </div>
+{% endif %}
+
 {% endif %}

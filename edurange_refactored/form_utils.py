@@ -97,6 +97,7 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
                     email=username+"@edurange.org".format(i),
                     password=password,
                     active=True,
+                    is_static=True
                 )
                 uid = user.get_id()
                 GroupUsers.create(user_id=uid, group_id=gid)
@@ -105,6 +106,9 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
                 users.append(user)
             flash('Created group {0} and populated it with {1} accounts'.format(fName, j), 'success')
             return 'utils/create_group_response.html', group, users, pairs
+    else:
+        flash_errors(gM)
+        return 'utils/create_group_response.html',
 
 
 

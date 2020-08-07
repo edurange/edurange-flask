@@ -75,6 +75,26 @@ class EmailForm(FlaskForm):
 # -----------------------------------------------------
 
 
+class changeEmailForm(FlaskForm):
+    """Change Email form."""
+    address = StringField(
+        "New Address", validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(changeEmailForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(changeEmailForm, self).validate()
+        if not initial_validation:
+            return False
+        email = User.query.filter_by(email=self.address.data).first()
+        if email:
+            self.address.errors.append("Email already registered")
+            return False
+        return True
+
+
 class GroupForm(FlaskForm):
     """Create New Group Form"""
     name = StringField(

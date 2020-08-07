@@ -3,7 +3,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash, abort
 from flask_login import login_required
 from edurange_refactored.user.forms import GroupForm, addUsersForm, manageInstructorForm, modScenarioForm, \
-    deleteStudentForm, makeScenarioForm
+    deleteStudentForm, makeScenarioForm, changeEmailForm
 from .models import User, StudentGroups, GroupUsers, Scenarios, ScenarioGroups
 from ..tasks import CreateScenarioTask
 from ..utils import UserInfoTable, check_admin, check_instructor, flash_errors, checkEx, \
@@ -24,6 +24,43 @@ def set_view():
     else:
         session.pop('viewMode', None)
         return redirect(url_for('public.home'))
+
+
+@blueprint.route("/account_management", methods=['GET', 'POST'])
+@login_required
+def account():
+    db_ses = db.session
+    curId = session.get('_user_id')
+
+    user = db_ses.query(User).filter(User.id == curId).first()
+    if user.is_admin or user.is_instructor:
+        groupCount = db_ses.query(StudentGroups.id).filter(StudentGroups.owner_id == user.get_id()).count()
+        label = "Owner Of"
+    elif user.is_static:
+        # In this case, groupCount is the name of the group this user is a static member of
+        groupCount = db_ses.query(StudentGroups.name)\
+            .filter(StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == user.get_id()).first()[0]
+        label = "Static Member Of"
+    else:
+        groupCount = db_ses.query(StudentGroups.id)\
+            .filter(StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == user.get_id()).count()
+        label = "Member Of"
+
+    if request.method == 'GET':
+        emailForm = changeEmailForm()
+        return render_template('dashboard/account_management.html', user=user, groupCount=groupCount, label=label, emailForm=emailForm)
+
+    elif request.method == 'POST':
+        cE = changeEmailForm(request.form)
+        if cE.validate_on_submit():
+            address = cE.address.data
+            user.update(email=address, is_static=False)
+            flash('Account Email address successfully changed to: {0}'.format(address), 'success')
+        else:
+            flash_errors(cE)
+
+        return redirect(url_for('dashboard.account'))
+
 
 @blueprint.route("/")
 @login_required
@@ -181,7 +218,7 @@ def admin():
     check_admin()
     db_ses = db.session
     # Queries for the tables of students and groups
-    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False)
+    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False, User.is_static == False)
     instructors = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == True)
     groups = StudentGroups.query.all()
     groupNames = []
@@ -191,7 +228,8 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email)\
+            .filter(StudentGroups.name == name, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
 
     if request.method == 'GET':
         groupMaker = GroupForm()
@@ -208,7 +246,9 @@ def admin():
         if ajax:
             temp = ajax[0]
             if temp == 'utils/create_group_response.html':
-                if len(ajax) < 4:
+                if len(ajax) == 1:
+                    return render_template(temp)
+                elif len(ajax) < 4:
                     return render_template(temp, group=ajax[1], users=ajax[2])
                 else:
                     return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])

@@ -188,7 +188,7 @@
                 </div>
                 {% for group in groups if not group.hidden %}
                 <div id="{{ group.name.replace(' ', '') }}-table" class="col-sm-8 collapse" aria-labelledby="headingUsers"
-                     data-parent="#groupTables" style="overflow-y:scroll;">
+                     data-parent="#groupTables" style="overflow-y:scroll;min-height:300px;">
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -214,7 +214,7 @@
     </div>
 
     <div class="row" id="groupRow">
-        <div class="col-sm-6"> {# Front end for form to create a student group #}
+        <div class="col-sm-6 mt-2"> {# Front end for form to create a student group #}
             <div class="card bg-light mb-3">
                 <div class="card-header">Create Student Group</div>
                 <div class="card-body">
@@ -372,10 +372,10 @@
         var $row = $(response).find("#groupRow").html();
         var $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
         var $flash = $(response).filter("#flashed"); //get flashed messages
-        var $users = $(response).find("#studentRows").html();
+        //var $users = $(response).find("#studentRows").html();
         $("#groupsTable tbody").append($row); //append new group row
         $("#groupTables").append($table); //append new group table
-        $("#studentBody").append($users);
+        //$("#studentBody").append($users);
         $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
         if ($flash.length) {
           $("#headingGroups").append($flash); //flash new messages
