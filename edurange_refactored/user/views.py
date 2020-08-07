@@ -46,8 +46,6 @@ from ..utils import (
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
-blueprint = Blueprint("dashboard", __name__, url_prefix="/dashboard", static_folder="../static")
-
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
 )

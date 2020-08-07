@@ -53,8 +53,9 @@ def process_request(form):  # Input must be request.form
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
         "deleteStudentForm":        process_delStu,
-        "promoteInstructorForm":    process_manInst,
+        "manageInstructorForm":    process_manInst,
         "addUsersForm":             process_addUser,
+        "scenarioResponseForm":     process_scenarioResponse
     }
     return process_switch[f]()
 
@@ -199,7 +200,7 @@ def process_addUser():  # Form to add or remove selected students from a selecte
         if adding:
             flash(
                 "Added {0} users to group {1}. DEBUG: {2}".format(
-                    len(uids), group, uids
+                    len(uids), group.name, uids
                 ),
                 "success",
             )
