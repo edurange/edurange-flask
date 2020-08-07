@@ -39,3 +39,8 @@ Flask-DebugToolbar==0.10.1
 
 # Environment variable parsing
 environs==7.2.0
+
+#
+celery==4.4.6
+redis==3.5.3
+flask_table==0.5.0

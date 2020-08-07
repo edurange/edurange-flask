@@ -7,25 +7,29 @@ from flask import (
     redirect,
     render_template,
     request,
+    session,
     url_for,
-    session
 )
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import current_user, login_required, login_user, logout_user
 from jwt import JWT
 from jwt.exceptions import JWTDecodeError
 
-from edurange_refactored.extensions import bcrypt
-from edurange_refactored.extensions import login_manager
-from edurange_refactored.public.forms import LoginForm, RequestResetPasswordForm, RestorePasswordForm
-from edurange_refactored.user.forms import RegisterForm
-from edurange_refactored.user.models import User, StudentGroups, GroupUsers
-from edurange_refactored.utils import flash_errors, TokenHelper
+from edurange_refactored.extensions import bcrypt, login_manager
+from edurange_refactored.public.forms import (
+    LoginForm,
+    RequestResetPasswordForm,
+    RestorePasswordForm,
+)
 from edurange_refactored.tasks import test_send_async_email
+from edurange_refactored.user.forms import RegisterForm
+from edurange_refactored.user.models import GroupUsers, StudentGroups, User
+from edurange_refactored.utils import TokenHelper, flash_errors
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 jwtToken = JWT()
 helper = TokenHelper()
 oct_data = helper.get_data()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -56,7 +60,7 @@ def reset_password():
     if current_user.is_authenticated:
         return redirect(url_for("public.home"))
     form = RequestResetPasswordForm(request.form)
-    if request.method == 'POST':
+    if request.method == "POST":
         if not form.validate_on_submit():
             flash("Unknown email address.", "warning")
             return render_template("public/request_reset_password.html", form=form)
@@ -73,22 +77,25 @@ def restore_password(tk):
     if current_user.is_authenticated:
         return redirect(url_for("public.home"))
     try:
-        decoded_token = jwtToken.decode(tk, oct_data, do_verify=True, do_time_check=True)
+        decoded_token = jwtToken.decode(
+            tk, oct_data, do_verify=True, do_time_check=True
+        )
     except JWTDecodeError:
         flash("Password reset link has expired.", "warning")
         return redirect(url_for("public.home"))
-    user = User.query.filter_by(email=decoded_token['email']).first()
+    user = User.query.filter_by(email=decoded_token["email"]).first()
     if not user:
         flash("Can't find any matching user.", "warning")
         return render_template("public/home")
     form = RestorePasswordForm(request.form)
     if not form.validate_on_submit():
         # flash("Unable to update your password, please type in your password again.", "warning")
-        return render_template("public/restore_password.html", form=form, email=decoded_token['email'])
+        return render_template(
+            "public/restore_password.html", form=form, email=decoded_token["email"]
+        )
     else:
         User.update(
-            self=user,
-            password=bcrypt.generate_password_hash(form.password.data)
+            self=user, password=bcrypt.generate_password_hash(form.password.data)
         )
         flash("Password updated.", "success")
     return redirect(url_for("public.home"))
@@ -98,7 +105,7 @@ def restore_password(tk):
 @login_required
 def logout():
     """Logout."""
-    session.pop('viewMode', None)
+    session.pop("viewMode", None)
     logout_user()
     flash("You are logged out.", "info")
     return redirect(url_for("public.home"))

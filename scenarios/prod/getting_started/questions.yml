@@ -1,0 +1,65 @@
+- Text: CodeLabs Page 4 - How many subdirectories are in your home directory? (Not including hidden directories)
+  Type: Number
+  Options:
+  - accept-integer
+  - accept-decimal
+  Values:
+  - Value: '7'
+    Points: '15'
+  Order: 1
+  Points: 15
+- Text: CodeLabs Page 4 - In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?
+  Type: String
+  Values:
+  - Value: ${player.variables.follow_me_filename}
+    Points: '15'
+  Order: 2
+  Points: 15
+- Text: CodeLabs Page 5 - What does the line below NAME on the man page for the "file" command say?
+  Type: String
+  Options: []
+  Values:
+  - Value: 'file — determine file type'
+    Points: '15'
+  - Value: 'file - determine file type'
+    Points: '15'
+  Order: 3
+  Points: 15
+- Text: CodeLabs Page 6 - What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)
+  Type: String
+  Values:
+  - Value: ${player.variables.super_secret}
+    Points: '15'
+  Order: 4
+  Points: 15
+- Text: CodeLabs Page 7 - What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)
+  Type: Essay
+  Options: []
+  Order: 5
+  Points: 15
+- Text: CodeLabs Page 8 - What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.
+  Type: String
+  Options: []
+  Values:
+  - Value: edurange5meow.JPG
+    Points: '3'
+  - Value: edurange001.gif
+    Points: '3'
+  - Value: 4edurange.jpeg
+    Points: '3'
+  - Value: edurange006weeeeeee.png
+    Points: '3'
+  - Value: 002edurange.jpg
+    Points: '3'
+  - Value: edurange3.GIF
+    Points: '3'
+  Order: 6
+  Points: 18
+- Text: CodeLabs Page 10 - What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)
+  Type: String
+  Options: []
+  Values:
+  - Value: /usr/special/secrets/
+    Points: '20'
+  Order: 7
+  Points: 20

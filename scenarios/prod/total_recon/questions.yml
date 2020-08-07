@@ -1,29 +1,3 @@
----
-Name: Total_Recon
-Description: Total Recon is a progressive, story-based game designed to teach nmap
-  network reconnaissance.
-Instructions: Instruct students to connect to the first machine, and further login
-  instructions will appear onscreen once connected.
-Codelab: http://localhost:5000/404
-Groups:
-- Name: Students
-  Instructions: Login to Home. Further instructions will be displayed upon logging in to home and each new checkpoint.
-  Access:
-  - Instance: home
-Instances:
-- Name: home
-- Name: rekall
-- Name: subway
-- Name: earth_spaceport
-- Name: mars_spaceport
-- Name: venusville
-- Name: last_resort
-- Name: resistance_base
-- Name: control_room
-- Name: stealth_xmas
-- Name: stealth_null
-- Name: stealth_fin
-Scoring:
 - Text: What port is open at 10.0.0.4?
   Type: Number
   Options:

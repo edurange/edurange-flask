@@ -3,11 +3,10 @@
 import logging
 import sys
 
-from flask import Flask, render_template
 from celery import Celery
+from flask import Flask, render_template
 
 from edurange_refactored import commands, public, user
-from edurange_refactored.user.models import User
 from edurange_refactored.extensions import (
     bcrypt,
     cache,
@@ -19,6 +18,7 @@ from edurange_refactored.extensions import (
     migrate,
 )
 from edurange_refactored.settings import CELERY_BROKER_URL
+from edurange_refactored.user.models import User
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -65,7 +65,10 @@ def register_errorhandlers(app):
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, "code", 500)
-        return render_template(f"{error_code}.html"), error_code #removed f from render_template(f...
+        return (
+            render_template(f"{error_code}.html"),
+            error_code,
+        )  # removed f from render_template(f...
 
     for errcode in [401, 403, 404, 500]:
         app.errorhandler(errcode)(render_error)

@@ -4,20 +4,99 @@
 {% block content %}
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h3> ID : {{ i }} </h3>
-            <h3> Name : {{ n }} </h3>
-            <h3> Type : {{ t }} </h3>
+            <h5> ID : {{ i }} </h5>
+            <h5> Name : {{ s_name }} </h5>
+            <h5> Type : {{ s_type }} </h5>
         </div>
-        <div class="card-body">
-            <p> Description : {{ de }} </p>
-            <p> Status : {{ s }} </p>
-            <p> Created by : {{ o }} </p>
-            <p> Created at : {{ dt }} </p>
-            <p> Password : {{ pw }} </p>
-            <b> Connection Information: </b>
-            {% for container in add %}
-                <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
-            {% endfor %}
+
+        <ul class="nav nav-tabs mt-3 ml-3">
+            <li class="nav-item active">
+                <a href="#home" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab"  aria-selected="true">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#Guide" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Guide</a>
+            </li>
+            <li class="nav-item">
+                <a href="#Responses" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Responses</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade show active">
+                <div class="card-body">
+                    <div class="container">
+                        <p> Description : {{ desc }} </p>
+                        <p> Status : {{ status }} </p>
+                        <p> Created by : {{ owner }} </p>
+                        <p> Created at : {{ dt }} </p>
+                        <b> Connection Information: </b>
+                        {% for container in add %}
+                            <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                        {% endfor %}
+                        <b>Questions:</b>
+                        {% for q in questions %}
+                            <p>{{ q }}</p>
+                            <input type="text" class="form-control mb-3" readonly>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- | -->
+            <div id="Guide" class="tab-pane fade">
+                <div class="card-body">
+                    <div class="container">
+                        <iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- | -->
+            <div id="Responses" class="tab-pane fade">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="card-header" id="headingResponses">
+                            <div class="row">
+                                <h5 class="mb-0">
+                                    <h2> <i class="fa fa-user"></i> Student Responses
+                                        <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseResponses" aria-expanded="false" aria-controls="collapseResponses">
+                                            <i class="fa fa-caret-down"></i>
+                                        </button> </h2>
+                                </h5>
+                            </div>
+                        </div>
+                        <div id="collapseResponses" class="collapse" aria-labelledby="headingResponses">
+                            <div class="card-body">
+                                <!--responses table stuff-->
+                                <div class="col" style="height:300px;overflow-y:scroll;">
+                                    <div>
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th> User ID </th>
+                                                <th> User Name </th>
+                                                <th> Score </th>
+                                                <th> Attempt Number </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for r in resp %}
+                                                <tr>
+                                                    <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s/%s' % (i, r['id']) }}"> {{ r['user_id'] }} </a></td>
+                                                    <td> {{ r['username'] }} </td>
+                                                    <td> {{ r['score'] }} </td>
+                                                    <td> {{ r['attempt'] }} </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--responses table stuff-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- | -->
         </div>
     </div>
+
 {% endblock %}

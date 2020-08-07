@@ -4,6 +4,7 @@ import os.path
 import stat
 import sys
 
+
 def checkperms(filenme):
     st = os.stat(curDir + '/' + filenme)
     oct_perm = oct(st.st_mode)

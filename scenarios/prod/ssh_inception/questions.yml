@@ -1,0 +1,43 @@
+Scoring:
+- Text: Contents of the file '~/secret' on Starting Line?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_starting_line}
+    Points: '1'
+  Points: 1
+- Text: Contents of the file '~/secret' on First Stop?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_first_stop}
+    Points: '1'
+  Points: 1
+- Text: Contents of the file '~/secret' on Second Stop?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_second_stop}
+    Points: '1'
+  Points: 1
+- Text: Contents of the file '~/secret' on Third Stop?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_third_stop}
+    Points: '1'
+  Points: 1
+- Text: Contents of the file '~/secret' on Fourth Stop?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_fourth_stop}
+    Points: '1'
+  Points: 1
+- Text: Contents of the file '~/secret' on Fifth Stop?
+  Type: String
+  Values:
+  - Value: ${player.variables.secret_fifth_stop}
+    Points: '1'
+  Points: 1
+- Text: Proof that your are a SSH Inception Master?
+  Type: String
+  Values:
+  - Value: ${player.variables.master_string}
+    Points: '1'
+  Points: 1

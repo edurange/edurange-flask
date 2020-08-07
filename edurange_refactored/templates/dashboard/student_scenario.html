@@ -2,29 +2,60 @@
 
 {% extends "layout.html" %}
 {% block content %}
-    <div class="card bg-light mb-3">
+    <div class="card bg-light">
         <div class="card-header">
-            <h3> Name : {{ n }} </h3>
-            <h3> Type : {{ t }} </h3>
+            <h3> Name : {{ s_name }} </h3>
+            <h3> Type : {{ s_type }} </h3>
         </div>
         <div class="card-body">
-            <p> Description : {{ de }} </p>
-            <p> Status : {{ s }} </p>
-            <p> Instructor : {{ o }} </p>
-            <p> Port : {{ p }} </p>
-            <p> Password : {{ pw }} </p>
-            <b> Connection Information: </b>
+            <p><b>  Description : </b> {{ desc }} </p>
+            <p><b>  Status : </b> {{ status }} </p>
+            <p><b>  Instructor : </b> {{ owner }} </p>
+            <p><b>  Port : </b> {{ port }} </p>
+            <p><b> Username : </b> {{ u_name }} </p>
+            <p><b> Password : </b> {{ pw }} </p>
+            <p><b> Connection Information: </b></p>
             {% for container in add %}
                 <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
             {% endfor %}
         </div>
-    </div>
-    <div class="card bg-light mb-3">
-        <div class="card-header">
-            <h3> Response Form </h3>
-        </div>
-        <div class="card-body">
-            <p> responses </p>
+        <ul class="nav nav-tabs mt-3 ml-3">
+            <li class="nav-item active">
+                <a href="#Responses" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab"  aria-selected="true">Responses</a>
+                <!--{% for i in questions  %}
+                    <p>{{i}}</p>
+                {% endfor %}-->
+            </li>
+            <li class="nav-item">
+                <a href="#Guide" class="nav-link tab-pane show" data-toggle="tab" aria-selected="false">Guide</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!--<div class="card bg-light mb-3 mt-0 tab-pane show active" id="Responses">-->
+            <div id="Responses" class="tab-pane show active">
+                <div class="container mt-3">
+                    <h3> Response Form </h3>
+                    <div class="card-body">
+                        <div class="container">
+                          {% for q in questions %}
+                              <p>{{ q }}</p>
+                              <input type="text" class="form-control mb-3">
+                          {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="card bg-light mb-3 tab-pane fade" id="Guide">-->
+            <div class="tab-pane" id="Guide">
+                <div class="container mt-3">
+                  <div class="card-body">
+                      <div class="container">
+                        <iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe>
+                      </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 ---
 Name: Strace
 Description: This game uses strace to examine executable files.
+Codelab: http://localhost:5000/404
 #Roles:
 Groups:
 - Name: Students
@@ -11,4 +12,3 @@ Groups:
   - Login: student
 Instances:
 - Name: strace
-
