@@ -253,3 +253,28 @@ def destroy(self, sid):
                 flash("Something went wrong", "warning")
         else:
             raise Exception(f"Could not find scenario")
+
+@celery.task(bind=True)
+#def scenarioTimeoutWarningEmail(self):
+def scenarioTimeoutWarningEmail(self, arg):
+    from edurange_refactored.user.models import Scenarios
+    scenarios = Scenarios.query.all()
+    for scenario in scenarios:
+        if scenario.name == 'foo':
+            #scenario.owner = GroupUser.user_id
+            #GroupUser.query.filter_by(user_id=scenario.owner).first()
+            email_data = {"subject": "WARNING: Scenario Running Too Long", "email": "selenawalshsmith@gmail.com"}
+            app = current_app
+            mail = Mail(app)
+            msg = Message(email_data['subject'],
+                          sender=environ.get('MAIL_DEFAULT_SENDER'),
+                          recipients=[email_data['email']])
+            msg.body = render_template('utils/scenario_timeout_warning_email.txt', email=email_data['email'], _external=True)
+            msg.html = render_template('utils/scenario_timeout_warning_email.html', email=email_data['email'], _external=True)
+            mail.send(msg)
+    #    print(arg)
+    #email_data = {'subject': 'WARNING: Scenario Running Too Long', 'to': 'selenawalshsmith@gmail.com', 'body':'WARNING: Scenario Running Too Long'}
+    #send_async_email(email_data)
+@celery.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(10.0, scenarioTimeoutWarningEmail.s('******Hello World from Selena*********'))
