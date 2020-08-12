@@ -1,13 +1,12 @@
 import os
 
-from flask import current_app, flash, request, session
+from flask import flash, request, session
 from flask_login import current_user
 
 from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
     GroupForm,
     addUsersForm,
-    deleteStudentForm,
     manageInstructorForm,
     modScenarioForm,
     scenarioResponseForm
@@ -16,7 +15,7 @@ from edurange_refactored.user.forms import (
 from . import tasks
 from .user.models import GroupUsers, StudentGroups, User, Responses
 from .user.models import generate_registration_code as grc
-from .utils import flash_errors, responseCheck
+from .utils import flash_errors, responseCheck, getAttempt
 
 
 def process_request(form):  # Input must be request.form
@@ -28,7 +27,6 @@ def process_request(form):  # Input must be request.form
         "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
         "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
         "GroupForm":                ["csrf_token", "name", "create", "size"],
-        "deleteStudentForm":        ["csrf_token", "stuName", "delete_student"],
         "manageInstructorForm":     ["csrf_token", "uName", "promote"],
         "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
         "scenarioResponseForm":     ["csrf_token", "response", "scenario", "question"]
@@ -52,7 +50,6 @@ def process_request(form):  # Input must be request.form
         "modScenarioForm":          process_scenarioModder,
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
-        "deleteStudentForm":        process_delStu,
         "promoteInstructorForm":    process_manInst,
         "addUsersForm":             process_addUser,
         "scenarioResponseForm":     process_scenarioResponse
@@ -95,8 +92,8 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
             return 'utils/create_group_response.html', group, users
         else:
             pairs = []
-            fName = name # formatted group name
-            name = name.replace(" ", "") # group name with no spaces
+            fName = name  # formatted group name
+            name = name.replace(" ", "")  # group name with no spaces
             j = 0
             for i in range(1, size + 1):
                 username = "{0}-user{1}".format(name, i)
@@ -114,7 +111,6 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
                 users.append(user)
             flash('Created group {0} and populated it with {1} accounts'.format(fName, j), 'success')
             return 'utils/create_group_response.html', group, users, pairs
-
 
 
 def process_manInst():  # Form to give a specified user instructor permissions |  # manageInstructorForm
@@ -138,22 +134,6 @@ def process_manInst():  # Form to give a specified user instructor permissions |
             flash("Demoted {0} from Instructor status.".format(uName))
         else:
             flash_errors(mI)
-
-
-def process_delStu():  # WIP Form to delete a specified student from the database |  # deleteStudentForm
-    db_ses = db.session
-    uD = deleteStudentForm(request.form)  # type1Form(request.form)  #
-    if uD.validate_on_submit():
-        stuName = uD.stuName.data  # string1.data  #
-        user = User.query.filter_by(username=stuName).first()
-        stuId = db_ses.query(User.id).filter(User.username == stuName)
-        gu = db_ses.query(GroupUsers).filter(GroupUsers.user_id == stuId)
-        gu.delete()
-        user.delete()
-
-        flash("User {0} has been deleted.".format(stuName))
-    else:
-        flash_errors(uD)
 
 
 def process_addUser():  # Form to add or remove selected students from a selected group |  # addUsersForm
@@ -202,7 +182,8 @@ def process_addUser():  # Form to add or remove selected students from a selecte
             )
         else:
             flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group.name, uids), 'success')
-        users = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.id == gid, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+        users = db_ses.query(User.id, User.username, User.email)\
+            .filter(StudentGroups.id == gid, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
         return 'utils/manage_student_response.html', group, users
     else:
         flash_errors(uA)
@@ -216,9 +197,9 @@ def process_scenarioResponse():
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(resp)
+        gotIt = responseCheck(qnum, sid, resp)
         # get attempt number from somewhere
-        att = 0
+        att = getAttempt(uid, sid, qnum)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
 
 
