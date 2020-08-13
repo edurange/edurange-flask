@@ -52,7 +52,6 @@ def process_request(form):  # Input must be request.form
         "GroupForm":                process_groupMaker,
         "promoteInstructorForm":    process_manInst,
         "addUsersForm":             process_addUser,
-        "scenarioResponseForm":     process_scenarioResponse
     }
     return process_switch[f]()
 
@@ -85,15 +84,15 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
         name = gM.name.data
         group = StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
         users = []
-        gid = group.get_id()
         size = gM.size.data
         if size == 0:
             flash('Created group {0}'.format(name), 'success')
             return 'utils/create_group_response.html', group, users
         else:
             pairs = []
-            fName = name  # formatted group name
-            name = name.replace(" ", "")  # group name with no spaces
+            gid = group.get_id()
+            fName = name # formatted group name
+            name = name.replace(" ", "") # group name with no spaces
             j = 0
             for i in range(1, size + 1):
                 username = "{0}-user{1}".format(name, i)

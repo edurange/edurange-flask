@@ -10,12 +10,10 @@ from celery.utils.log import get_task_logger
 from flask import current_app, flash, render_template, session
 from flask_mail import Mail, Message
 
+from edurange_refactored.scenario_json import find_and_copy_template, write_resource, \
+    adjust_network
 from edurange_refactored.scenario_utils import (
-    begin_tf_and_write_providers,
     gather_files,
-    known_types,
-    write_container,
-    write_output_block, write_network,
 )
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 
@@ -35,6 +33,7 @@ celery = Celery(__name__, broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEN
 
 
 class ContextTask(celery.Task):
+    ''' This allows tasks to assume the create_app() context, and access the database '''
     abstract = True
 
     def __call__(self, *args, **kwargs):
@@ -93,7 +92,8 @@ def test_send_async_email(email_data):
 
 @celery.task(bind=True)
 def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
-    from edurange_refactored.user.models import ScenarioGroups
+    ''' self is the task instance, other arguments are the results of database queries '''
+    from edurange_refactored.user.models import ScenarioGroups, Scenarios
 
     app = current_app
     s_type = s_type.lower()
@@ -137,25 +137,20 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
-        begin_tf_and_write_providers(name)
+        active_scenarios = Scenarios.query.filter(Scenarios.status != 0).count()
 
-        if s_type == "ssh_inception" or s_type == "total_recon":
-            write_network(name)
+        # Local addresses begin at the subnet 10.0.0.0/24
+        address = str(10 + active_scenarios)
+        #write provider and networks
+        find_and_copy_template(s_type, "network")
+        adjust_network(address, name)
 
+        # Each container and their names are pulled from the 's_type'.json file
         for i, c in enumerate(c_names):
-            write_container(
-                name + "_" + c,
-                s_type,
-                usernames,
-                passwords,
-                g_files[i],
-                s_files[i],
-                u_files[i],
-                packages[i],
-                #ip_addrs[i]
-            )
-
-        write_output_block(name, c_names)
+            find_and_copy_template(s_type, c)
+            write_resource(address, name, s_type,
+                               c_names[i], usernames, passwords,
+                               s_files[i], g_files[i], u_files[i])
 
         os.system("terraform init")
         os.chdir("../../..")

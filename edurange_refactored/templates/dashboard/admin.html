@@ -138,30 +138,41 @@
 
     <div class="card mb-2 mt-2" id="groupStart"> <!-- groups table collapse -->
         <div class="card-header d-inline-flex" id="headingGroups">
-            <h5 class="mb-0">
-                <h2><i class="fa fa-user"></i> All Groups </h2>
-            </h5>
-        </div>
-        <div class="card-body" id="groupTables">
-            <!-- groups table stuff -->
-            <div id="groupButtons">
-                {% for group in groups if not group.hidden %}
-                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
-                        data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
-                        aria-controls="{{ group.name.replace(' ', '') }}-table">
-                    {{ group.name }} <i class="fa fa-caret-down"></i>
+            <h2><i class="fa fa-user"></i> All Groups
+                <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse"
+                        data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
+                    <i class="fa fa-caret-down"></i>
                 </button>
-                {% endfor %}
-            </div>
-            {% for group in groups if not group.hidden %}
-            <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers" data-parent="#groupTables">
-                <p></p>
-                <div>
-                    <div class="row mb-3 mr-3">
-                        <h4 class="ml-3"> {{ group.name }} &emsp;&emsp;|&emsp;&emsp;
-                        Registration Code: <i>{{ group.code }}</i> &emsp;&emsp;|&emsp;&emsp;
-                        Size: <i id="{{ group.name.replace(' ', '') }}_size"></i></h4>
+            </h2>
+        </div>
+        <div id="collapseGroups" class="collapse" aria-labelledby="headingGroups">
+            <div class="card-body row" id="groupTables">
+                <!-- groups table stuff -->
+                <div class="col-sm-4">
+                    <div>
+                        <table class="table" id="groupsTable">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> Name</th>
+                                <th> Reg. Code</th>
+                                <th> Size</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in groups if not group.hidden %}
+                            <tr class="selectable" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table">
+                                <td> {{ group.name }}</td>
+                                <td> {{ group.code }}</td>
+                                <td><i id="{{ group.name.replace(' ', '') }}_size"></i></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                {% for group in groups if not group.hidden %}
+                <div id="{{ group.name.replace(' ', '') }}-table" class="col-sm-8 collapse" aria-labelledby="headingUsers"
+                     data-parent="#groupTables" style="overflow-y:scroll;">
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -181,12 +192,10 @@
                         </tbody>
                     </table>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-            <!-- groups table stuff -->
         </div>
-    </div> <!-- groups table collapse -->
-
+    </div>
 
     <div class="row" id="groupRow">
         <div class="col-sm-6"> {# Front end for form to create a student group #}
@@ -207,7 +216,7 @@
                             </label>
                             <input class="form-control-sm" id="size" name="size" placeholder="0-40" value=""
                                 type="number" min="0" max="40" style="width: 70px;" disabled>
-                            <input type="hidden" id="defSize" name="size" value="0">
+                            <!--<input type="hidden" id="defSize" name="size" value="0">-->
                         </div>
                     </form>
                 </div>
@@ -226,6 +235,13 @@
     $("#groupTables i[id$='_size']").each(function(index, element) {
       var name = element.id.slice(0, -5);
       $(element).text($("div[id='" + name + "-table'] tbody tr").length);
+    });
+
+
+    $("#groupsTable tbody").on("click", "tr.selectable", function() {
+      $("#groupsTable tbody tr.selectable.active").not($(this)).removeClass("active");
+      $(this).toggleClass("active");
+      $("#groupTables div[id$='-table']").css("max-height", $("#groupsTable").css("height"));
     });
 
     /* Event listener to add selected user to uids list */
@@ -250,7 +266,6 @@
 
     /* Event listener to select all students when "select all" button is pressed */
     $("#selectAll").on("click", function() {
-      //$("button.selector.btn-outline-dark").trigger("click");
       var buttons = $("button.selector.btn-outline-dark");
       var field = $("#selection");
       buttons.each(function(index, element) {
@@ -287,19 +302,22 @@
 
     /* AJAX request for add/removing users from a group */
     $("#addGroupUsers .user-button").on("click", function(e) { //add or remove users buttons
-      var csrf_token; var add; var uids; var groups;
       e.preventDefault(); //prevent form submit
-      csrf_token = $("#csrf_token").val();
-      add = $(this).val();
-      groups = $("#groupSel").val();
-      uids = $("#selection").val();
-      request = $.ajax({
+      /*--------- POST request data ---------*/
+      let csrf_token = $("#csrf_token").val();
+      let add = $(this).val();
+      var groups = $("#groupSel").val();
+      let uids = $("#selection").val();
+      /*-------------------------------------*/
+
+      var data = {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids};
+      request = $.ajax({ //submit request
         type : 'POST',
         url : "{{ url_for('dashboard.admin') }}",
-        data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
+        data : data
       });
       request.done(function(response) {
-        mergeHTML("manageStudents", groups, response);
+        mergeHTML("manageStudents", groups, response); //call function to merge/handle HTML elements from POST response
       });
       request.fail(function(response) {
         alert("Something went wrong!");
@@ -308,21 +326,20 @@
 
     /* AJAX request for creating groups */
     $("#groupCreate").on("click", function(e) {
-      var csrf_token; var name; var create; var size;
-      e.preventDefault();
-      csrf_token = $("#csrf_token").val();
-      name = $("#name").val();
-      create = $(this).val();
-      size = $("#size");
-      if (size.prop('disabled')) {
-        size = 0;
-      } else {
-        size = size.val();
-      }
-      request = $.ajax({
+      e.preventDefault(); //prevent form submit
+      /*--------- POST request data ---------*/
+      let csrf_token = $("#csrf_token").val();
+      var name = $("#name").val();
+      let create = $(this).val();
+      let size = $("#size");
+      if (size.prop('disabled')) { size = 0; } else { size = size.val(); }
+      /*-------------------------------------*/
+
+      var data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
+      request = $.ajax({ //submit request
         type : 'POST',
         url : "{{ url_for('dashboard.admin') }}",
-        data : {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size}
+        data : data
       });
       request.done(function(response) {
         mergeHTML("groupCreate", name, response)
@@ -333,15 +350,14 @@
     });
 
     function mergeHTML(req, arg, response) {
-      $("#flashed").remove();
+      $("#flashed").remove(); //remove any flashed messages
       if (req === "groupCreate") {
         var $table = $(response).filter("div[id$='-table']"); //get new group table
-        var $button = $(response).filter("button[data-target]"); //get group table button
+        var $row = $(response).find("#groupRow").html();
         var $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
         var $flash = $(response).filter("#flashed"); //get flashed messages
         var $users = $(response).find("#studentRows").html();
-        var $count = $(response).filter("#stuCount");
-        $("#groupButtons").append($button); //append new group button
+        $("#groupsTable tbody").append($row); //append new group row
         $("#groupTables").append($table); //append new group table
         $("#studentBody").append($users);
         $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
@@ -349,7 +365,6 @@
           $("#headingGroups").append($flash); //flash new messages
         }
         if ($pairs.length) {
-          $("#stuCount").replaceWith($count);
           var pairs = $("#pairs");
           if (pairs.length) {
             pairs.replaceWith($pairs);
@@ -358,7 +373,8 @@
             $("#groupRow").append($pairs);
           }
         }
-        $("#groupTables i[id='" + arg + "_size']").text($table.length);
+        var group = arg.replace(/\s+/g, '');
+        $("#groupsTable i[id='" + group + "_size']").text($("#" + group + "-table tbody tr").length);
       }
       else if (req === "manageStudents") {
         var group = arg.replace(/\s+/g, '');
@@ -366,7 +382,6 @@
         var table = $("#" + group + "-table tbody");
         table.replaceWith($table);
 
-        //var $count = $(response).filter("#" + group + "_size");
         $("#" + group + "_size").text($("#" + group + "-table tbody tr").length);
 
         $("#groupHead").append($(response).filter("#flashed"));
@@ -379,9 +394,10 @@
     $("#genGroup").on("change", function() {
       $("#genGroup-label").toggleClass("text-muted");
       document.getElementById("size").toggleAttribute("disabled");
-      document.getElementById("defSize").toggleAttribute("disabled");
+      //document.getElementById("defSize").toggleAttribute("disabled");
     });
 
   });
+
 </script>
 {% endblock %}
