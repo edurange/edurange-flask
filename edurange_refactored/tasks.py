@@ -33,6 +33,7 @@ celery = Celery(__name__, broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEN
 
 
 class ContextTask(celery.Task):
+    ''' This allows tasks to assume the create_app() context, and access the database '''
     abstract = True
 
     def __call__(self, *args, **kwargs):
@@ -91,6 +92,7 @@ def test_send_async_email(email_data):
 
 @celery.task(bind=True)
 def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
+    ''' self is the task instance, other arguments are the results of database queries '''
     from edurange_refactored.user.models import ScenarioGroups, Scenarios
 
     app = current_app
@@ -136,11 +138,14 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
             json.dump(students, outfile)
 
         active_scenarios = Scenarios.query.filter(Scenarios.status != 0).count()
+
+        # Local addresses begin at the subnet 10.0.0.0/24
         address = str(10 + active_scenarios)
         #write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
 
+        # Each container and their names are pulled from the 's_type'.json file
         for i, c in enumerate(c_names):
             find_and_copy_template(s_type, c)
             write_resource(address, name, s_type,
