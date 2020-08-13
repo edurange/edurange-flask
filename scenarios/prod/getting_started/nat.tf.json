@@ -1,4 +1,4 @@
-{ 
+{
   "resource": [
     {
             "docker_container": [
@@ -57,6 +57,25 @@
                                 }
                             ],
                             "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "locals": [
+        {
+            "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_nat": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_nat_extern])}",
+                            "name": "SNAME_nat"
                         }
                     ]
                 }
