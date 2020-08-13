@@ -16,7 +16,6 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
     GroupForm,
     addUsersForm,
-    deleteStudentForm,
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,

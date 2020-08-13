@@ -14,12 +14,6 @@
 				"files",
 				"motd",
 				"python"
-			],
-			"packages": [
-				"locales",
-				"sudo",
-				"man-db",
-				"manpages-posix"
 			]
 		}]
 	}
