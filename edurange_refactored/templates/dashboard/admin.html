@@ -8,22 +8,6 @@
 <div class="container" id="accordion"> {# Allows tables to collapse as an accordion #}
 
     <div class="row">
-        <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
-            <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students [WIP]</div>
-                <div class="card-body">
-                    <h5 class="card-text"></h5>
-                    <form id="deleteStudent" method="POST" action="" role="form">
-                        {{ userDropper.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
-                        </div>
-                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
                 <div class="card-header">Manage Instructors</div>

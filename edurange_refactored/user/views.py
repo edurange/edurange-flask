@@ -16,7 +16,6 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
     GroupForm,
     addUsersForm,
-    deleteStudentForm,
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
@@ -26,7 +25,6 @@ from ..form_utils import process_request
 from ..scenario_utils import identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
-    UserInfoTable,
     check_admin,
     check_instructor,
     check_role_view,
@@ -70,7 +68,6 @@ def student():
     curId = session.get("_user_id")
 
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
-    infoTable = UserInfoTable(userInfo)
 
     groups = (
         db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers)
@@ -95,7 +92,7 @@ def student():
 
     return render_template(
         "dashboard/student.html",
-        infoTable=infoTable,
+        userInfo=userInfo,
         groups=groups,
         scenarioTable=scenarioTable,
     )
@@ -296,15 +293,12 @@ def instructor():
         StudentGroups.id, StudentGroups.name, StudentGroups.code
     ).filter(StudentGroups.owner_id == curId)
 
-    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
-    infoTable = UserInfoTable(userInfo)
     if request.method == "GET":
         groupMaker = GroupForm()
         return render_template(
             "dashboard/instructor.html",
             groupMaker=groupMaker,
             groups=groups,
-            infoTable=infoTable,
         )
 
     elif request.method == "POST":
@@ -343,14 +337,12 @@ def admin():
         groupMaker = GroupForm()
         userAdder = addUsersForm()
         instructorManager = manageInstructorForm()
-        userDropper = deleteStudentForm()
 
         return render_template(
             "dashboard/admin.html",
             groupMaker=groupMaker,
             userAdder=userAdder,
             instructorManager=instructorManager,
-            userDropper=userDropper,
             groups=groups,
             students=students,
             instructors=instructors,

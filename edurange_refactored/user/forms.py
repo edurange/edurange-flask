@@ -3,7 +3,6 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired
-from .models import User, StudentGroups
 
 from .models import StudentGroups, User
 
@@ -54,27 +53,6 @@ class RegisterForm(FlaskForm):
         return True
 
 
-# ---------------------------------- (unused?)
-class EmailForm(FlaskForm):
-    """Email Form."""
-
-    subject = StringField("Subject", validators=[DataRequired()])
-    to = StringField("Recipient", validators=[DataRequired()])
-    body = StringField("Body", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(EmailForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(EmailForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-# -----------------------------------------------------
-
-
 class GroupForm(FlaskForm):  # type1
     """Create New Group Form"""
     name = StringField(
@@ -102,23 +80,6 @@ class GroupForm(FlaskForm):  # type1
         return True
 
 
-# ----------------------------------------(unused?)
-class GroupFinderForm(FlaskForm):
-    """Finds Existing Group"""
-
-    group = StringField("Group Name", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(GroupFinderForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(GroupFinderForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-# -------------------------------------------
 
 
 class addUsersForm(FlaskForm):
@@ -183,21 +144,6 @@ class modScenarioForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(modScenarioForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-class deleteStudentForm(FlaskForm):  # type1
-    """Deletes a student from the database"""
-
-    stuName = StringField("Username", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(deleteStudentForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(deleteStudentForm, self).validate()
         if not initial_validation:
             return False
         return True

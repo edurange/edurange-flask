@@ -1,13 +1,16 @@
 """Helper utilities and decorators."""
-from flask import flash, abort, request, session, redirect, url_for, current_app, Markup
+import json
+import os
+
+import yaml
+from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
 from flask_table import Col, Table
 from jwt.jwk import OctetJWK, jwk_from_dict
+from markupsafe import Markup
 
 from edurange_refactored.extensions import db
-import os
-import json
-import yaml
+from .scenario_utils import item_generator
 
 from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
 
@@ -42,112 +45,6 @@ def flash_errors(form, category="warning"):
             flash(f"{getattr(form, field).label.text} - {error}", category)
 
 
-
-# Old code for tables on the dashboards (possibly not used anymore? [tbd])------
-
-
-class StudentTable(Table):
-    classes = ['table']
-    thead_classes = ['thead-dark']
-    # state = CheckCol('')
-    id = Col('id')
-    username = Col('username')
-    email = Col('email')
-    html_attrs = {
-        "data-toggle": "table",
-        "data-pagination": "true",
-        "data-show-columns": "true",
-        "data-multiple-select-row": "true",
-        "data-click-to-select": "true",
-        "overflow-y": "scroll",
-    }  # html_attrs probably don't do anything
-
-
-class Student(object):
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = username
-        self.email = email
-
-
-class GroupTable(Table):
-    classes = ["table"]
-    thead_classes = ["thead-dark"]
-    id = Col("id")
-    name = Col("name")
-    html_attrs = {
-        "data-toggle": "table",
-        "data-search": "true",
-        "data-search-on-enter-key": "true",
-        "data-show-columns": "true",
-        "data-multiple-select-row": "true",
-        "data-click-to-select": "true",
-        "data-pagination": "true",
-    }
-
-
-class Group(object):
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
-
-class GroupUserTable(Table):
-    classes = ["table"]
-    thead_classes = ["thead-dark"]
-    id = Col("id")
-    username = Col("username")
-    email = Col("email")
-    html_attrs = {
-        "data-toggle": "table",
-        "data-search": "true",
-        "data-search-on-enter-key": "true",
-        "data-show-columns": "true",
-        "data-multiple-select-row": "true",
-        "data-click-to-select": "true",
-        "data-pagination": "true",
-    }
-
-
-class GroupUser(object):
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = username
-        self.email = email
-
-
-class UserInfoTable(Table):
-    classes = ["table"]
-    thead_classes = ["thead-dark"]
-    id = Col("id")
-    username = Col("username")
-    email = Col("email")
-
-
-class UserInfo(object):
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = username
-        self.email = email
-
-
-class ScenarioTable(Table):
-    classes = ["table"]
-    thead_classes = ["thead_dark"]
-    id = Col("id")
-    name = Col("name")
-    created_at = Col("created_at")
-    status = Col("status")
-
-
-class Scenario(object):
-    def __init__(self, id, name, created_at, status):
-        self.id = id
-        self.name = name
-        self.created_at = created_at
-        self.status = status
-
-
 def check_admin():
     number = current_user.id
     user = User.query.filter_by(id=number).first()
@@ -163,7 +60,7 @@ def check_instructor():
 
 
 def check_role_view(
-    mode,
+        mode,
 ):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id
     user = User.query.filter_by(id=number).first()
@@ -309,10 +206,10 @@ def checkEnr(d):
     n = current_user.id
     enr = (
         db_ses.query(GroupUsers.group_id)
-        .filter(ScenarioGroups.scenario_id == d)
-        .filter(GroupUsers.group_id == ScenarioGroups.group_id)
-        .filter(GroupUsers.user_id == n)
-        .first()
+            .filter(ScenarioGroups.scenario_id == d)
+            .filter(GroupUsers.group_id == ScenarioGroups.group_id)
+            .filter(GroupUsers.user_id == n)
+            .first()
     )
     if enr is not None:
         return True
@@ -342,7 +239,7 @@ def statReader(s):
 def getDesc(t):
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item, doc in document.items():
@@ -355,7 +252,7 @@ def getGuide(t):
     #g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item, doc in document.items():
@@ -379,7 +276,7 @@ def getQuestions(t):
     questions = []
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + "questions.yml", "r"
+            "./scenarios/prod/" + t + "/" + "questions.yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item in document:
@@ -400,9 +297,9 @@ def tempMaker(d, i):
     # owner name
     oName = (
         db_ses.query(User.username)
-        .filter(Scenarios.id == d)
-        .filter(Scenarios.owner_id == User.id)
-        .first()
+            .filter(Scenarios.id == d)
+            .filter(Scenarios.owner_id == User.id)
+            .first()
     )
     oName = oName[0]
     # description
@@ -432,9 +329,15 @@ def tempMaker(d, i):
 # --
 
 
-def responseCheck(resp):
+def responseCheck(qnum, sid, resp):
     # read correct response from yaml file
-    ans = "you'll never get this question right, mwa ha ha ha!"
+    db_ses = db.session
+    s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == sid).first()
+    questions = questionReader(s_type[0])
+    for text in questions:
+        order = int(text['Order'])
+        if order == qnum:
+            ans = str(text['Values'][0]['Value'])
     if resp == ans:
         return True
     else:
@@ -447,66 +350,66 @@ def responseCheck(resp):
 def responseQuery(uid, att, query, questions):
     tableList = []
     tmpList = []
-    for r in query:
-        if r.user_id == uid and r.attempt == att:
-            tmpList.append(r)
+    for entry in query:
+        if entry.user_id == uid and entry.attempt == att:
+            tmpList.append(entry)
 
-    for r in tmpList:
-        qNum = r.question
-        for t in questions:
-            o = int(t['Order'])
-            if o == qNum:
-                quest = t['Text']
-                poi = t['Points']
-                val = t['Values'][0]['Value']
-                sR = r.student_response
-                d = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
-                tableList.append(d)
+    for response in tmpList:
+        qNum = response.question
+        for text in questions:
+            order = int(text['Order'])
+            if order == qNum:
+                quest = text['Text']
+                poi = text['Points']
+                val = text['Values'][0]['Value']
+                sR = response.student_response
+                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
+                tableList.append(dictionary)
     return tableList
 
 
-def responseSelector(r):
+def responseSelector(resp):
     # response selector
     db_ses = db.session
     query = db_ses.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
-    for re in query:
-        if re.id == int(r):
-            d = re
+    for entry in query:
+        if entry.id == int(resp):
+            data = entry
             break
-    return d
+    return data
 
 
-def getScore(u, a, q):
+def getScore(usr, att, query):
     sL = []
-    for re in q:
-        if u == re.user_id and a == re.attempt:
-            sL.append({'question': re.user_id, 'correct': re.correct})
+    for resp in query:
+        if usr == resp.user_id and att == resp.attempt:
+            sL.append({'question': resp.user_id, 'correct': resp.correct})
     return sL
 
 
 def totalScore(questions):
     tS = 0
-    for t in questions:
-        tS += int(t['Points'])
+    for text in questions:
+        tS += int(text['Points'])
     return tS
 
 
-def score(li, questions):
+def score(scrLst, questions):
     sS = 0
-    for sR in li:
+    for sR in scrLst:
         if sR['correct']:
-            n = int(sR['question'])
-            for t in questions:
-                if int(t['Order']) == n:
-                    sS += int(t['Points'])
+            num = int(sR['question'])
+            for text in questions:
+                if int(text['Order']) == num:
+                    sS += int(text['Points'])
     scr = '' + str(sS) + ' / ' + str(totalScore(questions))
     return scr
 
 
-def questionReader(t):
-    t = t.lower().replace(" ", "_")
+def questionReader(typ):
+    typ = typ.lower().replace(" ", "_")
     with open(
-            "./scenarios/prod/" + t + "/questions.yml", "r"
+            "./scenarios/prod/" + typ + "/questions.yml", "r"
     ) as yml:
         document = yaml.full_load(yml)
     return document
@@ -514,19 +417,19 @@ def questionReader(t):
 
 def queryPolish(query, sType):
     qList = []
-    for e in query:
-        i = e.id
-        uid = e.user_id
-        att = e.attempt
-        usr = e.username
+    for entry in query:
+        i = entry.id
+        uid = entry.user_id
+        att = entry.attempt
+        usr = entry.username
         if qList is None:
             scr = score(getScore(uid, att, query), questionReader(sType))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             qList.append(d)
         else:
             error = 0
-            for l in qList:
-                if uid == l['user_id'] and att == l['attempt']:
+            for lst in qList:
+                if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
                 scr = score(getScore(uid, att, query), questionReader(sType))
@@ -535,18 +438,28 @@ def queryPolish(query, sType):
     return qList
 
 
-def responseProcessing(d):
+def responseProcessing(data):
     # response info getter
     db_ses = db.session
     # user info
-    uid = d.user_id
+    uid = data.user_id
     uname = db_ses.query(User.username).filter(User.id == uid).first()
     uname = uname[0]
     # scenario info
-    sid = d.scenario_id
+    sid = data.scenario_id
     sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     sname = sname[0]
     # response info
-    att = d.attempt
+    att = data.attempt
     return uid, uname, sid, sname, att
 
+
+def getAttempt(uid, sid, qnum):
+    db_ses = db.session
+    query = db_ses.query(Responses.attempt).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid) \
+        .filter(Responses.question == qnum).first()
+    if query is None:
+        att = 1
+    else:
+        att = int(query[0]) + 1
+    return att
