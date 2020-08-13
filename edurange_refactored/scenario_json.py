@@ -112,13 +112,18 @@ def write_resource(address, name, s_type,
             for j, t in enumerate(config['resource'][i][s]):
                 config['resource'][i][s][j] = eval(str(t).replace('SNAME', name).replace('OCTET', address))
 
+    for i, l in enumerate(config['locals']):
+        config['locals'][i] = eval(str(l).replace('SNAME', name))
+
+    for i, o in enumerate(config['output']):
+        config['output'][i] = eval(str(o).replace('SNAME', name))
+
     # Use a temporary file to hold the updated data
     with open('tmp.tf.json', 'w') as f:
         json.dump(config, f, indent=4)
 
     # Move the temporary file, replacing the template
     os.rename('tmp.tf.json', c_name + '.tf.json')
-
 
     # Read our new file as raw text
     with open(c_name + '.tf.json', 'r') as outfile:

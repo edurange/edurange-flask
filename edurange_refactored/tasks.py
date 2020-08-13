@@ -141,6 +141,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
         # Local addresses begin at the subnet 10.0.0.0/24
         address = str(10 + active_scenarios)
+
         #write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
