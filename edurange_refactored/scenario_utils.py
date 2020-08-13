@@ -217,13 +217,12 @@ def write_users(tf, usernames, passwords):
     for i, name in enumerate(usernames):
         tf.write(
             """
-      "useradd --home-dir /home/"""
-            + name
+      "useradd --home-dir /home/""" + name
             + """ --create-home --shell /bin/bash --password $(echo """
             + passwords[i]
             + """ | openssl passwd -1 -stdin) """
             + name
-            + '",'
+            + '",\n'
         )
 
 
@@ -320,7 +319,7 @@ def write_output_block(name, c_names):
             )
 
 
-def write_network(s_name):
+def write_network_nat(s_name):
     with open("network.tf", "w") as tf:
         tf.write( """
 resource "docker_network" """ + "\"" + s_name + "_NAT\"" """ {
@@ -330,7 +329,7 @@ resource "docker_network" """ + "\"" + s_name + "_NAT\"" """ {
 }""")
 
 
-def write_net_adv(tf, s_name, ip):
+def write_net_adv_nat(tf, s_name, ip):
     tf.write("""
   networks_advanced {
     name = """ + "\"" + s_name.split('_')[0] + "_NAT\"" """
@@ -376,7 +375,7 @@ resource "docker_container" """ + "\"" + name + "\"" """ {
 
         begin_code_block(tf)
 
-        write_run_updates(tf, packages)
+        #write_run_updates(tf, packages)
 
         write_users(tf, usernames, passwords)
 

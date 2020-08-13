@@ -1,0 +1,50 @@
+{
+	"resource": [
+{
+            "docker_container": [
+                {
+                    "SNAME_First_Stop": [
+                        {
+                            "capabilities": [
+                                {
+                                    "add": [
+                                        "NET_ADMIN"
+                                    ]
+                                }
+                            ],
+                            "command": [
+                                "/usr/sbin/sshd",
+                                "-D"
+                            ],
+                            "connection": [
+                                {
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
+                                }
+                            ],
+                            "hostname": "First_Stop",
+                            "image": "sanivo/edurange_alpine:latest",
+                            "name": "SNAME_First_Stop",
+                            "networks_advanced": [
+                                {
+                                    "ipv4_address": "OCTET.0.0.5",
+                                    "name": "SNAME_PLAYER"
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "internal": 22,
+                                    "ip": "OCTET.0.0.2"
+                                }
+                            ],
+                            "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -29,9 +29,6 @@
 				"sudo",
 				"man-db",
 				"manpages-posix"
-			],
-			"ip_address": [
-				"10.0.1.4"
 			]
 		}]
 	}
