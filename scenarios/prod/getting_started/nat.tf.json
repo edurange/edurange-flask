@@ -1,6 +1,6 @@
 {
-  "resource": [
-    {
+    "resource": [
+        {
             "docker_container": [
                 {
                     "SNAME_nat": [
