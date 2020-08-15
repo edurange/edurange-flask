@@ -33,29 +33,29 @@
         </tr>
         </thead>
         <tbody>
-        {% for student in users %}
+        {% for student in users if users is defined %}
         <tr>
             <td> {{ student.id }}</td>
             <td> {{ student.username }}</td>
-            <td> {{ student.email }}</td>
+            <td> <b>TEMPORARY </b> </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
 
-{#<table class="table">
+<table class="table">
     <tbody id="studentRows">
     {% for student in users if users is defined %}
-        <tr id="uid{{ student.id }}">
-            <td> {{ student.id }}</td>
-            <td> {{ student.username }}</td>
-            <td> {{ student.email }}</td>
-            <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"></button></td>
-        </tr>
+    <tr id="uid{{ student.id }}" class="static" style="display:none;">
+        <td> {{ student.id }}</td>
+        <td> {{ student.username }}</td>
+        <td> <b>TEMPORARY </b> </td>
+        <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"/></td>
+    </tr>
     {% endfor %}
     </tbody>
-</table>#}
+</table>
 
 {% if pairs %}
 <div class="col-sm-6 mt-2" id="pairs">

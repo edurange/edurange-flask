@@ -113,7 +113,7 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
                 j += 1
                 pairs.append((username, password))
                 users.append(user)
-            flash('Created group {0} and populated it with {1} accounts'.format(fName, j), 'success')
+            flash('Created group {0} and populated it with {1} temporary accounts'.format(fName, j), 'success')
             return 'utils/create_group_response.html', group, users, pairs
     else:
         flash_errors(gM)
@@ -171,45 +171,43 @@ def process_addUser():  # Form to add or remove selected students from a selecte
         uids = uA.uids.data  # string form
         adding = False
 
-        if uids[-1] == ",":
-            uids = uids[
-                :-1
-            ]  # slice last comma to avoid empty string after string split
         uids = uids.split(",")
 
         if request.form.get("add") == "true":
             adding = True
 
+        flashStatic = ''
         for i, uid in reversed(list(enumerate(uids))):
-            check = (
-                db_ses.query(GroupUsers)
-                .filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid)
-                .first()
-            )
-            if check is not None:
-                if adding:
-                    uids.pop(i)
+            static = db_ses.query(User.is_static).filter(User.id == uid).first()[0]
+            if not static:
+                check = (
+                    db_ses.query(GroupUsers)
+                    .filter(GroupUsers.user_id == uid, GroupUsers.group_id == gid)
+                    .first()
+                )
+                if check is not None:
+                    if adding:
+                        uids.pop(i)
+                    else:
+                        check.delete()
                 else:
-                    check.delete()
+                    if adding:
+                        GroupUsers.create(user_id=uid, group_id=gid)
+                    else:
+                        uids.pop(i)
             else:
-                if adding:
-                    GroupUsers.create(user_id=uid, group_id=gid)
-                else:
-                    uids.pop(i)
+                flashStatic = "NOTE: temporary accounts may not be added or removed from groups."
+                uids.pop(i)
 
         if adding:
-            flash(
-                "Added {0} users to group {1}. DEBUG: {2}".format(
-                    len(uids), group.name, uids
-                ),
-                "success",
-            )
+            flash("Added {0} users to group {1}. {2}".format(len(uids), group.name, flashStatic), 'success')
         else:
-            flash('Removed {0} users from group {1}. DEBUG: {2}'.format(len(uids), group.name, uids), 'success')
-        users = db_ses.query(User.id, User.username, User.email).filter(StudentGroups.id == gid, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
+            flash('Removed {0} users from group {1}. {2}'.format(len(uids), group.name, flashStatic), 'success')
+        users = db_ses.query(User.id, User.username, User.email, User.is_static).filter(StudentGroups.id == gid, StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == User.id)
         return 'utils/manage_student_response.html', group, users
     else:
         flash_errors(uA)
+        return 'utils/manage_student_response.html',
 
 
 def process_scenarioResponse():

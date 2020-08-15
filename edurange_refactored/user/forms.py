@@ -2,7 +2,7 @@
 """User forms."""
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf
 from .models import User, StudentGroups
 
 from .models import StudentGroups, User
@@ -101,10 +101,9 @@ class GroupForm(FlaskForm):
         "Group Name", validators=[DataRequired()]
     )
     size = IntegerField(
-        "Group Size", validators=[InputRequired()]
+        "Group Size", validators=[
+            NumberRange(min=0, max=40, message="Account generation may not surpass a count of 40 (and must be positive)")]
     )
-
-    name = StringField("Group Name", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
@@ -117,8 +116,6 @@ class GroupForm(FlaskForm):
         if group:
             self.name.errors.append("Group with this name already exists")
             return False
-        if not 0 <= self.size.data < 41:
-            self.size.errors.append("Account generation may not surpass a count of 40 (and must be positive)")
         return True
 
 
@@ -144,6 +141,7 @@ class GroupFinderForm(FlaskForm):
 class addUsersForm(FlaskForm):
     """Adds selected users to a group"""
 
+    add = StringField("Add", validators=[AnyOf(['true', 'false'], message="Do this by clicking the buttons")])
     uids = StringField("User IDs", validators=[DataRequired()])
     groups = StringField("Group Name", validators=[DataRequired()])
 
@@ -156,6 +154,23 @@ class addUsersForm(FlaskForm):
         initial_validation = super(addUsersForm, self).validate()
         if not initial_validation:
             return False
+        group = StudentGroups.query.filter_by(name=self.groups.data).first()
+        if not group:
+            self.groups.errors.append("Group with this name cannot be found")
+        users = self.uids.data
+        if self.uids.data[-1] == ",":
+            self.uids.data = self.uids.data[:-1]  # slice last comma to avoid empty string after string split
+            users = self.uids.data
+        else:
+            users = self.uids.data
+        users = users.split(",")
+        if '' in users or ' ' in users:
+            self.uids.errors.append("User selection must be in comma-separated string. Ex: '1,2,15,30'")
+            return False
+        for id in users:
+            if not isinstance(int(id), int):
+                self.uids.errors.append("User selection must be in the form of integers (ID #'s) separated by commas. Ex: '1,2,15,30'")
+                return False
         return True
 
 

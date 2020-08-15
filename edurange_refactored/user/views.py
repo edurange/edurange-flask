@@ -76,7 +76,7 @@ def account():
         # In this case, groupCount is the name of the group this user is a static member of
         groupCount = db_ses.query(StudentGroups.name)\
             .filter(StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == user.get_id()).first()[0]
-        label = "Static Member Of"
+        label = "Temp. Member Of"
     else:
         groupCount = db_ses.query(StudentGroups.id)\
             .filter(StudentGroups.id == GroupUsers.group_id, GroupUsers.user_id == user.get_id()).count()
@@ -329,24 +329,52 @@ def instructor():
     curId = session.get("_user_id")
     db_ses = db.session
 
+    students = db_ses.query(User.id, User.username, User.email, User.is_static).filter(User.is_instructor == False)
     groups = db_ses.query(
         StudentGroups.id, StudentGroups.name, StudentGroups.code
     ).filter(StudentGroups.owner_id == curId)
+    users_per_group = {}
+
+    for g in groups:
+        users_per_group[g.name] = db_ses.query(User.id, User.username, User.email, User.is_static).filter(
+            StudentGroups.name == g.name,
+            StudentGroups.id == GroupUsers.group_id,
+            GroupUsers.user_id == User.id,
+        )
 
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
     infoTable = UserInfoTable(userInfo)
     if request.method == "GET":
         groupMaker = GroupForm()
+        userAdder = addUsersForm()
         return render_template(
             "dashboard/instructor.html",
             groupMaker=groupMaker,
+            userAdder=userAdder,
+            students=students,
             groups=groups,
+            usersPGroup=users_per_group,
             infoTable=infoTable,
         )
 
     elif request.method == "POST":
-        process_request(request.form)
-        return redirect(url_for("dashboard.admin"))
+        ajax = process_request(request.form)
+        if ajax:
+            temp = ajax[0]
+            if temp == 'utils/create_group_response.html':
+                if len(ajax) == 1:
+                    return render_template(temp)
+                elif len(ajax) < 4:
+                    return render_template(temp, group=ajax[1], users=ajax[2])
+                else:
+                    return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])
+            elif temp == 'utils/manage_student_response.html':
+                if len(ajax) == 1:
+                    return render_template(temp)
+                else:
+                    return render_template(temp, group=ajax[1], users=ajax[2])
+        else:
+            return redirect(url_for("dashboard.admin"))
 
 
 @blueprint.route("/admin", methods=["GET", "POST"])
@@ -356,7 +384,7 @@ def admin():
     check_admin()
     db_ses = db.session
     # Queries for the tables of students and groups
-    students = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == False, User.is_static == False)
+    students = db_ses.query(User.id, User.username, User.email, User.is_static).filter(User.is_instructor == False)
     instructors = db_ses.query(User.id, User.username, User.email).filter(User.is_instructor == True)
     groups = StudentGroups.query.all()
     groupNames = []
@@ -366,7 +394,7 @@ def admin():
         groupNames.append(g.name)
 
     for name in groupNames:
-        users_per_group[name] = db_ses.query(User.id, User.username, User.email).filter(
+        users_per_group[name] = db_ses.query(User.id, User.username, User.email, User.is_static).filter(
             StudentGroups.name == name,
             StudentGroups.id == GroupUsers.group_id,
             GroupUsers.user_id == User.id,
@@ -402,6 +430,9 @@ def admin():
                 else:
                     return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])
             elif temp == 'utils/manage_student_response.html':
-                return render_template(temp, group=ajax[1], users=ajax[2])
+                if len(ajax) == 1:
+                    return render_template(temp)
+                else:
+                    return render_template(temp, group=ajax[1], users=ajax[2])
         else:
             return redirect(url_for("dashboard.admin"))
