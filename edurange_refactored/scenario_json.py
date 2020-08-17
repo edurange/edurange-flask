@@ -48,6 +48,8 @@ def build_uploads(s_files, g_files, u_files, s_type):
 def build_execute_files(s_files, g_files, u_files):
     execs = "mkdir /home/ubuntu\",\n"
     execs += "\"apk add bash\",\n"
+    execs += "\"apk add gcc\",\n"
+    execs += "\"apk add libc-dev\",\n"
 
     for i, f in enumerate(g_files):
         execs += str("\"chmod +x /" + f + '"' + """, 
@@ -62,7 +64,7 @@ def build_execute_files(s_files, g_files, u_files):
         execs += str("""
       "chmod +x /""" + f + '"' + """,
       "mv /""" + f + " /home/ubuntu/" + f + '"' + """,
-      "ash /home/ubuntu/""" + f)
+      "bash /home/ubuntu/""" + f)
         if i != len(s_files) - 1:
             execs += "\","
     return execs
