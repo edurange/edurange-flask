@@ -24,12 +24,12 @@ def process_request(form):  # Input must be request.form
         dataKeys.append(k)
 
     form_switch = {
-        "modScenarioForm": ["csrf_token", "sid", "mod_scenario"],
-        "startScenario": ["csrf_token", "start_scenario", "stop_scenario"],
-        "GroupForm": ["csrf_token", "name", "create", "size"],
-        "manageInstructorForm": ["csrf_token", "uName", "promote"],
-        "addUsersForm": ["csrf_token", "add", "groups", "uids"],
-        "scenarioResponseForm": ["csrf_token", "response", "scenario", "question"]
+        "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
+        "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
+        "GroupForm":                ["csrf_token", "name", "create", "size"],
+        "manageInstructorForm":     ["csrf_token", "uName", "promote"],
+        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
+        "scenarioResponseForm":     ["csrf_token", "response", "scenario", "question"]
     }
 
     switchVals = []
@@ -47,11 +47,11 @@ def process_request(form):  # Input must be request.form
     # print(f)
 
     process_switch = {
-        "modScenarioForm": process_scenarioModder,
-        "startScenario": process_scenarioStarter,
-        "GroupForm": process_groupMaker,
-        "promoteInstructorForm": process_manInst,
-        "addUsersForm": process_addUser,
+        "modScenarioForm":          process_scenarioModder,
+        "startScenario":            process_scenarioStarter,
+        "GroupForm":                process_groupMaker,
+        "promoteInstructorForm":    process_manInst,
+        "addUsersForm":             process_addUser,
     }
     return process_switch[f]()
 
@@ -196,7 +196,7 @@ def process_scenarioResponse():
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(resp)
+        gotIt = responseCheck(qnum, sid, resp)
         # get attempt number from somewhere
         att = getAttempt(uid, sid, qnum)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)

@@ -456,7 +456,7 @@ def responseProcessing(data):
 
 def getAttempt(uid, sid, qnum):
     db_ses = db.session
-    query = db_ses.query(Responses.attempt).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid) \
+    query = db_ses.query(Responses.attempt).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
         .filter(Responses.question == qnum).first()
     if query is None:
         att = 1

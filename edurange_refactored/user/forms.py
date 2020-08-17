@@ -62,7 +62,9 @@ class GroupForm(FlaskForm):  # type1
         "Group Size", validators=[InputRequired()]
     )
 
-    name = StringField("Group Name", validators=[DataRequired()])
+    name = StringField(
+        "Group Name", validators=[DataRequired()]
+    )
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
@@ -78,8 +80,6 @@ class GroupForm(FlaskForm):  # type1
         if not 0 <= self.size.data < 41:
             self.size.errors.append("Account generation may not surpass a count of 40 (and must be positive)")
         return True
-
-
 
 
 class addUsersForm(FlaskForm):
