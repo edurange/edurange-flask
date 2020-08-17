@@ -174,6 +174,7 @@ def start(self, sid):
         scenario = Scenarios.query.filter_by(id=sid).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
+        name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             raise Exception(f"Scenario must be stopped before starting")
@@ -203,6 +204,7 @@ def stop(self, sid):
         scenario = Scenarios.query.filter_by(id=sid).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
+        name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 1:
             logger.info("Invalid Status")
             flash("Scenario is not ready to start", "warning")
@@ -233,6 +235,7 @@ def destroy(self, sid):
         if scenario is not None:
             logger.info("Found Scenario: {}".format(scenario))
             name = str(scenario.name)
+            name = "".join(e for e in name if e.isalnum())
             s_id = str(scenario.id)
             s_group = ScenarioGroups.query.filter_by(scenario_id=s_id).first()
             if int(scenario.status) != 0:
