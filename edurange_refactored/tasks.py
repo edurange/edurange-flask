@@ -114,7 +114,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     for i in range(len(group)):
         username = "".join(e for e in group[i]["username"] if e.isalnum())
         password = "".join(
-            random.choice(string.ascii_letters + string.digits) for _ in range(8)
+            random.choice(string.ascii_letters + string.digits) for _ in range(16)
         )
 
         usernames.append(username)
