@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-2 mb-2">
+    <h1>Account Management</h1>
+</div>
+
+<div class="container">
+
+    <div class="card mb-2 mt-2">
+        <div class="card-header">
+            <div class="row">
+                <h5 class="ml-3 mb-0">
+                    <h2> <i class="fa fa-user"></i> Account Information </h2>
+                </h5>
+                <h2 class="mb-0 ml-auto pr-1">
+                    {% if user.is_admin %}
+                    Admin
+                    {% elif user.is_instructor %}
+                    Instructor
+                    {% else %}
+                    Student
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3 mx-2">
+                <div class="col-sm-6">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3"> Name </dt>
+                        <dd class="col-sm-9"> {{ user.username }}</dd>
+                    </dl>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3"> Email </dt>
+                        <dd class="col-sm-9"> {{ user.email }}</dd>
+                    </dl>
+                </div>
+                <div class="col-sm-6">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4"> {{ label }} </dt>
+                        {% if label == "Temp. Member Of" %}
+                        <dd class="col-sm-8"> {{ groupCount }} </dd>
+                        {% else %}
+                        <dd class="col-sm-8"> {{ groupCount }} groups</dd>
+                        {% endif %}
+                    </dl>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4"> Created At </dt>
+                        <dd class="col-sm-8"> {{ user.created_at }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 mt-2">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Change Email</div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                    <form id="changeEmail" method="POST" action="" role="form"> {# Front end for form to change email of currently logged in user #}
+                        {{ emailForm.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="address" name="address" placeholder="New Email" required type="text" value="">
+                        </div>
+                        <button type="submit" name="update" value="email" class="btn btn-dark">Change Email Address</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

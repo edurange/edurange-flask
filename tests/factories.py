@@ -25,6 +25,7 @@ class UserFactory(BaseFactory):
     password = PostGenerationMethodCall("set_password", "example")
     active = True
     is_admin = False
+    is_static = False
 
     class Meta:
         """Factory configuration."""

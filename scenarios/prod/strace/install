@@ -4,10 +4,9 @@ cd /home/ubuntu/files
 strace which start 2>&1 | tail -n +2 > strace-identify || :
 gcc -o mystery mystery.c
 rm mystery.c
-gcc -o cat trojaned_cat.c
-chmod 4771 cat
-mv cat /usr/local/bin
-rm trojaned_cat.c
+
+chmod 4771 /usr/bin/cat
+mkdir /usr/local/src
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
 while read line; do

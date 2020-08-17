@@ -1,13 +1,16 @@
 """Helper utilities and decorators."""
-from flask import flash, abort, request, session, redirect, url_for, current_app, Markup
+import json
+import os
+
+import yaml
+from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
 from flask_table import Col, Table
 from jwt.jwk import OctetJWK, jwk_from_dict
+from markupsafe import Markup
 
 from edurange_refactored.extensions import db
-import os
-import json
-import yaml
+from .scenario_utils import item_generator
 
 from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
 
@@ -57,7 +60,7 @@ def check_instructor():
 
 
 def check_role_view(
-    mode,
+        mode,
 ):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id
     user = User.query.filter_by(id=number).first()
@@ -203,10 +206,10 @@ def checkEnr(d):
     n = current_user.id
     enr = (
         db_ses.query(GroupUsers.group_id)
-        .filter(ScenarioGroups.scenario_id == d)
-        .filter(GroupUsers.group_id == ScenarioGroups.group_id)
-        .filter(GroupUsers.user_id == n)
-        .first()
+            .filter(ScenarioGroups.scenario_id == d)
+            .filter(GroupUsers.group_id == ScenarioGroups.group_id)
+            .filter(GroupUsers.user_id == n)
+            .first()
     )
     if enr is not None:
         return True
@@ -236,7 +239,7 @@ def statReader(s):
 def getDesc(t):
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item, doc in document.items():
@@ -249,7 +252,7 @@ def getGuide(t):
     #g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + t + ".yml", "r"
+            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item, doc in document.items():
@@ -273,7 +276,7 @@ def getQuestions(t):
     questions = []
     t = t.lower().replace(" ", "_")
     with open(
-        "./scenarios/prod/" + t + "/" + "questions.yml", "r"
+            "./scenarios/prod/" + t + "/" + "questions.yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item in document:
@@ -294,9 +297,9 @@ def tempMaker(d, i):
     # owner name
     oName = (
         db_ses.query(User.username)
-        .filter(Scenarios.id == d)
-        .filter(Scenarios.owner_id == User.id)
-        .first()
+            .filter(Scenarios.id == d)
+            .filter(Scenarios.owner_id == User.id)
+            .first()
     )
     oName = oName[0]
     # description

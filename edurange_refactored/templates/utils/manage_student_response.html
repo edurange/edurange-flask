@@ -13,14 +13,20 @@
 </div><!-- end row -->
 {% endif %} {% endwith %}
 
+{% if users is defined %}
 <table class="table" id="{{ group.name.replace(' ', '') }}-table">
     <tbody>
         {% for student in users %}
         <tr>
             <td> {{ student.id }}</td>
             <td> {{ student.username }}</td>
+            {% if student.is_static %}
+            <td> <b>TEMPORARY </b> </td>
+            {% else %}
             <td> {{ student.email }}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endif %}

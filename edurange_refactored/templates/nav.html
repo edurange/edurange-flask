@@ -39,6 +39,10 @@
                     Logged in as {{ current_user.username }}
                 </a>
                 <div class="dropdown-menu position-absolute">
+                    <a class="dropdown-item" href="{{ url_for('dashboard.account') }}">
+                        <i class="fa fa-address-card-o" aria-hidden="true"></i> Manage Account
+                    </a>
+                    <div class="dropdown-divider"></div>
                     {% if nav['views'] is not none %}
                         {% for view in nav['views'] %}
                         {{ view }}

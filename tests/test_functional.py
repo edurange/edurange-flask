@@ -130,6 +130,7 @@ class TestGroupManagement:
         old_count = len(StudentGroups.query.all())
         form = res.forms["createGroup"]
         form["name"] = "Test Group"
+        form["size"] = 0
         res = form.submit().follow()
         assert res.status_code == 200
         assert len(StudentGroups.query.all()) == old_count + 1

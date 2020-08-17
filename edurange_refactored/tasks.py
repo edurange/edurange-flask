@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 import string
+from datetime import datetime
 from os import environ
 
 from celery import Celery
@@ -114,7 +115,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     for i in range(len(group)):
         username = "".join(e for e in group[i]["username"] if e.isalnum())
         password = "".join(
-            random.choice(string.ascii_letters + string.digits) for _ in range(8)
+            random.choice(string.ascii_letters + string.digits) for _ in range(16)
         )
 
         usernames.append(username)
@@ -173,6 +174,7 @@ def start(self, sid):
         scenario = Scenarios.query.filter_by(id=sid).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
+        name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             raise Exception(f"Scenario must be stopped before starting")
@@ -202,6 +204,7 @@ def stop(self, sid):
         scenario = Scenarios.query.filter_by(id=sid).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
+        name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 1:
             logger.info("Invalid Status")
             flash("Scenario is not ready to start", "warning")
@@ -232,6 +235,7 @@ def destroy(self, sid):
         if scenario is not None:
             logger.info("Found Scenario: {}".format(scenario))
             name = str(scenario.name)
+            name = "".join(e for e in name if e.isalnum())
             s_id = str(scenario.id)
             s_group = ScenarioGroups.query.filter_by(scenario_id=s_id).first()
             if int(scenario.status) != 0:
@@ -249,3 +253,38 @@ def destroy(self, sid):
                 flash("Something went wrong", "warning")
         else:
             raise Exception(f"Could not find scenario")
+
+#global scenarios_dict
+scenarios_dict = {}
+@celery.task(bind=True)
+#def scenarioTimeoutWarningEmail(self):
+def scenarioTimeoutWarningEmail(self, arg):
+    from edurange_refactored.user.models import Scenarios
+    from edurange_refactored.user.models import User
+    scenarios = Scenarios.query.all()
+    users = User.query.all()
+    global scenarios_dict
+    for scenario in scenarios:
+        for user in users:
+            if scenario.id in scenarios_dict.keys() == False:
+                scenarios_dict = {scenario.id : scenario.status}
+            elif scenario.id in scenarios_dict.keys() and scenarios_dict[scenario.id] == 1 and scenario.status == 1:
+                if user.id == scenario.owner_id:
+                    email = user.email
+                    email_data = {"subject": "WARNING: Scenario Running Too Long", "email": email}
+                    app = current_app
+                    mail = Mail(app)
+                    msg = Message(email_data['subject'],
+                                sender=environ.get('MAIL_DEFAULT_SENDER'),
+                                recipients=[email_data['email']])
+                    msg.body = render_template('utils/scenario_timeout_warning_email.txt', email=email_data['email'], _external=True)
+                    msg.html = render_template('utils/scenario_timeout_warning_email.html', email=email_data['email'], _external=True)
+                    mail.send(msg)
+            scenarios_dict[scenario.id] = scenario.status
+    #    print(arg)
+    #email_data = {'subject': 'WARNING: Scenario Running Too Long', 'to': 'selenawalshsmith@gmail.com', 'body':'WARNING: Scenario Running Too Long'}
+    #send_async_email(email_data)
+@celery.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    #21600 is 6 hrs in seconds
+    sender.add_periodic_task(21600.0, scenarioTimeoutWarningEmail.s('******Hello World from Selena*********'))
