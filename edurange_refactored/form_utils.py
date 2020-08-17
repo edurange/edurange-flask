@@ -150,15 +150,10 @@ def process_addUser():  # Form to add or remove selected students from a selecte
         group = db_ses.query(StudentGroups).filter(StudentGroups.id == gid).first()
         uids = uA.uids.data  # string form
         adding = False
-
-<<<<<<<
         if uids[-1] == ",":
             uids = uids[
                    :-1
                    ]  # slice last comma to avoid empty string after string split
-=======
-
->>>>>>>
         uids = uids.split(",")
 
         if request.form.get("add") == "true":
