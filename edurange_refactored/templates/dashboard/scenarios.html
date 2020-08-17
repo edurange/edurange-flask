@@ -44,6 +44,10 @@
                                 <img src="/static/build/img/stopped.png">
                             {% elif scenario.status==1 %}
                                 <img src="/static/build/img/started.png">
+                            {% elif scenario.status==3 %}
+                                <img src="/static/build/img/booting.png">
+                            {% elif scenario.status==4 %}
+                                <img src="/static/build/img/stopping.png">
                             {% else %}
                                 {{ super() }}
                             {% endif %} </td>
