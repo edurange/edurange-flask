@@ -1,5 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
+apk add gcc
+apk add libc-dev
+
 cd /home/ubuntu/files
 strace which start 2>&1 | tail -n +2 > strace-identify || :
 gcc -o mystery mystery.c

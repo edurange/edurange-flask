@@ -12,114 +12,117 @@
 
 mkdir /home/ubuntu/bin
 
+apk add g++
+apk add make
+
 cd /home/ubuntu/bin
 
 echo "Making group apache"
-groupadd apache
+addgroup apache
 
 echo "Adding www-data to apache"
 usermod -aG apache www-data
 
 echo "Making group inunezweb"
-# groupadd -g 598 inunezweb
-groupadd inunezweb
+# addgroup -g 598 inunezweb
+addgroup inunezweb
 
 echo "Adding www-data to inunezweb"
 usermod -aG inunezweb www-data
 
 echo "Making group friends"
-# groupadd -g 599 friends
-groupadd friends
+# addgroup -g 599 friends
+addgroup friends
 
 echo "Making group student"
-# groupadd -g 600 student
-groupadd student
+# addgroup -g 600 student
+addgroup student
 
 echo "Making user awan"
-# useradd -c "Alice Wan" -m -u 601 -G student,friends -s /bin/bash awan
-useradd -c "Alice Wan" -m -G student,friends -s /bin/bash awan
+# adduser  "Alice Wan"  -u 601 -G student,friends -s /bin/bash awan
+adduser -g "Alice Wan"  -G student -G friends -s /bin/bash awan -D
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
 echo awan:klaatu! | /usr/sbin/chpasswd 
 
 echo "Making user bduomo"
-# useradd -c "Bob Duomo" -m -u 602 -G student,friends -s /bin/bash bduomo
-useradd -c "Bob Duomo" -m -G student,friends -s /bin/bash bduomo
+# adduser  "Bob Duomo"  -u 602 -G student,friends -s /bin/bash bduomo
+adduser -g "Bob Duomo"  -G student -G friends -s /bin/bash bduomo -D
 # [lyn, 9/27/2012] Can*not* just use "2B|!2B:t1t?" 
 echo bduomo:"2B|"\!2B:t1t? | /usr/sbin/chpasswd 
 
 echo "Making user cdry"
-# useradd -c "Cathy Dry" -m -u 603 -G student -s /bin/bash cdry
-useradd -c "Cathy Dry" -m -G student -s /bin/bash cdry
+# adduser  "Cathy Dry"  -u 603 -G student -s /bin/bash cdry
+adduser -g "Cathy Dry"  -G student -s /bin/bash cdry -D
 echo "cdry:Qie,tDedf" | /usr/sbin/chpasswd 
 
 echo "Making user dshi"
-# useradd -c "Debbie Shi" -m -u 604 -G student -s /bin/bash dshi
-useradd -c "Debbie Shi" -m -G student -s /bin/bash dshi
+# adduser  "Debbie Shi"  -u 604 -G student -s /bin/bash dshi
+adduser -g "Debbie Shi"  -G student -s /bin/bash dshi -D
 echo "dshi:V:AvcTqpa" | /usr/sbin/chpasswd 
 
 echo "Making user equintus"
-# useradd -c "Ellen Quintus" -m -u 605 -G student -s /bin/bash equintus
-useradd -c "Ellen Quintus" -m -G student -s /bin/bash equintus
+# adduser  "Ellen Quintus"  -u 605 -G student -s /bin/bash equintus
+adduser -g "Ellen Quintus"  -G student -s /bin/bash equintus -D
 echo "equintus:virum&cano" | /usr/sbin/chpasswd 
 
 echo "Making user fsexon"
-# useradd -c "Fred Sexon" -m -u 606 -G student,friends -s /bin/bash fsexon
-useradd -c "Fred Sexon" -m -G student,friends -s /bin/bash fsexon
+# adduser  "Fred Sexon"  -u 606 -G student,friends -s /bin/bash fsexon
+adduser -g "Fred Sexon"  -G student -G friends -s /bin/bash fsexon -D
 echo "fsexon:scoobydoo" | /usr/sbin/chpasswd 
 
 echo "Making user ghepta"
-# useradd -c "George Hepta" -m -u 607 -G student -s /bin/bash ghepta
-useradd -c "George Hepta" -m -G student -s /bin/bash ghepta
+# adduser  "George Hepta"  -u 607 -G student -s /bin/bash ghepta
+adduser -g "George Hepta"  -G student -s /bin/bash ghepta -D
 echo "ghepta:Ilt,al,fme:" | /usr/sbin/chpasswd 
 
 echo "Making user hochoa"
-# useradd -c "Helen Ochoa" -m -u 608 -G student,friends -s /bin/bash hochoa
-useradd -c "Helen Ochoa" -m -G student,friends -s /bin/bash hochoa
+# adduser  "Helen Ochoa"  -u 608 -G student,friends -s /bin/bash hochoa
+adduser -g "Helen Ochoa"  -G student -G friends -s /bin/bash hochoa -D
 echo "hochoa:Am,ap,ac:P" | /usr/sbin/chpasswd 
 
 echo "Making user inunez"
-# useradd -c "Inna Nunez" -m -u 609 -G student,inunezweb -s /bin/bash inunez
-useradd -c "Inna Nunez" -m -G student,inunezweb -s /bin/bash inunez
+# adduser  "Inna Nunez"  -u 609 -G student,inunezweb -s /bin/bash inunez
+adduser -g "Inna Nunez"  -G student -G inunezweb -s /bin/bash inunez -D
 echo "inunez:C?Tiiac-iist" | /usr/sbin/chpasswd 
 
 echo "Making user jdekka"
-# useradd -c "Jack Dekka" -m -u 610 -G student -s /bin/bash jdekka
-useradd -c "Jack Dekka" -m -G student -s /bin/bash jdekka
+# adduser  "Jack Dekka"  -u 610 -G student -s /bin/bash jdekka
+adduser -g "Jack Dekka"  -G student -s /bin/bash jdekka -D
 echo "jdekka:Aw&0pmJadb" | /usr/sbin/chpasswd 
 
 echo "Making user kelva"
-# useradd -c "Karen Elva" -m -u 611 -G student -s /bin/bash kelva
-useradd -c "Karen Elva" -m -G student -s /bin/bash kelva
+# adduser  "Karen Elva"  -u 611 -G student -s /bin/bash kelva
+adduser -g "Karen Elva"  -G student -s /bin/bash kelva -D
 echo "kelva:HLE:LSS&S" | /usr/sbin/chpasswd 
 
 echo "Making user ldouzette"
-# useradd -c "Loretta Douzette" -m -u 612 -G student -s /bin/bash ldouzette
-useradd -c "Loretta Douzette" -m -G student -s /bin/bash ldouzette
+# adduser  "Loretta Douzette"  -u 612 -G student -s /bin/bash ldouzette
+adduser -g "Loretta Douzette"  -G student -s /bin/bash ldouzette -D
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
 echo ldouzette:G,OK:Ky! | /usr/sbin/chpasswd 
 
 echo "Making user pkaideka"
-# useradd -c "Patricia (Trish) kaideka" -m -u 613 -G student -s /bin/bash pkaideka
-useradd -c "Patricia (Trish) kaideka" -m -G student -s /bin/bash pkaideka
+# adduser  "Patricia (Trish) kaideka"  -u 613 -G student -s /bin/bash pkaideka
+adduser -g "Patricia (Trish) kaideka"  -G student -s /bin/bash pkaideka -D
 echo "pkaideka:Wybittydu,tys" | /usr/sbin/chpasswd 
 
 echo "Making user pradessime"
-# useradd -c "Pyotr Theodore (Ted) Radessime" -m -u 614 -G student -s /bin/bash pradessime
-useradd -c "Pyotr Theodore (Ted) Radessime" -m -G student -s /bin/bash pradessime
+# adduser  "Pyotr Theodore (Ted) Radessime"  -u 614 -G student -s /bin/bash pradessime
+adduser -g "Pyotr Theodore (Ted) Radessime"  -G student -s /bin/bash pradessime -D
 echo "pradessime:The0d0re" | /usr/sbin/chpasswd 
 
 echo "Making user qsanera"
-# useradd -c "Quinn Sanera" -m -u 615 -G student -s /bin/bash qsanera
-useradd -c "Quinn Sanera" -m -G student -s /bin/bash qsanera
+# adduser  "Quinn Sanera"  -u 615 -G student -s /bin/bash qsanera
+adduser -g "Quinn Sanera"  -G student -s /bin/bash qsanera -D
 echo "qsanera:Wwe,aatbds;" | /usr/sbin/chpasswd 
 
 echo "Making user tdaforth"
-# useradd -c "Tudor Daforth" -m -u 616 -G student -s /bin/bash tdaforth
-useradd -c "Tudor Daforth" -m -G student -s /bin/bash tdaforth
+# adduser  "Tudor Daforth"  -u 616 -G student -s /bin/bash tdaforth
+adduser -g "Tudor Daforth"  -G student -s /bin/bash tdaforth -D
 echo "tdaforth:TiahiNO;ictRS" | /usr/sbin/chpasswd 
 
 echo "Making user guest"
-useradd -c "Guest" -m -G student -s /bin/bash guest
+adduser -g "Guest"  -G student -s /bin/bash guest -D
 echo "guest:guest" | /usr/sbin/chpasswd 
 
 echo "Untarring user files into ../users"
@@ -144,10 +147,10 @@ echo "Installing inunez's web password"
 if [ -e /var/www/htpasswd ] 
 then
   echo "/var/www/htpasswd already exists; adding inunez";
-  /usr/bin/htpasswd -m -b /var/www/htpasswd inunez "It's all mine!";
+  /usr/bin/htpasswd  -b /var/www/htpasswd inunez "It's all mine!";
 else
   echo "Creating /var/www/htpasswd and adding inunez";
-  /usr/bin/htpasswd -c -m -b /var/www/htpasswd inunez "It's all mine!";
+  /usr/bin/htpasswd   -b /var/www/htpasswd inunez "It's all mine!";
 fi
  
 
@@ -171,5 +174,5 @@ chmod 750 /bin/chown
 chmod 750 /bin/chgrp
 chmod 750 /bin/chmod
 chmod 750 /usr/sbin/usermod
-groupadd edurange
+addgroup edurange
 chown root.edurange /bin/chmod /usr/bin/passwd
