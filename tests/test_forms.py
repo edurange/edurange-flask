@@ -2,7 +2,7 @@
 """Test forms."""
 
 from edurange_refactored.public.forms import LoginForm
-from edurange_refactored.user.forms import RegisterForm, GroupForm, addUsersForm
+from edurange_refactored.user.forms import GroupForm, RegisterForm, addUsersForm
 
 
 class TestRegisterForm:
@@ -35,7 +35,7 @@ class TestRegisterForm:
             username="newusername",
             email="new@test.test",
             password="example",
-            confirm="example"
+            confirm="example",
         )
         assert form.validate() is True
 
@@ -76,23 +76,18 @@ class TestLoginForm:
         assert form.validate() is False
         assert "User not activated" in form.username.errors
 
-class TestAdminForms:
-    def test_make_group(self, group):
-        form = GroupForm(name='Test 1')
-        assert form.validate() is True
 
-    def test_add_users(self, group):
-        form = addUsersForm(
-            manage='add',
-            uids='5,3,7,8,10,',
-            groups=group
-        )
+class TestAdminForms:
+    def test_validate_create_group(self, admin):
+        form1 = GroupForm(name="Test 1", size=0)
+        assert form1.validate() is True
+        form2 = GroupForm(name="Test 2", size=5)
+        assert form2.validate() is True
+
+    def test_validate_add_users(self, group):
+        form = addUsersForm(add="true", uids="5,3,7,8,10,", groups=group.name)
         assert form.validate() is True
 
     def test_remove_users(self, group):
-        form = addUsersForm(
-            manage='remove',
-            uids='5,3,7,8,10,',
-            groups=group
-        )
+        form = addUsersForm(add="false", uids="5,3,7,8,10,", groups=group.name)
         assert form.validate() is True

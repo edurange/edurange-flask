@@ -5,9 +5,9 @@ See: http://webtest.readthedocs.org/
 """
 from flask import url_for
 
-from edurange_refactored.user.models import User, StudentGroups
+from edurange_refactored.user.models import StudentGroups, User
 
-from .factories import UserFactory, GroupFactory
+from .factories import GroupFactory, UserFactory
 
 
 class TestLoggingIn:
@@ -122,6 +122,7 @@ class TestRegistering:
         # sees error
         assert "Username already registered" in res
 
+
 class TestGroupManagement:
     def test_can_create_group(self, admin, testapp):
         """Can create a group"""
@@ -129,6 +130,7 @@ class TestGroupManagement:
         old_count = len(StudentGroups.query.all())
         form = res.forms["createGroup"]
         form["name"] = "Test Group"
+        form["size"] = 0
         res = form.submit().follow()
         assert res.status_code == 200
         assert len(StudentGroups.query.all()) == old_count + 1

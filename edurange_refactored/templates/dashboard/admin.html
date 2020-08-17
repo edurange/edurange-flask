@@ -1,5 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
+
+{% macro studentRow(student) -%}
+    {% if student.is_static %}
+    <tr id="uid{{ student.id }}" class="static" style="display:none;">
+        <td> {{ student.id }}</td>
+        <td> {{ student.username }}</td>
+        <td> <b>TEMPORARY </b> </td>
+        <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"/></td>
+    </tr>
+    {% else %}
+    <tr id="uid{{ student.id }}">
+        <td> {{ student.id }}</td>
+        <td> {{ student.username }}</td>
+        <td> {{ student.email }}</td>
+        <td class="fit"><button class="btn btn-outline-dark selector mr-3" type="button" id="btn{{ student.id }}"/></td>
+    </tr>
+    {% endif %}
+{%- endmacro %}
+
     <div class="container mt-2 mb-2">
         <h1>User and Group Management</h1>
     </div>
@@ -7,38 +26,6 @@
 <div class="container" id="accordion"> {# Allows tables to collapse as an accordion #}
 
     <div class="row">
-        <div class="col-sm-6"> {# Front end for form to create a student group #}
-            <div class="card bg-light mb-3">
-                <div class="card-header">Create Student Group</div>
-                <div class="card-body">
-                    <h5 class="card-text"></h5>
-                    <form id="createGroup" method="POST" action="" role="form">
-                        {{  groupMaker.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
-                        </div>
-                        <input name="create" class="btn btn-dark" type="submit" value="Create">
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6"> {# WIP Front end for form to delete students from the database #}
-            <div class="card bg-light mb-3">
-                <div class="card-header">Manage Students [WIP]</div>
-                <div class="card-body">
-                    <h5 class="card-text"></h5>
-                    <form id="deleteStudent" method="POST" action="" role="form">
-                        {{ userDropper.csrf_token }}
-                        <div class="form-group">
-                            <input class="form-control" id="stuName" name="stuName" placeholder="Username" required type="text" value="">
-                        </div>
-                        <input name="delete_student" class="btn btn-dark" type="submit" value="Delete Student">
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="col-sm-6">
             <div class="card bg-light mb-3">
                 <div class="card-header">Manage Instructors</div>
@@ -59,75 +46,16 @@
 
     <!-- Code for tables begins -->
 
-    <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
-        <div class="card-header container-fluid p-4" id="headingUsers">
-          <div class="row">
-              <h2> <i class="fa fa-user"></i> Manage Students
-              <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                  <i class="fa fa-caret-down"></i>
-              </button></h2>
-            </div>
-        </div>
-        <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
-            <div class="card-body">
-                <!--user table stuff-->
-                <form id="addGroupUsers" method="POST" action="" role="form">
-                    {{ userAdder.csrf_token}}
-                    <div class="row mb-3 mr-3 ">
-                      <h4 class="ml-3">Groups:</h4>
-                    <select name="groups" title="Group" id="groupSel" class="ml-3">
-                        {% for group in groups %}
-                          <option value="{{group.name}}" SELECTED>{{group.name}}</option>
-                        {% endfor %}
-                    </select><p></p>
-                    </div>
-                    <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
-                    <div class="btn-group-vertical float-right">
-                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">Add Students to Group:</button>
-                        <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="false">Remove Students From Group:</button><p></p>
-                    </div>
-                    <p></p>
-                </form>
-                <div>
-                    <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th> ID # </th>
-                            <th> Username </th>
-                            <th> Email </th>
-                            <th class="fit"> Selection
-                                <button class="btn btn-secondary btn-sm" type="button" id="selectAll">All</button>
-                                <button class="btn btn-secondary btn-sm" type="button" id="clearAll">Clear</button>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                        <tr>
-                            <td> {{ student.id }}</td>
-                            <td> {{ student.username }}</td>
-                            <td> {{ student.email }}</td>
-                            <td class="fit"><button class="btn btn-outline-dark selector" type="button" id="btn{{ student.id }}"/></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    </table>
-                </div>
-                <!--user table stuff-->
-            </div>
-        </div>
-    </div> <!--user table collapse-->
-
     <div class="card mb-2 mt-2"> <!--instructors table collapse-->
         <div class="card-header" id="headingInstructors">
-          <div class="row">
-            <h5 class="mb-0">
-                <h2> <i class="fa fa-user"></i> All Instructors
-                <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                    <i class="fa fa-caret-down"></i>
-                </button> </h2>
-            </h5>
-          </div>
+            <div class="row">
+                <h5 class="mb-0">
+                    <h2> <i class="fa fa-user"></i> All Instructors
+                        <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
+                            <i class="fa fa-caret-down"></i>
+                        </button> </h2>
+                </h5>
+            </div>
         </div>
         <div id="collapseInstructors" class="collapse" aria-labelledby="headingInstructors" data-parent="#accordion">
             <div class="card-body">
@@ -159,26 +87,109 @@
         </div>
     </div> <!--instructors table collapse-->
 
-    <div class="card mb-2 mt-2"> <!-- groups table collapse -->
-        <div class="card-header" id="headingGroups">
-            <h5 class="mb-0">
-                <h2><i class="fa fa-user"></i> All Groups </h2>
-            </h5>
-        </div>
-        <div class="card-body">
-            <!-- groups table stuff -->
-            {% for group in groups if not group.hidden %}
-            <div>
-                <button class="btn btn-dark btn-sm ml-2 mb-2" type="button" data-toggle="collapse"
-                        data-target="#{{ group.name.replace(' ', '') }}-table" aria-expanded="false"
-                        aria-controls="{{ group.name.replace(' ', '') }}-table">
-                    {{ group.name }} <i class="fa fa-caret-down"></i>
-                </button>
+    <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
+        <div class="card-header container-fluid p-4" id="headingUsers">
+            <div class="row">
+                <h2> <i class="fa fa-user"></i> Manage Students
+                    <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                </h2>
+                <!--<div class="col-sm my-auto text-right" id="stuCount"> Count: {{ student_count }} </div>-->
             </div>
-            <div id="{{ group.name.replace(' ', '') }}-table" class="collapse" aria-labelledby="headingUsers"
-                 data-parent="#accordion">
-                <p></p>
-                <div>
+        </div>
+        <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
+            <div class="card-body">
+                <!--user table stuff-->
+                <form id="addGroupUsers" method="POST" action="" role="form">
+                    {{ userAdder.csrf_token}}
+                    <div class="row mr-3">
+                        <div class="col-sm-8" id="groupHead">
+                            <h4 class="ml-3" style="display:inline;">Groups:</h4>
+                            <select name="groups" title="Group" id="groupSel" class="ml-3">
+                                {% for group in groups %}
+                                <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="pr-5" id="groupPop"></span>
+                            <input type="checkbox" class="ml-5 option" value="" id="showStatic">
+                            <label for="showStatic" class="form-check-label" id="showStatic-label">
+                                &ensp;Show Temporary Members&nbsp;
+                            </label>
+                        </div>
+
+                        <div class="col-sm-4 btn-group-vertical float-right">
+                            <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">
+                                <i class="fa fa-plus"></i>Add <i class="selCount"></i> Students to Group</button>
+                            <button name="add" class="btn btn-dark user-button float-right mb-2" type="submit" value="false">
+                                <i class="fa fa-minus"></i>Remove <i class="selCount"></i> Students from Group</button>
+                        </div>
+                    </div>
+                    <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
+                    <p></p>
+                </form>
+                <div style="height: 600px !important; overflow-y: auto;">
+                    <table class="table" id="studentTable">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th style="position: sticky; top: 0;"> ID # </th>
+                            <th style="position: sticky; top: 0;"> Username </th>
+                            <th style="position: sticky; top: 0;"> Email </th>
+                            <th class="fit" style="position: sticky; top: 0;"> Selection
+                                <button class="btn btn-secondary btn-sm" type="button" id="selectAll">All</button>
+                                <button class="btn btn-secondary btn-sm" type="button" id="clearAll">Clear</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="studentBody">
+                        {% for student in students %}
+                            {{ studentRow(student) }}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!--user table stuff-->
+            </div>
+        </div>
+    </div> <!--user table collapse-->
+
+    <div class="card mb-2 mt-2" id="groupStart"> <!-- groups table collapse -->
+        <div class="card-header d-inline-flex" id="headingGroups">
+            <h2><i class="fa fa-user"></i> All Groups
+                <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse"
+                        data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </h2>
+        </div>
+        <div id="collapseGroups" class="collapse" aria-labelledby="headingGroups">
+            <div class="card-body row" id="groupTables">
+                <!-- groups table stuff -->
+                <div class="col-sm-4">
+                    <div>
+                        <table class="table" id="groupsTable">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> Name</th>
+                                <th> Reg. Code</th>
+                                <th> Size</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in groups if not group.hidden %}
+                            <tr class="selectable" data-toggle="collapse" data-target="#{{ group.name.replace(' ', '') }}-table">
+                                <td> {{ group.name }}</td>
+                                <td> {{ group.code }}</td>
+                                <td><i id="{{ group.name.replace(' ', '') }}_size"></i></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% for group in groups if not group.hidden %}
+                <div id="{{ group.name.replace(' ', '') }}-table" class="col-sm-8 collapse" aria-labelledby="headingUsers"
+                     data-parent="#groupTables" style="overflow-y:scroll;min-height:300px;">
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -192,80 +203,287 @@
                         <tr>
                             <td> {{ student.id }}</td>
                             <td> {{ student.username }}</td>
+                            {% if student.is_static %}
+                            <td> <b> TEMPORARY </b> </td>
+                            {% else %}
                             <td> {{ student.email }}</td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-            <!-- groups table stuff -->
         </div>
     </div>
-</div> <!--groups table collapse -->
+
+    <div class="row" id="groupRow">
+        <div class="col-sm-6 mt-2"> {# Front end for form to create a student group #}
+            <div class="card bg-light mb-3">
+                <div class="card-header">Create Student Group</div>
+                <div class="card-body">
+                    <h5 class="card-text"></h5>
+                    <form id="createGroup" method="POST" action="" role="form">
+                        {{  groupMaker.csrf_token }}
+                        <div class="form-group">
+                            <input class="form-control" id="name" name="name" placeholder="Group Name" required type="text" value="">
+                        </div>
+                        <div class="form-inline">
+                            <input id="groupCreate" name="create" class="btn btn-dark" type="submit" value="Create">&ensp;
+                            <input type="checkbox" class="form-check-input option" value="" id="genGroup">
+                            <label for="genGroup" class="form-check-label text-muted" id="genGroup-label">
+                                &ensp;Generate group of size (0 - 40):&nbsp;
+                            </label>
+                            <input class="form-control-sm" id="size" name="size" placeholder="0-40" value=""
+                                type="number" min="0" max="40" style="width: 70px;" disabled>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div> <!-- end of accordian container -->
-
 {% endblock %}
 
 {% block js %}
 <script>
 
-  /* Event listener to add selected user to uids list */
-  $("button.selector").on("click", function() {
-    var uid = this.id.slice(3);
-    $(this).toggleClass("btn-outline-dark btn-dark");
-    $("#selection").val(function(index, value) {
-      if (value.includes(uid)) {
-        return value.replace(uid + ',', '');
-      } else {
-        return value + uid + ',';
+  $(document).ready(function() {
+
+    /* Option to show students who are static members of one group */
+    $("#showStatic").on("change", function() {
+      let staticRows = $("#studentTable tbody tr[style]");
+      if ($(this).is(':checked')) {
+        staticRows.attr('style', '');
+      }
+      else {
+        staticRows.attr('style', 'display:none;');
       }
     });
-  });
 
-  /* Event listener to select all students when "select all" button is pressed */
-  $("#selectAll").on("click", function() {
-    $("button.selector.btn-outline-dark").trigger("click");
-  });
+    /* Record and display row count for each table (to avoid doubling amount of SQL queries) */
+    $("#groupTables i[id$='_size']").each(function(index, element) {
+      let name = element.id.slice(0, -5);
+      $(element).text($("div[id='" + name + "-table'] tbody tr").length);
+    });
 
-  /* Event listener to clear all selected students when "clear" button is pressed */
-  $("#clearAll").on("click", function() {
-    $("button.selector.btn-dark").trigger("click");
-  });
+    /* Event listener to toggle view of the users in a group upon clicking that group's row */
+    $("#groupsTable tbody").on("click", "tr.selectable", function() {
+      $("#groupsTable tbody tr.selectable.active").not($(this)).removeClass("active");
+      $(this).toggleClass("active");
+      $("#groupTables div[id$='-table']").css("max-height", $("#groupsTable").css("height"));
+    });
 
+    /* Event listener to add selected user to uids list */
+    $("#studentTable tbody").on("click", "button.selector", function() {
+      let uid = this.id.slice(3);
+      let chosen = $("#selection").val();
+      $(this).toggleClass("btn-outline-dark btn-dark");
+      chosen = chosen.split(",");
 
-  $(document).ready(function() {
-    /* AJAX request for add/removing users from a group */
-    $(".user-button").on("click", function(e) { //add or remove users buttons
-      var csrf_token; var add; var uids; var groups;
-      e.preventDefault(); //prevent form submit
-      csrf_token = $("#csrf_token").val();
-      add = $(this).val();
-      groups = $("#groupSel").val();
-      uids = $("#selection").val();
-      request = $.ajax({
-        type : 'POST',
-        url : "{{ url_for('dashboard.admin') }}",
-        data : {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids}
-      });
-      request.done(function(response) {
-        var $data = $(response).find("#" + groups.replace(/ /g, '') + "-table");
-        var table = $("#" + groups.replace(/ /g, '') + "-table");
-        table.replaceWith($data);
-        var flash = $("#flashed");
-        if (flash.length) { //if #flashed exists
-          flash.replaceWith($(response).find("#flashed"));
+      $("#selection").val(function(index, value) {
+        if (value === '') {
+          return uid;
+        }
+        else if (chosen.length === 1) {
+          if (value === uid) {  return ''; }
+          else {                return value + ',' + uid; }
         }
         else {
-          $("#beforeUsers").before($(response).find("#flashed"));
-        } //flash messages above manage users table
+          if (chosen[0] === uid) { // if uid is first in comma string
+            return value.replace(uid + ',', '');
+          }
+          else if ((chosen[-1] === uid) || (chosen.includes(uid))) { // if uid is last or between 2 others
+            return value.replace(',' + uid, '');
+          }
+          else {
+            return value + ',' + uid;
+          }
+        }
+      });
+      $("#selection").trigger("change");
+    });
+
+    $("#selection").on("change", function() {
+      $(this).val(function(index, value) {
+        return value.replace(/\s/g, "");
+      });
+      let string = $(this).val();
+      let label = $("#addGroupUsers i.selCount");
+      if (string.slice(-1) === ',') { string = string.slice(0, -1); }
+      let sel = string.split(",");
+      if (string === '') { label.text(''); }
+      else { label.text(sel.length); }
+
+      let btn = null;
+      let selButtons = $('#studentTable tbody tr[style!=\'display:none;\'] button.selector.btn-dark');
+      for (let i = 0; i < sel.length; ++i) {
+        btn = "btn" + sel[i];
+        btn = document.getElementById(btn);
+        selButtons = $(selButtons).not(btn);
+        if ($(btn).hasClass("btn-outline-dark")) {
+          $(btn).removeClass("btn-outline-dark");
+          $(btn).addClass("btn-dark");
+        }
+      }
+
+      $(selButtons).removeClass("btn-dark");
+      $(selButtons).addClass("btn-outline-dark");
+
+    });
+
+    /* Disable space characters (spacebar) in user selection field */
+    $("#selection").on("keydown", function(e) {
+      if (e.which === 32) {
+        e.preventDefault();
+      }
+    });
+
+
+    /* Event listener to select all students when "select all" button is pressed */
+    $("#selectAll").on("click", function() {
+      let buttons = $('#studentTable tbody tr[style!="display:none;"] button.selector.btn-outline-dark');
+      let field = $("#selection");
+      field.val(function(index1, value) {
+        if (value.slice(-1) === ',') { value = value.slice(-1); }
+        buttons.each(function(index2, element) {
+          if (value.length === 0) { value += $(element).attr('id').slice(3); }
+          else { value += ',' + $(element).attr('id').slice(3); }
+          $(element).toggleClass("btn-outline-dark btn-dark");
+        });
+        return value;
+      });
+      field.trigger("change");
+    });
+
+    /* Event listener to clear all selected students when "clear" button is pressed */
+    $("#clearAll").on("click", function() {
+      $("#selection").val('');
+      $("button.selector.btn-dark").toggleClass("btn-outline-dark btn-dark");
+      $("#selection").trigger("change");
+    });
+
+    /* Event listener to add 'in group' indicators to student table for students in currently selected group */
+    $("#groupSel").on("change", function() {
+      $('#studentTable td:last-child span.in-group').remove(); // remove any existing 'In Group' indicators
+      let tableID = this.value.replace(/\s+/g, ''); // remove spaces from group name
+      let ids = []; // array to hold ids found in the groups table
+      $("#" + tableID + "-table td:first-child").each(function() { // iterate over ids, pushing each to array
+        ids.push(("uid" + $(this).text()).replace(/\s+/g, '')); // remove spaces from id (uid 3 --> uid3)
+      });
+
+      for (let i = 0; i < ids.length; i++) { // iterate over ids
+        $('#studentTable tr[id="' + ids[i] + '"] td:last-child').append(
+            '<span class="in-group"><i class="fa fa-check" aria-hidden="true"></i>  In Group </span>'
+        ); // append 'in group' indicator to the 'select' column in row whose id matches the current id
+      }
+      $("#groupPop").text($("#" + tableID + "_size").text() + " in group");
+    });
+    $("#groupSel").trigger("change"); // trigger change on page load to generate 'in group' indicators
+
+
+    /* AJAX request for add/removing users from a group */
+    $("#addGroupUsers .user-button").on("click", function(e) { //add or remove users buttons
+      e.preventDefault(); //prevent form submit
+      /*--------- POST request data ---------*/
+      let csrf_token = $("#csrf_token").val();
+      let add = $(this).val();
+      let groups = $("#groupSel").val();
+      let uids = $("#selection").val();
+      /*-------------------------------------*/
+
+      let data = {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids};
+      request = $.ajax({ //submit request
+        type : 'POST',
+        url : "{{ url_for('dashboard.admin') }}",
+        data : data
+      });
+      request.done(function(response) {
+        mergeHTML("manageStudents", groups, response); //call function to merge/handle HTML elements from POST response
       });
       request.fail(function(response) {
         alert("Something went wrong!");
       });
     });
+
+    /* AJAX request for creating groups */
+    $("#groupCreate").on("click", function(e) {
+      e.preventDefault(); //prevent form submit
+      /*--------- POST request data ---------*/
+      let csrf_token = $("#csrf_token").val();
+      let name = $("#name").val();
+      let create = $(this).val();
+      let size = $("#size");
+      if (size.prop('disabled')) { size = 0; } else { size = size.val(); }
+      /*-------------------------------------*/
+
+      var data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
+      request = $.ajax({ //submit request
+        type : 'POST',
+        url : "{{ url_for('dashboard.admin') }}",
+        data : data
+      });
+      request.done(function(response) {
+        mergeHTML("groupCreate", name, response)
+      });
+      request.fail(function(response) {
+        alert("Something went wrong!");
+      });
+    });
+
+
+    /* Event listener to activate/deactivate group generation input when option is checked/unchecked */
+    $("#genGroup").on("change", function() {
+      $("#genGroup-label").toggleClass("text-muted");
+      document.getElementById("size").toggleAttribute("disabled");
+    });
+
+    function mergeHTML(req, arg, response) {
+      $("#flashed").remove(); //remove any flashed messages
+      if (req === "groupCreate") {
+        let $table = $(response).filter("div[id$='-table']"); //get new group table
+        let $row = $(response).find("#groupRow").html();
+        let $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
+        let $flash = $(response).filter("#flashed"); //get flashed messages
+        let $users = $(response).find("#studentRows").html();
+        $("#groupsTable tbody").append($row); //append new group row
+        $("#groupTables").append($table); //append new group table
+        $("#studentBody").append($users);
+        $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
+        if ($flash.length) {
+          $("#headingGroups").append($flash); //flash new messages
+        }
+        if ($pairs.length) {
+          let pairs = $("#pairs");
+          if (pairs.length) {
+            pairs.replaceWith($pairs);
+          }
+          else {
+            $("#groupRow").append($pairs);
+          }
+        }
+
+        let group = arg.replace(/\s+/g, '');
+        $("#groupsTable i[id='" + group + "_size']").text($("#" + group + "-table tbody tr").length);
+        $("#showStatic").trigger("change");
+      }
+      else if (req === "manageStudents") {
+        let group = arg.replace(/\s+/g, '');
+        let $table = $(response).filter("#" + group + "-table");
+        if ($table.length) {
+          let table = $("#" + group + "-table tbody");
+          table.replaceWith($table.html());
+        }
+
+        $("#" + group + "_size").text($("#" + group + "-table tbody tr").length);
+        $("#groupHead").append($(response).filter("#flashed"));
+        $("#groupSel").trigger("change");
+      }
+    }
+
   });
+
 </script>
 {% endblock %}

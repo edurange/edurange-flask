@@ -13,7 +13,7 @@ for USER in awan bduomo cdry dshi equintus fsexon ghepta hochoa inunez jdekka ke
   echo "Removing $USER files";
   rm -rf /home/$USER/*
   echo "Copying $USER files";
-  cp -R -p /home/ubuntu/treasure_hunt/users/$USER/* /home/$USER;
+  cp -R -p /home/ubuntu/users/$USER/* /home/$USER;
   chmod 755 /home/$USER;
   # [lyn, 9/27/2012] SELINUX not used on Ubuntu in Fall '12
   # restorecon -R -v /home/$USER; # SELinux magic for making public_html dirs accessible

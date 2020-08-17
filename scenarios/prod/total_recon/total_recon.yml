@@ -4,6 +4,7 @@ Description: Total Recon is a progressive, story-based game designed to teach nm
   network reconnaissance.
 Instructions: Instruct students to connect to the first machine, and further login
   instructions will appear onscreen once connected.
+Codelab: http://localhost:5000/404
 Groups:
 - Name: Students
   Instructions: Login to Home. Further instructions will be displayed upon logging in to home and each new checkpoint.

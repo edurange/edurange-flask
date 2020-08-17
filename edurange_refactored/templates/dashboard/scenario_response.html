@@ -1,0 +1,59 @@
+<!-- | -->
+
+{%  extends "layout.html" %}
+{%  block content %}
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h5> User ID : {{ u_id }}  |  Username : {{ uName }} </h5>
+            <h5> Scenario ID : {{ s_id }}  |  Scenario Name : {{ sName }} </h5>
+            <h5> Attempt Number : {{ aNum }} | Score : {{ scr }} </h5>
+        </div>
+
+        <div class="card-body">
+            <div class="container">
+                <div class="card-header" id="headingAnswers">
+                    <div class="row">
+                        <h5 class="mb-0">
+                            <h2> <i class="fa fa-user"></i> Student Answers
+                                <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseAnswers" aria-expanded="false" aria-controls="collapseAnswers">
+                                    <i class="fa fa-caret-down"></i>
+                                </button> </h2>
+                        </h5>
+                    </div>
+                </div>
+                <div id="collapseAnswers" class="collapse" aria-labelledby="headingAnswers">
+                    <div class="card-body">
+                        <div class="col" style="height:300px;overflow-y:scroll;">
+                            <div>
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th> Question Number </th>
+                                        <th> Question </th>
+                                        <th> Answer </th>
+                                        <th> Possible Points </th>
+                                        <th> Student Response </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for d in table %}
+                                        <tr>
+                                            <td> {{ d['number'] }} </td>
+                                            <td> {{ d['question'] }} </td>
+                                            <td> {{ d['answer'] }} </td>
+                                            <td> {{ d['points'] }} </td>
+                                            <td> {{ d['student_response'] }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

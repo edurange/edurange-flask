@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 """Public forms."""
+from datetime import datetime, timedelta, timezone
+
 from flask_wtf import FlaskForm
+from jwt import JWT
+from jwt.exceptions import JWTDecodeError
+from jwt.jwa import HS256
+from jwt.utils import get_int_from_datetime
 from wtforms import PasswordField, StringField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, Length
+
 from edurange_refactored.user.models import User
 from edurange_refactored.utils import TokenHelper
-from datetime import datetime, timedelta, timezone
-from jwt.utils import get_int_from_datetime
-from jwt import JWT
-from jwt.jwa import HS256
-from jwt.exceptions import JWTDecodeError
 
 jwtToken = JWT()
 helper = TokenHelper()
@@ -53,7 +55,9 @@ class RequestResetPasswordForm(FlaskForm):
 
     username = StringField(validators=None)
     password = PasswordField(validators=None)
-    email = StringField("Email Address", validators=[DataRequired(), Email(), Length(min=6, max=40)])
+    email = StringField(
+        "Email Address", validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
 
     def __init__(self, *args, **kwargs):
         """Create instance."""
@@ -67,12 +71,23 @@ class RequestResetPasswordForm(FlaskForm):
         return True
 
     def get_email_data(self):
-        token = jwtToken.encode(dict(iss='https://edurange.org/', email=self.user.email
-                                     , iat=get_int_from_datetime(datetime.now(timezone.utc))
-                                     , exp=get_int_from_datetime(datetime.now(timezone.utc)
-                                                                 + timedelta(hours=1)))
-                                , key=oct_data, alg='HS256')
-        email_data = {"subject": "Reset Password", "token": token, "email": self.user.email}
+        token = jwtToken.encode(
+            dict(
+                iss="https://edurange.org/",
+                email=self.user.email,
+                iat=get_int_from_datetime(datetime.now(timezone.utc)),
+                exp=get_int_from_datetime(
+                    datetime.now(timezone.utc) + timedelta(hours=1)
+                ),
+            ),
+            key=oct_data,
+            alg="HS256",
+        )
+        email_data = {
+            "subject": "Reset Password",
+            "token": token,
+            "email": self.user.email,
+        }
         return email_data
 
 
@@ -92,4 +107,3 @@ class RestorePasswordForm(FlaskForm):
         """Create instance."""
         super(RestorePasswordForm, self).__init__(*args, **kwargs)
         # self.user = None
-

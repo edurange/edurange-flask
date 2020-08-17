@@ -1,0 +1,27 @@
+{
+	"containers": {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [
+				"install"
+			],
+			"user_files": [
+				"files",
+				"motd"
+			],
+			"packages": [
+				"locales",
+				"sudo",
+				"man-db",
+				"manpages-posix",
+				"gcc",
+				"strace",
+				"colordiff"
+			]
+		}]
+	}
+}
+

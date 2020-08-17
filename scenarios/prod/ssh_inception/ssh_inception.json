@@ -1,0 +1,37 @@
+{
+	"containers": [ {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+				"iamfrustrated"
+			],
+			"system_files": [],
+			"user_files": [],
+			"packages": [
+				"locales",
+				"sudo",
+				"man-db",
+				"manpages-posix"
+			],
+			"ip_address": [
+				"10.0.1.2"
+			]
+		}]
+	},
+	{
+		"name" : "other",
+		"files": [{
+			"global_files": [],
+			"system_files": [],
+			"user_files":   [],
+			"packages":     [
+				"locales",
+				"sudo",
+				"man-db",
+				"manpages-posix"
+			]
+		}]
+	}
+  ]
+}
+

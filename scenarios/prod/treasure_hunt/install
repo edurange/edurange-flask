@@ -10,9 +10,9 @@
 # These user and group ids are consistent with user/group ids on 
 # VMWare lynux VM from lyn's Thinkpad, now on MacBook
 
-mkdir /home/ubuntu/treasure_hunt/bin
+mkdir /home/ubuntu/bin
 
-cd /home/ubuntu/treasure_hunt/bin
+cd /home/ubuntu/bin
 
 echo "Making group apache"
 groupadd apache

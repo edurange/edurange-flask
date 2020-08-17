@@ -85,11 +85,12 @@ footer .footer-nav {
   list-style: none;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"], input[type="checkbox"]:not(.option) {
   box-sizing: border-box;
   padding: 0;
   transform: scale(2);
 }
+
 
 table, th, td {
   border: 1px solid black;
@@ -100,6 +101,13 @@ th {
 .table td.fit, .table th.fit {
   white-space: nowrap;
   width: 5%;
+}
+.table tr.selectable:hover {
+  background-color: azure;
+  cursor: pointer;
+}
+.table tr.selectable.active {
+  background-color: #999999;
 }
 
 /* Removes active effects from table selection buttons,\
@@ -137,4 +145,15 @@ th.fit button:focus {
 }
 .sidebar.pausetransition {
   transition: margin 0s;
+}
+
+.user-button {
+  position: relative;
+}
+.user-button .fa {
+  position: absolute;
+  line-height: 24px;
+  top: 50%;
+  margin-top: -12px;
+  left: 10px;
 }

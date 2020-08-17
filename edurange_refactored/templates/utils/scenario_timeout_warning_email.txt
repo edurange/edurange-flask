@@ -1,0 +1,9 @@
+Warning:
+
+Your EDURange scenario has been running too long.
+
+Dear {{ email }},
+  Warning:
+    Your EDURange scenario has been running too long.
+Sincerely,
+The EDURange Team
