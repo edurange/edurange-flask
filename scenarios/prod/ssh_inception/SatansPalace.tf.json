@@ -1,9 +1,9 @@
 {
 	"resource": [
-{
+	{
             "docker_container": [
                 {
-                    "SNAME_First_Stop": [
+                    "SNAME_SatansPalace": [
                         {
                             "capabilities": [
                                 {
@@ -25,22 +25,54 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "First_Stop",
+                            "hostname": "SatansPalace",
                             "image": "sanivo/edurange_alpine:latest",
-                            "name": "SNAME_First_Stop",
+                            "name": "SNAME_SatansPalace",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.0.5",
+                                    "ipv4_address": "OCTET.0.1.19",
+                                    "name": "SNAME_NAT"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.0.19",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
                             "ports": [
                                 {
-                                    "internal": 22,
-                                    "ip": "OCTET.0.0.2"
+                                    "internal": 22
+                                }
+                            ],
+                            "provisioner": [
+                                {
+                                    "remote-exec": [
+                                        {
+                                            "inline": [
+                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student"
+                                            ]
+                                        }
+                                    ]
                                 }
                             ],
                             "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }],
+    "locals": [
+        {
+            "SNAME_SatansPalace_extern": "HIDDEN"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_SatansPalace": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_SatansPalace_extern])}",
+                            "name": "SNAME_SatansPalace"
                         }
                     ]
                 }

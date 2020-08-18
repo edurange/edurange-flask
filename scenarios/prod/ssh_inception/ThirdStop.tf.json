@@ -1,0 +1,82 @@
+{
+	"resource": [
+	{
+            "docker_container": [
+                {
+                    "SNAME_ThirdStop": [
+                        {
+                            "capabilities": [
+                                {
+                                    "add": [
+                                        "NET_ADMIN"
+                                    ]
+                                }
+                            ],
+                            "command": [
+                                "/usr/sbin/sshd",
+                                "-D"
+                            ],
+                            "connection": [
+                                {
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
+                                }
+                            ],
+                            "hostname": "ThirdStop",
+                            "image": "sanivo/edurange_alpine:latest",
+                            "name": "SNAME_ThirdStop",
+                            "networks_advanced": [
+                                {
+                                    "ipv4_address": "OCTET.0.1.13",
+                                    "name": "SNAME_NAT"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.0.13",
+                                    "name": "SNAME_PLAYER"
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "internal": 22
+                                }
+                            ],
+                            "provisioner": [
+                                {
+                                    "remote-exec": [
+                                        {
+                                            "inline": [
+                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }],
+    "locals": [
+        {
+            "SNAME_ThirdStop_extern": "HIDDEN"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_ThirdStop": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_ThirdStop_extern])}",
+                            "name": "SNAME_ThirdStop"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
