@@ -335,8 +335,6 @@ def instructor():
             GroupUsers.user_id == User.id,
         )
 
-    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
-    infoTable = UserInfoTable(userInfo)
     if request.method == "GET":
         groupMaker = GroupForm()
         userAdder = addUsersForm()
@@ -347,7 +345,6 @@ def instructor():
             students=students,
             groups=groups,
             usersPGroup=users_per_group,
-            infoTable=infoTable,
         )
 
     elif request.method == "POST":
@@ -360,14 +357,14 @@ def instructor():
                 elif len(ajax) < 4:
                     return render_template(temp, group=ajax[1], users=ajax[2])
                 else:
-                    return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])
+                    return render_template(temp, group=ajax[1], users=ajax[2], pairs=ajax[3])
             elif temp == 'utils/manage_student_response.html':
                 if len(ajax) == 1:
                     return render_template(temp)
                 else:
                     return render_template(temp, group=ajax[1], users=ajax[2])
         else:
-            return redirect(url_for("dashboard.admin"))
+            return redirect(url_for("dashboard.instructor"))
 
 
 @blueprint.route("/admin", methods=["GET", "POST"])
@@ -419,7 +416,7 @@ def admin():
                 elif len(ajax) < 4:
                     return render_template(temp, group=ajax[1], users=ajax[2])
                 else:
-                    return render_template(ajax[0], group=ajax[1], users=ajax[2], pairs=ajax[3])
+                    return render_template(temp, group=ajax[1], users=ajax[2], pairs=ajax[3])
             elif temp == 'utils/manage_student_response.html':
                 if len(ajax) == 1:
                     return render_template(temp)
