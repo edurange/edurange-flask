@@ -2,7 +2,7 @@
 
 EDURange
 
-Documentation can be found [here](https://github.com/Xennos-Dis/edurange-flask-docs "EDURange Refactored Documentation")
+Documentation can be found [here](https://github.com/edurange/edurange-flask-docs "EDURange Refactored Documentation")
 
 ## Docker Quickstart
 
