@@ -35,7 +35,6 @@
 							<i class="fa fa-caret-down"></i>
 						</button>
 					</h2>
-					<!--<div class="col-sm my-auto text-right" id="stuCount"> Count: {{ student_count }} </div>-->
 				</div>
 			</div>
 			<div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordion">
@@ -177,6 +176,9 @@
 								</label>
 								<input class="form-control-sm" id="size" name="size" placeholder="0-40" value=""
 									   type="number" min="0" max="40" style="width: 70px;" disabled>
+								<div id="loadSpinner" class="spinner-border ml-3" role="status" style="display:none;">
+									<span class="sr-only">Loading...</span>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -352,6 +354,8 @@
 		/* AJAX request for creating groups */
 		$("#groupCreate").on("click", function(e) {
 			e.preventDefault(); //prevent form submit
+			let spinner = document.getElementById("loadSpinner"); //start spinner
+			$(spinner).attr("style", "");
 			/*--------- POST request data ---------*/
 			let csrf_token = $("#csrf_token").val();
 			let name = $("#name").val();
@@ -360,17 +364,19 @@
 			if (size.prop('disabled')) { size = 0; } else { size = size.val(); }
 			/*-------------------------------------*/
 
-			var data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
+			let data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
 			request = $.ajax({ //submit request
 				type : 'POST',
 				url : "{{ url_for('dashboard.instructor') }}",
 				data : data
 			});
 			request.done(function(response) {
-				mergeHTML("groupCreate", name, response)
+				mergeHTML("groupCreate", name, response);
+				$(spinner).attr("style", "display:none;"); //stop spinner
 			});
 			request.fail(function(response) {
 				alert("Something went wrong!");
+				$(spinner).attr("style", "display:none;"); //stop spinner
 			});
 		});
 
@@ -389,12 +395,14 @@
 				let $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
 				let $flash = $(response).filter("#flashed"); //get flashed messages
 				let $users = $(response).find("#studentRows").html();
-				$("#groupsTable tbody").append($row); //append new group row
-				$("#groupTables").append($table); //append new group table
-				$("#studentBody").append($users);
-				$("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
 				if ($flash.length) {
 					$("#headingGroups").append($flash); //flash new messages
+				}
+				if ($table.length) {
+				  	$("#groupsTable tbody").append($row); //append new group row
+				  	$("#groupTables").append($table); //append new group table
+				  	$("#studentBody").append($users); //append new student rows to all students table
+				  	$("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
 				}
 				if ($pairs.length) {
 					let pairs = $("#pairs");
@@ -427,194 +435,5 @@
 	});
 
 </script>
-
-
-
-
-{#<script type="text/javascript">
-
-	$(document).ready(function() {
-
-		/* Option to show students who are static members of one group */
-		$("#showStatic").on("change", function() {
-			let staticRows = $("#studentTable tbody tr[style]");
-			if ($(this).is(':checked')) {
-				staticRows.attr('style', '');
-			}
-			else {
-				staticRows.attr('style', 'display:none;');
-			}
-		});
-
-
-		/* Record and display row count for each table (to avoid doubling amount of SQL queries) */
-		$("#groupTables i[id$='_size']").each(function(index, element) {
-			var name = element.id.slice(0, -5);
-			$(element).text($("div[id='" + name + "-table'] tbody tr").length);
-		});
-
-		/* Event listener to view a group's table when a row is clicked */
-		$("#groupsTable tbody").on("click", "tr.selectable", function() {
-			$("#groupsTable tbody tr.selectable.active").not($(this)).removeClass("active");
-			$(this).toggleClass("active");
-			$("#groupTables div[id$='-table']").css("max-height", $("#groupsTable").css("height"));
-		});
-
-		/* Event listener to add selected user to uids list */
-		$("#studentTable tbody").on("click", "button.selector", function() {
-			var uid = this.id.slice(3);
-			$(this).toggleClass("btn-outline-dark btn-dark");
-			$("#selection").val(function(index, value) {
-				if (value.includes(uid)) {
-					return value.replace(uid + ',', '');
-				} else {
-					return value + uid + ',';
-				}
-			});
-			$("#selection").trigger("change");
-		});
-
-		$("#selection").on("change", function() {
-			var string = $(this).val();
-			var count = string.split(",").length - 1;
-			$("#addGroupUsers i.selCount").text(count);
-		});
-
-		/* Event listener to select all students when "select all" button is pressed */
-		$("#selectAll").on("click", function() {
-			var buttons = $('#studentTable tbody tr[style!="display:none;"] button.selector.btn-outline-dark');
-			var field = $("#selection");
-			buttons.each(function(index, element) {
-				field.val(field.val() + $(element).attr('id').slice(3) + ',');
-				$(element).toggleClass("btn-outline-dark btn-dark");
-			});
-			field.trigger("change");
-		});
-
-		/* Event listener to clear all selected students when "clear" button is pressed */
-		$("#clearAll").on("click", function() {
-			$("#selection").val('');
-			$("button.selector.btn-dark").toggleClass("btn-outline-dark btn-dark");
-			$("#selection").trigger("change");
-		});
-
-		/* Event listener to add 'in group' indicators to student table for students in currently selected group */
-		$("#groupSel").on("change", function() {
-			$('#studentTable td:last-child span.in-group').remove(); // remove any existing 'In Group' indicators
-			var tableID = this.value.replace(/\s+/g, ''); // remove spaces from group name
-			var ids = []; // array to hold ids found in the groups table
-			$("#" + tableID + "-table td:first-child").each(function() { // iterate over ids, pushing each to array
-				ids.push(("uid" + $(this).text()).replace(/\s+/g, '')); // remove spaces from id (uid 3 --> uid3)
-			});
-
-			for (i = 0; i < ids.length; i++) { // iterate over ids
-				$('#studentTable tr[id="' + ids[i] + '"] td:last-child').append(
-						'<span class="in-group"><i class="fa fa-check" aria-hidden="true"></i>  In Group </span>'
-				); // append 'in group' indicator to the 'select' column in row whose id matches the current id
-			}
-			$("#groupPop").text($("#" + tableID + "_size").text() + " in group");
-		});
-		$("#groupSel").trigger("change"); // trigger change on page load to generate 'in group' indicators
-
-		/* AJAX request for add/removing users from a group */
-		$("#addGroupUsers .user-button").on("click", function(e) { //add or remove users buttons
-			e.preventDefault(); //prevent form submit
-			/*--------- POST request data ---------*/
-			let csrf_token = $("#csrf_token").val();
-			let add = $(this).val();
-			var groups = $("#groupSel").val();
-			let uids = $("#selection").val();
-			/*-------------------------------------*/
-
-			var data = {'csrf_token': csrf_token, 'add': add, 'groups': groups, 'uids': uids};
-			request = $.ajax({ //submit request
-				type : 'POST',
-				url : "{{ url_for('dashboard.instructor') }}",
-				data : data
-			});
-			request.done(function(response) {
-				mergeHTML("manageStudents", groups, response); //call function to merge/handle HTML elements from POST response
-			});
-			request.fail(function(response) {
-				alert("Something went wrong!");
-			});
-		});
-
-		/* AJAX request for creating groups */
-		$("#groupCreate").on("click", function(e) {
-			e.preventDefault(); //prevent form submit
-			/*--------- POST request data ---------*/
-			let csrf_token = $("#csrf_token").val();
-			var name = $("#name").val();
-			let create = $(this).val();
-			let size = $("#size");
-			if (size.prop('disabled')) { size = 0; } else { size = size.val(); }
-			/*-------------------------------------*/
-
-			var data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
-			request = $.ajax({ //submit request
-				type : 'POST',
-				url : "{{ url_for('dashboard.instructor') }}",
-				data : data
-			});
-			request.done(function(response) {
-				mergeHTML("groupCreate", name, response)
-			});
-			request.fail(function(response) {
-				alert("Something went wrong!");
-			});
-		});
-
-		function mergeHTML(req, arg, response) {
-			$("#flashed").remove(); //remove any flashed messages
-			if (req === "groupCreate") {
-				var $table = $(response).filter("div[id$='-table']"); //get new group table
-				var $row = $(response).find("#groupRow").html();
-				var $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
-				var $flash = $(response).filter("#flashed"); //get flashed messages
-				//var $users = $(response).find("#studentRows").html();
-				$("#groupsTable tbody").append($row); //append new group row
-				$("#groupTables").append($table); //append new group table
-				//$("#studentBody").append($users);
-				$("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
-				if ($flash.length) {
-					$("#headingGroups").append($flash); //flash new messages
-				}
-				if ($pairs.length) {
-					var pairs = $("#pairs");
-					if (pairs.length) {
-						pairs.replaceWith($pairs);
-					}
-					else {
-						$("#groupRow").append($pairs);
-					}
-				}
-				var group = arg.replace(/\s+/g, '');
-				$("#groupsTable i[id='" + group + "_size']").text($("#" + group + "-table tbody tr").length);
-			}
-			else if (req === "manageStudents") {
-				var group = arg.replace(/\s+/g, '');
-				var $table = $(response).filter("#" + group + "-table").html();
-				var table = $("#" + group + "-table tbody");
-				table.replaceWith($table);
-
-				$("#" + group + "_size").text($("#" + group + "-table tbody tr").length);
-
-				$("#groupHead").append($(response).filter("#flashed"));
-				$("#groupSel").trigger("change");
-			}
-		}
-
-
-		/* Event listener to activate/deactivate group generation input when option is checked/unchecked */
-		$("#genGroup").on("change", function() {
-			$("#genGroup-label").toggleClass("text-muted");
-			document.getElementById("size").toggleAttribute("disabled");
-			//document.getElementById("defSize").toggleAttribute("disabled");
-		});
-
-	});
-
-</script>#}
 {% endblock %}
 

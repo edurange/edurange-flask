@@ -237,6 +237,9 @@
                             </label>
                             <input class="form-control-sm" id="size" name="size" placeholder="0-40" value=""
                                 type="number" min="0" max="40" style="width: 70px;" disabled>
+                            <div id="loadSpinner" class="spinner-border ml-3" role="status" style="display:none;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -248,7 +251,7 @@
 {% endblock %}
 
 {% block js %}
-<script>
+<script type="text/javascript">
 
   $(document).ready(function() {
 
@@ -411,6 +414,8 @@
     /* AJAX request for creating groups */
     $("#groupCreate").on("click", function(e) {
       e.preventDefault(); //prevent form submit
+      let spinner = document.getElementById("loadSpinner"); //start spinner
+      $(spinner).attr("style", "");
       /*--------- POST request data ---------*/
       let csrf_token = $("#csrf_token").val();
       let name = $("#name").val();
@@ -419,17 +424,19 @@
       if (size.prop('disabled')) { size = 0; } else { size = size.val(); }
       /*-------------------------------------*/
 
-      var data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
+      let data = {'csrf_token': csrf_token, 'name': name, 'create': create, 'size': size};
       request = $.ajax({ //submit request
         type : 'POST',
         url : "{{ url_for('dashboard.admin') }}",
         data : data
       });
       request.done(function(response) {
-        mergeHTML("groupCreate", name, response)
+        mergeHTML("groupCreate", name, response);
+        $(spinner).attr("style", "display:none;"); //stop spinner
       });
       request.fail(function(response) {
         alert("Something went wrong!");
+        $(spinner).attr("style", "display:none;"); //stop spinner
       });
     });
 
@@ -448,12 +455,14 @@
         let $pairs = $(response).filter("#pairs"); //get username/password pairs (if any)
         let $flash = $(response).filter("#flashed"); //get flashed messages
         let $users = $(response).find("#studentRows").html();
-        $("#groupsTable tbody").append($row); //append new group row
-        $("#groupTables").append($table); //append new group table
-        $("#studentBody").append($users);
-        $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
         if ($flash.length) {
           $("#headingGroups").append($flash); //flash new messages
+        }
+        if ($table.length) {
+          $("#groupsTable tbody").append($row); //append new group row
+          $("#groupTables").append($table); //append new group table
+          $("#studentBody").append($users); //append new student rows to all students table
+          $("#groupSel").append('<option value="' + arg + '">' + arg + '</option>');
         }
         if ($pairs.length) {
           let pairs = $("#pairs");
