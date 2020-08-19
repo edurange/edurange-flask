@@ -48,7 +48,10 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student"
+                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student",
+                                                "USERS",
+                                                "EXECS",
+                                                "reboot"
                                             ]
                                         }
                                     ]

@@ -17,7 +17,8 @@ def build_users(usernames, passwords):
         next_line = ""
         if i != 0:
             next_line += "\""
-        next_line += str("echo -e '" + str(passwords[i]) + "\\n" + str(passwords[i]) + "' | adduser " + u)
+        next_line += str("useradd --home-dir /home/" + u + " --create-home --shell /bin/bash --password $(echo " + \
+                         str(passwords[i]) + " | openssl passwd -1 -stdin) " + u,)
         if i != len(usernames) - 1:
             next_line += "\","
         users.append(next_line)
@@ -45,9 +46,8 @@ def build_uploads(s_files, g_files, u_files, s_type):
     return uploads
 
 
-def build_execute_files(s_files, g_files, u_files):
+def build_execute_files(s_files, g_files, u_files, address, template_folder):
     execs = "mkdir /home/ubuntu\",\n"
-    execs += "\"apk add bash\",\n"
 
     for i, f in enumerate(g_files):
         execs += str("\"chmod +x /" + f + '"' + """, 
@@ -59,10 +59,12 @@ def build_execute_files(s_files, g_files, u_files):
       "cp -R /""" + f + " /home/ubuntu/" + f + '"' + """,
 """)
     for i, f in enumerate(s_files):
+        if f[0:4] == 'motd':
+            motd = open(template_folder + f).read().replace("OCTET", address)
         execs += str("""
       "chmod +x /""" + f + '"' + """,
       "mv /""" + f + " /home/ubuntu/" + f + '"' + """,
-      "bash /home/ubuntu/""" + f)
+      "/home/ubuntu/""" + f)
         if i != len(s_files) - 1:
             execs += "\","
     return execs
@@ -90,13 +92,15 @@ def write_resource(address, name, s_type,
                    c_name, usernames, passwords,
                    s_files, g_files, u_files):
     # Generate a list of strings of commands for adding users
+
+    template_folder = "../../../scenarios/prod/" + s_type + "/"
     users = build_users(usernames, passwords)
 
     # Generate a list of 'provisioner' blocks to upload all files
     uploads = build_uploads(s_files, g_files, u_files, s_type)
 
     # Generate a list of commands to move files, and run them if needed
-    execs = build_execute_files(s_files, g_files, u_files)
+    execs = build_execute_files(s_files, g_files, u_files, address, template_folder)
 
     # Make sure the container has a known template
     try:

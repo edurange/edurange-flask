@@ -1,136 +1,129 @@
 #!/bin/bash
-# Install the treasure hunt.  
+# Install the treasure hunt.
 # Must call this from /root/treasure-hunt/bin
 
 # [lyn, 10/09/2012] Empirically, specific user id numbers don't matter
-# if --same-owner is used when tarring and untarring. 
+# if --same-owner is used when tarring and untarring.
 
 # Run the following script to create the users/groups for the treasure hunt.
-# Their user ids start at 600 so as not to conflict with other users. 
-# These user and group ids are consistent with user/group ids on 
+# Their user ids start at 600 so as not to conflict with other users.
+# These user and group ids are consistent with user/group ids on
 # VMWare lynux VM from lyn's Thinkpad, now on MacBook
 
 mkdir /home/ubuntu/bin
 
-apk add g++
-apk add make
-apk add apache2
-apk add apache2-utils
-apk add shadow
-apk add usermod -u 2500 elasticsearch
-
 cd /home/ubuntu/bin
 
 echo "Making group apache"
-addgroup apache
+groupadd apache
 
 echo "Adding www-data to apache"
 usermod -aG apache www-data
 
 echo "Making group inunezweb"
-# addgroup -g 598 inunezweb
-addgroup inunezweb
+# groupadd -g 598 inunezweb
+groupadd inunezweb
 
 echo "Adding www-data to inunezweb"
 usermod -aG inunezweb www-data
 
 echo "Making group friends"
-# addgroup -g 599 friends
-addgroup friends
+# groupadd -g 599 friends
+groupadd friends
 
 echo "Making group student"
-# addgroup -g 600 student
-addgroup student
+# groupadd -g 600 student
+groupadd student
 
 echo "Making user awan"
-# adduser  "Alice Wan"  -u 601 -G student,friends -s /bin/bash awan
-adduser -g "Alice Wan"  -G student -G friends -s /bin/bash awan -D
+# useradd -c "Alice Wan" -m -u 601 -G student,friends -s /bin/bash awan
+useradd -c "Alice Wan" -m -G student,friends -s /bin/bash awan
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
-echo awan:klaatu! | /usr/sbin/chpasswd 
+echo awan:klaatu! | /usr/sbin/chpasswd
 
 echo "Making user bduomo"
-# adduser  "Bob Duomo"  -u 602 -G student,friends -s /bin/bash bduomo
-adduser -g "Bob Duomo"  -G student -G friends -s /bin/bash bduomo -D
-# [lyn, 9/27/2012] Can*not* just use "2B|!2B:t1t?" 
-echo bduomo:"2B|"\!2B:t1t? | /usr/sbin/chpasswd 
+# useradd -c "Bob Duomo" -m -u 602 -G student,friends -s /bin/bash bduomo
+useradd -c "Bob Duomo" -m -G student,friends -s /bin/bash bduomo
+# [lyn, 9/27/2012] Can*not* just use "2B|!2B:t1t?"
+echo bduomo:"2B|"\!2B:t1t? | /usr/sbin/chpasswd
 
 echo "Making user cdry"
-# adduser  "Cathy Dry"  -u 603 -G student -s /bin/bash cdry
-adduser -g "Cathy Dry"  -G student -s /bin/bash cdry -D
-echo "cdry:Qie,tDedf" | /usr/sbin/chpasswd 
+# useradd -c "Cathy Dry" -m -u 603 -G student -s /bin/bash cdry
+useradd -c "Cathy Dry" -m -G student -s /bin/bash cdry
+echo "cdry:Qie,tDedf" | /usr/sbin/chpasswd
 
 echo "Making user dshi"
-# adduser  "Debbie Shi"  -u 604 -G student -s /bin/bash dshi
-adduser -g "Debbie Shi"  -G student -s /bin/bash dshi -D
-echo "dshi:V:AvcTqpa" | /usr/sbin/chpasswd 
+# useradd -c "Debbie Shi" -m -u 604 -G student -s /bin/bash dshi
+useradd -c "Debbie Shi" -m -G student -s /bin/bash dshi
+echo "dshi:V:AvcTqpa" | /usr/sbin/chpasswd
 
 echo "Making user equintus"
-# adduser  "Ellen Quintus"  -u 605 -G student -s /bin/bash equintus
-adduser -g "Ellen Quintus"  -G student -s /bin/bash equintus -D
-echo "equintus:virum&cano" | /usr/sbin/chpasswd 
+# useradd -c "Ellen Quintus" -m -u 605 -G student -s /bin/bash equintus
+useradd -c "Ellen Quintus" -m -G student -s /bin/bash equintus
+echo "equintus:virum&cano" | /usr/sbin/chpasswd
 
 echo "Making user fsexon"
-# adduser  "Fred Sexon"  -u 606 -G student,friends -s /bin/bash fsexon
-adduser -g "Fred Sexon"  -G student -G friends -s /bin/bash fsexon -D
-echo "fsexon:scoobydoo" | /usr/sbin/chpasswd 
+# useradd -c "Fred Sexon" -m -u 606 -G student,friends -s /bin/bash fsexon
+useradd -c "Fred Sexon" -m -G student,friends -s /bin/bash fsexon
+echo "fsexon:scoobydoo" | /usr/sbin/chpasswd
 
 echo "Making user ghepta"
-# adduser  "George Hepta"  -u 607 -G student -s /bin/bash ghepta
-adduser -g "George Hepta"  -G student -s /bin/bash ghepta -D
-echo "ghepta:Ilt,al,fme:" | /usr/sbin/chpasswd 
+# useradd -c "George Hepta" -m -u 607 -G student -s /bin/bash ghepta
+useradd -c "George Hepta" -m -G student -s /bin/bash ghepta
+echo "ghepta:Ilt,al,fme:" | /usr/sbin/chpasswd
 
 echo "Making user hochoa"
-# adduser  "Helen Ochoa"  -u 608 -G student,friends -s /bin/bash hochoa
-adduser -g "Helen Ochoa"  -G student -G friends -s /bin/bash hochoa -D
-echo "hochoa:Am,ap,ac:P" | /usr/sbin/chpasswd 
+# useradd -c "Helen Ochoa" -m -u 608 -G student,friends -s /bin/bash hochoa
+useradd -c "Helen Ochoa" -m -G student,friends -s /bin/bash hochoa
+echo "hochoa:Am,ap,ac:P" | /usr/sbin/chpasswd
 
 echo "Making user inunez"
-# adduser  "Inna Nunez"  -u 609 -G student,inunezweb -s /bin/bash inunez
-adduser -g "Inna Nunez"  -G student -G inunezweb -s /bin/bash inunez -D
-echo "inunez:C?Tiiac-iist" | /usr/sbin/chpasswd 
+# useradd -c "Inna Nunez" -m -u 609 -G student,inunezweb -s /bin/bash inunez
+useradd -c "Inna Nunez" -m -G student,inunezweb -s /bin/bash inunez
+echo "inunez:C?Tiiac-iist" | /usr/sbin/chpasswd
 
 echo "Making user jdekka"
-# adduser  "Jack Dekka"  -u 610 -G student -s /bin/bash jdekka
-adduser -g "Jack Dekka"  -G student -s /bin/bash jdekka -D
-echo "jdekka:Aw&0pmJadb" | /usr/sbin/chpasswd 
+# useradd -c "Jack Dekka" -m -u 610 -G student -s /bin/bash jdekka
+useradd -c "Jack Dekka" -m -G student -s /bin/bash jdekka
+echo "jdekka:Aw&0pmJadb" | /usr/sbin/chpasswd
 
 echo "Making user kelva"
-# adduser  "Karen Elva"  -u 611 -G student -s /bin/bash kelva
-adduser -g "Karen Elva"  -G student -s /bin/bash kelva -D
-echo "kelva:HLE:LSS&S" | /usr/sbin/chpasswd 
+# useradd -c "Karen Elva" -m -u 611 -G student -s /bin/bash kelva
+useradd -c "Karen Elva" -m -G student -s /bin/bash kelva
+echo "kelva:HLE:LSS&S" | /usr/sbin/chpasswd
 
 echo "Making user ldouzette"
-# adduser  "Loretta Douzette"  -u 612 -G student -s /bin/bash ldouzette
-adduser -g "Loretta Douzette"  -G student -s /bin/bash ldouzette -D
+# useradd -c "Loretta Douzette" -m -u 612 -G student -s /bin/bash ldouzette
+useradd -c "Loretta Douzette" -m -G student -s /bin/bash ldouzette
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
-echo ldouzette:G,OK:Ky! | /usr/sbin/chpasswd 
+echo ldouzette:G,OK:Ky! | /usr/sbin/chpasswd
 
 echo "Making user pkaideka"
-# adduser  "Patricia (Trish) kaideka"  -u 613 -G student -s /bin/bash pkaideka
-adduser -g "Patricia (Trish) kaideka"  -G student -s /bin/bash pkaideka -D
-echo "pkaideka:Wybittydu,tys" | /usr/sbin/chpasswd 
+# useradd -c "Patricia (Trish) kaideka" -m -u 613 -G student -s /bin/bash pkaideka
+useradd -c "Patricia (Trish) kaideka" -m -G student -s /bin/bash pkaideka
+echo "pkaideka:Wybittydu,tys" | /usr/sbin/chpasswd
 
 echo "Making user pradessime"
-# adduser  "Pyotr Theodore (Ted) Radessime"  -u 614 -G student -s /bin/bash pradessime
-adduser -g "Pyotr Theodore (Ted) Radessime"  -G student -s /bin/bash pradessime -D
-echo "pradessime:The0d0re" | /usr/sbin/chpasswd 
+# useradd -c "Pyotr Theodore (Ted) Radessime" -m -u 614 -G student -s /bin/bash pradessime
+useradd -c "Pyotr Theodore (Ted) Radessime" -m -G student -s /bin/bash pradessime
+echo "pradessime:The0d0re" | /usr/sbin/chpasswd
 
 echo "Making user qsanera"
-# adduser  "Quinn Sanera"  -u 615 -G student -s /bin/bash qsanera
-adduser -g "Quinn Sanera"  -G student -s /bin/bash qsanera -D
-echo "qsanera:Wwe,aatbds;" | /usr/sbin/chpasswd 
+# useradd -c "Quinn Sanera" -m -u 615 -G student -s /bin/bash qsanera
+useradd -c "Quinn Sanera" -m -G student -s /bin/bash qsanera
+echo "qsanera:Wwe,aatbds;" | /usr/sbin/chpasswd
 
 echo "Making user tdaforth"
-# adduser  "Tudor Daforth"  -u 616 -G student -s /bin/bash tdaforth
-adduser -g "Tudor Daforth"  -G student -s /bin/bash tdaforth -D
-echo "tdaforth:TiahiNO;ictRS" | /usr/sbin/chpasswd 
+# useradd -c "Tudor Daforth" -m -u 616 -G student -s /bin/bash tdaforth
+useradd -c "Tudor Daforth" -m -G student -s /bin/bash tdaforth
+echo "tdaforth:TiahiNO;ictRS" | /usr/sbin/chpasswd
 
 echo "Making user guest"
-adduser -g "Guest"  -G student -s /bin/bash guest -D
-echo "guest:guest" | /usr/sbin/chpasswd 
+useradd -c "Guest" -m -G student -s /bin/bash guest
+echo "guest:guest" | /usr/sbin/chpasswd
 
 echo "Untarring user files into ../users"
-tar -xvf ../treasure-hunt-users-fall12.tar
+tar --preserve-permissions --same-owner -xvf ../treasure-hunt-users-fall12.tar
 mv users ../users
 chmod +rwx ../users
 
@@ -140,7 +133,7 @@ chgrp adm /etc/shadow
 chmod g+r /etc/shadow
 
 # Make a copy of cat named admincat that can read files with group adm
-# and is setgid adm (This allows /etc/shadow file to be read). 
+# and is setgid adm (This allows /etc/shadow file to be read).
 echo "Creating /bin/admincat"
 cp /bin/cat /bin/admincat
 chgrp adm /bin/admincat
@@ -148,15 +141,15 @@ chmod 2755 /bin/admincat
 
 # Install inunez's web password
 echo "Installing inunez's web password"
-if [ -e /var/www/htpasswd ] 
+if [ -e /var/www/htpasswd ]
 then
   echo "/var/www/htpasswd already exists; adding inunez";
-  /usr/bin/htpasswd -b /var/www/htpasswd inunez "It's all mine!";
+  /usr/bin/htpasswd -m -b /var/www/htpasswd inunez "It's all mine!";
 else
   echo "Creating /var/www/htpasswd and adding inunez";
-  /usr/bin/htpasswd -c -b /var/www/htpasswd inunez "It's all mine!";
+  /usr/bin/htpasswd -c -m -b /var/www/htpasswd inunez "It's all mine!";
 fi
- 
+
 
 # Make resetFakeUsers program
 gcc ../resetFakeUsers.c -o ../resetFakeUsers
@@ -164,12 +157,13 @@ gcc ../resetFakeUsers.c -o ../resetFakeUsers
 chown root.root ../resetFakeUsers
 chmod 755 ../resetFakeUsers
 chmod u+s ../resetFakeUsers
-cp -p ../resetFakeUsers /bin/resetFakeUsers
+cp -p -t /bin/ ../resetFakeUsers
 
 chmod 750 ../resetUsers
 
 # Initiate the state of the treasure hunt files
-../resetUsers ;
+service apache2 start
+../resetUsers
 
 
 # Don't let students mess with unnecessary things!
@@ -178,6 +172,5 @@ chmod 750 /bin/chown
 chmod 750 /bin/chgrp
 chmod 750 /bin/chmod
 chmod 750 /usr/sbin/usermod
-addgroup edurange
+groupadd edurange
 chown root.edurange /bin/chmod /usr/bin/passwd
-chmod a+x /bin/ash

@@ -1,6 +1,5 @@
 #!/bin/bash
 set -eoux pipefail
-mkdir /usr/local/src
 
 mv /home/ubuntu/python/perflag /usr/bin/perflag
 mv /home/ubuntu/python/manflag /usr/bin/manflag

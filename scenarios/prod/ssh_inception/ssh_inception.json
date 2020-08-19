@@ -8,7 +8,7 @@
                   "iamfrustrated"
                ],
                "system_files":[
-
+		  "motd_nat"
                ],
                "user_files":[
 
@@ -24,7 +24,8 @@
 
                ],
                "system_files":[
-
+		  "motd_first",
+		  "ssh_port_123"
                ],
                "user_files":[
 

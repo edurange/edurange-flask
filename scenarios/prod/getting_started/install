@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euxo pipefail
-mkdir /usr/local/src
 
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
