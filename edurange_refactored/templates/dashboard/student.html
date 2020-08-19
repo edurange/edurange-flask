@@ -21,7 +21,26 @@
 			    <div class="card-body">
 				    <!--info table stuff-->
 				    <div class="col" style="height:100px;">
-				    	{{ infoTable }}
+                        <div>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th> User ID </th>
+                                    <th> Username </th>
+                                    <th> Email </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in userInfo %}
+                                <tr>
+                                    <td> {{ item.id }} </td>
+                                    <td> {{ item.username }} </td>
+                                    <td> {{ item.email }} </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 				    </div>
 				    <!--info table stuff-->
 			    </div>

@@ -21,37 +21,37 @@ done
 
 # recompile bininaries
 gcc /home/cdry/bin/archive.c -o /home/cdry/bin/archive
-chown cdry.cdry /home/cdry/bin/archive
+chown cdry /home/cdry/bin/archive
 chmod  4775 /home/cdry/bin/archive
 
 gcc /home/dshi/bin/backup.c -o /home/dshi/bin/backup
-chown dshi.dshi /home/dshi/bin/backup
+chown dshi /home/dshi/bin/backup
 chmod  4775 /home/dshi/bin/backup
 
 gcc /home/kelva/bin/swap.c -o /home/kelva/bin/swap
-chown kelva.kelva /home/kelva/bin/swap
+chown kelva /home/kelva/bin/swap
 chmod  6775 /home/kelva/bin/swap
 
 chmod  777 /home/pkaideka/private
 gcc /home/pkaideka/private/guess_my_password.c -o /home/pkaideka/guess_my_password
-chown pkaideka.pkaideka /home/pkaideka/guess_my_password
+chown pkaideka /home/pkaideka/guess_my_password
 chmod  755 /home/pkaideka/guess_my_password
 chmod  750 /home/pkaideka/private
 
-cp -t ~ghepta/bin/ /bin/cp
+cp /bin/cp /home/ghepta/bin/cp
 
 # allow public_html home directories
-cd /etc/apache2/mods-enabled
+cd /etc/apache2/conf.d
 if ! [ -e userdir.conf ]
-then ln -s ../mods-available/userdir.conf userdir.conf
+then ln -s ../conf.d/userdir.conf userdir.conf
 fi
 if ! [ -e userdir.load ]
-then ln -s ../mods-available/userdir.load userdir.load
+then ln -s ../conf.d/userdir.load userdir.load
 fi
 
 
 # Restart apache to deal with new groups and such
-service apache2 reload
+exec /usr/sbin/httpd -D FOREGROUND -f /etc/apache2/httpd.conf &>/dev/null &
 
 for USER in awan bduomo cdry dshi equintus fsexon ghepta hochoa inunez jdekka kelva ldouzette pkaideka pradessime qsanera tdaforth; do
   chown root /home/$USER/.bash_history

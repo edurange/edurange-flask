@@ -99,15 +99,6 @@ class Scenarios(UserMixin, SurrogatePK, Model):
         return f"<Scenario({self.name!r})>"
 
 
-# class ScenarioUsers(UserMixin, SurrogatePK, Model):
-#     """Users belong to groups"""
-#     ___tablename___ = "scenario_users"
-#     user_id = reference_col("users", nullable=False)
-#     user = relationship("User", backref="scenario_users")
-#     scenario_id = reference_col("scenarios", nullable=False)
-#     scenario = relationship("Scenarios", backref="scenario_users")
-
-
 class ScenarioGroups(UserMixin, SurrogatePK, Model):
     """Groups associated with scenarios"""
 

@@ -3,7 +3,8 @@
 		"name" : "nat",
 		"files": [{
 			"global_files": [
-				"iamfrustrated"
+				"iamfrustrated",
+				"cat"
 			],
 			"system_files": [
 				"install"

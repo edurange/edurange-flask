@@ -119,25 +119,6 @@ class GroupForm(FlaskForm):
         return True
 
 
-# ----------------------------------------(unused?)
-class GroupFinderForm(FlaskForm):
-    """Finds Existing Group"""
-
-    group = StringField("Group Name", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(GroupFinderForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(GroupFinderForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-# -------------------------------------------
-
-
 class addUsersForm(FlaskForm):
     """Adds selected users to a group"""
 
@@ -218,21 +199,6 @@ class modScenarioForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(modScenarioForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-class deleteStudentForm(FlaskForm):  # type1
-    """Deletes a student from the database"""
-
-    stuName = StringField("Username", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(deleteStudentForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(deleteStudentForm, self).validate()
         if not initial_validation:
             return False
         return True

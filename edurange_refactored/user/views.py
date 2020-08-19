@@ -16,7 +16,6 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
     GroupForm,
     addUsersForm,
-    deleteStudentForm,
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
@@ -27,7 +26,6 @@ from ..form_utils import process_request
 from ..scenario_utils import identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
-    UserInfoTable,
     check_admin,
     check_instructor,
     check_role_view,
@@ -107,7 +105,6 @@ def student():
     curId = session.get("_user_id")
 
     userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
-    infoTable = UserInfoTable(userInfo)
 
     groups = (
         db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers)
@@ -132,7 +129,7 @@ def student():
 
     return render_template(
         "dashboard/student.html",
-        infoTable=infoTable,
+        userInfo=userInfo,
         groups=groups,
         scenarioTable=scenarioTable,
     )
@@ -145,7 +142,6 @@ def student_scenario(i):
     if checkEnr(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
-            port = "00000"
             addresses = identify_state(s_name, status)
             return render_template("dashboard/student_scenario.html",
                                    status=status,
@@ -153,7 +149,6 @@ def student_scenario(i):
                                    desc=desc,
                                    s_type=s_type,
                                    s_name=s_name,
-                                   port=port,
                                    u_name=u_name,
                                    pw=pw,
                                    add=addresses,
@@ -263,7 +258,6 @@ def scenariosInfo(i):
     if checkAuth(i):
         if checkEx(i):
             status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
-            port = "00000"
             addresses = identify_state(s_name, status)
             db_ses = db.session
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
@@ -277,7 +271,6 @@ def scenariosInfo(i):
                                    owner=owner,
                                    dt=bTime,
                                    s_name=s_name,
-                                   port=port,
                                    add=addresses,
                                    guide=guide,
                                    questions=questions,
@@ -404,14 +397,12 @@ def admin():
         groupMaker = GroupForm()
         userAdder = addUsersForm()
         instructorManager = manageInstructorForm()
-        userDropper = deleteStudentForm()
 
         return render_template(
             "dashboard/admin.html",
             groupMaker=groupMaker,
             userAdder=userAdder,
             instructorManager=instructorManager,
-            userDropper=userDropper,
             groups=groups,
             students=students,
             instructors=instructors,
