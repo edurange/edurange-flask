@@ -1,9 +1,9 @@
 {
-    "resource": [
-        {
+	"resource": [
+	{
             "docker_container": [
                 {
-                    "SNAME_nat": [
+                    "SNAME_StartingLine": [
                         {
                             "capabilities": [
                                 {
@@ -19,15 +19,15 @@
                             "connection": [
                                 {
                                     "host": "${self.ports[0].ip}",
-                                    "password": "root",
+                                    "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
                                     "port": "${self.ports[0].external}",
                                     "type": "ssh",
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "NAT",
-                            "image": "sanivo/edurange-ubuntu-sshd:16.04",
-                            "name": "SNAME_nat",
+                            "hostname": "StartingLine",
+                            "image": "sanivo/edurange_alpine:latest",
+                            "name": "SNAME_StartingLine",
                             "networks_advanced": [
                                 {
                                     "ipv4_address": "OCTET.0.1.2",
@@ -48,6 +48,7 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
+                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student",
                                                 "USERS",
                                                 "EXECS"
                                             ]
@@ -60,25 +61,25 @@
                     ]
                 }
             ]
-        }
-    ],
+        }],
     "locals": [
         {
-            "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+            "SNAME_StartingLine_extern": "${tostring(docker_container.SNAME_StartingLine.ports[0].external)}"
         }
     ],
     "output": [
         {
-            "SNAME_nat": [
+            "SNAME_StartingLine": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_nat_extern])}",
-                            "name": "SNAME_nat"
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_StartingLine_extern])}",
+                            "name": "SNAME_StartingLine"
                         }
                     ]
                 }
             ]
         }
     ]
+
 }

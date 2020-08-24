@@ -4,12 +4,12 @@
 echo "Copying user files"
 shopt -s dotglob # List dot files (files beginning with .) in expansion
 
-# [lyn, 10/09/2012] Below is the code from 2010, but I don't see how this 
-# could have worked in 2010 without the untarring from ./install. 
+# [lyn, 10/09/2012] Below is the code from 2010, but I don't see how this
+# could have worked in 2010 without the untarring from ./install.
 # How would it get permissions right on all the subdirectories?
-# Don't we need to do tarring/untarring to do this? 
+# Don't we need to do tarring/untarring to do this?
 # Well, do it now!
-for USER in awan bduomo cdry dshi equintus fsexon ghepta hochoa inunez jdekka kelva ldouzette pkaideka pradessime qsanera tdaforth; do 
+for USER in awan bduomo cdry dshi equintus fsexon ghepta hochoa inunez jdekka kelva ldouzette pkaideka pradessime qsanera tdaforth; do
   echo "Removing $USER files";
   rm -rf /home/$USER/*
   echo "Copying $USER files";

@@ -1,13 +1,13 @@
 #!/bin/bash
-# Install the treasure hunt.  
+# Install the treasure hunt.
 # Must call this from /root/treasure-hunt/bin
 
 # [lyn, 10/09/2012] Empirically, specific user id numbers don't matter
-# if --same-owner is used when tarring and untarring. 
+# if --same-owner is used when tarring and untarring.
 
 # Run the following script to create the users/groups for the treasure hunt.
-# Their user ids start at 600 so as not to conflict with other users. 
-# These user and group ids are consistent with user/group ids on 
+# Their user ids start at 600 so as not to conflict with other users.
+# These user and group ids are consistent with user/group ids on
 # VMWare lynux VM from lyn's Thinkpad, now on MacBook
 
 mkdir /home/ubuntu/bin
@@ -39,88 +39,88 @@ echo "Making user awan"
 # useradd -c "Alice Wan" -m -u 601 -G student,friends -s /bin/bash awan
 useradd -c "Alice Wan" -m -G student,friends -s /bin/bash awan
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
-echo awan:klaatu! | /usr/sbin/chpasswd 
+echo awan:klaatu! | /usr/sbin/chpasswd
 
 echo "Making user bduomo"
 # useradd -c "Bob Duomo" -m -u 602 -G student,friends -s /bin/bash bduomo
 useradd -c "Bob Duomo" -m -G student,friends -s /bin/bash bduomo
-# [lyn, 9/27/2012] Can*not* just use "2B|!2B:t1t?" 
-echo bduomo:"2B|"\!2B:t1t? | /usr/sbin/chpasswd 
+# [lyn, 9/27/2012] Can*not* just use "2B|!2B:t1t?"
+echo bduomo:"2B|"\!2B:t1t? | /usr/sbin/chpasswd
 
 echo "Making user cdry"
 # useradd -c "Cathy Dry" -m -u 603 -G student -s /bin/bash cdry
 useradd -c "Cathy Dry" -m -G student -s /bin/bash cdry
-echo "cdry:Qie,tDedf" | /usr/sbin/chpasswd 
+echo "cdry:Qie,tDedf" | /usr/sbin/chpasswd
 
 echo "Making user dshi"
 # useradd -c "Debbie Shi" -m -u 604 -G student -s /bin/bash dshi
 useradd -c "Debbie Shi" -m -G student -s /bin/bash dshi
-echo "dshi:V:AvcTqpa" | /usr/sbin/chpasswd 
+echo "dshi:V:AvcTqpa" | /usr/sbin/chpasswd
 
 echo "Making user equintus"
 # useradd -c "Ellen Quintus" -m -u 605 -G student -s /bin/bash equintus
 useradd -c "Ellen Quintus" -m -G student -s /bin/bash equintus
-echo "equintus:virum&cano" | /usr/sbin/chpasswd 
+echo "equintus:virum&cano" | /usr/sbin/chpasswd
 
 echo "Making user fsexon"
 # useradd -c "Fred Sexon" -m -u 606 -G student,friends -s /bin/bash fsexon
 useradd -c "Fred Sexon" -m -G student,friends -s /bin/bash fsexon
-echo "fsexon:scoobydoo" | /usr/sbin/chpasswd 
+echo "fsexon:scoobydoo" | /usr/sbin/chpasswd
 
 echo "Making user ghepta"
 # useradd -c "George Hepta" -m -u 607 -G student -s /bin/bash ghepta
 useradd -c "George Hepta" -m -G student -s /bin/bash ghepta
-echo "ghepta:Ilt,al,fme:" | /usr/sbin/chpasswd 
+echo "ghepta:Ilt,al,fme:" | /usr/sbin/chpasswd
 
 echo "Making user hochoa"
 # useradd -c "Helen Ochoa" -m -u 608 -G student,friends -s /bin/bash hochoa
 useradd -c "Helen Ochoa" -m -G student,friends -s /bin/bash hochoa
-echo "hochoa:Am,ap,ac:P" | /usr/sbin/chpasswd 
+echo "hochoa:Am,ap,ac:P" | /usr/sbin/chpasswd
 
 echo "Making user inunez"
 # useradd -c "Inna Nunez" -m -u 609 -G student,inunezweb -s /bin/bash inunez
 useradd -c "Inna Nunez" -m -G student,inunezweb -s /bin/bash inunez
-echo "inunez:C?Tiiac-iist" | /usr/sbin/chpasswd 
+echo "inunez:C?Tiiac-iist" | /usr/sbin/chpasswd
 
 echo "Making user jdekka"
 # useradd -c "Jack Dekka" -m -u 610 -G student -s /bin/bash jdekka
 useradd -c "Jack Dekka" -m -G student -s /bin/bash jdekka
-echo "jdekka:Aw&0pmJadb" | /usr/sbin/chpasswd 
+echo "jdekka:Aw&0pmJadb" | /usr/sbin/chpasswd
 
 echo "Making user kelva"
 # useradd -c "Karen Elva" -m -u 611 -G student -s /bin/bash kelva
 useradd -c "Karen Elva" -m -G student -s /bin/bash kelva
-echo "kelva:HLE:LSS&S" | /usr/sbin/chpasswd 
+echo "kelva:HLE:LSS&S" | /usr/sbin/chpasswd
 
 echo "Making user ldouzette"
 # useradd -c "Loretta Douzette" -m -u 612 -G student -s /bin/bash ldouzette
 useradd -c "Loretta Douzette" -m -G student -s /bin/bash ldouzette
 # [lyn, 9/27/2012] Can*not* have quotes here, or treats ! as history reference!
-echo ldouzette:G,OK:Ky! | /usr/sbin/chpasswd 
+echo ldouzette:G,OK:Ky! | /usr/sbin/chpasswd
 
 echo "Making user pkaideka"
 # useradd -c "Patricia (Trish) kaideka" -m -u 613 -G student -s /bin/bash pkaideka
 useradd -c "Patricia (Trish) kaideka" -m -G student -s /bin/bash pkaideka
-echo "pkaideka:Wybittydu,tys" | /usr/sbin/chpasswd 
+echo "pkaideka:Wybittydu,tys" | /usr/sbin/chpasswd
 
 echo "Making user pradessime"
 # useradd -c "Pyotr Theodore (Ted) Radessime" -m -u 614 -G student -s /bin/bash pradessime
 useradd -c "Pyotr Theodore (Ted) Radessime" -m -G student -s /bin/bash pradessime
-echo "pradessime:The0d0re" | /usr/sbin/chpasswd 
+echo "pradessime:The0d0re" | /usr/sbin/chpasswd
 
 echo "Making user qsanera"
 # useradd -c "Quinn Sanera" -m -u 615 -G student -s /bin/bash qsanera
 useradd -c "Quinn Sanera" -m -G student -s /bin/bash qsanera
-echo "qsanera:Wwe,aatbds;" | /usr/sbin/chpasswd 
+echo "qsanera:Wwe,aatbds;" | /usr/sbin/chpasswd
 
 echo "Making user tdaforth"
 # useradd -c "Tudor Daforth" -m -u 616 -G student -s /bin/bash tdaforth
 useradd -c "Tudor Daforth" -m -G student -s /bin/bash tdaforth
-echo "tdaforth:TiahiNO;ictRS" | /usr/sbin/chpasswd 
+echo "tdaforth:TiahiNO;ictRS" | /usr/sbin/chpasswd
 
 echo "Making user guest"
 useradd -c "Guest" -m -G student -s /bin/bash guest
-echo "guest:guest" | /usr/sbin/chpasswd 
+echo "guest:guest" | /usr/sbin/chpasswd
 
 echo "Untarring user files into ../users"
 tar --preserve-permissions --same-owner -xvf ../treasure-hunt-users-fall12.tar
@@ -133,7 +133,7 @@ chgrp adm /etc/shadow
 chmod g+r /etc/shadow
 
 # Make a copy of cat named admincat that can read files with group adm
-# and is setgid adm (This allows /etc/shadow file to be read). 
+# and is setgid adm (This allows /etc/shadow file to be read).
 echo "Creating /bin/admincat"
 cp /bin/cat /bin/admincat
 chgrp adm /bin/admincat
@@ -141,7 +141,7 @@ chmod 2755 /bin/admincat
 
 # Install inunez's web password
 echo "Installing inunez's web password"
-if [ -e /var/www/htpasswd ] 
+if [ -e /var/www/htpasswd ]
 then
   echo "/var/www/htpasswd already exists; adding inunez";
   /usr/bin/htpasswd -m -b /var/www/htpasswd inunez "It's all mine!";
@@ -149,7 +149,7 @@ else
   echo "Creating /var/www/htpasswd and adding inunez";
   /usr/bin/htpasswd -c -m -b /var/www/htpasswd inunez "It's all mine!";
 fi
- 
+
 
 # Make resetFakeUsers program
 gcc ../resetFakeUsers.c -o ../resetFakeUsers
@@ -162,6 +162,7 @@ cp -p -t /bin/ ../resetFakeUsers
 chmod 750 ../resetUsers
 
 # Initiate the state of the treasure hunt files
+service apache2 start
 ../resetUsers
 
 

@@ -1,112 +1,14 @@
 ---
-Name: SSH_Inception
-Description: SSH Inception teaches students the basics of ssh, a secure a program
-  for logging into a remote machine.
-Instructions: Instruct students to connect to the first machine, and further login
-  instructions will appear onscreen once connected. They can also be found in /etc/motd
-InstructionsStudent: Login to the NAT_Instance. Further instructions will be found
-  there.
-Codelab: https://edurange.github.io/ssh_inception_tutorial
-Instances:
-- Name: nat
-- Name: starting_line
-- Name: first_stop
-- Name: second_stop
-- Name: third_stop
-- Name: fourth_stop
-- Name: fifth_stop
-- Name: satans_palace
-- Name: anon_ftp
+Name: SSH Inception
+Description: SSH Inception teaches students the basics of ssh, a secure a program for logging into a remote machine.
+Codelab: http://localhost:5000/404
+#Roles:
 Groups:
 - Name: Students
-  Users:
-  - Login: player00
-  - Login: player01
-  - Login: player02
-  - Login: player03
-  - Login: player04
-  - Login: player05
-  - Login: player06
-  - Login: player07
-  - Login: player08
-  - Login: player09
-  - Login: player0a
-  - Login: player0b
-  - Login: player0c
-  - Login: player0d
-  - Login: player0e
-  - Login: player0f
-  Variables:
-  - Name: fourth_stop_password
-    Type: password
-  - Name: fifth_stop_password
-    Type: password
-  - Name: satans_palace_password
-    Type: password
-  - Name: secret_starting_line
-    Type: random
-  - Name: secret_first_stop
-    Type: random
-  - Name: secret_second_stop
-    Type: random
-  - Name: secret_third_stop
-    Type: random
-  - Name: secret_fourth_stop
-    Type: random
-  - Name: secret_fifth_stop
-    Type: random
-  - Name: master_string
-    Type: random
+  Instructions: First ssh into strace with the Public IP Address and credentials. Then follow the instructions presented at each stage.
   Access:
-  - Instance: nat
-    IP_Visible: true
-  - Instance: starting_line
-  - Instance: first_stop
-  - Instance: second_stop
-  - Instance: third_stop
-  - Instance: fourth_stop
-  - Instance: fifth_stop
-  - Instance: satans_palace
-Scoring:
-- Text: Contents of the file '~/secret' on Starting Line?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_starting_line}
-    Points: '1'
-  Points: 1
-- Text: Contents of the file '~/secret' on First Stop?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_first_stop}
-    Points: '1'
-  Points: 1
-- Text: Contents of the file '~/secret' on Second Stop?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_second_stop}
-    Points: '1'
-  Points: 1
-- Text: Contents of the file '~/secret' on Third Stop?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_third_stop}
-    Points: '1'
-  Points: 1
-- Text: Contents of the file '~/secret' on Fourth Stop?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_fourth_stop}
-    Points: '1'
-  Points: 1
-- Text: Contents of the file '~/secret' on Fifth Stop?
-  Type: String
-  Values:
-  - Value: ${player.variables.secret_fifth_stop}
-    Points: '1'
-  Points: 1
-- Text: Proof that your are a SSH Inception Master?
-  Type: String
-  Values:
-  - Value: ${player.variables.master_string}
-    Points: '1'
-  Points: 1
+  - Instance: ssh_inception
+  Users:
+  - Login: student
+Instances:
+- Name: ssh_inception
