@@ -344,6 +344,32 @@ def responseCheck(qnum, sid, resp):
         return False
 
 
+def responseCheck2(qnum, sid, resp):
+    # read correct response from yaml file
+    db_ses = db.session
+    s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == sid).first()
+    questions = questionReader(s_type[0])
+    for text in questions:
+        order = int(text['Order'])
+        if order == qnum:
+            if len(text['Values']) == 1:
+                ans = str(text['Values'][0]['Value'])
+                if resp == ans:
+                    return True
+                else:
+                    return False
+            elif len(text['Values']) > 1:
+                yes = False
+                for i in text['Values']:
+                    ans = str(text['Values'][i]['Value'])
+                    if resp == ans:
+                        yes = True
+                if yes:
+                    return True
+                else:
+                    return False
+
+
 # --
 
 

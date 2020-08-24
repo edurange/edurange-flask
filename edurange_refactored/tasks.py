@@ -139,7 +139,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
-        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", 'r+')
+        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+").read()
 
         logger.info("Questions Type: {}".format(type(questions)))
 
@@ -164,6 +164,8 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         #write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
+        logger.info("All flags: {}".format(flags))
+
         logger.info("All flags: {}".format(flags))
 
         # Each container and their names are pulled from the 's_type'.json file
