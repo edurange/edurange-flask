@@ -4,7 +4,7 @@ set -euxo pipefail
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
 while read line; do
-	bash /home/ubuntu/setup_home $line $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1) $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+	bash /home/ubuntu/setup_home $line $1 $2
 done</usr/local/src/user_names.txt
 
 mkdir /usr/special/

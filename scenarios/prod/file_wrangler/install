@@ -8,6 +8,6 @@ chmod u+x,g+x,o+x /usr/bin/manflag
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
 while read line; do
-/home/ubuntu/setup_player $line $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1) $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+/home/ubuntu/setup_player $line $1 $2
 done</usr/local/src/user_names.txt
 #rm -r /home/ubuntu/file_wrangler

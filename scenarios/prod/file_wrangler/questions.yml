@@ -91,14 +91,14 @@
 - Text: What is the flag you discovered by running sudo manflag in the manipulate directory?
   Type: String
   Values:
-  - Value: "${player.variables.manipulate}"
+  - Value: "$RANDOM_ONE"
     Points: '10'
   Order: 11
   Points: 10
 - Text: What is the flag you discovered by running sudo perflag in the permissions directory?
   Type: String
   Values:
-  - Value: "${player.variables.permissions}"
+  - Value: "$RANDOM_TWO"
     Points: '10'
   Order: 12
   Points: 10

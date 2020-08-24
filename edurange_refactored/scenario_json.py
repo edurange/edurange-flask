@@ -46,7 +46,7 @@ def build_uploads(s_files, g_files, u_files, s_type):
     return uploads
 
 
-def build_execute_files(s_files, g_files, u_files, address, template_folder):
+def build_execute_files(s_files, g_files, u_files, address, template_folder, flags):
     execs = "mkdir /home/ubuntu\",\n"
 
     for i, f in enumerate(g_files):
@@ -65,6 +65,8 @@ def build_execute_files(s_files, g_files, u_files, address, template_folder):
       "chmod +x /""" + f + '"' + """,
       "mv /""" + f + " /home/ubuntu/" + f + '"' + """,
       "/home/ubuntu/""" + f)
+        if f == "install":
+            execs += " " + str(" ".join(v for v in flags))
         if i != len(s_files) - 1:
             execs += "\","
     return execs
@@ -90,7 +92,7 @@ def adjust_network(address, name):
 
 def write_resource(address, name, s_type,
                    c_name, usernames, passwords,
-                   s_files, g_files, u_files):
+                   s_files, g_files, u_files, flags):
     # Generate a list of strings of commands for adding users
 
     template_folder = "../../../scenarios/prod/" + s_type + "/"
@@ -100,7 +102,7 @@ def write_resource(address, name, s_type,
     uploads = build_uploads(s_files, g_files, u_files, s_type)
 
     # Generate a list of commands to move files, and run them if needed
-    execs = build_execute_files(s_files, g_files, u_files, address, template_folder)
+    execs = build_execute_files(s_files, g_files, u_files, address, template_folder, flags)
 
     # Make sure the container has a known template
     try:

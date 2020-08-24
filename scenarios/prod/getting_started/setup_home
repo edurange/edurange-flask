@@ -63,4 +63,4 @@ chmod -R 440 $studentDIR/i
 mkdir $studentDIR/final-mission
 chown -R $player:$player $studentDIR/final-mission
 chmod 660 $studentDIR/final-mission
-chmod a+x $studentDIR/*
+find $studentDIR -type d -exec chmod +x {} \;
