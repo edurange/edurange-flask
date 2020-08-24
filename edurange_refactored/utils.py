@@ -329,26 +329,26 @@ def tempMaker(d, i):
 # --
 
 
+# def responseCheck(qnum, sid, resp):
+#    # read correct response from yaml file
+#    db_ses = db.session
+#    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+#    questions = questionReader(s_name[0])
+#    for text in questions:
+#        order = int(text['Order'])
+#        if order == qnum:
+#            ans = str(text['Values'][0]['Value'])
+#    if resp == ans:
+#        return True
+#    else:
+#        return False
+
+
 def responseCheck(qnum, sid, resp):
     # read correct response from yaml file
     db_ses = db.session
-    s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == sid).first()
-    questions = questionReader(s_type[0])
-    for text in questions:
-        order = int(text['Order'])
-        if order == qnum:
-            ans = str(text['Values'][0]['Value'])
-    if resp == ans:
-        return True
-    else:
-        return False
-
-
-def responseCheck2(qnum, sid, resp):
-    # read correct response from yaml file
-    db_ses = db.session
-    s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == sid).first()
-    questions = questionReader(s_type[0])
+    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    questions = questionReader(s_name[0])
     for text in questions:
         order = int(text['Order'])
         if order == qnum:
@@ -432,16 +432,16 @@ def score(scrLst, questions):
     return scr
 
 
-def questionReader(typ):
-    typ = typ.lower().replace(" ", "_")
+def questionReader(name):
+    name = "".join(e for e in name if e.isalnum())
     with open(
-            "./scenarios/prod/" + typ + "/questions.yml", "r"
+            "./data/tmp/" + name + "/questions.yml", "r"
     ) as yml:
         document = yaml.full_load(yml)
     return document
 
 
-def queryPolish(query, sType):
+def queryPolish(query, sName):
     qList = []
     for entry in query:
         i = entry.id
@@ -449,7 +449,7 @@ def queryPolish(query, sType):
         att = entry.attempt
         usr = entry.username
         if qList is None:
-            scr = score(getScore(uid, att, query), questionReader(sType))
+            scr = score(getScore(uid, att, query), questionReader(sName))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             qList.append(d)
         else:
@@ -458,7 +458,7 @@ def queryPolish(query, sType):
                 if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
-                scr = score(getScore(uid, att, query), questionReader(sType))
+                scr = score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
                 qList.append(d)
     return qList
