@@ -6,6 +6,7 @@ import string
 from datetime import datetime
 from os import environ
 
+import yaml
 from celery import Celery
 from celery.utils.log import get_task_logger
 from flask import current_app, flash, render_template, session
@@ -138,6 +139,23 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
+        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", 'r+')
+
+        logger.info("Questions Type: {}".format(type(questions)))
+
+        flags = []
+        if s_type == "getting_started" or s_type == "file_wrangler":
+            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
+            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
+
+            questions = questions.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
+
+        with open("questions.yml", "w") as outfile:
+            if type(questions) == str:
+                outfile.write(questions)
+            else:
+                outfile.write(questions.read())
+
         active_scenarios = Scenarios.query.filter(Scenarios.status != 0).count()
 
         # Local addresses begin at the subnet 10.0.0.0/24
@@ -146,13 +164,14 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         #write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
+        logger.info("All flags: {}".format(flags))
 
         # Each container and their names are pulled from the 's_type'.json file
         for i, c in enumerate(c_names):
             find_and_copy_template(s_type, c)
             write_resource(address, name, s_type,
                                c_names[i], usernames, passwords,
-                               s_files[i], g_files[i], u_files[i])
+                               s_files[i], g_files[i], u_files[i], flags)
 
         os.system("terraform init")
         os.chdir("../../..")
