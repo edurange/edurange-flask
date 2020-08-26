@@ -19,7 +19,8 @@ from edurange_refactored.user.forms import (
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
-    changeEmailForm
+    changeEmailForm,
+    scenarioResponseForm
 )
 
 from ..form_utils import process_request
@@ -135,13 +136,17 @@ def student():
     )
 
 
-@blueprint.route("/student_scenario/<i>")
+@blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required
 def student_scenario(i):
     # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
+            db_ses = db.session
+            query = db_ses.query(User.id)\
+                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+            own_id = session.get("_user_id")
             addresses = identify_state(s_name, status)
             return render_template("dashboard/student_scenario.html",
                                    status=status,
@@ -158,7 +163,15 @@ def student_scenario(i):
             return abort(404)
     else:
         return abort(403)
-
+    ####
+    ## STUDENT RESPONSE POST REQUEST
+    ####
+    if request.method == "POST":
+        ajax = scenarioResponseForm(request.form) //this validates it
+        if ajax:
+            ##query db to convert username to user_id
+            #form_utils.py/process_scenarioResponse();
+            #utils.py/responseCheck boolean value
 
 # ---- scenario routes
 
