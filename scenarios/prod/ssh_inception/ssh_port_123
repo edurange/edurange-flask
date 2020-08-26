@@ -1,5 +1,6 @@
-#!/bin/ash
+#!/bin/bash
 
 set -eoux pipefail
 
 sed -i '/Port/s/^.*$/Port 123/' /etc/ssh/sshd_config
+

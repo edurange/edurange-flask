@@ -1,0 +1,6 @@
+#!/bin/bash
+
+read IP CN < <(exec ifconfig eth1 | awk '/inet / { t = $2; sub(/.*[.]/, "", t); print $2, t }')
+LEAD=$(echo $IP | cut -d ':' -f 2 | cut -b 1-2)
+
+iptables -A INPUT -s $LEAD.0.0.13 -j DROP

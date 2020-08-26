@@ -8,7 +8,8 @@
                   "iamfrustrated"
                ],
                "system_files":[
-		  "motd_nat"
+		          "motd_nat",
+		          "adjust_motd"
                ],
                "user_files":[
 
@@ -21,11 +22,12 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-		  "motd_first",
-		  "ssh_port_123"
+		          "motd_first",
+		          "adjust_motd",
+		          "ssh_port_123"
                ],
                "user_files":[
 
@@ -38,13 +40,15 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_second",
+                  "adjust_motd",
+                  "place_rsa"
                ],
                "user_files":[
-
+                  "id_rsa"
                ]
             }
          ]
@@ -54,13 +58,16 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_third",
+                  "adjust_motd",
+                  "authorize_rsa",
+                  "make_maze"
                ],
                "user_files":[
-
+                  "id_rsa"
                ]
             }
          ]
@@ -70,10 +77,14 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_fourth",
+                  "adjust_motd",
+                  "reset_passwords",
+                  "block_third_stop",
+                  "decrypt_script"
                ],
                "user_files":[
 
@@ -99,6 +110,22 @@
       },
       {
          "name":"SatansPalace",
+         "files":[
+            {
+               "global_files":[
+
+               ],
+               "system_files":[
+
+               ],
+               "user_files":[
+
+               ]
+            }
+         ]
+      },
+      {
+         "name":"AnonFTP",
          "files":[
             {
                "global_files":[

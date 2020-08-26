@@ -1,0 +1,15 @@
+#!/bin/bash
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	cp /home/ubuntu/id_rsa /home/$line/id_rsa
+	chmod 400 /home/$line/id_rsa
+	chown $line:$line /home/$line/id_rsa
+	cd /home/$line
+	ssh-keygen -y -f id_rsa > id_rsa.pub -N ''
+	mkdir -p .ssh
+	cat id_rsa.pub > .ssh/authorized_keys
+	rm id_rsa id_rsa.pub
+	passwd -d $line
+done</usr/local/src/user_names.txt

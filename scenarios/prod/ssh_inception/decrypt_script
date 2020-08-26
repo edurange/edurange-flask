@@ -1,0 +1,21 @@
+#!/bin/bash
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	# encrypt fifth stop password
+	cd /home/$line
+  echo "The Password for the next stop is: 95541890" > passfile
+  openssl aes-256-cbc -e -pass pass:8fddakjfds0s9f -in passfile -out encryptedpassword
+  chown $line:$line encryptedpassword
+  chmod 400 encryptedpassword
+  rm passfile
+
+  echo -e "#!/bin/bash
+	openssl aes-256-cbc -d -in encryptedpassword -out password
+	if [ $? > 0 ]; then
+  		chmod 400 password
+  		cat password
+	fi" > decryptpass
+  chmod 505 decryptpass
+done</usr/local/src/user_names.txt

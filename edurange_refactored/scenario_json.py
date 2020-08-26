@@ -59,8 +59,6 @@ def build_execute_files(s_files, g_files, u_files, address, template_folder, fla
       "cp -R /""" + f + " /home/ubuntu/" + f + '"' + """,
 """)
     for i, f in enumerate(s_files):
-        if f[0:4] == 'motd':
-            motd = open(template_folder + f).read().replace("OCTET", address)
         execs += str("""
       "chmod +x /""" + f + '"' + """,
       "mv /""" + f + " /home/ubuntu/" + f + '"' + """,

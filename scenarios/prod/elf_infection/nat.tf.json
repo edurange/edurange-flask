@@ -48,7 +48,8 @@
                   "remote-exec": [
                     {
                       "inline": [
-                        "apt install -y make nasm gcc",
+                        "apt install -y make nasm gcc strace",
+                        "echo 'export PATH=/usr/special/bin:$PATH' >> /etc/bash.bashrc",
                         "USERS",
                         "EXECS"
                       ]
