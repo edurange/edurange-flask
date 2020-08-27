@@ -82,7 +82,7 @@
                "system_files":[
                   "motd_fourth",
                   "adjust_motd",
-                  "reset_passwords",
+                  "reset_pass_fourth",
                   "block_third_stop",
                   "decrypt_script"
                ],
@@ -97,10 +97,13 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_fifth",
+                  "adjust_motd",
+                  "reset_pass_fifth",
+                  "base64_msg"
                ],
                "user_files":[
 
@@ -113,10 +116,11 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "satans_palace_setup",
+                  "ssh_port_666"
                ],
                "user_files":[
 

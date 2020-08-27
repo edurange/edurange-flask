@@ -48,7 +48,8 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-
+                                                "USERS",
+                                                "EXECS"
                                             ]
                                         }
                                     ]

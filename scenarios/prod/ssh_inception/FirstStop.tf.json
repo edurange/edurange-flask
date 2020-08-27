@@ -50,8 +50,7 @@
                                             "inline": [
                                                 "apt install -y nmap",
                                                 "USERS",
-                                                "EXECS",
-                                                "service ssh reload"
+                                                "EXECS"
                                             ]
                                         }
                                     ]
