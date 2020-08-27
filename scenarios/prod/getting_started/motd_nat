@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+    #############  GETTING STARTED #############
+    Welcome to the Getting Started EDURange scenario!
+    Follow the instructions in the CodeLabs and answer the questions on EDURange.
+    ############################################
+EOF
+
+echo 'cat /etc/motd' >> /etc/bash.bashrc

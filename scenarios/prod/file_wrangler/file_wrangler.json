@@ -6,13 +6,13 @@
 				"iamfrustrated"
 			],
 			"system_files": [
-				"install"
+				"install",
+				"motd_nat"
 			],
 			"user_files": [
 				"setup_player",
 				"codes",
 				"files",
-				"motd",
 				"python"
 			]
 		}]
