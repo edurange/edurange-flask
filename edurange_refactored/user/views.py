@@ -262,7 +262,7 @@ def scenariosInfo(i):
             db_ses = db.session
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            resp = queryPolish(query, s_type)
+            resp = queryPolish(query, s_name)
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -289,12 +289,12 @@ def scenarioResponse(i, r):
             db_ses = db.session
             d = responseSelector(r)
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
-            s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
+            # s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
                                  Responses.correct, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            table = responseQuery(u_id, aNum, query, questionReader(s_type[0]))
-            scr = score(getScore(u_id, aNum, query), questionReader(s_type[0]))
+            table = responseQuery(u_id, aNum, query, questionReader(sName))
+            scr = score(getScore(u_id, aNum, query), questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
                                    u_id=u_id,
