@@ -88,6 +88,6 @@ class TestAdminForms:
         form = addUsersForm(add="true", uids="5,3,7,8,10,", groups=group.name)
         assert form.validate() is True
 
-    def test_remove_users(self, group):
+    def test_validate_remove_users(self, group):
         form = addUsersForm(add="false", uids="5,3,7,8,10,", groups=group.name)
         assert form.validate() is True

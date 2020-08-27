@@ -59,9 +59,7 @@ def check_instructor():
         abort(403)
 
 
-def check_role_view(
-        mode,
-):  # check if view mode compatible with role (admin/inst/student)
+def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_admin and not user.is_instructor:
