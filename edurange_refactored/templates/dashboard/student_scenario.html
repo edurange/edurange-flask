@@ -1,5 +1,4 @@
 <!-- | -->
-
 {% extends "layout.html" %}
 {% block content %}
 <div class="card bg-light">
@@ -8,15 +7,16 @@
       <h3> Type : {{ s_type }} </h3>
   </div>
   <div class="card-body">
-    <p><b>  Description : </b> {{ desc }} </p>
-      <p><b>  Status : </b> {{ status }} </p>
-      <p><b>  Instructor : </b> {{ owner }} </p>
-      <p><b> Username : </b> {{ u_name }} </p>
-      <p><b> Password : </b> {{ pw }} </p>
-      <p><b> Connection Information: </b></p>
-        {% for container in add %}
-          <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
-        {% endfor %}
+    <p><b>  Description: </b>{{ desc }}</p>
+    <p><b>  ID: </b><span id="scenario_id">{{ id }}</span></p>
+    <p><b>  Status : </b> {{ status }} </p>
+    <p><b>  Instructor : </b> {{ owner }} </p>
+    <p><b> Username : </b><span id="user">{{ u_name }}</span></p>
+    <p><b> Password : </b> {{ pw }} </p>
+    <p><b> Connection Information: </b></p>
+      {% for container in add %}
+        <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+      {% endfor %}
   </div>
   <ul class="nav nav-tabs mt-3 ml-3">
     <li class="nav-item active">
@@ -36,14 +36,14 @@
         <h3> Response Form </h3>
           <div class="card-body">
             <div class="container">
-              <form id="studentResponses">
+              {% for i in questions: %}
+                <form method="" id="{{i}}">
                   <div class="form-group">
-                    {% for q in questions %}
-                      <label id="question" for="{{ q }}">{{ q }}</label>
-                      <input type="text" id="myInput" class="form-control mb-3">
-                    {% endfor %}
+                    <label id="question_ID{{i}}" for="{{ q }}"><b>{{i}})</b> {{ questions[i] }}</label>
+                    <input type="text" id="input_ID{{i}}" class="form-control mb-5">
                   </div>
-              </form>
+                </form>
+              {% endfor %}
             </div>
           </div>
       </div>
@@ -65,22 +65,37 @@
 {% block js %}
 <script>
       $(document).ready(function() {
-        console.log("hello?");
-        $("#studentResponses").change(function(){
-          $("#studentResponses").keypress(function(event){
-            console.log("keypressfunction");
+        {% for i in questions: %}
+          //loop through all <input> ids
+          $("#"+"{{i}}").keypress(function(event){
+            console.log("i");
             var keycode = (event.keyCode ? event.keyCode : event.which);
             if(keycode == '13'){
-              var resp = $("#myInput").val();
-              var qnum = $("#question").html();
+              var questionText = $("#"+ "question_ID{{i}}").html();
+              //console.log($("#question").html());
+              if (isNaN(questionText[4])){
+                qnum = questionText[3];
+              } else {
+                qnum = question.slice(3,5);
+              }
+              var sid = $("#scenario_id").html();
+              var user = $("#user").html();
+              var resp = $("#input_ID{{i}}").val();
+              console.log("User:");
+              console.log(user);
+              console.log("Scenario ID:");
+              console.log(sid);
+              console.log("Question Number:");
+              console.log(qnum);
+              console.log("Response:");
+              console.log(resp);
 
-              //help getting scenario id, current_user id,
-              //And how do I pass this SR object to form_Utils.py/scenario_response
-              console.log(question);
-              console.log(ans);
-              
+              let data = {'scenario': sid, 'question': qnum, 'response': resp, 'current_user': user};
+
+
             }
           });
-        })
+          {% endfor %}
+      });
 </script>
 {% endblock %}
