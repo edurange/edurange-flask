@@ -7,13 +7,19 @@
 			],
 			"system_files": [
 				"install",
-				"motd_nat"
+				"motd_nat",
+				"tty_setup"
 			],
 			"user_files": [
 				"setup_player",
 				"codes",
 				"files",
-				"python"
+				"python",
+				"analyze.py",
+				"analyze_cyclic.pl",
+				"makeTsv.py",
+				"start_ttylog.sh",
+				"ttylog"
 			]
 		}]
 	}

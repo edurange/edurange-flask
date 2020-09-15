@@ -1,0 +1,453 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Getopt::Long qw(GetOptions);
+use IO::Handle;
+
+our $VERSION = "0.85";
+
+sub usage {
+  print <<HELP;
+    There are three modes:
+
+    1) ttylog tty
+
+    DIRECT (tty): Show terminal output for a given tty to stdout. This means
+    that you will see whatever the user sees.
+
+    2) ttylog -t tty  [ -w file ]
+
+    WRITE (-t tty): Attach to a tty and log the I/O to a trace file for
+    future analysis.
+
+    3) ttylog -r file [ -b file ] [ -i file ] [ -o file ]
+
+    READ (-r file): Analyze a trace file for key strokes or for terminal
+    output or for bandwidth usage.
+
+    OPTIONS:
+
+      --tty tty
+        Specify which psuedo terminal to use
+        Example: --tty pts/1
+      --write file
+        Save the packet data to a file for later analysis
+        Example: --write trace.log
+      --read file
+        Read from a saved packet file
+        Example: --read trace.log
+      --bandwidth file
+        Log network bandwidth used to a file
+        Example: --bandwidth ssh.bytes_log
+      --input file
+        Log keystrokes sent to terminal to a file
+        Example: --input keyboard.log
+      --output file
+        Log terminal output to a file
+        Example: --output terminal.log
+      --help
+        Show this usage message.
+
+    Note that all options may be abbreviated, i.e., "-h" is the same as "--help".
+
+HELP
+  exit;
+}
+
+if (@ARGV == 1) {
+  # Assume it is just a tty to set to stdout
+  exec($0,"-w","|$0 -r - -o -","-t",@ARGV) or die "exec error: $!";
+}
+
+usage() if !@ARGV;
+
+my $tty = undef;
+my $write = undef;
+my $read = undef;
+my $bandwidth = undef;
+my $input = undef;
+my $output = undef;
+my $help = undef;
+
+my $good = GetOptions
+  "tty:s" => \$tty,
+  "write:s" => \$write,
+  "read:s" => \$read,
+  "bandwidth:s" => \$bandwidth,
+  "input:s" => \$input,
+  "output:s" => \$output,
+  help => \$help,
+  ;
+
+usage() if $help || @ARGV;
+if ($read and !$bandwidth && !$input && !$output) {
+  # Default output to stdout if no action specified
+  $output = "-";
+}
+if ($good) {
+  if ($read && $write) {
+    warn "Cannot specify both --read and --write options\n";
+    $good = 0;
+  } elsif ($read && $tty) {
+    warn "Cannot specify both --read and --tty options\n";
+    $good = 0;
+  } elsif (!$read && !$tty) {
+    warn "Must specify either --read or --tty option\n";
+    $good = 0;
+  }
+}
+unless ($good) { sleep 2; usage(); }
+
+if ($tty) {
+  # This is write mode
+  # Need to attach to tty
+  if ($tty !~ m%^pts/\d+$%) {
+    warn "Unrecognized psuedo terminal [$tty]\n";
+    exit;
+  }
+  if (!$write) {
+    # No write file specified
+    # Generate a random one
+    $write = (getpwuid $<)[7];
+    $write .= "/";
+    my @r = ("A".."Z");
+    for (my $i = 0 ; $i < 32 ; $i++) {
+      $write .= $r[rand @r];
+    }
+    $write .= ".trace";
+    warn "DEBUG: Auto-generated write file [$write]\n";
+  }
+  warn "DEBUG: Scanning for psuedo terminal $tty \n";
+  if (-e "/dev/$tty") {
+    warn "DEBUG: Psuedo terminal [$tty] found.\n";
+    my $ps = `ps fauwwx`;
+    if ($ps =~ /\n(\S+)\s+(\d+)\s+\S+\s+\S+\s+\S+\s+\S+\s+\?\s+\S+\s+\S+\s+\S+\s+\S+[\|\\_ ]+\S*\bsshd\b.*\n\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+$tty\s/) {
+      my $user = $1;
+      my $pid = $2;
+      pipe(RDERR, WRERR);
+      my $fork = fork();
+      if ($fork) {
+        # Parent process
+        $0 = "waiting for $tty ($fork)";
+        close(WRERR);
+        my $STDERR = "";
+        while (<RDERR>) {
+          if (/^DEBUG:/) {
+            print STDERR;
+          } else {
+            $STDERR .= $_;
+          }
+        }
+        my $wait = waitpid($fork, 0);
+        my $autopsy = $?;
+        my $exit = $autopsy >> 8;
+        my $signal = $autopsy & 127;
+        my $dumped = ($autopsy & 128) >> 7;
+        if ($exit) {
+          if ($STDERR =~ /^exec:/m) {
+            die "strace: FAILED! Could not execute. Not installed?\n";
+          } else {
+            die "strace: [$exit] [$signal] [$dumped] Unknown CRASH!\n$STDERR\n";
+          }
+        }
+        if ($STDERR) {
+          if ($STDERR =~ /attach: ptrace.*PTRACE_ATTACH/) {
+            die "ttylog: FAILED! kernel does not permit ptrace syscall onto $pid!\nttylog: Not enough privileges?\nttylog: Or someone else is already monitoring $tty?\n";
+          }
+          die "strace: Unrecognized behavior!\n$STDERR\n";
+        }
+        # Normal operation
+        warn "\nTTY EOF\n";
+        exit;
+      } elsif (defined $fork) {
+        # Child process
+        close(RDERR);
+        open (STDERR, ">&WRERR");
+        warn "DEBUG: Found parent sshd pid [$pid] for user [$user]\n";
+        exec "strace","-e","read,write","-s16384","-q","-x", "-ttt", "-o",$write,"-p",$pid
+          or die "exec: $!";
+      } else {
+        # No process
+        die "UNABLE TO FORK! $!";
+      }
+    } else {
+      die "Unable to locate corresponding ssh session for [$tty]\n";
+    }
+  } else {
+    die "Psuedo terminal [$tty] currently does NOT exist.\n";
+  }
+}
+# This is read mode
+# Need to scan the trace file and perform the desired logging
+
+$| = 1;
+my $fd_bandwidth = undef;
+my $fd_keyboard = undef;
+my $fd_terminal = undef;
+my $line_to_record_first_character = undef;
+if (open TRACE, $read) {
+  my $fds = {};
+  while (<TRACE>) {
+	    #$1 = (read|write);$2=(\d+);$3=(.*). Its split by expressions in brackets
+    if (/(read|write)\((\d+), "(.*)"/) {
+      my $op = $1;
+      my $fd = $2;
+      $fds->{$fd} = { op => $op, data => $3 };
+      my @fds = sort {$a <=> $b} keys %{ $fds };
+      #The above 2 lines append file descriptors in fds, and sort them. fds will have values (3, 9, 11) after those 3 values get appended
+      if (3 <= @fds) {
+        ($fd_bandwidth, $fd_keyboard, $fd_terminal) = @fds;
+	#Backup the fd_terminal system call. We require this to obtain the first character.
+	$line_to_record_first_character = $_;
+        last;
+      }
+      if (!$input and
+          2 <= @fds and
+          $op eq "write" and
+          $fd < $fds[1] and
+          $fds->{$fds[1]}->{op} eq "read") {
+        # We don't care about logging keystrokes but found terminal outut.
+        # This is all we need, so just kick out now.
+        ($fd_bandwidth, $fd_terminal) = @fds;
+        my $sent = $fds->{$fds[1]}->{data};
+        chomp $sent;
+        warn "DEBUG: DETECTED TERMINAL OUTPUT: $sent\n";
+        last;
+      }
+    } else {
+      warn "DEBUG: Unrecognized trace line: $_";
+    }
+  }
+} else {
+  die "$read: Could not open for reading: $!\n";
+}
+
+#fd_bandwidth = 3; fd_keyboard = 9; fd_terminal = 11 . These were the values for me.
+die "ttylog: Unable to determine session parameters from trace data.\n" if !$fd_terminal;
+my $buffer_bytes = 0;
+my $buffer_since = time();
+if ($output) {
+  #Create child process using fork
+  my $pid = fork;
+  if (defined $pid) {
+    if ($pid) {
+      #Wait for child process to complete
+      waitpid($pid, 0);
+    } else {
+      #Child process executes
+      open STDOUT, ">>$output";
+      exec("clear") or die "exec: $!";
+    }
+  }
+}
+
+#Earlier we read first 3 lines from $read to get values of fd_bandwidth (equal to 3), fd_keyboard (9) and fd_terminal (11). These first three lines, recorded the first character that user typed. The following while loop will read the rest of the lines from $read. For getting 1st character, we will recover that strace line which looged the first character, from variable $line_to_record_first_character
+my $first_line_of_loop_backup = undef;
+while (<TRACE>) {
+  #We are mainly concerned with the output 'if' section (the next one). If we are just reading the file, the next 'if' section (with $input) won't execute. The $bandwidth section will also not execute.
+  
+  #We recover the first character. We set current line variable (that is $_) to the strace line for 1st character. 
+  if (defined $line_to_record_first_character) {
+	$first_line_of_loop_backup = $_;
+	$_ = $line_to_record_first_character;
+	}
+
+  if ($input && /write\($fd_keyboard, "(.*)"/) {
+    #This if section is not executed
+    my $s = $1;
+    $s =~ s/\\\\/\\/g;
+    $s =~ s/\\r/[ENTER]\n/g;
+    $s =~ s/\\n/^J/g;
+    $s =~ s/\\x1b\\x5b\\x41/[UP]/g;
+    $s =~ s/\\x1b\\x5b\\x42/[DOWN]/g;
+    $s =~ s/\\x1b\\x5b\\x43/[RIGHT]/g;
+    $s =~ s/\\x1b\\x5b\\x44/[LEFT]/g;
+    $s =~ s/\\x(0[1-9a-f]|1[0-9a])/sprintf "^%c", (64+hex $1)/eg;
+    if (open KEYS, ">>$input") {
+      KEYS->autoflush(1);
+      print KEYS $s;
+      close KEYS;
+    }
+  }
+  if ($output && /read\($fd_terminal, "(.*)"/) {
+    #Just filter this section
+    my $tstamp;
+    my $file_line = $_;
+    my $s = $1;
+    $s =~ s/\\x(..)/chr hex $1/eg;
+    $s =~ s/\\t/\t/g;
+    $s =~ s/\\r/\r/g;
+    $s =~ s/\\n/\n/g;
+    $s =~ s/\\\\/\\/g;
+
+    if ($file_line =~ /(\d+)/ ) {
+    	$tstamp = $1;
+        }
+    #Check for the presence of '\r\n' and prepend ';' and timestamp to '\r\n'
+    if ($s =~ /^\r\n/) {
+        $s = ';' . "$tstamp" . $s;
+        }
+
+    if (open OUT, ">>$output") {
+      OUT->autoflush(1);
+      print OUT $s;
+      close OUT;
+    }
+  }
+  if ($bandwidth && /(read|write)\($fd_bandwidth,.*= (\d+)$/) {
+    #This if section is not executed
+    my $direction = $1;
+    my $bytes = $2;
+    $buffer_bytes += $bytes;
+    if (time - $buffer_since > 5) {
+      $buffer_since = time;
+      if (open BYTES, ">>$bandwidth") {
+        BYTES->autoflush(1);
+        print BYTES time()," $buffer_bytes .\n";
+        close BYTES;
+        $buffer_bytes = 0;
+      }
+    }
+  }
+
+  #We restore the first line. 'redo' allows us to go to start of the loop
+  if (defined $line_to_record_first_character) {
+	  $line_to_record_first_character = undef;
+	  $_ = $first_line_of_loop_backup;
+	  redo;
+  }
+}
+
+if ($bandwidth && $buffer_bytes) {
+  #This is not executed
+  if (open BYTES, ">>$bandwidth") {
+    BYTES->autoflush(1);
+    print BYTES time()," $buffer_bytes .\n";
+    close BYTES;
+  }
+}
+
+=pod
+
+=head1 NAME
+
+ttylog - Log tty sessions
+
+$Id: ttylog,v 1.23 2011/12/19 15:45:41 rob Exp $
+
+=head1 SYNOPSIS
+
+  ttylog tty
+    or
+  ttylog -t tty  [ -w file ]
+    or
+  ttylog -r file [ -b file ] [ -i file ] [ -o file ]
+
+=head1 EXAMPLE
+
+Type "w" to obtain the desired tty:
+
+  [root@host root]# w
+    9:01am  up 81 days, 16:06,  5 users,  load average: 0.00, 0.00, 0.00
+  USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU  WHAT
+  root     pts/0    admin.com         8:19am  0.00s  0.39s  0.05s  w
+  joe      pts/1    workstation.wi    8:02am 39:33   2.63s  2.19s  pine
+  hacker   pts/4    client.isp.com    8:45am  5.00s 27.95s  1.45s  vim devil.cfg
+  [root@host root]#
+
+Then connect to monitor what is being typed or what is seen through the tty:
+
+  [root@host root]# ttylog pts/4
+
+=head1 OPTIONS
+
+There are three modes:
+
+DIRECT (tty): Show terminal output for a given tty to stdout.
+This means that you will see whatever the user sees.
+
+WRITE (-t tty): Attach to a tty and log the I/O to a trace
+file for future analysis.
+
+READ (-r file): Analyze a trace file for key strokes or for
+terminal output or for bandwidth usage.
+
+  --tty tty
+    Specify which psuedo terminal to use
+    Example: --tty pts/1
+  --write file
+    Save the packet data to a file for later analysis
+    Example: --write trace.log
+  --read file
+    Read from a saved packet file
+    Example: --read trace.log
+  --bandwidth file
+    Log network bandwidth used to a file
+    Example: --bandwidth ssh.bytes_log
+  --input file
+    Log keystrokes sent to terminal to a file
+    Example: --input keyboard.log
+  --output file
+    Log terminal output to a file
+    Example: --output terminal.log
+  --help
+    Show this usage message.
+
+Note that all options may be abbreviated, i.e., "-h" is the same as "--help".
+
+=head1 DESCRIPTION
+
+This utility is intended for attaching to currently running tty sessions
+for the purposes of administration, shell assisting, bandwidth tracking,
+and logging for debugging or training.  Unlike other tty sniffers, this
+utility does not require any patches to the kernel or any system
+configuration modifications or tweaking.  You can even install it AFTER
+someone has logged in and connect on the fly to instantly view their
+session which has already been currently running for a long time.
+
+=head1 DISCLAIMER
+
+Please be sensitive to the privacy of others!  The author will not be
+held liable for any violation of privacy or damage that may be caused
+by unauthorized use of this utility.  It is left to the discretion of
+the user of this application to deem what is appropriate.
+
+=head1 REQUIREMENTS
+
+This utility has been designed and is only known with work under the
+Linux platform, specifically the RedHat flavor, but possibly others.
+It requires that the strace utility be installed within the PATH.
+It assumes the tty sessions to be logged have been created from the sshd server.
+It does not work for terminal logins directly from the console.
+You must be the root user for permissions to use this program effectively.
+It is recommended that you have a very large screen and maximize your
+client because you will be seeing the terminal in the same dimensions
+as the tty of the user you are connecting to and you might not be able
+to see everything if your screen is constantly wrapping.
+The user must type at least one character to begin monitoring.
+Also, it is not recommended to log your own tty session as it may
+cause an infinite loop.  If you really need to log your session, just
+send it to a trace file (using -w) and analyze it later (using -r) after
+your session is finished.
+
+=head1 AUTHOR
+
+  Rob Brown rob@asquad.com
+  A-Squad.Com
+
+=head1 COPYRIGHT
+
+  Copyright 2004-2011
+  All rights reserved
+  Artistic License
+
+=head1 SEE ALSO
+
+w(1)
+strace(1)
+
+=head1 VERSION
+
+$Id: ttylog,v 1.23 2011/12/19 15:45:41 rob Exp $
+
+=cut

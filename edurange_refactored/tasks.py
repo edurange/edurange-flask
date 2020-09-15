@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 import string
+import subprocess
 from datetime import datetime
 from os import environ
 
@@ -139,7 +140,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
-        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+").read()
+        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+")
 
         logger.info("Questions Type: {}".format(type(questions)))
 
@@ -305,7 +306,22 @@ def scenarioTimeoutWarningEmail(self, arg):
     #    print(arg)
     #email_data = {'subject': 'WARNING: Scenario Running Too Long', 'to': 'selenawalshsmith@gmail.com', 'body':'WARNING: Scenario Running Too Long'}
     #send_async_email(email_data)
+
+
+@celery.task(bind=True)
+def scenarioCollectLogs(self, arg):
+    pass
+    containers = subprocess.run(['docker', 'container', 'ls'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    containers = containers.split('\n')
+    for c in containers:
+        c = c.split(' ')
+        c_name = c[-1]
+        if c_name is not None and c_name is not 'ago' and c_name is not 'NAMES':
+            os.system('docker cp ' + c_name + ':/usr/local/src/merged_logs.csv logs/' + c_name + '.csv')
+
+
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     #21600 is 6 hrs in seconds
-    sender.add_periodic_task(21600.0, scenarioTimeoutWarningEmail.s('******Hello World from Selena*********'))
+    sender.add_periodic_task(21600.0, scenarioTimeoutWarningEmail.s(''))
+    sender.add_periodic_task(60.0, scenarioCollectLogs.s(''))

@@ -7,14 +7,20 @@
 			],
 			"system_files": [
 				"install",
-				"motd_nat"
+				"motd_nat",
+				"tty_setup"
 			],
 			"user_files": [
 				"setup_home",
 				"stuff",
 				"images",
 				"toLearn",
-				"final-mission"
+				"final-mission",
+				"analyze.py",
+				"analyze_cyclic.pl",
+				"makeTsv.py",
+				"start_ttylog.sh",
+				"ttylog"
 			]
 		}]
 	}

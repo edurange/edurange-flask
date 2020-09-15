@@ -9,10 +9,15 @@
                ],
                "system_files":[
 		          "motd_nat",
-		          "adjust_motd"
+		          "adjust_motd",
+			  "tty_setup"
                ],
                "user_files":[
-
+	         	"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -27,10 +32,15 @@
                "system_files":[
 		          "motd_first",
 		          "adjust_motd",
-		          "ssh_port_123"
+		          "ssh_port_123",
+			  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -45,10 +55,16 @@
                "system_files":[
                   "motd_second",
                   "adjust_motd",
-                  "place_rsa"
+                  "place_rsa",
+		  "tty_setup"
                ],
                "user_files":[
-                  "id_rsa"
+                  "id_rsa",
+		  "analyze.py",
+	  	  "analyze_cyclic.pl",
+		  "makeTsv.py",
+		  "start_ttylog.sh",
+		  "ttylog"
                ]
             }
          ]
@@ -64,10 +80,16 @@
                   "motd_third",
                   "adjust_motd",
                   "authorize_rsa",
-                  "make_maze"
+                  "make_maze",
+		  "tty_setup"
                ],
                "user_files":[
-                  "id_rsa"
+                  "id_rsa",
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -84,10 +106,15 @@
                   "adjust_motd",
                   "reset_pass_fourth",
                   "block_third_stop",
-                  "decrypt_script"
+                  "decrypt_script",
+		  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -103,10 +130,15 @@
                   "motd_fifth",
                   "adjust_motd",
                   "reset_pass_fifth",
-                  "base64_msg"
+                  "base64_msg",
+		  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -120,10 +152,15 @@
                ],
                "system_files":[
                   "satans_palace_setup",
-                  "ssh_port_666"
+                  "ssh_port_666",
+		  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
