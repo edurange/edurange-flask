@@ -19,6 +19,9 @@
             <li class="nav-item">
                 <a href="#Responses" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Responses</a>
             </li>
+            <li class="nav-item">
+                <a href="#CmdHist" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Command History</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="home" class="tab-pane fade show active">
@@ -96,6 +99,57 @@
                 </div>
             </div>
             <!-- | -->
+            <div id="CmdHist" class="tab-pane fade">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="card-header" id="headingCmdHist">
+                            <div class="row">
+                                <h5 class="mb-0">
+                                    <h2> <i class="fa fa-code"></i> Command History <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseCmdHist" aria-expanded="false" aria-controls="collapseCmdHist">
+                                        <i class="fa fa-caret-down"></i>
+                                    </button> </h2>
+                                </h5>
+                            </div>
+                        </div>
+                        <div id="collapseCmdHist" class="collapse" aria-labelledby="headingCmdHist">
+                            <div class="card-body">
+                                <!--command history table stuff-->
+                                <div class="col" style="height:300px;overflow-y:scroll;">
+                                    <div>
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th> CMBEGIN </th>
+                                                <th> Scenario </th>
+                                                <th> Timestamp </th>
+                                                <th> Working Directory </th>
+                                                <th> Command </th>
+                                                <th> Command Output </th>
+                                                <th> User </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for entry in rc %}
+                                            <tr>
+                                                <td> {{ entry[0] }} </td> {# CMBEGIN #}
+                                                <td> {{ entry[1] }} </td> {# scenario #}
+                                                <td> {{ entry[2] }} </td> {# time #}
+                                                <td> {{ entry[3] }} </td> {# dir #}
+                                                <td> {{ entry[4] }} </td> {# cmd #}
+                                                <td> {{ entry[5] }} </td> {# out #}
+                                                <td> {{ entry[6] }} </td> {# usr #}
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--|-->
         </div>
     </div>
 

@@ -2,6 +2,9 @@
 import json
 import os
 
+import csv
+import re
+
 import yaml
 from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
@@ -248,7 +251,7 @@ def getDesc(t):
     return d
 
 
-def getGuide(t):
+def getGuide2(t):
     #g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
     with open(
@@ -261,6 +264,12 @@ def getGuide(t):
                 #print(g)
                 #return g
     #g = "No Codelab for this Scenario"
+    return g
+
+
+def getGuide(t):
+    t = t.title().replace(" ", "_")
+    g = "http://127.0.0.1:5000/tutorials/" + t + "#0"
     return g
 
 
@@ -308,7 +317,7 @@ def tempMaker(d, i):
     desc = getDesc(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
-    current_app.logger.info(questions)
+    current_app.logger.info(questions) #--
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
@@ -489,3 +498,53 @@ def getAttempt(uid, sid, qnum):
     else:
         att = int(query[0]) + 1
     return att
+
+
+def readCSV(id):
+    db_ses = db.session
+    sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
+    csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
+    arr = []
+    reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    print(reader)
+    for row in reader:
+        print(row)
+        lineStr = ''
+        if len(row) > 7:
+            continue
+        for i, item in enumerate(row):
+            if i == 5:
+                item = item.replace("\r", "").replace("\n", "#%#")
+                item = item.replace('\"', '').replace(",", "")
+                item = item.replace('\t', '')
+                item = re.sub(r'[0-9]{10}', '\n', item)
+                if len(item) > 0:
+                    item = '%' + item + '%'
+            if i == 0:
+                lineStr += item.strip('\n\r')
+            else:
+                lineStr += '\t' + item.strip('\n\r')
+            if i == 6:
+                lineStr += '\n'
+        arr.append(lineStr)
+    return arr
+
+
+def formatCSV(arr):
+    nArr = []
+    for entry in arr:
+        tmpArr = entry.split("\t")
+        nArr.append(tmpArr)
+    return nArr
+
+
+def readScenario():
+    scenarios = [
+        dI
+        for dI in os.listdir("./scenarios/prod/")
+        if os.path.isdir(os.path.join("./scenarios/prod/", dI))
+    ]
+    desc = []
+    for s in scenarios:
+        desc.append(getDesc(s))
+    return 0

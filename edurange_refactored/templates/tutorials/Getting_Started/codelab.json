@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-01-03T15:33:29-08:00",
+  "id": "getting-started",
+  "duration": 81,
+  "title": "Getting Started",
+  "authors": "who",
+  "summary": "Getting Started",
+  "source": "getting-started.md",
+  "theme": "",
+  "status": [
+    "whatever"
+  ],
+  "category": [
+    "sample"
+  ],
+  "tags": [
+    "easy"
+  ],
+  "feedback": "dontKnow.com",
+  "url": "getting-started"
+}

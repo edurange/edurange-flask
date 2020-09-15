@@ -19,7 +19,8 @@ from edurange_refactored.user.forms import (
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
-    changeEmailForm
+    changeEmailForm,
+    deleteGroupForm
 )
 
 from ..form_utils import process_request
@@ -40,7 +41,9 @@ from ..utils import (
     queryPolish,
     questionReader,
     getScore,
-    score
+    score,
+    readCSV,
+    formatCSV
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -263,6 +266,11 @@ def scenariosInfo(i):
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
+            try:
+                rc = formatCSV(readCSV(i))
+            except FileNotFoundError:
+                flash("File '{0}' was not found".format(s_name))
+                rc = ['']
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -274,7 +282,8 @@ def scenariosInfo(i):
                                    add=addresses,
                                    guide=guide,
                                    questions=questions,
-                                   resp=resp)
+                                   resp=resp,
+                                   rc=rc)
         else:
             return abort(404)
     else:
@@ -394,6 +403,7 @@ def admin():
         groupMaker = GroupForm()
         userAdder = addUsersForm()
         instructorManager = manageInstructorForm()
+        groupEraser = deleteGroupForm()
 
         return render_template(
             "dashboard/admin.html",
@@ -404,6 +414,7 @@ def admin():
             students=students,
             instructors=instructors,
             usersPGroup=users_per_group,
+            groupEraser=groupEraser
         )
 
     elif request.method == "POST":
@@ -424,3 +435,4 @@ def admin():
                     return render_template(temp, group=ajax[1], users=ajax[2])
         else:
             return redirect(url_for("dashboard.admin"))
+

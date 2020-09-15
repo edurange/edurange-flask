@@ -220,6 +220,22 @@ class scenarioResponseForm(FlaskForm):
 
 
 # -
+class deleteGroupForm(FlaskForm):
+    """designates a student group to be deleted"""
+
+    group_name = StringField("Group Name", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(deleteGroupForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(deleteGroupForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+# -
 
 
 class type1Form(FlaskForm):                 # GroupForm,    manageInstructorForm,   deleteStudentForm
