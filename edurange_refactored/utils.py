@@ -282,14 +282,15 @@ def getPass(sn, un):
 
 
 def getQuestions(t):
-    questions = []
+    questions = {}
     t = t.lower().replace(" ", "_")
     with open(
             "./scenarios/prod/" + t + "/" + "questions.yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item in document:
-            questions.append(item['Text'])
+            #questions.append(item['Text'])
+            questions[item['Order']] = item['Text']
     return questions
 
 
