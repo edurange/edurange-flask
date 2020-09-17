@@ -549,3 +549,24 @@ def readScenario():
     for s in scenarios:
         desc.append(getDesc(s))
     return 0
+
+
+def recentCorrect(uid, qnum):
+    db_ses = db.session
+    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.question == qnum)\
+        .order_by(Responses.response_time).first()
+    return recent
+
+
+def displayCorrect(sName, uName):
+    db_ses = db.session
+    uid = db_ses.query(User.id).filter(User.username == uName).first()
+    questions = questionReader(sName)
+    ques = {}
+    for text in questions:
+        order = int(text['Order'])
+        rec = recentCorrect(uid, order)
+        if rec is not None:
+            rec = rec[0]
+        ques[order] = rec
+    return ques

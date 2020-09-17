@@ -139,7 +139,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
-        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+").read()
+        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+")  # .read()
 
         logger.info("Questions Type: {}".format(type(questions)))
 
