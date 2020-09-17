@@ -167,8 +167,6 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         adjust_network(address, name)
         logger.info("All flags: {}".format(flags))
 
-        logger.info("All flags: {}".format(flags))
-
         # Each container and their names are pulled from the 's_type'.json file
         for i, c in enumerate(c_names):
             find_and_copy_template(s_type, c)
@@ -310,14 +308,39 @@ def scenarioTimeoutWarningEmail(self, arg):
 
 @celery.task(bind=True)
 def scenarioCollectLogs(self, arg):
-    pass
+    def get_or_create(session, model, **kwargs):
+        instance = session.query(model).filter_by(**kwargs).first()
+        if instance:
+            return instance
+        else:
+            instance = model(**kwargs)
+            session.add(instance)
+            session.commit()
+            return instance
+
     containers = subprocess.run(['docker', 'container', 'ls'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     containers = containers.split('\n')
-    for c in containers:
+    scenarios = []
+    for i, c in enumerate(containers[:-1]):
+        if i == 0:
+            continue
         c = c.split(' ')
         c_name = c[-1]
         if c_name is not None and c_name is not 'ago' and c_name is not 'NAMES':
+            if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
+                scenarios.append(c_name.split('_')[0])
+
             os.system('docker cp ' + c_name + ':/usr/local/src/merged_logs.csv logs/' + c_name + '.csv')
+
+    files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    files = files.split('\n')[:-1]
+    for s in scenarios:
+        os.system('cat /dev/null > logs/' + s + '.csv')
+
+    for f in files:
+            for s in scenarios:
+                if f.find(s) == 0:
+                    os.system('cat logs/' + f + ' >> logs/' + s + '.csv')
 
 
 @celery.on_after_configure.connect

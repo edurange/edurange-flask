@@ -8,7 +8,8 @@
               "capabilities": [
                 {
                   "add": [
-                    "NET_ADMIN"
+                    "NET_ADMIN",
+                    "SYS_PTRACE"
                   ]
                 }
               ],
