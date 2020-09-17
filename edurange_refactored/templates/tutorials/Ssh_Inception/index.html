@@ -1,0 +1,161 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>SSH Inception</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="ssh-inception"
+                  title="SSH Inception"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="NAT" duration="2">
+        <h2 is-upgraded>Welcome to SSH Inception.</h2>
+<p>10.0.0.5 is one of many private IP addresses provided.</p>
+<p>Learn how to use SSH via the command line to jump to different<br>levels.</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process" target="_blank">Understanding Secure Shell encryption</a> will help you complete this first task.</p>
+<p>IMPORTANT NOTE: Every stop of the journey after the NAT instanc eocnatins a file named &#34;secret&#34;. This contains the secret code you should enter into cloud.edurange.org for each stop along the way.</p>
+<p>To view the contents of the file:</p>
+<p class="image-container"><img alt="alt-text-here" src="img/54732dc966286634.png"></p>
+<p class="image-container"><img alt="alt-text-here" src="img/1519ef92e94c377e.png"></p>
+<p class="image-container"><img alt="alt-text-here" src="img/3583f4755f63810b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Starting Line" duration="2">
+        <h2 is-upgraded>Man Pages &amp; SSH: Basic Usage</h2>
+<p>Utilizing and deciphering man pages inside the command line will be an essential skill to complete these challenges.</p>
+<p>To find detailed instructions about each command, type &#34;man &#34; where &#34;command&#34; is the command you wish to learn more about.</p>
+<p>Try typing &#34;man ssh&#34;</p>
+<p class="image-container"><img alt="alt-text-here" src="img/add32862cb8801e7.png"></p>
+<p>... and you should see something like this.</p>
+<p>Underneath the Synopsis is a list of different flags and options you can enter with each command. A flag is a letter with a &#34;-&#34; in front. Each flag provides options to help specify the needs of your task.</p>
+<p>Some examples commands using flags:<br><img alt="alt-text-here" src="img/98cbbd92fd964461.png"></p>
+<p class="image-container"><img alt="alt-text-here" src="img/275239299772b2a7.png"></p>
+<p>Can you figure out what these commands mean?</p>
+<p>Are there any helpful flags or options on the ssh man page, perhaps relating to ports?</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="First Stop" duration="5">
+        <h2 is-upgraded>Subnets</h2>
+<p class="image-container"><img alt="alt-text-here" src="img/93634956df7dc888.png"></p>
+<p><a href="https://whatismyipaddress.com/subnet" target="_blank">What is a subnet?</a>.</p>
+<p>It looks like we need to login to a new IP in our subnet.</p>
+<p>Is there a way to perform a scan of our subnetwork to see what IP addresses are available? Maybe an nmap scan will be helpful?</p>
+<p class="image-container"><img alt="alt-text-here" src="img/18fe10d8a158f202.png"></p>
+<p class="image-container"><img alt="alt-text-here" src="img/fd1a83a238456e6.png"></p>
+<p>Again, let&#39;s look underneath the Synopsis. It looks like we can use the command nmap followed by the  target we wish to scan.</p>
+<p>What is our target? The subnet, or in other words your local network. Hint: we revealed it in the NAT instance message!</p>
+<p class="image-container"><img alt="alt-text-here" src="img/74771d6b7a4d2305.png"></p>
+<p>After this command, can you tell what you&#39;re looking at? A list of all the IP addresses in your subnet along with information about the services they provide and the status of those services.</p>
+<p>Find an IP  that&#39;s a few addresses higher than your current address. Login using SSH.</p>
+<p>(Hint: If you don&#39;t know or you forgot your current IP address, you can always type ifconfig to see your current IP)</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Second Stop" duration="6">
+        <h2 is-upgraded>Public/Private Key Encryption (RSA)</h2>
+<p>Use the list command to see all accessible files in your current directory. Check the contents of id_rsa using vim or cat. What are you looking at?</p>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/AQDCe585Lnc?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Having a foundational understanding of RSA encryption will be helpful to understand how you will get to the next stop.</p>
+<p>Let&#39;s go back to the SSH man page.</p>
+<p class="image-container"><img alt="alt-text-here" src="img/add32862cb8801e7.png"></p>
+<p>You can search a man page by typing / and then the keyword you&#39;re searching for. Typing N will take you to the next search result.</p>
+<p class="image-container"><img alt="alt-text-here" src="img/f137ec492d1eefab.png"></p>
+<p>Maybe there is a flag that will allow you to pass a file containing a private key to the next ip address?</p>
+<p>(Hint: perform another nmap scan of the subnet to find the next IP address)</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Third Stop" duration="5">
+        <h2 is-upgraded>Searching your local filesystem</h2>
+<p>There are a few different commands for searching your local file system.</p>
+<p>Grep, locate and find.</p>
+<p>It&#39;s time to skim these man pages and start some searches of the file system. There are a few different ways to find the file we&#39;re looking for.</p>
+<p>The find command is good if you are looking for a file of a particular name or file type. The grep command has many more possibilities and options to create specific searches. It&#39;s better for searching for a specific pattern or keyword.</p>
+<p>The file containing the password to the next level is clearly marked. What keywords might be in the name of that file?</p>
+<p>Ok, so you found the password and the next IP address, you used an nmap scan to find the next IP ... but when you try to login, you are blocked.</p>
+<p>Is there another IP address you can SSH from?</p>
+<p class="image-container"><img alt="alt-text-here" src="img/c25b9fc576b67166.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fourth Stop" duration="7">
+        <h2 is-upgraded>FTP</h2>
+<p>FTP, or File Transfer Protocol, is a standard way to securely move files in a network. From your current address, you will connect to this FTP server which is hosted by another IP on your subnet. Make sure to look at the FTP man page for more information.</p>
+<p>Again, scan the local network using nmap.</p>
+<ul>
+<li>When you find the address containing an open FTP server, simply type ftp and then the name of the IP Address you wish to connect with.</li>
+<li>Looks like you need a username and password to enter the FTP connection. To solve this riddle, search &#34;ftp&#34; inside the man page for nmap and read very carefully for the clue you&#39;re searching for.</li>
+<li>Inside the ftp connection, you can use the list command to see the contents of the server. Type &#34;help&#34; to view the other commands you have access to. Do any of them look useful for getting the file from 10.0.0.16 to your current address?</li>
+<li>After getting the file from the FTP server, try viewing the file contents with cat or vim. Within this file is a password you will need to run the program decryptpass.</li>
+</ul>
+<p>The decryptpass file is <a href="https://en.wikipedia.org/wiki/Encryption" target="_blank">encrypted.</a> Run the file like this:<br><img alt="alt-text-here" src="img/d28a8ca19c489b1a.png"></p>
+<p>Use the IP address you received from the FTP server and the password you recieved from running decryptpass to get to the Fifth Stop.</p>
+<p class="image-container"><img alt="alt-text-here" src="img/decryptpassword.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fifth Stop" duration="5">
+        <h2 is-upgraded>Can you decode betcha_cant_read_me?</h2>
+<p>Start by looking at the helpful commands. There&#39;s one you haven&#39;t seen in this excercise before.</p>
+<p>Use that command to perform an in depth search of the man pages using a keyword that will help you decode the file.</p>
+<p>(HINT: try a few of the different commands returned in your search. Read their man pages carefully and see if any flags or options will be helpful. You will know you successfully decoded betcha_cant_read_me when you see the directions to the next stop printed on your console.)</p>
+<p class="image-container"><img alt="alt-text-here" src="img/62321fa3a84c57d.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Satan&#39;s Palace" duration="2">
+        <h2 is-upgraded>Escape Satan&#39;s Palace to Become the Ultimate SSH Master</h2>
+<p>During your nmap scans, do you remember seeing any hosts that looked .... sinister?</p>
+<p>If you don&#39;t recall, perform another scan. If you&#39;re brave, try using ssh and with a port specification to enter the palace.</p>
+<p>Let&#39;s go back to the SSH man page.</p>
+<p class="image-container"><img alt="alt-text-here" src="img/add32862cb8801e7.png"></p>
+<p>Look carefully at all the flags and options under Synopsis. The last two are pertinent to our task.</p>
+<p>This is a good opportunity to prove you understand how to use flags and options found on the man pages.</p>
+<p class="image-container"><img alt="alt-text-here" src="img/3583f4755f63810b.png"></p>
+<p>So you found the secret..... It&#39;s gibberish. It doesn&#39;t make any sense.<br>Perhaps we have to decode again?</p>
+<p>Let&#39;s consider a classic form of ciphering.</p>
+<p><a href="https://en.wikipedia.org/wiki/Caesar_cipher" target="_blank">Caesear Cipher</a></p>
+<p>It would be an awful lot of work to figure out what rotation this has been encrypted with. Let&#39;s just use one of the many decyphering tools online.</p>
+<p><a href="https://cryptii.com/pipes/caesar-cipher" target="_blank">Try this one.</a></p>
+<p>Once your SSH Master title has been earned, submit your proof inside your browser opened to cloud.edurange.org!</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

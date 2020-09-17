@@ -6,7 +6,7 @@ import sys
 from celery import Celery
 from flask import Flask, render_template
 
-from edurange_refactored import commands, public, user
+from edurange_refactored import commands, public, user, tutorials
 from edurange_refactored.extensions import (
     bcrypt,
     cache,
@@ -55,6 +55,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(tutorials.views.blueprint)
     return None
 
 

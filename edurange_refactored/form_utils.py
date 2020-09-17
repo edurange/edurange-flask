@@ -1,6 +1,6 @@
 import os
 
-from flask import flash, request, session
+from flask import flash, request, session, current_app
 from flask_login import current_user
 
 from edurange_refactored.extensions import db
@@ -9,7 +9,8 @@ from edurange_refactored.user.forms import (
     addUsersForm,
     manageInstructorForm,
     modScenarioForm,
-    scenarioResponseForm
+    scenarioResponseForm,
+    deleteGroupForm
 )
 
 from . import tasks
@@ -32,6 +33,7 @@ def process_request(form):  # Input must be request.form
         "manageInstructorForm":     ["uName", "promote"],
         "addUsersForm":             ["add", "groups", "uids"],
         "scenarioResponseForm":     ["response", "scenario", "question"]
+        "deleteGroupForm":      ["group_name", "delete"]
     }
 
 
@@ -53,9 +55,10 @@ def process_request(form):  # Input must be request.form
         "modScenarioForm":          process_scenarioModder,
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
-        "manageInstructorForm":    process_manInst,
+        "manageInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
-        "scenarioResponseForm":     process_scenarioResponse
+        "scenarioResponseForm":     process_scenarioResponse,
+        "deleteGroupForm":          process_groupEraser
     }
     return process_switch[f]()
 
@@ -208,3 +211,16 @@ def process_scenarioResponse():
         # get attempt number from somewhere
         att = getAttempt(uid, sid, qnum)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
+
+
+def process_groupEraser():
+    db_ses = db.session
+    dG = deleteGroupForm()
+    if dG.validate_on_submit():
+        gname = dG.group_name.data
+        grp = db_ses.query(StudentGroups).filter(StudentGroups.name == gname).first()
+        grp.delete()
+        flash("Successfully deleted group {0}".format(gname))
+    else:
+        flash_errors(dG)
+

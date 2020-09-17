@@ -1,0 +1,28 @@
+<!--|-->
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>Tutorials for Scenarios</h1>
+    </div>
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th> Scenario </th>
+            <th> Description </th>
+            <th> Codelab Tutorial </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in scenarios %}
+        <tr>
+            <td> {{ s.name }} </td>
+            <td> {{ s.description }} </td>
+            <td> <a class="btn btn-dark" href="{{ '/tutorials/%s#0' % (s.name) }}"> {{ s.name }} </a> </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

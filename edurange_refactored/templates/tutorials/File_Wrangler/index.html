@@ -1,0 +1,223 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>File Wrangler</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="file-wrangler"
+                  title="File Wrangler"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="About" duration="1">
+        <p>File Wrangler teaches the basics of files and directories in the Linux command line.<br>You will use basic navigation commands to view files and directories and to move around between  directories. You will also use commands to create new files and directories and commands for     renaming, copying, moving and deleting them. Finally, you will use commands to view and change   file permissions.</p>
+      </google-codelab-step>
+    
+      <google-codelab-step label="Background" duration="1">
+        <p>Moving between directories and manipulating files and directories are essential foundations for  intermediate and advanced security exercises. This exercise will also introduce you to key       commands for managing file and directory-level access control in Linux. The man pages for given  commands can help when you are unsure of how to solve a challenge.</p>
+      </google-codelab-step>
+    
+      <google-codelab-step label="Learning Objectives" duration="1">
+        <ul>
+          <li>print the current working directory</li>
+          <li>list the contents of a directory</li>
+          <li>view the contents of a file</li>
+          <li>move to another directory</li>
+          <li>obtain information about directory and file type</li>
+          <li>look up the manual page for a command</li>
+          <li>manipulate files (create, move, and copy)</li>
+          <li>view permissions for a file or directory</li>
+          <li>change permissions for a file or directory</li>
+        </ul>
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instructions" duration="1">
+        <p>Connect to the VM via your instructor&#39;s directions, or as displayed on you EduRange account.<br>Instructions will be displayed in terminal upon logging in. Work on each task and answer the<br>EduRange questions as directed in the task instructions.</p>
+      </google-codelab-step>
+    
+      <!--google-codelab-step label="Dicussion Questions" duration="15">
+      </google-codelab-step-->
+
+      <google-codelab-step label="Task 1" duration="1">
+        <p>The pwd command will give you the current working directory. This tells you where you are in the Linux file system.</p>
+
+        <p>Steps:</p>
+        <ol>
+          <li>Type pwd into the prompt.</li>
+          <li>Answer question 1 in EDURange.</li>
+          <!--li> Go to the next task by typing the following into the prompt: cat task2</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 2" duration="1">
+        <p>The man command outputs the manual entry for a given command. The format is as follows:</p>
+        <code>man <command></code>
+
+        <p>Steps:</p>
+        <ol>
+          <li>View the manual entry for the pwd command by replacing <command> with pwd. (Note that you need to type q to get out of the manual!)</li>
+          <li>Answer question 2 in EDURange.</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task3</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 3" duration="1">
+        <p>Now that we know where we are, we will want to know what is in this directory. For a simple list of files and directories, you would use the list command.</p>
+
+        <p>Steps:</p>
+        <ol>
+          <li>Type ls into the prompt for a list of files and directories.</li>
+          <li>Answer question 3 in EDURange.</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task4</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 4" duration="2">
+        <p>Steps</p>
+        <ol>
+          <li><p>View the manual entry for the ls command. Notice in the SYNOPSIS, the format of the command is as follows:</p>
+            <code>ls [OPTION]... [FILE]...</code>
+            <p>Anything in square brackets is optional. In this case, we can use ls along with one of the options listed with - or -- and we could add a complete file path.</p>
+          </li>
+          <li>Scroll through to manual to find the option that will provide a long listing format for the ls command.</li>
+          <li>Answer question 4 in EDURange</li>
+          <li>Try this command with the option you found. Don’t forget to include the - or --! You can immediately tell whether the item is a file or a directory by the very first character provided in the output. Files are denoted by a - and directories are denoted by a d.</li>
+          <li>Answer question 5 in EDURange</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task5</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 5" duration="1">
+        <p>The cd command allows you to change into another directory.  The format is as follows:</p>
+        <code>cd <directory name></code>
+
+        <p>Steps:</p>
+        <ol>
+          <li>Change into the view directory and run the list (ls) command to view the files in this directory.</li>
+          <li>Answer question 6 in EDURange</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task6</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 6" duration="1">
+        <p>Hidden files begin with a '.' and are not displayed unless you specify an option with the ls command.</p>
+
+        <p>Steps:</p>
+        <ol>
+          <li>View the manual entry for the ls command again.</li>
+          <li>Scroll through to manual to find the option that will not ignore files that start with a '.'.</li>
+          <li>Answer question 7 in EDURange</li>
+          <li>Try this command with the option you found. You should see any hidden files or folders (those beginning with a '.').</li>
+          <li>Answer question 8 in EDURange</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task7</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 7" duration="1">
+        <p>To go back a directory, you would type the following command:</p>
+        <code>cd ..</code>
+        <p>The command pwd, will show you where you are in the Linux file system.</p>
+
+        <p>Steps:</p>
+        <ol>
+          <li>Type cd .. into the prompt.</li>
+          <li>Type pwd into the prompt. You should see that you are back in the home directory for the account you log in with.</li>
+          <li>Answer question 9 in EDURange</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task8</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 8" duration="1">
+        <p>You can chain options for a single command. So, for example, you could include both the options for long listing and listing hidden files by simply adding each option after the ls command.</p>
+
+        <p>Steps:</p>
+        <ol>
+          <li>Type this chained command now. You should now see all files and folders, including those that are hidden, and all of the details about them.</li>
+          <li>Answer question 10 in EDURange</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task9</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 9" duration="1">
+        <p>Steps:</p>
+        <ol>
+          <li>Change into the manipulate directory and run the list (ls) command to view the files in this directory.</li>
+          <li><p>Renaming files</p>
+            <ul>
+              <li>a. Look up the manual entry for the mv command</li>
+              <li>b. Use the mv command to rename file1.txt to renamed_file1.txt. Be sure to be exact!</li>
+            </ul>
+          </li>
+          <li><p>Copying files</p>
+            <ul>
+              <li>a. Look up the manual entry for the cp command.</li>
+              <li>b. Use the cp command to copy file2.txt to copied_file2.txt.</li>
+            </ul>
+          </li>
+          <li>Type the following into the prompt for the flag: sudo manflag</li>
+          <li>Answer question 11 in EDURange</li>
+          <li>Go back to your home directory, and then go to the permissions directory.</li>
+          <!--li>Go to the next task by typing the following into the prompt: cat task10</li-->
+        </ol>
+      </google-codelab-step>
+
+      <google-codelab-step label="Task 10" duration="1">
+        <p>Steps:</p>
+        <ol>
+          <li>run the list (ls) command to view the files in this directory.</li>
+          <li>Read the following resource on Linux file permissions: http://linuxcommand.org/lc3_lts0090.php</li>
+          <li>Copy the perm1.txt to copied_perm1.txt</li>
+          <li><p>Changing permissions</p>
+            <ul>
+              <li>a. Look up the manual entry for the chmod command.</li>
+              <li><p>b. Use the chmod command to change the permissions of copied_perm1.txt to:</p>
+                <ul>
+                  <li>i.   Owner = Read + Write</li>
+                  <li>ii.  Group = Read + Write</li>
+                  <li>iii. User  = No permissions</li>
+                </ul>
+              </li>
+              <li>c. Copy the perm2.txt to copied_perm2.txt</li>
+              <li><p>d. Use the chmod command to change the permissions of copied_perm2.txt to:</p>
+                <ul>
+                  <li>i.   Owner = Read + Write + Execute</li>
+                  <li>ii.  Group = Read + Write</li>
+                  <li>iii. User  = Read only</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Type the following into the terminal for the flag: sudo perflag</li>
+          <li>Answer question 12 in EDURange</li>
+        </ol>
+
+        <p>Exercise Complete!</p>
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
