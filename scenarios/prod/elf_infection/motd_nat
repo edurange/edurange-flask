@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+
+ELF ELF ELF ELF      ELF                  ELF ELF ELF ELF 
+ELF		     ELF                  ELF
+ELF                  ELF                  ELF
+ELF ELF ELF ELF      ELF                  ELF ELF ELF
+ELF                  ELF                  ELF
+ELF                  ELF                  ELF
+ELF ELF ELF ELF      ELF ELF ELF ELF      ELF
+
+It seems like something's wrong with a few of your most common commands...
+
+Try to investigate what's really happening when you use 'cat', 'ls', 'pwd', 'whoami', and 'date'
+================================================================================================
+EOF
+
+echo 'cat /etc/motd' >> /etc/bash.bashrc

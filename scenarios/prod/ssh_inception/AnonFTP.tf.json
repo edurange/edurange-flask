@@ -19,19 +19,23 @@
                             "connection": [
                                 {
                                     "host": "${self.ports[0].ip}",
-                                    "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
+                                    "password": "root",
                                     "port": "${self.ports[0].external}",
                                     "type": "ssh",
                                     "user": "root"
                                 }
                             ],
                             "hostname": "AnonFTP",
-                            "image": "sanivo/edurange_alpine:latest",
+                            "image": "sanivo/edurange-ubuntu-vsftpd:16.04",
                             "name": "SNAME_AnonFTP",
                             "networks_advanced": [
                                 {
                                     "ipv4_address": "OCTET.0.0.14",
                                     "name": "SNAME_PLAYER"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.1.14",
+                                    "name": "SNAME_NAT"
                                 }
                             ],
                             "ports": [
@@ -44,7 +48,9 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student"
+                                                "iptables -A INPUT -p tcp --dport 21 -j ACCEPT",
+                                                "iptables -A OUTPUT -p tcp --sport 20 -j ACCEPT",
+                                                "service vsftpd start"
                                             ]
                                         }
                                     ]
@@ -55,4 +61,24 @@
                     ]
                 }
             ]
+        }],
+    "locals": [
+        {
+            "SNAME_AnonFTP_extern": "HIDDEN"
         }
+    ],
+    "output": [
+        {
+            "SNAME_AnonFTP": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_AnonFTP_extern])}",
+                            "name": "SNAME_AnonFTP"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

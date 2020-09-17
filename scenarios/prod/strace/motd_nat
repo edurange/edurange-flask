@@ -1,4 +1,8 @@
+#!/bin/bash
 
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
                  /\\\
   /\\\\\\\\\\  /\\\\\\\\\\\  /\\/\\\\\\\   /\\\\\\\\\        /\\\\\\\\     /\\\\\\\\
   \/\\\//////  \////\\\////  \/\\\/////\\\ \////////\\\     /\\\//////    /\\\/////\\\
@@ -8,4 +12,6 @@
       \//////////      \/////    \///           \////////\//     \////////    \//////////
 
 Learn about linux system calls and how to perform dynamic analysis of a binary using strace
+EOF
 
+echo 'cat /etc/motd' >> /etc/bash.bashrc

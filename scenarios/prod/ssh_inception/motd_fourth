@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+
+ /$$$$$$$$                              /$$     /$$              /$$$$$$   /$$                        
+| $$_____/                             | $$    | $$             /$$__  $$ | $$                        
+| $$     /$$$$$$  /$$   /$$  /$$$$$$  /$$$$$$  | $$$$$$$       | $$  \\__//$$$$$$    /$$$$$$   /$$$$$$ 
+| $$$$$ /$$__  $$| $$  | $$ /$$__  $$|_  $$_/  | $$__  $$      |  $$$$$$|_  $$_/   /$$__  $$ /$$__  $$
+| $$__/| $$  \\ $$| $$  | $$| $$  \\__/  | $$    | $$  \\ $$       \\____  $$ | $$    | $$  \\ $$| $$  \\ $$
+| $$   | $$  | $$| $$  | $$| $$        | $$ /$$| $$  | $$       /$$  \\ $$ | $$ /$$| $$  | $$| $$  | $$
+| $$   |  $$$$$$/|  $$$$$$/| $$        |  $$$$/| $$  | $$      |  $$$$$$/ |  $$$$/|  $$$$$$/| $$$$$$$/
+|__/    \\______/  \\______/ |__/         \\____/ |__/  |__/       \\______/   \\____/  \\______/ | $$____/ 
+                                                                                            | $$      
+                                                                                            | $$      
+                                                                                            |__/      
+
+
+****************************************************************************************************
+"It's been six hours. Dreams move one... one-hundredth the speed of reality, and dog time is 
+one-seventh human time. So y'know, every day here is like a minute. It's like Inception, Morty, so 
+if it's confusing and stupid, then so is everyone's favorite movie."
+
+There is loose ftp server on the network. Find some useful credentials there to to help
+decrypt your next password. Read the ftp man page!
+
+(The file on the ftp server will give you credentials to use when running decryptpass. The files
+in this directory will not help you get to the ftp server.)
+
+Helpful commands: nmap, ftp - ls, man
+
+****************************************************************************************************
+EOF

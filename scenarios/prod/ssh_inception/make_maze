@@ -1,0 +1,22 @@
+#!/bin/bash
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	cd /home/$line
+	for i in {1..100}; do
+    		mkdir dir$i
+   	 	cd dir$i
+    		mySeedNumber=$$`date +%N`; # seed will be the pid + nanoseconds
+    		myRandomString=$( echo $mySeedNumber | md5sum | md5sum );
+    		# create our actual random string
+    		myRandomResult="${myRandomString:2:100}"
+    		echo $myRandomResult > file.txt
+    		cd ..
+    		chown -R $line:$line dir$i
+  	done
+  	cd dir`shuf -i 1-100 -n 1`
+  	echo "the password is 7035efa5, and the last octet of the ip address is 16" > file.txt
+  	chmod 400 file.txt
+  	chown $line:$line file.txt
+done</usr/local/src/user_names.txt

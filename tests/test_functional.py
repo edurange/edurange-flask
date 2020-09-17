@@ -5,7 +5,7 @@ See: http://webtest.readthedocs.org/
 """
 from flask import url_for
 
-from edurange_refactored.user.models import StudentGroups, User
+from edurange_refactored.user.models import StudentGroups, User, GroupUsers
 
 from .factories import GroupFactory, UserFactory
 
@@ -126,11 +126,52 @@ class TestRegistering:
 class TestGroupManagement:
     def test_can_create_group(self, admin, testapp):
         """Can create a group"""
+        # Test group creation without ajax
         res = testapp.get(url_for("dashboard.admin"))
         old_count = len(StudentGroups.query.all())
         form = res.forms["createGroup"]
-        form["name"] = "Test Group"
+        form["name"] = "Test Group 1"
         form["size"] = 0
-        res = form.submit().follow()
+        res = form.submit(name="create")
         assert res.status_code == 200
         assert len(StudentGroups.query.all()) == old_count + 1
+        assert "*Save these pairs" not in res
+
+        # Test group creation with ajax
+        old_count = len(StudentGroups.query.all())
+        data = {"name": "Test Group 2", "create": "Create", "size": 0} # data packaged as it is in javascript on admin page
+        headers = [('X-Requested-With', 'XMLHttpRequest')] # headers for ajax request
+        res = testapp.post(url_for("dashboard.admin"), data, headers)
+        assert res.status_code == 200
+        assert len(StudentGroups.query.all()) == old_count + 1
+        assert "*Save these pairs" not in res
+
+    def test_can_generate_group(self, admin, testapp):
+        """Can generate group of x temporary accounts"""
+        # Test group generation without ajax
+        res = testapp.get(url_for("dashboard.admin"))
+        old_count = len(StudentGroups.query.all())
+        form = res.forms["createGroup"]
+        form["name"] = "Test Group 1"
+        form[None] = True # check box for group generation
+        form["size"] = 5  # generate group of size 5
+        res = form.submit(name="create")
+        assert res.status_code == 200
+        assert len(StudentGroups.query.all()) == old_count + 1
+        gid = StudentGroups.query.filter_by(name='Test Group 1').first()
+        gid = gid.id
+        assert len(GroupUsers.query.filter_by(group_id=gid).all()) == 5
+        assert "*Save these pairs" in res
+
+        # Test group generation with ajax
+        old_count = len(StudentGroups.query.all())
+        data = {"name": "Test Group 2", "create": "Create", "size": 10}
+        headers = [('X-Requested-With', 'XMLHttpRequest')]
+        res = testapp.post(url_for("dashboard.admin"), data, headers)
+        assert res.status_code == 200
+        assert len(StudentGroups.query.all()) == old_count + 1
+        gid = StudentGroups.query.filter_by(name='Test Group 2').first()
+        gid = gid.id
+        assert len(GroupUsers.query.filter_by(group_id=gid).all()) == 10
+        assert "*Save these pairs" in res
+

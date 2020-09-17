@@ -6,14 +6,20 @@
 				"iamfrustrated"
 			],
 			"system_files": [
-				"install"
+				"install",
+				"motd_nat",
+				"tty_setup"
 			],
 			"user_files": [
 				"setup_player",
 				"codes",
 				"files",
-				"motd",
-				"python"
+				"python",
+				"analyze.py",
+				"analyze_cyclic.pl",
+				"makeTsv.py",
+				"start_ttylog.sh",
+				"ttylog"
 			]
 		}]
 	}

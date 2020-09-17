@@ -124,3 +124,12 @@ class Responses(UserMixin, SurrogatePK, Model):
     attempt = Column(db.Integer, default=0, nullable=False)
     # learning objective field?
 
+class BashHistory(UserMixin, SurrogatePK, Model):
+    """Bash Histories, associated with users and scenarios"""
+
+    __tablename__ = "bash_history"
+    user_id = reference_col("users", nullable=False)
+    user = relationship("User", backref="bash_history")
+    scenario_id = reference_col("scenarios", nullable=False)
+    scenario = relationship("Scenarios", backref="bash_history")
+    response_time = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)

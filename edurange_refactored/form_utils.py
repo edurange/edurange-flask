@@ -22,7 +22,9 @@ from .utils import flash_errors, responseCheck, getAttempt
 def process_request(form):  # Input must be request.form
     dataKeys = []
     for k in form.keys():
-        dataKeys.append(k)
+        if k != "csrf_token":       # csrf protection is enabled in standard application, only disabled in test app,
+            dataKeys.append(k)      #  so even if csrf_token is not a field in a standard request, it will still be rendered invalid
+
 
     form_switch = {
         "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
@@ -33,6 +35,7 @@ def process_request(form):  # Input must be request.form
         "scenarioResponseForm":     ["csrf_token", "scenario", "question", "response", "submit"],
         "deleteGroupForm":          ["csrf_token", "group_name", "delete"]
     }
+
 
     switchVals = []
     for v in form_switch.values():

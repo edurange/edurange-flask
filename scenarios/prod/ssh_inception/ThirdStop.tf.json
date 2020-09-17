@@ -8,7 +8,8 @@
                             "capabilities": [
                                 {
                                     "add": [
-                                        "NET_ADMIN"
+                                        "NET_ADMIN",
+                                        "SYS_PTRACE"
                                     ]
                                 }
                             ],
@@ -19,14 +20,14 @@
                             "connection": [
                                 {
                                     "host": "${self.ports[0].ip}",
-                                    "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
+                                    "password": "root",
                                     "port": "${self.ports[0].external}",
                                     "type": "ssh",
                                     "user": "root"
                                 }
                             ],
                             "hostname": "ThirdStop",
-                            "image": "sanivo/edurange_alpine:latest",
+                            "image": "sanivo/edurange-ubuntu-sshd:16.04",
                             "name": "SNAME_ThirdStop",
                             "networks_advanced": [
                                 {
@@ -48,7 +49,9 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-                                                "echo -e 'passwordfoo123\npasswordfoo123' | adduser student"
+                                                "USERS",
+                                                "EXECS",
+                                                "service ssh reload"
                                             ]
                                         }
                                     ]

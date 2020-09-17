@@ -80,3 +80,5 @@ npm-debug.log
 dump.rdb
 
 celerybeat-schedule
+
+logs/
