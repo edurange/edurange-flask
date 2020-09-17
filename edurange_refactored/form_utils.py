@@ -21,21 +21,21 @@ from .utils import flash_errors, responseCheck, getAttempt
 
 def process_request(form):  # Input must be request.form
     dataKeys = []
+    # for k in form.keys():
+    #    dataKeys.append(k)
     for k in form.keys():
-        if k != "csrf_token":       # csrf protection is enabled in standard application, only disabled in test app,
-            dataKeys.append(k)      #  so even if csrf_token is not a field in a standard request, it will still be rendered invalid
-
+        if k != "csrf_token":  # csrf protection is enabled in standard application, only disabled in test app,
+            dataKeys.append(k)  # so even if csrf_token is not a field in a standard request, it will still be rendered invalid
 
     form_switch = {
-        "modScenarioForm":          ["csrf_token", "sid", "mod_scenario"],
-        "startScenario":            ["csrf_token", "start_scenario", "stop_scenario"],
-        "GroupForm":                ["csrf_token", "name", "create", "size"],
-        "manageInstructorForm":     ["csrf_token", "uName", "promote"],
-        "addUsersForm":             ["csrf_token", "add", "groups", "uids"],
-        "scenarioResponseForm":     ["csrf_token", "scenario", "question", "response", "submit"],
-        "deleteGroupForm":          ["csrf_token", "group_name", "delete"]
+        "modScenarioForm":          ["sid", "mod_scenario"],  # "csrf_token",
+        "startScenario":            ["start_scenario", "stop_scenario"],  # "csrf_token",
+        "GroupForm":                ["name", "create", "size"],  # "csrf_token",
+        "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
+        "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
+        "scenarioResponseForm":     ["scenario", "question", "response", "submit"],  # "csrf_token",
+        "deleteGroupForm":          ["group_name", "delete"]  # "csrf_token",
     }
-
 
     switchVals = []
     for v in form_switch.values():
