@@ -32,8 +32,8 @@ def process_request(form):  # Input must be request.form
         "GroupForm":                ["name", "create", "size"],
         "manageInstructorForm":     ["uName", "promote"],
         "addUsersForm":             ["add", "groups", "uids"],
-        "scenarioResponseForm":     ["response", "scenario", "question"]
-        "deleteGroupForm":      ["group_name", "delete"]
+        "scenarioResponseForm":     ["response", "scenario", "question"],
+        "deleteGroupForm":          ["group_name", "delete"]
     }
 
 
