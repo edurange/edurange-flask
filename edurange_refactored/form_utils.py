@@ -203,11 +203,11 @@ def process_scenarioResponse():
     sR = scenarioResponseForm()
     if sR.validate_on_submit():
         sid = sR.scenario.data
-        qnum = sR.question.data
+        qnum = int(sR.question.data)
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(qnum, sid, resp)
+        gotIt = responseCheck(qnum, sid, resp, uid)
         # get attempt number from somewhere
         att = getAttempt(uid, sid, qnum)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)

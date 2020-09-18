@@ -46,6 +46,8 @@ from ..utils import (
     score,
     readCSV,
     formatCSV,
+    recentCorrect2,
+    tester,
     displayCorrect
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
@@ -148,10 +150,10 @@ def student_scenario(i):
     if checkEnr(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
-            #db_ses = db.session
-            #query = db_ses.query(User.id)\
+            # db_ses = db.session
+            # query = db_ses.query(User.id)\
             #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            #own_id = session.get("_user_id")
+            # own_id = session.get("_user_id")
             addresses = identify_state(s_name, status)
             aList = displayCorrect(s_name, u_name)
             example = None
@@ -301,6 +303,7 @@ def scenariosInfo(i):
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
+            test = tester()
             try:
                 rc = formatCSV(readCSV(i))
             except FileNotFoundError:
@@ -318,6 +321,7 @@ def scenariosInfo(i):
                                    guide=guide,
                                    questions=questions,
                                    resp=resp,
+                                   test=test,
                                    rc=rc)
         else:
             return abort(404)
@@ -341,6 +345,7 @@ def scenarioResponse(i, r):
             scr = score(getScore(u_id, aNum, query), questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
+                                   i=i,
                                    u_id=u_id,
                                    uName=uName,
                                    s_id=s_id,
