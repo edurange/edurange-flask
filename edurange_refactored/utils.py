@@ -589,13 +589,6 @@ def recentCorrect(uid, qnum):
     return recent
 
 
-def recentCorrect2(uid, qnum):
-    db_ses = db.session
-    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.question == qnum) \
-        .order_by(Responses.response_time.desc()).first()
-    return recent
-
-
 def displayCorrect(sName, uName):
     db_ses = db.session
     uid = db_ses.query(User.id).filter(User.username == uName).first()

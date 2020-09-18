@@ -46,8 +46,6 @@ from ..utils import (
     score,
     readCSV,
     formatCSV,
-    recentCorrect2,
-    tester,
     displayCorrect
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
@@ -303,7 +301,6 @@ def scenariosInfo(i):
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
-            test = tester()
             try:
                 rc = formatCSV(readCSV(i))
             except FileNotFoundError:
@@ -321,7 +318,6 @@ def scenariosInfo(i):
                                    guide=guide,
                                    questions=questions,
                                    resp=resp,
-                                   test=test,
                                    rc=rc)
         else:
             return abort(404)
