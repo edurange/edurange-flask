@@ -363,7 +363,6 @@ def responseCheck(qnum, sid, resp, uid):
         if order == qnum:
             if len(text['Values']) == 1:
                 ans = str(text['Values'][0]['Value'])
-                current_app.logger.info("### respCheck ans {0} is type {1}".format(ans, type(ans)))
                 if "${" in ans:
                     ans = bashAnswer(sid, uid, ans)
                 if resp == ans:
