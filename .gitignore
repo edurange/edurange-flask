@@ -82,3 +82,5 @@ dump.rdb
 celerybeat-schedule
 
 logs/
+
+celery.log
