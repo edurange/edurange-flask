@@ -10,8 +10,10 @@ from os import environ
 import yaml
 from celery import Celery
 from celery.utils.log import get_task_logger
-from flask import current_app, flash, render_template, session
+from flask import current_app, flash, render_template
 from flask_mail import Mail, Message
+import time
+from datetime import datetime
 
 from edurange_refactored.scenario_json import find_and_copy_template, write_resource, \
     adjust_network
@@ -19,6 +21,8 @@ from edurange_refactored.scenario_utils import (
     gather_files,
 )
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
+
+
 
 logger = get_task_logger(__name__)
 
@@ -308,6 +312,10 @@ def scenarioTimeoutWarningEmail(self, arg):
 
 @celery.task(bind=True)
 def scenarioCollectLogs(self, arg):
+    from edurange_refactored.utils import readCSV_by_name, formatCSV
+    from edurange_refactored.extensions import db
+    from edurange_refactored.user.models import BashHistory
+
     def get_or_create(session, model, **kwargs):
         instance = session.query(model).filter_by(**kwargs).first()
         if instance:
@@ -340,7 +348,28 @@ def scenarioCollectLogs(self, arg):
     for f in files:
             for s in scenarios:
                 if f.find(s) == 0:
-                    os.system('cat logs/' + f + ' >> logs/' + s + '.csv')
+                    os.system('cat logs/' + f + ' >> data/tmp/' + s + '/' + s + '-history.csv')
+
+    session = db.session
+    for s in scenarios:
+        data = formatCSV(readCSV_by_name(s))
+
+        for line in data:
+            line[2] = datetime.fromtimestamp(int(line[2]))
+
+            get_or_create(session=session,
+                          model=BashHistory,
+                          scenario_type=line[1],
+                          timestamp=line[2],
+                          current_directory=line[3],
+                          input=line[4],
+                          output=line[5],
+                          prompt=line[6]
+            )
+
+
+
+
 
 
 @celery.on_after_configure.connect

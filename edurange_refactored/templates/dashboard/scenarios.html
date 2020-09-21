@@ -3,7 +3,6 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="container">
-        <h1>Welcome Instructor {{ current_user.username }}</h1>
 
         <div class="row">
             <div class="col-sm-6" align="left">
@@ -20,7 +19,7 @@
 
 
             <div id="body">
-            <div class="container container-fluid" id="scenarios"><!--scenarios table-->
+            <div class="container" id="scenarios"><!--scenarios table-->
 				<table class="table" id="s_table">
 					<caption>List of scenarios</caption>
 					<thead class="thead-dark">
@@ -52,21 +51,23 @@
                                 {{ super() }}
                             {% endif %} </td>
                             <td>
+                                <div class="btn-group">
                             <form id="startScenario" method="POST" action="" role="">
                                 {{ scenarioModder.csrf_token }}
                                 <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                <input name="mod_scenario" class="btn btn-success" type="submit" value="Start">
+                                <input name="mod_scenario" class="btn btn-success btn-group" type="submit" value="Start">
                             </form>
                                 <form id="stopScenario" method="POST" action="" role="">
                                     {{ scenarioModder.csrf_token }}
                                     <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-dark" type="submit" value="Stop">
+                                    <input name="mod_scenario" class="btn btn-dark btn-group" type="submit" value="Stop">
                                 </form>
                                 <form id="destroyScenario" method="POST" action="" role="">
                                     {{ scenarioModder.csrf_token }}
                                     <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-danger" type="submit" value="Destroy">
+                                    <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
                                 </form>
+                                </div>
                             </td>
 						</tr>
 						{% endfor %}
