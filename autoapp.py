@@ -5,6 +5,7 @@ from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db
 from edurange_refactored.utils import generateNavElements
 import os
+from datetime import datetime
 
 from flask import session
 from flask_login import current_user
@@ -99,5 +100,9 @@ def format_datetime(value, format="%d %b %Y %I:%M %p"):
         return ""
     return value.strftime(format)
 
+def timectime(s):
+    return datetime.fromtimestamp(int(s))
+
 
 app.jinja_env.filters["formatdatetime"] = format_datetime
+app.jinja_env.filters["ctime"] = timectime

@@ -49,6 +49,7 @@
                   "remote-exec": [
                     {
                       "inline": [
+                        "apt update",
                         "apt install -y gcc libc-dev strace",
                         "USERS",
                         "EXECS"
