@@ -359,7 +359,8 @@ def scenarioCollectLogs(self, arg):
 
             get_or_create(session=session,
                           model=BashHistory,
-                          scenario_type=line[1],
+                          scenario_name=s,
+                          container_name=line[1],
                           timestamp=line[2],
                           current_directory=line[3],
                           input=line[4],

@@ -316,7 +316,6 @@ def tempMaker(d, i):
     desc = getDesc(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
-    current_app.logger.info(questions) #--
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
