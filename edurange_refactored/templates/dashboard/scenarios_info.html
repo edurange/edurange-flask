@@ -114,13 +114,12 @@
                         <div id="collapseCmdHist" class="collapse" aria-labelledby="headingCmdHist">
                             <div class="card-body">
                                 <!--command history table stuff-->
-                                <div class="col" style="height:300px;overflow-y:scroll;">
-                                    <div>
+                                <div class="col" style="height:600px;overflow-y:auto;">
+
                                         <table class="table">
                                             <thead class="thead-dark">
                                             <tr>
-                                                <th> CMBEGIN </th>
-                                                <th> Scenario </th>
+                                                <th> Hostname </th>
                                                 <th> Timestamp </th>
                                                 <th> Working Directory </th>
                                                 <th> Command </th>
@@ -131,18 +130,17 @@
                                             <tbody>
                                             {% for entry in rc %}
                                             <tr>
-                                                <td> {{ entry[0] }} </td> {# CMBEGIN #}
                                                 <td> {{ entry[1] }} </td> {# scenario #}
                                                 <td> {{ entry[2] }} </td> {# time #}
                                                 <td> {{ entry[3] }} </td> {# dir #}
                                                 <td> {{ entry[4] }} </td> {# cmd #}
-                                                <td> {{ entry[5] }} </td> {# out #}
+                                                <td> <div style="width:100%; max-height:50px; overflow:auto"> {{ entry[5] }}</div> </td> {# out #}
                                                 <td> {{ entry[6] }} </td> {# usr #}
                                             </tr>
                                             {% endfor %}
                                             </tbody>
                                         </table>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

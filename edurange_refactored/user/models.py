@@ -129,7 +129,8 @@ class BashHistory(UserMixin, SurrogatePK, Model):
 
     __tablename__ = "bash_history"
 
-    scenario_type = Column(db.String(40), nullable=False, unique=False)
+    scenario_name = Column(db.String(40), unique=False, nullable=False)
+    container_name = Column(db.String(40), nullable=False, unique=False)
     timestamp = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     current_directory = Column(db.String(40), nullable=False, unique=False)
     input = Column(db.String(250), nullable=False, unique=False)
