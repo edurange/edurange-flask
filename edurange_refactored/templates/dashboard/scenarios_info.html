@@ -131,7 +131,7 @@
                                             {% for entry in rc %}
                                             <tr>
                                                 <td> {{ entry[1] }} </td> {# scenario #}
-                                                <td> {{ entry[2] }} </td> {# time #}
+                                                <td> {{ entry[2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td> {# time #}
                                                 <td> {{ entry[3] }} </td> {# dir #}
                                                 <td> {{ entry[4] }} </td> {# cmd #}
                                                 <td> <div style="width:100%; max-height:50px; overflow:auto"> {{ entry[5] }}</div> </td> {# out #}
