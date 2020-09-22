@@ -9,6 +9,7 @@ from flask import (
     request,
     session,
     url_for,
+    current_app
 )
 from flask_login import login_required
 
@@ -44,6 +45,7 @@ from ..utils import (
     getScore,
     score,
     readCSV,
+    displayCorrect
     formatCSV, check_privs
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
@@ -146,38 +148,54 @@ def student_scenario(i):
     if checkEnr(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
-            #db_ses = db.session
-            #query = db_ses.query(User.id)\
+            # db_ses = db.session
+            # query = db_ses.query(User.id)\
             #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            #own_id = session.get("_user_id")
-
+            # own_id = session.get("_user_id")
             addresses = identify_state(s_name, status)
-            return render_template("dashboard/student_scenario.html",
-                                    id = i,
-                                   status=status,
-                                   owner=owner,
-                                   desc=desc,
-                                   s_type=s_type,
-                                   s_name=s_name,
-                                   u_name=u_name,
-                                   pw=pw,
-                                   add=addresses,
-                                   guide=guide,
-                                   questions=questions)
+            aList = displayCorrect(s_name, u_name)
+            example = None
+            if request.method == "GET":
+                scenarioResponder = scenarioResponseForm()
+                return render_template("dashboard/student_scenario.html",
+                                       id=i,
+                                       status=status,
+                                       owner=owner,
+                                       desc=desc,
+                                       s_type=s_type,
+                                       s_name=s_name,
+                                       u_name=u_name,
+                                       pw=pw,
+                                       add=addresses,
+                                       guide=guide,
+                                       questions=questions,
+                                       srF=scenarioResponder,
+                                       aList=aList,
+                                       example=example)
+
+            elif request.method == "POST":
+                ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
+                return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
+                # if ajax:  # if forms.py scenarioResponseForm returns true
+                #    current_app.logger.info("########Ajax Response is: {} ".format(request.data))
+                #    # #query db to convert username to user_id
+                #    # form_utils.py/process_scenarioResponse();
+                #    # utils.py/responseCheck boolean value then somehow pass back to template.
+                # else:
+                #    return redirect(url_for("dashboard.student_scenario", i=i))
+
         else:
             return abort(404)
     else:
         return abort(403)
-    ####
-    ## STUDENT RESPONSE POST REQUEST
-    ####
-    if request.method == "POST":
-        ajax = scenarioResponseForm(request.form) #this validates it
-        if ajax: #if forms.py scenarioResponseForm returns true
-            current_app.logger.info("########Ajax Response is: {} ".format(request.data))
-            ##query db to convert username to user_id
-            #form_utils.py/process_scenarioResponse();
-            #utils.py/responseCheck boolean value then somehow pass back to template.
+    # STUDENT RESPONSE POST REQUEST
+    # if request.method == "POST":
+    #    ajax = scenarioResponseForm(request.form) #this validates it
+    #    if ajax: #if forms.py scenarioResponseForm returns true
+    #        current_app.logger.info("########Ajax Response is: {} ".format(request.data))
+    #        ##query db to convert username to user_id
+    #        #form_utils.py/process_scenarioResponse();
+    #        #utils.py/responseCheck boolean value then somehow pass back to template.
 
 
 # ---- scenario routes
@@ -323,6 +341,7 @@ def scenarioResponse(i, r):
             scr = score(getScore(u_id, aNum, query), questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
+                                   i=i,
                                    u_id=u_id,
                                    uName=uName,
                                    s_id=s_id,

@@ -6,6 +6,7 @@ import csv
 import re
 
 import yaml
+import ast
 from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
 from flask_table import Col, Table
@@ -322,6 +323,7 @@ def tempMaker(d, i):
     desc = getDesc(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
+    # current_app.logger.info(questions) #--
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
@@ -357,7 +359,7 @@ def tempMaker(d, i):
 #        return False
 
 
-def responseCheck(qnum, sid, resp):
+def responseCheck(qnum, sid, resp, uid):
     # read correct response from yaml file
     db_ses = db.session
     s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
@@ -367,6 +369,8 @@ def responseCheck(qnum, sid, resp):
         if order == qnum:
             if len(text['Values']) == 1:
                 ans = str(text['Values'][0]['Value'])
+                if "${" in ans:
+                    ans = bashAnswer(sid, uid, ans)
                 if resp == ans:
                     return True
                 else:
@@ -375,12 +379,40 @@ def responseCheck(qnum, sid, resp):
                 yes = False
                 for i in text['Values']:
                     ans = str(text['Values'][i]['Value'])
+                    if "${" in ans:
+                        ans = bashAnswer(sid, uid, ans)
                     if resp == ans:
                         yes = True
                 if yes:
                     return True
                 else:
                     return False
+
+
+def bashAnswer(sid, uid, ans):
+    db_ses = db.session
+    uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+    if "${player.login}" in ans:
+        students = open("./data/tmp/" + sName + "/students.json", "r")
+        user = ast.literal_eval(students.read())
+        username = user[uName][0]["username"]
+        ansFormat = ans[0:6]
+        newAns = ansFormat + username
+        return newAns
+    elif "${scenario.instances" in ans:
+        wordIndex = ans[21:-1].index(".")
+        containerName = ans[21:21+wordIndex]
+        containerFile = open("./data/tmp/" + sName + "/" + containerName + ".tf.json", "r")
+        content = ast.literal_eval(containerFile.read())
+        index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
+        ans = ""
+        for d in index:
+            if d["name"] == (sName + "_PLAYER"):
+                ans = d["ipv4_address"]
+        return ans
+    else:
+        return ans
 
 
 # --
@@ -395,6 +427,7 @@ def responseQuery(uid, att, query, questions):
 
     for response in tmpList:
         qNum = response.question
+        corr = response.correct
         for text in questions:
             order = int(text['Order'])
             if order == qNum:
@@ -402,7 +435,7 @@ def responseQuery(uid, att, query, questions):
                 poi = text['Points']
                 val = text['Values'][0]['Value']
                 sR = response.student_response
-                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
+                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'correct':corr}
                 tableList.append(dictionary)
     return tableList
 
@@ -575,3 +608,24 @@ def readScenario():
     for s in scenarios:
         desc.append(getDesc(s))
     return 0
+
+
+def recentCorrect(uid, qnum):
+    db_ses = db.session
+    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.question == qnum)\
+        .order_by(Responses.response_time.desc()).first()
+    return recent
+
+
+def displayCorrect(sName, uName):
+    db_ses = db.session
+    uid = db_ses.query(User.id).filter(User.username == uName).first()
+    questions = questionReader(sName)
+    ques = {}
+    for text in questions:
+        order = int(text['Order'])
+        rec = recentCorrect(uid, order)
+        if rec is not None:
+            rec = rec[0]
+        ques[order] = rec
+    return ques

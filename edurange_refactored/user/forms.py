@@ -207,6 +207,10 @@ class modScenarioForm(FlaskForm):
 class scenarioResponseForm(FlaskForm):
     """records a students response to a scenario question"""
 
+    scenario = StringField("Scenario", validators=[DataRequired()])
+
+    question = StringField("Question", validators=[DataRequired()])
+
     response = StringField("Response", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):

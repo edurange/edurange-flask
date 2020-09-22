@@ -7,6 +7,7 @@
             <h5> User ID : {{ u_id }}  |  Username : {{ uName }} </h5>
             <h5> Scenario ID : {{ s_id }}  |  Scenario Name : {{ sName }} </h5>
             <h5> Attempt Number : {{ aNum }} | Score : {{ scr }} </h5>
+            <h5><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s' % i }}">Return to Overview</a></h5>
         </div>
 
         <div class="card-body">
@@ -33,6 +34,7 @@
                                         <th> Answer </th>
                                         <th> Possible Points </th>
                                         <th> Student Response </th>
+                                        <th> Correct </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -43,6 +45,12 @@
                                             <td> {{ d['answer'] }} </td>
                                             <td> {{ d['points'] }} </td>
                                             <td> {{ d['student_response'] }} </td>
+                                            {% if d['correct'] == True %}
+                                                <td> <i class="fa fa-check"></i> {{ d['correct'] }} </td>
+                                            {% endif %}
+                                            {% if d['correct'] == False %}
+                                                <td> <i class="fa fa-ban"></i> {{ d['correct'] }} </td>
+                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                     </tbody>

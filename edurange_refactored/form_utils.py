@@ -21,21 +21,21 @@ from .utils import flash_errors, responseCheck, getAttempt
 
 def process_request(form):  # Input must be request.form
     dataKeys = []
+    # for k in form.keys():
+    #    dataKeys.append(k)
     for k in form.keys():
-        if k != "csrf_token":       # csrf protection is enabled in standard application, only disabled in test app,
-            dataKeys.append(k)      #  so even if csrf_token is not a field in a standard request, it will still be rendered invalid
-
+        if k != "csrf_token":  # csrf protection is enabled in standard application, only disabled in test app,
+            dataKeys.append(k)  # so even if csrf_token is not a field in a standard request, it will still be rendered invalid
 
     form_switch = {
-        "modScenarioForm":          ["sid", "mod_scenario"],
-        "startScenario":            ["start_scenario", "stop_scenario"],
-        "GroupForm":                ["name", "create", "size"],
-        "manageInstructorForm":     ["uName", "promote"],
-        "addUsersForm":             ["add", "groups", "uids"],
-        "scenarioResponseForm":     ["response", "scenario", "question"],
-        "deleteGroupForm":          ["group_name", "delete"]
+        "modScenarioForm":          ["sid", "mod_scenario"],  # "csrf_token",
+        "startScenario":            ["start_scenario", "stop_scenario"],  # "csrf_token",
+        "GroupForm":                ["name", "create", "size"],  # "csrf_token",
+        "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
+        "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
+        "scenarioResponseForm":     ["scenario", "question", "response", "submit"],  # "csrf_token",
+        "deleteGroupForm":          ["group_name", "delete"]  # "csrf_token",
     }
-
 
     switchVals = []
     for v in form_switch.values():
@@ -203,14 +203,18 @@ def process_scenarioResponse():
     sR = scenarioResponseForm()
     if sR.validate_on_submit():
         sid = sR.scenario.data
-        qnum = sR.question.data
+        qnum = int(sR.question.data)
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(qnum, sid, resp)
+        gotIt = responseCheck(qnum, sid, resp, uid)
         # get attempt number from somewhere
         att = getAttempt(uid, sid, qnum)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
+        if gotIt:
+            flash("A CORRECT answer was given for question {0}.".format(qnum))
+        else:
+            flash("An INCORRECT answer was given for question {0}.".format(qnum))
 
 
 def process_groupEraser():
