@@ -286,8 +286,8 @@ def scenariosInfo(i):
             try:
                 rc = formatCSV(readCSV(i))
             except FileNotFoundError:
-                flash("File '{0}' was not found".format(s_name))
-                rc = ['']
+                flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
+                rc = []
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
