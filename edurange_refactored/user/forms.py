@@ -2,7 +2,7 @@
 """User forms."""
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp
 from .models import User, StudentGroups
 
 from .models import StudentGroups, User
@@ -12,7 +12,7 @@ class RegisterForm(FlaskForm):
     """Register form."""
 
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=3, max=25)]
+        "Username", validators=[DataRequired(), Length(min=3, max=25), Regexp('^\w+-?\w+$', message="Username must be alphanumeric")]
     )
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]

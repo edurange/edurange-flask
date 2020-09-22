@@ -62,6 +62,12 @@ def check_instructor():
     if not user.is_instructor:
         abort(403)
 
+def check_privs():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor and not user.is_admin:
+        abort(403)
+
 
 def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
     number = current_user.id

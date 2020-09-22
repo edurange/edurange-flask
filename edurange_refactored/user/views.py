@@ -45,7 +45,8 @@ from ..utils import (
     getScore,
     score,
     readCSV,
-    formatCSV,
+    formatCSV, 
+    check_privs,
     displayCorrect
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
@@ -204,7 +205,7 @@ def student_scenario(i):
 @blueprint.route("/catalog", methods=["GET"])
 @login_required
 def catalog():
-    check_admin()
+    check_privs()
     scenarios = populate_catalog()
     groups = StudentGroups.query.all()
     scenarioModder = modScenarioForm(request.form)  # type2Form()  #
@@ -217,7 +218,7 @@ def catalog():
 @blueprint.route("/make_scenario", methods=["POST"])
 @login_required
 def make_scenario():
-    check_admin()
+    check_privs()
     form = makeScenarioForm(request.form)  # type2Form()  #
     if form.validate_on_submit():
         db_ses = db.session
@@ -267,7 +268,7 @@ def make_scenario():
 @login_required
 def scenarios():
     """List of scenarios and scenario controls"""
-    check_admin()
+    check_privs()
     scenarioModder = modScenarioForm()  # type2Form()  #
     scenarios = Scenarios.query.all()
     groups = StudentGroups.query.all()
