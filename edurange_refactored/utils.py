@@ -62,6 +62,7 @@ def check_instructor():
     if not user.is_instructor:
         abort(403)
 
+
 def check_privs():
     number = current_user.id
     user = User.query.filter_by(id=number).first()
@@ -311,10 +312,7 @@ def tempMaker(d, i):
     stat = statReader(stat[0])
     # owner name
     oName = (
-        db_ses.query(User.username)
-            .filter(Scenarios.id == d)
-            .filter(Scenarios.owner_id == User.id)
-            .first()
+        db_ses.query(User.username).filter(Scenarios.id == d).filter(Scenarios.owner_id == User.id).first()
     )
     oName = oName[0]
     # description
@@ -373,12 +371,14 @@ def responseCheck(qnum, sid, resp, uid):
                     ans = bashAnswer(sid, uid, ans)
                 if resp == ans:
                     return True
+                elif ans == 'ESSAY':
+                    return True
                 else:
                     return False
             elif len(text['Values']) > 1:
                 yes = False
                 for i in text['Values']:
-                    ans = str(text['Values'][i]['Value'])
+                    ans = i['Value']
                     if "${" in ans:
                         ans = bashAnswer(sid, uid, ans)
                     if resp == ans:
@@ -565,6 +565,7 @@ def readCSV(id):
                 lineStr += '\n'
         arr.append(lineStr)
     return arr
+
 
 def readCSV_by_name(name):
     csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")

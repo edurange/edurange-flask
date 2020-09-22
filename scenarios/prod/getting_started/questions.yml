@@ -35,6 +35,9 @@
 - Text: CodeLabs Page 7 - What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)
   Type: Essay
   Options: []
+  Values:
+  - Value: ESSAY
+    Points: '15'
   Order: 5
   Points: 15
 - Text: CodeLabs Page 8 - What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.

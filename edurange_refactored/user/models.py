@@ -124,6 +124,7 @@ class Responses(UserMixin, SurrogatePK, Model):
     attempt = Column(db.Integer, default=0, nullable=False)
     # learning objective field?
 
+
 class BashHistory(UserMixin, SurrogatePK, Model):
     """Bash Histories, associated with users and scenarios"""
 
