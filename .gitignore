@@ -84,3 +84,5 @@ celerybeat-schedule
 logs/
 
 celery.log
+
+migrations/
