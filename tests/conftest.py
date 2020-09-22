@@ -84,7 +84,7 @@ def db(app):
         create_admin()
 
     group = StudentGroups.query.limit(1).all()
-    admin = User.query.filter_by(username=os.environ["USERNAME"]).first()
+    admin = User.query.filter_by(username=os.environ["FLASK_USERNAME"]).first()
     a_id = admin.get_id()
     if not group:
         create_all_group(a_id)
