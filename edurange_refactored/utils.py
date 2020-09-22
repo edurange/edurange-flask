@@ -555,6 +555,8 @@ def readCSV(id):
                 item = re.sub(r'[0-9]{10}', '\n', item)
                 if len(item) > 0:
                     item = '%' + item + '%'
+                if len(item) > 500:
+                    item = item[:500]
             if i == 0:
                 lineStr += item.strip('\n\r')
             else:
@@ -580,6 +582,8 @@ def readCSV_by_name(name):
                 item = re.sub(r'[0-9]{10}', '\n', item)
                 if len(item) > 0:
                     item = '%' + item + '%'
+                if len(item) > 500:
+                    item = item[:500]
             if i == 0:
                 lineStr += item.strip('\n\r')
             else:
