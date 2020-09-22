@@ -45,8 +45,9 @@ from ..utils import (
     getScore,
     score,
     readCSV,
-    displayCorrect
-    formatCSV, check_privs
+    displayCorrect,
+    formatCSV,
+    check_privs
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
