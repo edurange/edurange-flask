@@ -272,11 +272,12 @@ def destroy(self, sid):
                 os.chdir("./data/tmp/")
                 shutil.rmtree(name)
                 os.chdir("../..")
-                s_group.delete()
+                if s_group:
+                    s_group.delete()
                 scenario.delete()
             else:
-                logger.info("Something went wrong")
-                flash("Something went wrong", "warning")
+                logger.info("Scenario files not found, assuming broken scenario and deleting")
+                scenario.delete()
         else:
             raise Exception(f"Could not find scenario")
 
