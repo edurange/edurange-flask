@@ -36,8 +36,9 @@
                             <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
                         {% endfor %}
                         <b>Questions:</b>
-                        {% for q in questions %}
-                            <p>{{ q }}</p>
+                        <p></p>
+                        {% for i in questions %}
+                            <label id="question_ID{{ i }}"><b>{{ i }})</b> {{ questions[i] }} </label>
                             <input type="text" class="form-control mb-3" readonly>
                         {% endfor %}
                     </div>
