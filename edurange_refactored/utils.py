@@ -335,6 +335,7 @@ def tempMaker(d, i):
         # username
         ud = current_user.id
         usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
+        usr = "".join(e for e in usr if e.isalnum())
         # password
         pw = getPass(sNom, usr)
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
@@ -551,6 +552,7 @@ def getAttempt(sid):
 def readCSV(id):
     db_ses = db.session
     sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
+    sName = "".join(e for e in sName if e.isalnum())
     csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
     arr = []
     reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)

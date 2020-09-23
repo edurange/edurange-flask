@@ -133,6 +133,7 @@ def identify_state(name, state):
         return {"Nothing to show": "Scenario is Not Running"}
     addresses = {}
     c_names = []
+    name = "".join(e for e in name if e.isalnum())
     if os.path.isdir(os.path.join("./data/tmp/", name)):
         try:
             state_file = open("./data/tmp/" + name + "/terraform.tfstate", "r")
@@ -159,3 +160,6 @@ def identify_state(name, state):
             }
         except json.decoder.JSONDecodeError:
             return {"State file is still being written": "Try Refreshing"}
+
+    else:
+        return {"Could not find scenario folder": "Please destroy and re-make this scenario"}
