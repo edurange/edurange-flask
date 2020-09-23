@@ -12,7 +12,7 @@ class RegisterForm(FlaskForm):
     """Register form."""
 
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=3, max=25), Regexp('^\w+-?\w+$', message="Username must be alphanumeric")]
+        "Username", validators=[DataRequired(), Length(min=3, max=25), Regexp('^\w+-?\w+-?\w+$', message="Username must be alphanumeric")]
     )
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
