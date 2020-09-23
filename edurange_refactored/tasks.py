@@ -337,7 +337,7 @@ def scenarioCollectLogs(self, arg):
             continue
         c = c.split(' ')
         c_name = c[-1]
-        if c_name is not None and c_name is not 'ago' and c_name is not 'NAMES':
+        if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
 

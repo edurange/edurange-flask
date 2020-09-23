@@ -535,7 +535,7 @@ def responseProcessing(data):
 def setAttempt(sid):
     db_ses = db.session
     currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
-    if currAtt[0] is 0:
+    if currAtt[0] == 0:
         att = 1
     else:
         att = int(currAtt[0]) + 1
