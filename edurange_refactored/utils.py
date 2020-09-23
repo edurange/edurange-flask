@@ -545,7 +545,7 @@ def setAttempt(sid):
 
 def getAttempt(sid):
     db_ses = db.session
-    query = db_ses.query(Scenarios.attemt).filter(Scenarios.id == sid)
+    query = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid)
     return query
 
 
