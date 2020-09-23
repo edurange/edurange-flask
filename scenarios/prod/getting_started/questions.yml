@@ -41,7 +41,7 @@
   Order: 5
   Points: 15
 - Text: CodeLabs Page 8 - What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.
-  Type: String
+  Type: Multi String
   Options: []
   Values:
   - Value: edurange5meow.JPG

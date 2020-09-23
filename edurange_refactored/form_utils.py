@@ -209,7 +209,7 @@ def process_scenarioResponse():
         # answer checking function in utils
         gotIt = responseCheck(qnum, sid, resp, uid)
         # get attempt number from somewhere
-        att = getAttempt(uid, sid, qnum)
+        att = getAttempt(sid)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
         if gotIt:
             flash("A CORRECT answer was given for question {0}.".format(qnum))

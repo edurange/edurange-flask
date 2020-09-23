@@ -187,6 +187,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 @celery.task(bind=True)
 def start(self, sid):
     from edurange_refactored.user.models import Scenarios
+    from edurange_refactored.utils import setAttempt
 
     app = current_app
     logger.info(
@@ -209,6 +210,7 @@ def start(self, sid):
             os.system("terraform apply --auto-approve")
             os.chdir("../../..")
             scenario.update(status=1)
+            scenario.update(attempt=setAttempt(sid))
         else:
             logger.info("Something went wrong")
             flash("Something went wrong", "warning")

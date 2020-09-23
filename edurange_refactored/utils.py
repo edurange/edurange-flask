@@ -456,7 +456,7 @@ def getScore(usr, att, query):
     sL = []
     for resp in query:
         if usr == resp.user_id and att == resp.attempt:
-            sL.append({'question': resp.user_id, 'correct': resp.correct})
+            sL.append({'question': resp.question, 'correct': resp.correct, 'response': resp.student_response})
     return sL
 
 
@@ -474,7 +474,12 @@ def score(scrLst, questions):
             num = int(sR['question'])
             for text in questions:
                 if int(text['Order']) == num:
-                    sS += int(text['Points'])
+                    if str(text['Type']) == "Multi String":
+                        for i in text['Values']:
+                            if i['Value'] == sR['response']:
+                                sS += int(text['Values'][i]['Points'])
+                    else:
+                        sS += int(text['Points'])
     scr = '' + str(sS) + ' / ' + str(totalScore(questions))
     return scr
 
@@ -527,15 +532,20 @@ def responseProcessing(data):
     return uid, uname, sid, sname, att
 
 
-def getAttempt(uid, sid, qnum):
+def setAttempt(sid):
     db_ses = db.session
-    query = db_ses.query(Responses.attempt).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
-        .filter(Responses.question == qnum).first()
-    if query is None:
+    currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
+    if currAtt[0] is 0:
         att = 1
     else:
-        att = int(query[0]) + 1
+        att = int(currAtt[0]) + 1
     return att
+
+
+def getAttempt(sid):
+    db_ses = db.session
+    query = db_ses.query(Scenarios.attemt).filter(Scenarios.id == sid)
+    return query
 
 
 def readCSV(id):
@@ -616,21 +626,22 @@ def readScenario():
     return 0
 
 
-def recentCorrect(uid, qnum):
+def recentCorrect(uid, qnum, sid):
     db_ses = db.session
-    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.question == qnum)\
-        .order_by(Responses.response_time.desc()).first()
+    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
+        .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
     return recent
 
 
 def displayCorrect(sName, uName):
     db_ses = db.session
     uid = db_ses.query(User.id).filter(User.username == uName).first()
+    sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()
     questions = questionReader(sName)
     ques = {}
     for text in questions:
         order = int(text['Order'])
-        rec = recentCorrect(uid, order)
+        rec = recentCorrect(uid, order, sid)
         if rec is not None:
             rec = rec[0]
         ques[order] = rec
