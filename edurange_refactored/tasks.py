@@ -207,7 +207,7 @@ def start(self, sid):
             scenario.update(status=3)
             logger.info("Folder Found")
             os.chdir("./data/tmp/" + name)
-            os.system("terraform apply --auto-approve")
+            os.system("terraform apply --auto-approve -parallelism=4")
             os.chdir("../../..")
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
