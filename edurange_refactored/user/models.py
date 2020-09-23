@@ -93,7 +93,7 @@ class Scenarios(UserMixin, SurrogatePK, Model):
     owner = relationship("User", backref="scenarios", lazy="subquery")
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     status = Column(db.Integer, default=0, nullable=False)
-    attempt = Column(db.Integer, default=0, nullable=False)
+    attempt = Column(db.Integer, default=0, nullable=False, server_default="0")
 
     def __repr__(self):
         """Represent instance as a unique string."""
