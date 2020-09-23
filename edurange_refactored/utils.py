@@ -280,6 +280,7 @@ def getGuide(t):
 
 
 def getPass(sn, un):
+    sn = "".join(e for e in sn if e.isalnum())
     with open('./data/tmp/' + sn + '/students.json', 'r') as f:
         data = json.load(f)
         d1 = data.get(un)[0]
