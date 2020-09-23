@@ -363,9 +363,9 @@ def responseCheck(qnum, sid, resp, uid):
     s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     questions = questionReader(s_name[0])
     for text in questions:
-        order = int(text['Order'])
+        order = int(text['Order'])  # get question number from yml file
         if order == qnum:
-            if len(text['Values']) == 1:
+            if len(text['Values']) == 1:  # if there's only one correct answer in the yml file
                 ans = str(text['Values'][0]['Value'])
                 if "${" in ans:
                     ans = bashAnswer(sid, uid, ans)
@@ -375,7 +375,7 @@ def responseCheck(qnum, sid, resp, uid):
                     return True
                 else:
                     return False
-            elif len(text['Values']) > 1:
+            elif len(text['Values']) > 1:  # if there's multiple correct answers in the yml file
                 yes = False
                 for i in text['Values']:
                     ans = i['Value']
@@ -451,6 +451,9 @@ def responseSelector(resp):
     return data
 
 
+# -----
+
+
 def getScore(usr, att, query):
     sL = []
     for resp in query:
@@ -468,19 +471,55 @@ def totalScore(questions):
 
 def score(scrLst, questions):
     sS = 0
+    checkList = scoreSetup(questions)
     for sR in scrLst:
         if sR['correct']:
             num = int(sR['question'])
             for text in questions:
                 if int(text['Order']) == num:
-                    if str(text['Type']) == "Multi String":
-                        for i in text['Values']:
-                            if i['Value'] == sR['response']:
-                                sS += int(text['Values'][i]['Points'])
-                    else:
-                        sS += int(text['Points'])
+                    check, checkList = scoreCheck(num, checkList)
+                    if not check:
+                        if str(text['Type']) == "Multi String":
+                            for i in text['Values']:
+                                if i['Value'] == sR['response']:
+                                    sS += int(text['Values'][i]['Points'])
+                        else:
+                            sS += int(text['Points'])
     scr = '' + str(sS) + ' / ' + str(totalScore(questions))
     return scr
+
+
+def scoreSetup(questions):
+    checkList = {}
+    for text in questions:
+        if str(text['Type']) == "Multi String":
+            count = 1
+            for d in text['Values']:
+                k = str(text['Order']) + str(count)
+                checkList[k] = False
+        else:
+            checkList[str(text['Order'])] = False
+    return checkList
+
+
+def scoreCheck(qnum, checkList):
+    keys = list(checkList.keys())
+    for k in keys:
+        if k == str(qnum):
+            if checkList[k]:
+                return True, checkList  # answer has already been checked
+            elif not checkList[k]:
+                checkList[k] = True
+                return False, checkList  # answer has not been checked before but is now checked
+        elif str(qnum) in k and '.' in k:  # if multi string
+            if checkList[k]:
+                return True, checkList  # answer was already checked
+            elif not checkList[k]:
+                checkList[k] = True
+                return False, checkList  # answer was not checked before but is now
+
+
+# -----
 
 
 def questionReader(name):
@@ -543,7 +582,7 @@ def setAttempt(sid):
 
 def getAttempt(sid):
     db_ses = db.session
-    query = db_ses.query(Scenarios.attemt).filter(Scenarios.id == sid)
+    query = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid)
     return query
 
 

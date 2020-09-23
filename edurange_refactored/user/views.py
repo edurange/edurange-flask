@@ -299,7 +299,8 @@ def scenariosInfo(i):
             status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
             addresses = identify_state(s_name, status)
             db_ses = db.session
-            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
+            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct,
+                                 Responses.question, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
             try:
