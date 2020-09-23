@@ -280,6 +280,7 @@ def getGuide(t):
 
 
 def getPass(sn, un):
+    sn = "".join(e for e in sn if e.isalnum())
     with open('./data/tmp/' + sn + '/students.json', 'r') as f:
         data = json.load(f)
         d1 = data.get(un)[0]
@@ -334,6 +335,7 @@ def tempMaker(d, i):
         # username
         ud = current_user.id
         usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
+        usr = "".join(e for e in usr if e.isalnum())
         # password
         pw = getPass(sNom, usr)
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
@@ -573,7 +575,7 @@ def responseProcessing(data):
 def setAttempt(sid):
     db_ses = db.session
     currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
-    if currAtt[0] is 0:
+    if currAtt[0] == 0:
         att = 1
     else:
         att = int(currAtt[0]) + 1
@@ -589,6 +591,7 @@ def getAttempt(sid):
 def readCSV(id):
     db_ses = db.session
     sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
+    sName = "".join(e for e in sName if e.isalnum())
     csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
     arr = []
     reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
