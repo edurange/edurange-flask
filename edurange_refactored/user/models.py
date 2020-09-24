@@ -35,6 +35,7 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
         db.String(8), unique=True, nullable=True, default=generate_registration_code()
     )
     hidden = Column(db.Boolean(), nullable=False, default=False)
+    users = relationship("GroupUsers", backref="groups", cascade="all, delete-orphan")
 
 
 class GroupUsers(UserMixin, SurrogatePK, Model):
@@ -94,6 +95,7 @@ class Scenarios(UserMixin, SurrogatePK, Model):
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     status = Column(db.Integer, default=0, nullable=False)
     attempt = Column(db.Integer, default=0, nullable=False, server_default="0")
+    resps = relationship("Responses", backref="scenarios", cascade="all, delete-orphan")
 
     def __repr__(self):
         """Represent instance as a unique string."""
