@@ -229,11 +229,13 @@ def process_groupEraser():
         if grp_scenarios is not None:
             flash("Cannot delete group - Are there still scenarios for this group?", "error")
         else:
+            players = []
             for u in grp_users:
-                player = db_ses.query(User).filter(User.id == u.id).first()
+                players.append(db_ses.query(User).filter(User.id == u.id).first())
                 u.delete()
-                if player.is_static:
-                    player.delete()
+            for p in players:
+                if p.is_static:
+                    p.delete()
             grp.delete()
         flash("Successfully deleted group {0}".format(gname))
     else:
