@@ -234,8 +234,9 @@ def process_groupEraser():
                 players.append(db_ses.query(User).filter(User.id == u.id).first())
                 u.delete()
             for p in players:
-                if p.is_static:
-                    p.delete()
+                if p is not None:
+                    if p.is_static:
+                        p.delete()
             grp.delete()
         flash("Successfully deleted group {0}".format(gname))
     else:
