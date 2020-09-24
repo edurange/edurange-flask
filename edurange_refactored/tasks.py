@@ -248,7 +248,7 @@ def stop(self, sid):
 
 @celery.task(bind=True)
 def destroy(self, sid):
-    from edurange_refactored.user.models import Scenarios, ScenarioGroups
+    from edurange_refactored.user.models import Scenarios, ScenarioGroups, Responses
 
     app = current_app
     logger.info(
@@ -267,7 +267,10 @@ def destroy(self, sid):
             if int(scenario.status) != 0:
                 logger.info("Invalid Status")
                 raise Exception(f"Scenario in an Invalid state for Destruction")
-            elif os.path.isdir(os.path.join("./data/tmp/", name)):
+            s_responses = Responses.query.filter_by(scenario_id=s_id).all()
+            for r in s_responses:
+                r.delete()
+            if os.path.isdir(os.path.join("./data/tmp/", name)):
                 logger.info("Folder Found, current directory: {}".format(os.getcwd()))
                 os.chdir("./data/tmp/")
                 shutil.rmtree(name)

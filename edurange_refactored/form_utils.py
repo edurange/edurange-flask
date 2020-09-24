@@ -14,7 +14,7 @@ from edurange_refactored.user.forms import (
 )
 
 from . import tasks
-from .user.models import GroupUsers, StudentGroups, User, Responses
+from .user.models import GroupUsers, StudentGroups, User, Responses, ScenarioGroups
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors, responseCheck, getAttempt
 
@@ -223,7 +223,20 @@ def process_groupEraser():
     if dG.validate_on_submit():
         gname = dG.group_name.data
         grp = db_ses.query(StudentGroups).filter(StudentGroups.name == gname).first()
-        grp.delete()
+        grp_id = grp.id
+        grp_scenarios = db_ses.query(ScenarioGroups).filter(ScenarioGroups.group_id == grp_id).first()
+        grp_users = db_ses.query(GroupUsers).filter(GroupUsers.group_id == grp_id).all()
+        if grp_scenarios is not None:
+            flash("Cannot delete group - Are there still scenarios for this group?", "error")
+        else:
+            players = []
+            for u in grp_users:
+                players.append(db_ses.query(User).filter(User.id == u.id).first())
+                u.delete()
+            for p in players:
+                if p.is_static:
+                    p.delete()
+            grp.delete()
         flash("Successfully deleted group {0}".format(gname))
     else:
         flash_errors(dG)
