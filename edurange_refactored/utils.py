@@ -200,14 +200,12 @@ def checkEx(d):
 
 
 def checkAuth(d):
-    db_ses = db.session
-    n = current_user.id
-    ownId = db_ses.query(Scenarios.owner_id).filter(Scenarios.id == d).first()
-    ownId = ownId[0]
-    if ownId == n:
-        return True
-    else:
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor and not user.is_admin:
         return False
+    else:
+        return True
 
 
 def checkEnr(d):
