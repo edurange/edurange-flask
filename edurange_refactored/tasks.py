@@ -212,8 +212,8 @@ def start(self, sid):
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
         else:
-            logger.info("Something went wrong")
-            flash("Something went wrong", "warning")
+            logger.info("Scenario folder could not be found")
+            flash("Scenario folder could not be found")
 
 
 @celery.task(bind=True)
