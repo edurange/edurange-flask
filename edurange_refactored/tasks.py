@@ -169,6 +169,9 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         #write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
+        os.system("terraform init")
+        os.system("terraform plan -out network")
+
         logger.info("All flags: {}".format(flags))
 
         # Each container and their names are pulled from the 's_type'.json file
@@ -178,7 +181,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
                                c_names[i], usernames, passwords,
                                s_files[i], g_files[i], u_files[i], flags)
 
-        os.system("terraform init")
+
         os.chdir("../../..")
 
         ScenarioGroups.create(group_id=g_id, scenario_id=s_id)
@@ -207,7 +210,8 @@ def start(self, sid):
             scenario.update(status=3)
             logger.info("Folder Found")
             os.chdir("./data/tmp/" + name)
-            os.system("terraform apply --auto-approve -parallelism=4")
+            os.system("terraform apply network")
+            os.system("terraform apply --auto-approve")
             os.chdir("../../..")
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))

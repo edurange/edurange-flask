@@ -10,7 +10,8 @@
                "system_files":[
 		          "motd_nat",
 		          "adjust_motd",
-			  "tty_setup"
+			  "tty_setup",
+                 "start_flag"
                ],
                "user_files":[
 	         	"analyze.py",
@@ -33,7 +34,8 @@
 		          "motd_first",
 		          "adjust_motd",
 		          "ssh_port_123",
-			  "tty_setup"
+			  "tty_setup",
+                 "first_flag"
                ],
                "user_files":[
 			"analyze.py",
@@ -56,7 +58,8 @@
                   "motd_second",
                   "adjust_motd",
                   "place_rsa",
-		  "tty_setup"
+		  "tty_setup",
+                 "second_flag"
                ],
                "user_files":[
                   "id_rsa",
@@ -81,7 +84,8 @@
                   "adjust_motd",
                   "authorize_rsa",
                   "make_maze",
-		  "tty_setup"
+		  "tty_setup",
+                 "third_flag"
                ],
                "user_files":[
                   "id_rsa",
@@ -107,7 +111,8 @@
                   "reset_pass_fourth",
                   "block_third_stop",
                   "decrypt_script",
-		  "tty_setup"
+		  "tty_setup",
+                 "fourth_flag"
                ],
                "user_files":[
 			"analyze.py",
@@ -131,7 +136,8 @@
                   "adjust_motd",
                   "reset_pass_fifth",
                   "base64_msg",
-		  "tty_setup"
+		  "tty_setup",
+                 "fifth_flag"
                ],
                "user_files":[
 			"analyze.py",
@@ -148,12 +154,14 @@
          "files":[
             {
                "global_files":[
-                  "iamfrustrated"
+                  "iamfrustrated",
+                 "clearlogs"
                ],
                "system_files":[
                   "satans_palace_setup",
                   "ssh_port_666",
-		  "tty_setup"
+		  "tty_setup",
+                 "last_flag"
                ],
                "user_files":[
 			"analyze.py",
