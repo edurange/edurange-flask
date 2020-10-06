@@ -69,16 +69,16 @@ def decode(lines):
     #Reference for CSI: https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
 
     escape_sequence_dict = {
-    #ESC] OSC – Operating System Command. In xterm, they may also be terminated by BEL character. In xterm, the window title can be set by OSC 0;this is the window title BEL.
-    #The sample line for root prompt is ']0;root@intro: ~root@intro:~# id;1554092145'
-    'osc_reg_expr' : re.compile(r'\x1B][0-9]*;[\x20-\x7e]*\x07'),
-    'csi_cursor_position' : re.compile(r'^[0-9]*;?[0-9]*H'),
-    'csi_dec_private_mode_set' : re.compile(r'^\?(?:[0-9]*;?)*h'),
-    'csi_dec_private_mode_reset' : re.compile(r'^\?(?:[0-9]*;?)*l'),
-    'csi_character_attributes' : re.compile(r'^(?:[0-9]*;?)*m'),
-    'csi_window_manipulation' : re.compile(r'^[0-9]*(?:;[0-9]*){2}t'),
-    'csi_delete_n_chars' : re.compile(r'^\d*P'),
-    'controls_c1_esc_single_char' : re.compile(r'^[6789=>Fclmno|}~]')
+        #ESC] OSC – Operating System Command. In xterm, they may also be terminated by BEL character. In xterm, the window title can be set by OSC 0;this is the window title BEL.
+        #The sample line for root prompt is ']0;root@intro: ~root@intro:~# id;1554092145'
+        'osc_reg_expr' : re.compile(r'\x1B][0-9]*;[\x20-\x7e]*\x07'),
+        'csi_cursor_position' : re.compile(r'^[0-9]*;?[0-9]*H'),
+        'csi_dec_private_mode_set' : re.compile(r'^\?(?:[0-9]*;?)*h'),
+        'csi_dec_private_mode_reset' : re.compile(r'^\?(?:[0-9]*;?)*l'),
+        'csi_character_attributes' : re.compile(r'^(?:[0-9]*;?)*m'),
+        'csi_window_manipulation' : re.compile(r'^[0-9]*(?:;[0-9]*){2}t'),
+        'csi_delete_n_chars' : re.compile(r'^\d*P'),
+        'controls_c1_esc_single_char' : re.compile(r'^[6789=>Fclmno|}~]')
     }
     buf = []
     i_line = 0
@@ -254,10 +254,11 @@ if __name__ == "__main__":
 
     #The input ttylog file path is stored in 'ttylog'
     ttylog = sys.argv[1]
+    #The output CSV file path is stored in 'csv_output_file'
     csv_output_file = sys.argv[2]
-        # if not os.path.isfile(ttylog):
-        #     logging.critical("there's a problem with ttylog! aborting.")
-        #     exit(1)
+    # if not os.path.isfile(ttylog):
+    #     logging.critical("there's a problem with ttylog! aborting.")
+    #     exit(1)
 
     ttylog_lines_file = get_ttylog_lines_from_file(ttylog)
     ttylog_lines = decode(ttylog_lines_file)
@@ -267,7 +268,6 @@ if __name__ == "__main__":
     first_ttylog_line = 0
     root_home_dir = '/root'
     node_name = ''
-    known_prompts = []
     is_current_prompt_root = False
 
     for count,line in enumerate(ttylog_lines):
@@ -290,7 +290,6 @@ if __name__ == "__main__":
         if r'User prompt is' in line:
             user_initial_prompt = line.split()[-1]
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
-            known_prompts.append(user_initial_prompt)
             node_name = line.split('@')[-1]
             root_prompt = 'root@' + node_name
             is_current_prompt_root = False
@@ -348,17 +347,7 @@ if __name__ == "__main__":
 
         #Get the commands from lines
         #If user uses root to SSH, don't run the following 'elif' section
-        elif any(p in line.casefold() for p in known_prompts) and ttylog_sessions[current_session_id]['initial_prompt'].casefold() != root_prompt.casefold():
-
-            # If the initial prompt is encountered, it means that there was a
-            # failed 'su' attempt, or an undetected exit from a different terminal prompt.
-            # In these cases, revert to the initial prompt and home directory.
-            for prompt in known_prompts:
-                if prompt in line.casefold():
-                    current_prompt = prompt
-            user_prompt = current_prompt
-            home_directory = '/home/' + user_prompt[0:user_prompt.index('@')]
-
+        elif ttylog_sessions[current_session_id]['initial_prompt'].casefold() in line.casefold() and ttylog_sessions[current_session_id]['initial_prompt'].casefold() != root_prompt.casefold():
             #If line is like 'googletest@intro:~$ ls;1554089474', 'google' is output of previous command
             start_of_prompt = line.casefold().find(user_prompt.casefold())
             if start_of_prompt > 0:
@@ -378,7 +367,7 @@ if __name__ == "__main__":
                     ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, root_prompt])
                     is_current_prompt_root = False
                 else:
-                    ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_initial_prompt])
+                    ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_prompt])
                 line_timestamp = 0
                 line_command = ''
 
@@ -387,7 +376,8 @@ if __name__ == "__main__":
             #Sample line is 'test@intro:~$ done;1553743085'
             left_dollar_part, right_dollar_part = line.split('$',1)
             current_working_directory = left_dollar_part.split(':',1)[-1]
-            current_working_directory = current_working_directory.replace('~', home_directory ,1)
+            current_working_directory = current_working_directory.replace('~', ttylog_sessions[current_session_id]['home_dir'] ,1)
+            user_prompt = ttylog_sessions[current_session_id]['initial_prompt']
             right_dollar_part = right_dollar_part[1:]
 
             #Incase the user closes the terminal, without using the 'exit' command, line is like 'test@intro:~$'
@@ -399,21 +389,6 @@ if __name__ == "__main__":
             if line_split[-1].isdigit():
                 line_timestamp = int(line_split[-1])
                 line_command = ';'.join(line_split[:-1] )
-                if line_command.split(' ')[0] == 'sudo' and line_command.split(' ')[1] == '-i':
-                    continue
-                if line_command.split(' ')[0] == 'su':
-                    if line_command.split(' ')[1] == '-l' \
-                    or line_command.split(' ')[1] == '--login' \
-                    or line_command.split(' ')[1] == '-':
-                        user_prompt = line_command.split(' ')[2] + user_prompt[user_prompt.index('@'):]
-                        home_directory = '/home/' + line_command.split(' ')[2]
-
-                    else:
-                        user_prompt = line_command.split(' ')[1] + user_prompt[user_prompt.index('@'):]
-                        home_directory = '/home/' + line_command.split(' ')[1]
-
-                if user_prompt not in known_prompts:
-                    known_prompts.append(user_prompt)
             else:
                 line_timestamp = 0
 
@@ -442,7 +417,7 @@ if __name__ == "__main__":
                 #If this is the first line when the user became root, we want the prompt to be 'user_prompt', not 'root_prompt'
                 if is_current_prompt_root == False:
                     user_prompt = ttylog_sessions[current_session_id]['initial_prompt']
-                    ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_initial_prompt])
+                    ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_prompt])
                     is_current_prompt_root = True
                 else:
                     ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, root_prompt])
@@ -486,7 +461,7 @@ if __name__ == "__main__":
                 if is_current_prompt_root == True:
                     ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, root_prompt])
                     is_current_prompt_root = False
-                ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_initial_prompt])
+                ttylog_sessions[current_session_id]['lines'].append(['CMBEGIN', node_name, line_timestamp, current_working_directory, line_command, output_prevous_command, user_prompt])
                 line_timestamp = 0
                 line_command = ''
 
