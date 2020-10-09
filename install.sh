@@ -42,6 +42,7 @@ echo -e "${GRN}Downloading and setting up docker${NC}"
 
 wget -O docker.sh get.docker.com
 chmod +x docker.sh
+./docker.sh
 echo -e "${GRN}Creating a user group for docker, and adding your account...${NC}"
 sudo groupadd docker
 sudo usermod -aG docker $username
