@@ -25,6 +25,23 @@ chmod +x install.sh
 ./install.sh
 ```
 
+### Running Locally
+
+Once installed, start the app using
+```bash
+npm start
+```
+Or each service can be run separately 
+```bash
+flask run --host=0.0.0.0
+celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks
+```
+If you want to host the app on port 80, but don't have any WSGI set up, you can use the following iptables rules
+```bash
+sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 5000
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 5000
+```
+
 #### Database Upkeep
 
 If at any point there are updates to this application that require database schema changes, you can use these commands to update
