@@ -42,14 +42,13 @@ echo -e "${GRN}Downloading and setting up docker${NC}"
 
 wget -O docker.sh get.docker.com
 chmod +x docker.sh
+./docker.sh
 echo -e "${GRN}Creating a user group for docker, and adding your account...${NC}"
 sudo groupadd docker
 sudo usermod -aG docker $username
 
-echo -e "${GRN}Building the application, final step!${NC}"
-npm run build
-
-echo -e "${GRN}Done! Try running using: ${NC} npm start"
+echo -e "${GRN}Done! Next run the first-run setup: ${NC} npm run build"
+echo -e "${GRN}Then, you should be able to run the app any time with ${NC} npm start"
 echo -e "${GRN}You may need to make sure that pip-executables are accessible${NC}"
 echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not recognized, try:"
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
