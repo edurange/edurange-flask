@@ -4,87 +4,47 @@ EDURange
 
 Documentation can be found [here](https://github.com/edurange/edurange-flask-docs "EDURange Refactored Documentation")
 
-## Docker Quickstart
-
-This app can be run completely using `Docker` and `docker-compose`. **Using Docker is recommended, as it guarantees the application is run using compatible versions of Python and Node**.
-
-There are three main services:
-
-To run the development version of the app
+## Installation
+We recommend running on a clean ubuntu or debian instance.
+First, clone this repository
 
 ```bash
-docker-compose up flask-dev
+git clone https://github.com/edurange/edurange-flask.git
 ```
 
-To run the production version of the app
-
+Next, change directory, copy the '.env.example' file to '.env' and edit it where marked
 ```bash
-docker-compose up flask-prod
+cd edurange-flask
+cp .env.example .env
+vim .env
 ```
 
-The list of `environment:` variables in the `docker-compose.yml` file takes precedence over any variables specified in `.env`.
-
-To run any commands using the `Flask CLI`
-
+Then, run the installation script
 ```bash
-docker-compose run --rm manage <<COMMAND>>
+chmod +x install.sh
+./install.sh
 ```
 
-Therefore, to initialize a database you would run
+#### Database Upkeep
 
-```bash
-docker-compose run --rm manage db init
-docker-compose run --rm manage db migrate
-docker-compose run --rm manage db upgrade
-```
-
-A docker volume `node-modules` is created to store NPM packages and is reused across the dev and prod versions of the application. For the purposes of DB testing with `sqlite`, the file `dev.db` is mounted to all containers. This volume mount should be removed from `docker-compose.yml` if a production DB server is used.
-
-### Running locally
-
-Run the following commands to bootstrap your environment if you are unable to run the application using Docker
-
-```bash
-cd edurange_refactored
-pip install -r requirements/dev.txt
-npm install
-npm start  # run the webpack dev server and flask server using concurrently
-```
-
-You will see a pretty welcome screen.
-
-#### Database Initialization (locally)
-
-Once you have installed your DBMS, run the following to create your app's
-database tables and perform the initial migration
+If at any point there are updates to this application that require database schema changes, you can use these commands to update
 
 ```bash
 flask db init
 flask db migrate
 flask db upgrade
 ```
+If you will deploy your application remotely (e.g on Heroku) you should add the `migrations` folder to version control.
 
-## Deployment
+Make sure folder `migrations/versions` is not empty.
 
-When using Docker, reasonable production defaults are set in `docker-compose.yml`
+## Debug Settings
 
-```text
-FLASK_ENV=production
-FLASK_DEBUG=0
-```
-
-Therefore, starting the app in "production" mode is as simple as
+Debugging settings can be enabled by editing these values in the '.env' file
 
 ```bash
-docker-compose up flask-prod
-```
-
-If running without Docker
-
-```bash
-export FLASK_ENV=production
-export FLASK_DEBUG=0
-export DATABASE_URL="<YOUR DATABASE URL>"
+FLASK_ENV=debug
+FLASK_DEBUG=1
 npm run build   # build assets with webpack
 flask run       # start the flask server
 ```
@@ -94,8 +54,7 @@ flask run       # start the flask server
 To open the interactive shell, run
 
 ```bash
-docker-compose run --rm manage db shell
-flask shell # If running locally without Docker
+flask shell
 ```
 
 By default, you will have access to the flask `app`.
@@ -105,48 +64,17 @@ By default, you will have access to the flask `app`.
 To run all tests, run
 
 ```bash
-docker-compose run --rm manage test
-flask test # If running locally without Docker
+flask test
 ```
 
 To run the linter, run
 
 ```bash
-docker-compose run --rm manage lint
-flask lint # If running locally without Docker
+flask lint
 ```
 
 The `lint` command will attempt to fix any linting/style errors in the code. If you only want to know if the code will pass CI and do not wish for the linter to make changes, add the `--check` argument.
 
-## Migrations
-
-Whenever a database migration needs to be made. Run the following commands
-
-```bash
-docker-compose run --rm manage db migrate
-flask db migrate # If running locally without Docker
-```
-
-This will generate a new migration script. Then run
-
-```bash
-docker-compose run --rm manage db upgrade
-flask db upgrade # If running locally without Docker
-```
-
-To apply the migration.
-
-For a full migration command reference, run `docker-compose run --rm manage db --help`.
-
-If you will deploy your application remotely (e.g on Heroku) you should add the `migrations` folder to version control.
-You can do this after `flask db migrate` by running the following commands
-
-```bash
-git add migrations/*
-git commit -m "Add migrations"
-```
-
-Make sure folder `migrations/versions` is not empty.
 
 ## Asset Management
 
