@@ -19,11 +19,14 @@ cp .env.example .env
 vim .env
 ```
 
-Then, run the installation script
+Then, run the installation script, and first time npm-build
 ```bash
 chmod +x install.sh
 ./install.sh
+npm run build
 ```
+To verify that you're ready to launch the app, check that "flask" and "celery" are recognized bash commands, and whether "docker run hello-world" works.
+If any of these fail, simply log out and back in, and they should work then. 
 
 ### Running Locally
 
