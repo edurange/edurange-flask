@@ -3,10 +3,10 @@
 		"name" : "nat",
 		"files": [{
 			"global_files": [
-				"iamfrustrated"
 			],
 			"system_files": [
-				"install"
+				"install",
+				"motd_nat"
 			],
 			"user_files": [
 				"setup_home",

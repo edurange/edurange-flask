@@ -1,6 +1,6 @@
 import os
 
-from flask import flash, request, session
+from flask import flash, request, session, current_app
 from flask_login import current_user
 
 from edurange_refactored.extensions import db
@@ -9,31 +9,33 @@ from edurange_refactored.user.forms import (
     addUsersForm,
     manageInstructorForm,
     modScenarioForm,
-    scenarioResponseForm
+    scenarioResponseForm,
+    deleteGroupForm
 )
 
 from . import tasks
-from .user.models import GroupUsers, StudentGroups, User, Responses
+from .user.models import GroupUsers, StudentGroups, User, Responses, ScenarioGroups
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors, responseCheck, getAttempt
 
 
 def process_request(form):  # Input must be request.form
     dataKeys = []
+    # for k in form.keys():
+    #    dataKeys.append(k)
     for k in form.keys():
-        if k != "csrf_token":       # csrf protection is enabled in standard application, only disabled in test app,
-            dataKeys.append(k)      #  so even if csrf_token is not a field in a standard request, it will still be rendered invalid
-
+        if k != "csrf_token":  # csrf protection is enabled in standard application, only disabled in test app,
+            dataKeys.append(k)  # so even if csrf_token is not a field in a standard request, it will still be rendered invalid
 
     form_switch = {
-        "modScenarioForm":          ["sid", "mod_scenario"],
-        "startScenario":            ["start_scenario", "stop_scenario"],
-        "GroupForm":                ["name", "create", "size"],
-        "manageInstructorForm":     ["uName", "promote"],
-        "addUsersForm":             ["add", "groups", "uids"],
-        "scenarioResponseForm":     ["response", "scenario", "question"]
+        "modScenarioForm":          ["sid", "mod_scenario"],  # "csrf_token",
+        "startScenario":            ["start_scenario", "stop_scenario"],  # "csrf_token",
+        "GroupForm":                ["name", "create", "size"],  # "csrf_token",
+        "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
+        "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
+        "scenarioResponseForm":     ["scenario", "question", "response", "submit"],  # "csrf_token",
+        "deleteGroupForm":          ["group_name", "delete"]  # "csrf_token",
     }
-
 
     switchVals = []
     for v in form_switch.values():
@@ -53,9 +55,10 @@ def process_request(form):  # Input must be request.form
         "modScenarioForm":          process_scenarioModder,
         "startScenario":            process_scenarioStarter,
         "GroupForm":                process_groupMaker,
-        "manageInstructorForm":    process_manInst,
+        "manageInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
-        "scenarioResponseForm":     process_scenarioResponse
+        "scenarioResponseForm":     process_scenarioResponse,
+        "deleteGroupForm":          process_groupEraser
     }
     return process_switch[f]()
 
@@ -200,11 +203,42 @@ def process_scenarioResponse():
     sR = scenarioResponseForm()
     if sR.validate_on_submit():
         sid = sR.scenario.data
-        qnum = sR.question.data
+        qnum = int(sR.question.data)
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(qnum, sid, resp)
+        gotIt = responseCheck(qnum, sid, resp, uid)
         # get attempt number from somewhere
-        att = getAttempt(uid, sid, qnum)
+        att = getAttempt(sid)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
+        if gotIt:
+            flash("A CORRECT answer was given for question {0}.".format(qnum))
+        else:
+            flash("An INCORRECT answer was given for question {0}.".format(qnum))
+
+
+def process_groupEraser():
+    db_ses = db.session
+    dG = deleteGroupForm()
+    if dG.validate_on_submit():
+        gname = dG.group_name.data
+        grp = db_ses.query(StudentGroups).filter(StudentGroups.name == gname).first()
+        grp_id = grp.id
+        grp_scenarios = db_ses.query(ScenarioGroups).filter(ScenarioGroups.group_id == grp_id).first()
+        grp_users = db_ses.query(GroupUsers).filter(GroupUsers.group_id == grp_id).all()
+        if grp_scenarios is not None:
+            flash("Cannot delete group - Are there still scenarios for this group?", "error")
+        else:
+            players = []
+            for u in grp_users:
+                players.append(db_ses.query(User).filter(User.id == u.id).first())
+                u.delete()
+            for p in players:
+                if p is not None:
+                    if p.is_static:
+                        p.delete()
+            grp.delete()
+        flash("Successfully deleted group {0}".format(gname))
+    else:
+        flash_errors(dG)
+

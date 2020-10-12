@@ -1,0 +1,85 @@
+{
+	"resource": [
+	{
+            "docker_container": [
+                {
+                    "SNAME_AnonFTP": [
+                        {
+                            "capabilities": [
+                                {
+                                    "add": [
+                                        "NET_ADMIN",
+                                        "SYS_PTRACE"
+                                    ]
+                                }
+                            ],
+                            "command": [
+                                "/usr/sbin/sshd",
+                                "-D"
+                            ],
+                            "connection": [
+                                {
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "root",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
+                                }
+                            ],
+                            "hostname": "AnonFTP",
+                            "image": "sanivo/edurange-ubuntu-vsftpd:16.04",
+                            "name": "SNAME_AnonFTP",
+                            "networks_advanced": [
+                                {
+                                    "ipv4_address": "OCTET.0.0.14",
+                                    "name": "SNAME_PLAYER"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.1.14",
+                                    "name": "SNAME_NAT"
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "internal": 22
+                                }
+                            ],
+                            "provisioner": [
+                                {
+                                    "remote-exec": [
+                                        {
+                                            "inline": [
+                                                "iptables -A INPUT -p tcp --dport 21 -j ACCEPT",
+                                                "iptables -A OUTPUT -p tcp --sport 20 -j ACCEPT",
+                                                "service vsftpd start"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }],
+    "locals": [
+        {
+            "SNAME_AnonFTP_extern": "HIDDEN"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_AnonFTP": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_AnonFTP_extern])}",
+                            "name": "SNAME_AnonFTP"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

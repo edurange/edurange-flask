@@ -1,7 +1,5 @@
 #!/bin/bash
 set -euxo pipefail
-apk add gcc
-apk add libc-dev
 
 cd /home/ubuntu/files
 strace which start 2>&1 | tail -n +2 > strace-identify || :
@@ -9,7 +7,7 @@ gcc -o mystery mystery.c
 rm mystery.c
 
 chmod 4771 /usr/bin/cat
-mkdir /usr/local/src
+
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
 while read line; do

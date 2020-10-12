@@ -17,14 +17,15 @@ def build_users(usernames, passwords):
         next_line = ""
         if i != 0:
             next_line += "\""
-        next_line += str("echo -e '" + str(passwords[i]) + "\\n" + str(passwords[i]) + "' | adduser " + u)
+        next_line += str("useradd --home-dir /home/" + u + " --create-home --shell /bin/bash --password $(echo " + \
+                         str(passwords[i]) + " | openssl passwd -1 -stdin) " + u,)
         if i != len(usernames) - 1:
             next_line += "\","
         users.append(next_line)
     return users
 
 
-def build_uploads(s_files, g_files, u_files, s_type):
+def build_uploads(s_files, g_files, u_files, log_files, s_type):
     all_files = s_files + g_files + u_files
     uploads = ""
     for f in all_files:
@@ -42,12 +43,26 @@ def build_uploads(s_files, g_files, u_files, s_type):
     }
   ],
 """)
+    for lf in log_files:
+        uploads += str("""
+  "provisioner": [
+    { 
+    "file": [ 
+      {
+      "source"      : "${path.module}/../../../scenarios/global_scripts/""" + lf + '",'
+                       + """
+      "destination" : """ + '"/' + lf + '"'
+                       + """
+      }
+    ]
+    }
+  ],
+""")
     return uploads
 
 
-def build_execute_files(s_files, g_files, u_files):
+def build_execute_files(s_files, g_files, u_files, flags):
     execs = "mkdir /home/ubuntu\",\n"
-    execs += "\"apk add bash\",\n"
 
     for i, f in enumerate(g_files):
         execs += str("\"chmod +x /" + f + '"' + """, 
@@ -62,7 +77,9 @@ def build_execute_files(s_files, g_files, u_files):
         execs += str("""
       "chmod +x /""" + f + '"' + """,
       "mv /""" + f + " /home/ubuntu/" + f + '"' + """,
-      "bash /home/ubuntu/""" + f)
+      "/home/ubuntu/""" + f)
+        if f == "install":
+            execs += " " + str(" ".join(v for v in flags))
         if i != len(s_files) - 1:
             execs += "\","
     return execs
@@ -88,15 +105,22 @@ def adjust_network(address, name):
 
 def write_resource(address, name, s_type,
                    c_name, usernames, passwords,
-                   s_files, g_files, u_files):
+                   s_files, g_files, u_files, flags):
     # Generate a list of strings of commands for adding users
+
+    template_folder = "../../../scenarios/prod/" + s_type + "/"
     users = build_users(usernames, passwords)
 
+    log_files = ["tty_setup", "analyze.py", "makeTsv.py", "start_ttylog.sh",
+                 "ttylog", "analyze_cyclic.pl", "clearlogs", "iamfrustrated"]
     # Generate a list of 'provisioner' blocks to upload all files
-    uploads = build_uploads(s_files, g_files, u_files, s_type)
+    uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
 
+    s_files = s_files + ["tty_setup"]
+    g_files = g_files + ["iamfrustrated", "clearlogs"]
+    u_files = u_files + ["ttylog", "analyze_cyclic.pl", "start_ttylog.sh", "makeTsv.py", "analyze.py"]
     # Generate a list of commands to move files, and run them if needed
-    execs = build_execute_files(s_files, g_files, u_files)
+    execs = build_execute_files(s_files, g_files, u_files, flags)
 
     # Make sure the container has a known template
     try:

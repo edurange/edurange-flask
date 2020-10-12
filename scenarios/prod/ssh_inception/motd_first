@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+ ███████╗██╗██████╗ ███████╗████████╗    ███████╗████████╗ ██████╗ ██████╗
+ ██╔════╝██║██╔══██╗██╔════╝╚══██╔══╝    ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗
+ █████╗  ██║██████╔╝███████╗   ██║       ███████╗   ██║   ██║   ██║██████╔╝
+ ██╔══╝  ██║██╔══██╗╚════██║   ██║       ╚════██║   ██║   ██║   ██║██╔═══╝
+ ██║     ██║██║  ██║███████║   ██║       ███████║   ██║   ╚██████╔╝██║
+ ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝   ╚═╝    ╚═════╝ ╚═╝
+
+"I'll tell you a riddle. You're waiting for a train, a train that will take
+you far away. You know where you hope this train will take you, but you don't
+know for sure."
+
+You found it. Well done. The next dream machine lies just a few addresses
+higher on your subnet. Use nmap to find the next closest machine.
+
+The subnet address was mentioned in an earlier message, or you can calculate it
+for yourself using 'ipcalc'
+
+Helpful commands: ifconfig, nmap, ssh, ipcalc
+EOF

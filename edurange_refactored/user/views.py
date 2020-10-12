@@ -9,6 +9,7 @@ from flask import (
     request,
     session,
     url_for,
+    current_app
 )
 from flask_login import login_required
 
@@ -19,7 +20,9 @@ from edurange_refactored.user.forms import (
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
-    changeEmailForm
+    changeEmailForm,
+    deleteGroupForm,
+    scenarioResponseForm
 )
 
 from ..form_utils import process_request
@@ -40,7 +43,11 @@ from ..utils import (
     queryPolish,
     questionReader,
     getScore,
-    score
+    score,
+    readCSV,
+    displayCorrect,
+    formatCSV,
+    check_privs
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -135,29 +142,61 @@ def student():
     )
 
 
-@blueprint.route("/student_scenario/<i>")
+@blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required
 def student_scenario(i):
     # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
+            # db_ses = db.session
+            # query = db_ses.query(User.id)\
+            #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+            # own_id = session.get("_user_id")
             addresses = identify_state(s_name, status)
-            return render_template("dashboard/student_scenario.html",
-                                   status=status,
-                                   owner=owner,
-                                   desc=desc,
-                                   s_type=s_type,
-                                   s_name=s_name,
-                                   u_name=u_name,
-                                   pw=pw,
-                                   add=addresses,
-                                   guide=guide,
-                                   questions=questions)
+            aList = displayCorrect(s_name, u_name)
+            example = None
+            if request.method == "GET":
+                scenarioResponder = scenarioResponseForm()
+                return render_template("dashboard/student_scenario.html",
+                                       id=i,
+                                       status=status,
+                                       owner=owner,
+                                       desc=desc,
+                                       s_type=s_type,
+                                       s_name=s_name,
+                                       u_name=u_name,
+                                       pw=pw,
+                                       add=addresses,
+                                       guide=guide,
+                                       questions=questions,
+                                       srF=scenarioResponder,
+                                       aList=aList,
+                                       example=example)
+
+            elif request.method == "POST":
+                ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
+                return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
+                # if ajax:  # if forms.py scenarioResponseForm returns true
+                #    current_app.logger.info("########Ajax Response is: {} ".format(request.data))
+                #    # #query db to convert username to user_id
+                #    # form_utils.py/process_scenarioResponse();
+                #    # utils.py/responseCheck boolean value then somehow pass back to template.
+                # else:
+                #    return redirect(url_for("dashboard.student_scenario", i=i))
+
         else:
             return abort(404)
     else:
         return abort(403)
+    # STUDENT RESPONSE POST REQUEST
+    # if request.method == "POST":
+    #    ajax = scenarioResponseForm(request.form) #this validates it
+    #    if ajax: #if forms.py scenarioResponseForm returns true
+    #        current_app.logger.info("########Ajax Response is: {} ".format(request.data))
+    #        ##query db to convert username to user_id
+    #        #form_utils.py/process_scenarioResponse();
+    #        #utils.py/responseCheck boolean value then somehow pass back to template.
 
 
 # ---- scenario routes
@@ -166,7 +205,7 @@ def student_scenario(i):
 @blueprint.route("/catalog", methods=["GET"])
 @login_required
 def catalog():
-    check_admin()
+    check_privs()
     scenarios = populate_catalog()
     groups = StudentGroups.query.all()
     scenarioModder = modScenarioForm(request.form)  # type2Form()  #
@@ -179,7 +218,7 @@ def catalog():
 @blueprint.route("/make_scenario", methods=["POST"])
 @login_required
 def make_scenario():
-    check_admin()
+    check_privs()
     form = makeScenarioForm(request.form)  # type2Form()  #
     if form.validate_on_submit():
         db_ses = db.session
@@ -229,7 +268,7 @@ def make_scenario():
 @login_required
 def scenarios():
     """List of scenarios and scenario controls"""
-    check_admin()
+    check_privs()
     scenarioModder = modScenarioForm()  # type2Form()  #
     scenarios = Scenarios.query.all()
     groups = StudentGroups.query.all()
@@ -260,9 +299,15 @@ def scenariosInfo(i):
             status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
             addresses = identify_state(s_name, status)
             db_ses = db.session
-            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct, User.username)\
+            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct,
+                                 Responses.question, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            resp = queryPolish(query, s_type)
+            resp = queryPolish(query, s_name)
+            try:
+                rc = formatCSV(readCSV(i))
+            except FileNotFoundError:
+                flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
+                rc = []
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -274,7 +319,8 @@ def scenariosInfo(i):
                                    add=addresses,
                                    guide=guide,
                                    questions=questions,
-                                   resp=resp)
+                                   resp=resp,
+                                   rc=rc)
         else:
             return abort(404)
     else:
@@ -289,14 +335,15 @@ def scenarioResponse(i, r):
             db_ses = db.session
             d = responseSelector(r)
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
-            s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
+            # s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
                                  Responses.correct, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            table = responseQuery(u_id, aNum, query, questionReader(s_type[0]))
-            scr = score(getScore(u_id, aNum, query), questionReader(s_type[0]))
+            table = responseQuery(u_id, aNum, query, questionReader(sName))
+            scr = score(getScore(u_id, aNum, query), questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
+                                   i=i,
                                    u_id=u_id,
                                    uName=uName,
                                    s_id=s_id,
@@ -394,6 +441,7 @@ def admin():
         groupMaker = GroupForm()
         userAdder = addUsersForm()
         instructorManager = manageInstructorForm()
+        groupEraser = deleteGroupForm()
 
         return render_template(
             "dashboard/admin.html",
@@ -404,6 +452,7 @@ def admin():
             students=students,
             instructors=instructors,
             usersPGroup=users_per_group,
+            groupEraser=groupEraser
         )
 
     elif request.method == "POST":
@@ -424,3 +473,4 @@ def admin():
                     return render_template(temp, group=ajax[1], users=ajax[2])
         else:
             return redirect(url_for("dashboard.admin"))
+

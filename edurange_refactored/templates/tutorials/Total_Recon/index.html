@@ -1,0 +1,86 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Total Recon</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="total-recon"
+                  title="Total Recon"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="About" duration="1">
+        <p>Total Recon is a story-based game designed to teach how network<br>protocols such as TCP, UDP, and ICMP can be used to reveal information about<br>a network. Total Recon focuses on reconnaissance to determine hosts in an<br>unknown network. You will explore tradeoffs between speed and stealth when<br>using tools such as nmap.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Background" duration="3">
+        <p>Whether you&#39;re doing a large-scale security audit, inventorying a network, or<br>analyzing network response times, nmap is a powerful tool to help you complete<br>your task. In order to understand this exercise, you should be familiar with the<br>3-way handshake for TCP. A basic understanding of ICMP and UDP will also<br>be helpful. This exercise is not designed to teach you all of the details of those<br>protocols, but rather to show you how they can be used for network exploring.<br>You will learn how to discover hosts on a network, determine which ports on<br>those hosts are open, and what applications are running on them.<br>In practice, each message that is sent over the Internet uses multiple protocols,<br>which are divided into five layers: physical layer, link layer, network layer,<br>transport layer and application layer. For example, the physical layer handles<br>what is encoded as a 0 or 1. The link layer handles communication on local area<br>networks (LANs). The network layer handles routing on wide area networks<br>(WANs), e.g. IP. The transport layer handles ports and processes, e.g. TCP,<br>UDP, ICMP. The application layer handles applications communicating with<br>each other, e.g. http, ftp, by nesting packets inside of packets. In general, these<br>packets correspond to layers of functionality: TCP is connection-oriented and is<br>responsible for a number of things including reliably conveying messages between<br>the application layers on two hosts. The three-way handshake establishes this<br>pairing with the following sequence: SYN, SYN-ACK, and ACK You can get a<br>summary of the important protocols and their layers in: Chapter 4 of Hacking:<br>The Art of Exploitation (Erickson)[1] or Chapter 2 of Counter Hack Reloaded<br>[2]. Network Security by Kaufman, Perlman, Speciner [3].</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Learning Objectives" duration="1">
+        <p>Understand how the networking protocols (TCP, UDP, ICMP) can be<br>exploited for recon</p>
+<ul>
+<li>Know how to use nmap to find hosts and open ports on a network</li>
+<li>Recognize the standard common ports (e.g. SSH, FTP, HTTP, SMTP,<br>IMAP)</li>
+<li>Understand the TCP flags and how they can be used for different types of<br>scans</li>
+<li>Understand CIDR network configuration and how to subdivide a network<br>IP range</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instructions" duration="1">
+        <p>Connect to the VM via your instructor&#39;s directions, or as displayed on your<br>EDURange account. Instructions will be displayed upon logging in and at each<br>new checkpoint.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab Assignments and Questions" duration="1">
+        <p>Questions can be found upon logging into your EDURange account.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Discussion Questions" duration="30">
+        <ol type="1">
+<li>What is the 3-way handshake?</li>
+<li>What does 10.1.1.0/17 mean? how many IP addresses does that include?</li>
+<li>What does the SYN flag do? What does the FIN flag do?</li>
+<li>What are the options for nmap and what are their differences in terms of<br>time, stealth and protocols?</li>
+<li>Which methods did you use to speed up your scans? What else could you<br>have done?</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 """User forms."""
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp
 from .models import User, StudentGroups
 
 from .models import StudentGroups, User
@@ -12,7 +12,7 @@ class RegisterForm(FlaskForm):
     """Register form."""
 
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=3, max=25)]
+        "Username", validators=[DataRequired(), Length(min=3, max=25), Regexp('^\w+-?\w+-?\w+$', message="Username must be alphanumeric")]
     )
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
@@ -207,6 +207,10 @@ class modScenarioForm(FlaskForm):
 class scenarioResponseForm(FlaskForm):
     """records a students response to a scenario question"""
 
+    scenario = StringField("Scenario", validators=[DataRequired()])
+
+    question = StringField("Question", validators=[DataRequired()])
+
     response = StringField("Response", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -214,6 +218,22 @@ class scenarioResponseForm(FlaskForm):
 
     def validate(self):
         initial_validation = super(scenarioResponseForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+# -
+class deleteGroupForm(FlaskForm):
+    """designates a student group to be deleted"""
+
+    group_name = StringField("Group Name", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(deleteGroupForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(deleteGroupForm, self).validate()
         if not initial_validation:
             return False
         return True

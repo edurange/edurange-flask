@@ -8,7 +8,8 @@
               "capabilities": [
                 {
                   "add": [
-                    "NET_ADMIN"
+                    "NET_ADMIN",
+                    "SYS_PTRACE"
                   ]
                 }
               ],
@@ -19,14 +20,14 @@
               "connection": [
                 {
                   "host": "${self.ports[0].ip}",
-                  "password": "sup3r_s3cr3t_r00t_p4ssw0rd",
+                  "password": "root",
                   "port": "${self.ports[0].external}",
                   "type": "ssh",
                   "user": "root"
                 }
               ],
               "hostname": "NAT",
-              "image": "sanivo/edurange_alpine:latest",
+              "image": "sanivo/edurange-ubuntu-sshd:16.04",
               "name": "SNAME_nat",
               "networks_advanced": [
                 {
@@ -48,7 +49,8 @@
                   "remote-exec": [
                     {
                       "inline": [
-                        "echo -e 'passwordfoo123\npasswordfoo123' | adduser student",
+                        "apt install -y make nasm gcc strace",
+                        "echo 'export PATH=/usr/special/bin:$PATH' >> /etc/bash.bashrc",
                         "USERS",
                         "EXECS"
                       ]

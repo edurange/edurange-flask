@@ -5,13 +5,13 @@
          "files":[
             {
                "global_files":[
-                  "iamfrustrated"
                ],
                "system_files":[
-
+		          "motd_nat",
+		          "adjust_motd",
+                 "start_flag"
                ],
                "user_files":[
-
                ]
             }
          ]
@@ -21,13 +21,14 @@
          "files":[
             {
                "global_files":[
-
                ],
                "system_files":[
-
+		          "motd_first",
+		          "adjust_motd",
+		          "ssh_port_123",
+                 "first_flag"
                ],
                "user_files":[
-
                ]
             }
          ]
@@ -37,13 +38,15 @@
          "files":[
             {
                "global_files":[
-
                ],
                "system_files":[
-
+                  "motd_second",
+                  "adjust_motd",
+                  "place_rsa",
+                 "second_flag"
                ],
                "user_files":[
-
+                  "id_rsa"
                ]
             }
          ]
@@ -53,13 +56,16 @@
          "files":[
             {
                "global_files":[
-
                ],
                "system_files":[
-
+                  "motd_third",
+                  "adjust_motd",
+                  "authorize_rsa",
+                  "make_maze",
+                 "third_flag"
                ],
                "user_files":[
-
+                  "id_rsa"
                ]
             }
          ]
@@ -69,13 +75,16 @@
          "files":[
             {
                "global_files":[
-
                ],
                "system_files":[
-
+                  "motd_fourth",
+                  "adjust_motd",
+                  "reset_pass_fourth",
+                  "block_third_stop",
+                  "decrypt_script",
+                 "fourth_flag"
                ],
                "user_files":[
-
                ]
             }
          ]
@@ -85,19 +94,37 @@
          "files":[
             {
                "global_files":[
-
                ],
                "system_files":[
-
+                  "motd_fifth",
+                  "adjust_motd",
+                  "reset_pass_fifth",
+                  "base64_msg",
+                 "fifth_flag"
                ],
                "user_files":[
-
                ]
             }
          ]
       },
       {
          "name":"SatansPalace",
+         "files":[
+            {
+               "global_files":[
+               ],
+               "system_files":[
+                  "satans_palace_setup",
+                  "ssh_port_666",
+                 "last_flag"
+               ],
+               "user_files":[
+               ]
+            }
+         ]
+      },
+      {
+         "name":"AnonFTP",
          "files":[
             {
                "global_files":[

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+ ___________    ___________                                                                  ______                
+|            | |            `````|````` |         |                    ..'''' `````|`````  .~      ~.  |`````````, 
+|______      | |______           |      |_________|                 .''            |      |          | |'''''''''  
+|            | |                 |      |         |              ..'               |      |          | |           
+|            | |                 |      |         |        ....''                  |       `.______.'  |           
+                                                                                                                   
+****************************************************************************************************
+"The ecstasy that blooms in synapses is Paprika-brand milk fat! 5% is the norm.
+The safety net of the ocean is nonlinear, even with what crabs dream of! Lets go!"
+Decode the file 'betcha_cant_read_me' to find your way to the ultimate challenge... SATAN'S PALACE
+****************************************************************************************************
+EOF

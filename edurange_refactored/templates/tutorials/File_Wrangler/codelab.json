@@ -1,0 +1,22 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-01-03T12:23:20-08:00",
+  "id": "file-wrangler",
+  "duration": 20,
+  "title": "File Wrangler",
+  "authors": "who",
+  "summary": "File Wrangler",
+  "source": "file-wrangler.md",
+  "theme": "",
+  "status": [
+    "whatever"
+  ],
+  "category": null,
+  "tags": [
+    "medium"
+  ],
+  "url": "file-wrangler"
+}

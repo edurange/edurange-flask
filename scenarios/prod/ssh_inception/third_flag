@@ -1,0 +1,5 @@
+#!/bin/bash
+
+while read line; do
+	echo "YaQV4CKu" > /home/$line/secret
+done</usr/local/src/user_names.txt

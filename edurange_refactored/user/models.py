@@ -35,6 +35,7 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
         db.String(8), unique=True, nullable=True, default=generate_registration_code()
     )
     hidden = Column(db.Boolean(), nullable=False, default=False)
+    users = relationship("GroupUsers", backref="groups", cascade="all, delete-orphan")
 
 
 class GroupUsers(UserMixin, SurrogatePK, Model):
@@ -93,6 +94,8 @@ class Scenarios(UserMixin, SurrogatePK, Model):
     owner = relationship("User", backref="scenarios", lazy="subquery")
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     status = Column(db.Integer, default=0, nullable=False)
+    attempt = Column(db.Integer, default=0, nullable=False, server_default="0")
+    resps = relationship("Responses", backref="scenarios", cascade="all, delete-orphan")
 
     def __repr__(self):
         """Represent instance as a unique string."""
@@ -123,4 +126,18 @@ class Responses(UserMixin, SurrogatePK, Model):
     response_time = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     attempt = Column(db.Integer, default=0, nullable=False)
     # learning objective field?
+
+
+class BashHistory(UserMixin, SurrogatePK, Model):
+    """Bash Histories, associated with users and scenarios"""
+
+    __tablename__ = "bash_history"
+
+    scenario_name = Column(db.String(40), unique=False, nullable=False)
+    container_name = Column(db.String(40), nullable=False, unique=False)
+    timestamp = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    current_directory = Column(db.String(200), nullable=False, unique=False)
+    input = Column(db.String(250), nullable=False, unique=False)
+    output = Column(db.String(10000), nullable=False, unique=False)
+    prompt = Column(db.String(80), nullable=False, unique=False)
 

@@ -2,7 +2,11 @@
 import json
 import os
 
+import csv
+import re
+
 import yaml
+import ast
 from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
 from flask_table import Col, Table
@@ -56,6 +60,13 @@ def check_instructor():
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_instructor:
+        abort(403)
+
+
+def check_privs():
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor and not user.is_admin:
         abort(403)
 
 
@@ -189,14 +200,12 @@ def checkEx(d):
 
 
 def checkAuth(d):
-    db_ses = db.session
-    n = current_user.id
-    ownId = db_ses.query(Scenarios.owner_id).filter(Scenarios.id == d).first()
-    ownId = ownId[0]
-    if ownId == n:
-        return True
-    else:
+    number = current_user.id
+    user = User.query.filter_by(id=number).first()
+    if not user.is_instructor and not user.is_admin:
         return False
+    else:
+        return True
 
 
 def checkEnr(d):
@@ -246,7 +255,7 @@ def getDesc(t):
     return d
 
 
-def getGuide(t):
+def getGuide2(t):
     #g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
     with open(
@@ -262,7 +271,14 @@ def getGuide(t):
     return g
 
 
+def getGuide(t):
+    t = t.title().replace(" ", "_")
+    g = "http://127.0.0.1:5000/tutorials/" + t + "#0"
+    return g
+
+
 def getPass(sn, un):
+    sn = "".join(e for e in sn if e.isalnum())
     with open('./data/tmp/' + sn + '/students.json', 'r') as f:
         data = json.load(f)
         d1 = data.get(un)[0]
@@ -271,14 +287,15 @@ def getPass(sn, un):
 
 
 def getQuestions(t):
-    questions = []
+    questions = {}
     t = t.lower().replace(" ", "_")
     with open(
             "./scenarios/prod/" + t + "/" + "questions.yml", "r"
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item in document:
-            questions.append(item['Text'])
+            #questions.append(item['Text'])
+            questions[item['Order']] = item['Text']
     return questions
 
 
@@ -294,10 +311,7 @@ def tempMaker(d, i):
     stat = statReader(stat[0])
     # owner name
     oName = (
-        db_ses.query(User.username)
-            .filter(Scenarios.id == d)
-            .filter(Scenarios.owner_id == User.id)
-            .first()
+        db_ses.query(User.username).filter(Scenarios.id == d).filter(Scenarios.owner_id == User.id).first()
     )
     oName = oName[0]
     # description
@@ -306,7 +320,7 @@ def tempMaker(d, i):
     desc = getDesc(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
-    current_app.logger.info(questions)
+    # current_app.logger.info(questions) #--
     # scenario name
     sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
     sNom = sNom[0]
@@ -319,6 +333,7 @@ def tempMaker(d, i):
         # username
         ud = current_user.id
         usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
+        usr = "".join(e for e in usr if e.isalnum())
         # password
         pw = getPass(sNom, usr)
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
@@ -327,19 +342,77 @@ def tempMaker(d, i):
 # --
 
 
-def responseCheck(qnum, sid, resp):
+# def responseCheck(qnum, sid, resp):
+#    # read correct response from yaml file
+#    db_ses = db.session
+#    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+#    questions = questionReader(s_name[0])
+#    for text in questions:
+#        order = int(text['Order'])
+#        if order == qnum:
+#            ans = str(text['Values'][0]['Value'])
+#    if resp == ans:
+#        return True
+#    else:
+#        return False
+
+
+def responseCheck(qnum, sid, resp, uid):
     # read correct response from yaml file
     db_ses = db.session
-    s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == sid).first()
-    questions = questionReader(s_type[0])
+    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    questions = questionReader(s_name[0])
     for text in questions:
-        order = int(text['Order'])
+        order = int(text['Order'])  # get question number from yml file
         if order == qnum:
-            ans = str(text['Values'][0]['Value'])
-    if resp == ans:
-        return True
+            if len(text['Values']) == 1:  # if there's only one correct answer in the yml file
+                ans = str(text['Values'][0]['Value'])
+                if "${" in ans:
+                    ans = bashAnswer(sid, uid, ans)
+                if resp == ans:
+                    return True
+                elif ans == 'ESSAY':
+                    return True
+                else:
+                    return False
+            elif len(text['Values']) > 1:  # if there's multiple correct answers in the yml file
+                yes = False
+                for i in text['Values']:
+                    ans = i['Value']
+                    if "${" in ans:
+                        ans = bashAnswer(sid, uid, ans)
+                    if resp == ans:
+                        yes = True
+                if yes:
+                    return True
+                else:
+                    return False
+
+
+def bashAnswer(sid, uid, ans):
+    db_ses = db.session
+    uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+    if "${player.login}" in ans:
+        students = open("./data/tmp/" + sName + "/students.json", "r")
+        user = ast.literal_eval(students.read())
+        username = user[uName][0]["username"]
+        ansFormat = ans[0:6]
+        newAns = ansFormat + username
+        return newAns
+    elif "${scenario.instances" in ans:
+        wordIndex = ans[21:-1].index(".")
+        containerName = ans[21:21+wordIndex]
+        containerFile = open("./data/tmp/" + sName + "/" + containerName + ".tf.json", "r")
+        content = ast.literal_eval(containerFile.read())
+        index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
+        ans = ""
+        for d in index:
+            if d["name"] == (sName + "_PLAYER"):
+                ans = d["ipv4_address"]
+        return ans
     else:
-        return False
+        return ans
 
 
 # --
@@ -354,6 +427,7 @@ def responseQuery(uid, att, query, questions):
 
     for response in tmpList:
         qNum = response.question
+        corr = response.correct
         for text in questions:
             order = int(text['Order'])
             if order == qNum:
@@ -361,7 +435,7 @@ def responseQuery(uid, att, query, questions):
                 poi = text['Points']
                 val = text['Values'][0]['Value']
                 sR = response.student_response
-                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR}
+                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'correct':corr}
                 tableList.append(dictionary)
     return tableList
 
@@ -377,11 +451,14 @@ def responseSelector(resp):
     return data
 
 
+# -----
+
+
 def getScore(usr, att, query):
     sL = []
     for resp in query:
         if usr == resp.user_id and att == resp.attempt:
-            sL.append({'question': resp.user_id, 'correct': resp.correct})
+            sL.append({'question': resp.question, 'correct': resp.correct, 'response': resp.student_response})
     return sL
 
 
@@ -394,26 +471,67 @@ def totalScore(questions):
 
 def score(scrLst, questions):
     sS = 0
+    checkList = scoreSetup(questions)
     for sR in scrLst:
         if sR['correct']:
             num = int(sR['question'])
             for text in questions:
                 if int(text['Order']) == num:
-                    sS += int(text['Points'])
+                    check, checkList = scoreCheck(num, checkList)
+                    if not check:
+                        if str(text['Type']) == "Multi String":
+                            for i in text['Values']:
+                                if i['Value'] == sR['response']:
+                                    sS += int(text['Values'][i]['Points'])
+                        else:
+                            sS += int(text['Points'])
     scr = '' + str(sS) + ' / ' + str(totalScore(questions))
     return scr
 
 
-def questionReader(typ):
-    typ = typ.lower().replace(" ", "_")
+def scoreSetup(questions):
+    checkList = {}
+    for text in questions:
+        if str(text['Type']) == "Multi String":
+            count = 1
+            for d in text['Values']:
+                k = str(text['Order']) + str(count)
+                checkList[k] = False
+        else:
+            checkList[str(text['Order'])] = False
+    return checkList
+
+
+def scoreCheck(qnum, checkList):
+    keys = list(checkList.keys())
+    for k in keys:
+        if k == str(qnum):
+            if checkList[k]:
+                return True, checkList  # answer has already been checked
+            elif not checkList[k]:
+                checkList[k] = True
+                return False, checkList  # answer has not been checked before but is now checked
+        elif str(qnum) in k and '.' in k:  # if multi string
+            if checkList[k]:
+                return True, checkList  # answer was already checked
+            elif not checkList[k]:
+                checkList[k] = True
+                return False, checkList  # answer was not checked before but is now
+
+
+# -----
+
+
+def questionReader(name):
+    name = "".join(e for e in name if e.isalnum())
     with open(
-            "./scenarios/prod/" + typ + "/questions.yml", "r"
+            "./data/tmp/" + name + "/questions.yml", "r"
     ) as yml:
         document = yaml.full_load(yml)
     return document
 
 
-def queryPolish(query, sType):
+def queryPolish(query, sName):
     qList = []
     for entry in query:
         i = entry.id
@@ -421,7 +539,7 @@ def queryPolish(query, sType):
         att = entry.attempt
         usr = entry.username
         if qList is None:
-            scr = score(getScore(uid, att, query), questionReader(sType))
+            scr = score(getScore(uid, att, query), questionReader(sName))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             qList.append(d)
         else:
@@ -430,7 +548,7 @@ def queryPolish(query, sType):
                 if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
-                scr = score(getScore(uid, att, query), questionReader(sType))
+                scr = score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
                 qList.append(d)
     return qList
@@ -452,12 +570,118 @@ def responseProcessing(data):
     return uid, uname, sid, sname, att
 
 
-def getAttempt(uid, sid, qnum):
+def setAttempt(sid):
     db_ses = db.session
-    query = db_ses.query(Responses.attempt).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
-        .filter(Responses.question == qnum).first()
-    if query is None:
+    currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
+    if currAtt[0] == 0:
         att = 1
     else:
-        att = int(query[0]) + 1
+        att = int(currAtt[0]) + 1
     return att
+
+
+def getAttempt(sid):
+    db_ses = db.session
+    query = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid)
+    return query
+
+
+def readCSV(id):
+    db_ses = db.session
+    sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
+    sName = "".join(e for e in sName if e.isalnum())
+    csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
+    arr = []
+    reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    for row in reader:
+        lineStr = ''
+        if len(row) > 7:
+            continue
+        for i, item in enumerate(row):
+            if i == 5:
+                item = item.replace("\r", "").replace("\n", "#%#")
+                item = item.replace('\"', '').replace(",", "")
+                item = item.replace('\t', '')
+                item = re.sub(r'[0-9]{10}', '\n', item)
+                if len(item) > 0:
+                    item = '%' + item + '%'
+                if len(item) > 500:
+                    item = item[:500]
+            if i == 0:
+                lineStr += item.strip('\n\r')
+            else:
+                lineStr += '\t' + item.strip('\n\r')
+            if i == 6:
+                lineStr += '\n'
+        arr.append(lineStr)
+    return arr
+
+
+def readCSV_by_name(name):
+    csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")
+    arr = []
+    reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    for row in reader:
+        lineStr = ''
+        if len(row) > 7:
+            continue
+        for i, item in enumerate(row):
+            if i == 5:
+                item = item.replace("\r", "").replace("\n", "#%#")
+                item = item.replace('\"', '').replace(",", "")
+                item = item.replace('\t', '')
+                item = re.sub(r'[0-9]{10}', '\n', item)
+                if len(item) > 0:
+                    item = '%' + item + '%'
+                if len(item) > 500:
+                    item = item[:500]
+            if i == 0:
+                lineStr += item.strip('\n\r')
+            else:
+                lineStr += '\t' + item.strip('\n\r')
+            if i == 6:
+                lineStr += '\n'
+        arr.append(lineStr)
+    return arr
+
+
+def formatCSV(arr):
+    nArr = []
+    for entry in arr:
+        tmpArr = entry.split("\t")
+        nArr.append(tmpArr)
+    return nArr
+
+
+def readScenario():
+    scenarios = [
+        dI
+        for dI in os.listdir("./scenarios/prod/")
+        if os.path.isdir(os.path.join("./scenarios/prod/", dI))
+    ]
+    desc = []
+    for s in scenarios:
+        desc.append(getDesc(s))
+    return 0
+
+
+def recentCorrect(uid, qnum, sid):
+    db_ses = db.session
+    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
+        .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
+    return recent
+
+
+def displayCorrect(sName, uName):
+    db_ses = db.session
+    uid = db_ses.query(User.id).filter(User.username == uName).first()
+    sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()
+    questions = questionReader(sName)
+    ques = {}
+    for text in questions:
+        order = int(text['Order'])
+        rec = recentCorrect(uid, order, sid)
+        if rec is not None:
+            rec = rec[0]
+        ques[order] = rec
+    return ques

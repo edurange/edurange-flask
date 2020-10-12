@@ -1,0 +1,22 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-02-07T11:56:48-08:00",
+  "id": "ssh-inception",
+  "duration": 34,
+  "title": "SSH Inception",
+  "authors": "Selena",
+  "summary": "SSH Inception",
+  "source": "sshInception.md",
+  "theme": "",
+  "status": [
+    "inprogress"
+  ],
+  "category": null,
+  "tags": [
+    "edurange"
+  ],
+  "url": "ssh-inception"
+}

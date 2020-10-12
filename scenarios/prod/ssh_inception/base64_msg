@@ -1,0 +1,12 @@
+#!/bin/bash
+
+awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
+
+while read line; do
+	cd /home/$line
+	echo "You found me. Good job. The next challenge will not be so easy. You will find Satans Palace on the host with a certain open port. The most evil open port. SSH to that port with the password '52efb7de'. The final treasure awaits..." | base64 > betcha_cant_read_me
+
+	chown $line:$line betcha_cant_read_me
+	chmod 400 betcha_cant_read_me
+
+done</usr/local/src/user_names.txt
