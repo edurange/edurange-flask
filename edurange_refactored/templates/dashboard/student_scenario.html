@@ -34,6 +34,8 @@
             <div id="Responses" class="tab-pane show active">
                 <div class="container mt-3">
                     <h3> Response Form </h3>
+                    <h5> Questions Completed: {{ progress['questions'] }} / {{ progress['total_questions'] }} </h5>
+                    <h5> Points Earned: {{ progress['score'] }} / {{ progress['total_score'] }} </h5>
                     <div class="card-body">
                         <div class="container">
                             {% for i in questions %}
@@ -43,10 +45,10 @@
                                         {% if aList[i] == example%}
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} </label>
                                         {% endif %}
-                                        {% if aList[i] == True %}
+                                        {% if aList[i] != 0 and aList[i] != example %}
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-check">Correct</i></label>
                                         {% endif %}
-                                        {% if aList[i] == False %}
+                                        {% if aList[i] == 0 %}
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-ban">Incorrect</i></label>
                                         {% endif %}
                                         <input class="form-control" type="hidden" name="scenario" value="{{ id }}" readonly>

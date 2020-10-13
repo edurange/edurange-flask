@@ -207,11 +207,11 @@ def process_scenarioResponse():
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        gotIt = responseCheck(qnum, sid, resp, uid)
-        # get attempt number from somewhere
+        score = responseCheck(qnum, sid, resp, uid)
+        # get attempt number
         att = getAttempt(sid)
-        Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, correct=gotIt, attempt=att)
-        if gotIt:
+        Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
+        if score > 0:
             flash("A CORRECT answer was given for question {0}.".format(qnum))
         else:
             flash("An INCORRECT answer was given for question {0}.".format(qnum))

@@ -122,7 +122,8 @@ class Responses(UserMixin, SurrogatePK, Model):
     scenario = relationship("Scenarios", backref="responses")
     question = Column(db.Integer, default=0, nullable=False)
     student_response = Column(db.String(40), unique=False, nullable=True)
-    correct = Column(db.Boolean(), default=False)
+    #correct = Column(db.Boolean(), default=False)
+    points = Column(db.Integer, default=0, nullable=False)
     response_time = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     attempt = Column(db.Integer, default=0, nullable=False)
     # learning objective field?
