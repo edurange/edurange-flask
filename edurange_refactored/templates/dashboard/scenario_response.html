@@ -34,7 +34,7 @@
                                         <th> Answer </th>
                                         <th> Possible Points </th>
                                         <th> Student Response </th>
-                                        <th> Correct </th>
+                                        <th> Points Earned </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -45,6 +45,7 @@
                                             <td> {{ d['answer'] }} </td>
                                             <td> {{ d['points'] }} </td>
                                             <td> {{ d['student_response'] }} </td>
+                                            <td> {{ d['earned'] }} </td>
                                             {% if d['correct'] == True %}
                                                 <td> <i class="fa fa-check"></i> {{ d['correct'] }} </td>
                                             {% endif %}

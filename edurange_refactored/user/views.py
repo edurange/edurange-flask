@@ -42,12 +42,13 @@ from ..utils import (
     responseSelector,
     queryPolish,
     questionReader,
-    getScore,
+    # getScore,
     score,
     readCSV,
     displayCorrect,
     formatCSV,
-    check_privs
+    check_privs,
+    displayProgress
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -145,6 +146,7 @@ def student():
 @blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required
 def student_scenario(i):
+    # i = scenario_id
     # db_ses = db.session
     if checkEnr(i):
         if checkEx(i):
@@ -152,10 +154,15 @@ def student_scenario(i):
             # db_ses = db.session
             # query = db_ses.query(User.id)\
             #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            # own_id = session.get("_user_id")
+            uid = session.get("_user_id")
+            # att = db_ses.query(Scenarios.attempt).filter(Scenarios.id == i).first()
             addresses = identify_state(s_name, status)
             aList = displayCorrect(s_name, u_name)
             example = None
+            progress = displayProgress(i, uid)
+            # query = db_ses.query(Responses.user_id, Responses.attempt, Responses.question, Responses.points,
+            #                     Responses.student_response).filter(Responses.scenario_id == i)\
+            #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
             if request.method == "GET":
                 scenarioResponder = scenarioResponseForm()
                 return render_template("dashboard/student_scenario.html",
@@ -172,7 +179,8 @@ def student_scenario(i):
                                        questions=questions,
                                        srF=scenarioResponder,
                                        aList=aList,
-                                       example=example)
+                                       example=example,
+                                       progress=progress)
 
             elif request.method == "POST":
                 ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
@@ -299,8 +307,8 @@ def scenariosInfo(i):
             status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
             addresses = identify_state(s_name, status)
             db_ses = db.session
-            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.correct,
-                                 Responses.question, Responses.student_response, User.username)\
+            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.points,
+                                 Responses.question, Responses.student_response, Responses.scenario_id, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
             try:
@@ -337,10 +345,10 @@ def scenarioResponse(i, r):
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
             # s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
             query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
-                                 Responses.correct, Responses.student_response, User.username)\
-                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+                                 Responses.points, Responses.student_response, User.username)\
+                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).filter(Responses.attempt == aNum).all()
             table = responseQuery(u_id, aNum, query, questionReader(sName))
-            scr = score(getScore(u_id, aNum, query), questionReader(sName))
+            scr = score(u_id, aNum, query, questionReader(sName))  # score(getScore(u_id, aNum, query), questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
                                    i=i,
