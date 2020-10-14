@@ -74,7 +74,7 @@
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_AnonFTP_extern])}",
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_AnonFTP_extern])}",
                             "name": "SNAME_AnonFTP"
                         }
                     ]

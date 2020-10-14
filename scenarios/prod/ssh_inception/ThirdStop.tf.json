@@ -73,7 +73,7 @@
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_ThirdStop_extern])}",
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_ThirdStop_extern])}",
                             "name": "SNAME_ThirdStop"
                         }
                     ]

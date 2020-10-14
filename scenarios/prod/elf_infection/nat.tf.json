@@ -75,7 +75,7 @@
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_nat_extern])}",
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_nat_extern])}",
               "name": "SNAME_nat"
             }
           ]
