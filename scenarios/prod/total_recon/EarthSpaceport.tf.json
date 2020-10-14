@@ -3,7 +3,7 @@
     {
       "docker_container": [
         {
-          "SNAME_Home": [
+          "SNAME_EarthSpaceport": [
             {
               "capabilities": [
                 {
@@ -26,17 +26,21 @@
                   "user": "root"
                 }
               ],
-              "hostname": "Home",
+              "hostname": "EarthSpaceport",
               "image": "sanivo/edurange-ubuntu-sshd:16.04",
-              "name": "SNAME_Home",
+              "name": "SNAME_EarthSpaceport",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.0.1.2",
+                  "ipv4_address": "OCTET.1.0.6",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.0.2",
+                  "ipv4_address": "OCTET.0.0.24",
                   "name": "SNAME_PLAYER"
+                },
+                {
+                  "ipv4_address": "OCTET.0.193.0",
+                  "name": "SNAME_MARS"
                 }
               ],
               "ports": [
@@ -64,17 +68,17 @@
     }],
   "locals": [
     {
-      "SNAME_Home_extern": "${tostring(docker_container.SNAME_Home.ports[0].external)}"
+      "SNAME_EarthSpaceport_extern": "${tostring(docker_container.SNAME_EarthSpaceport.ports[0].external)}"
     }
   ],
   "output": [
     {
-      "SNAME_Home": [
+      "SNAME_EarthSpaceport": [
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_Home_extern])}",
-              "name": "SNAME_Home"
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_EarthSpaceport_extern])}",
+              "name": "SNAME_EarthSpaceport"
             }
           ]
         }

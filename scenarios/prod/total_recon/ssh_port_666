@@ -2,6 +2,6 @@
 
 set -eoux pipefail
 
-sed -i '/Port/s/^.*$/Port 123/' /etc/ssh/sshd_config
+sed -i '/Port/s/^.*$/Port 666/' /etc/ssh/sshd_config
 
 service ssh reload

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ports=(103 233 409 666 1783 3333 1509 2010) 
+
+for port in ${ports[@]}; do
+	nohup nc -lk $port &>/dev/null &
+done

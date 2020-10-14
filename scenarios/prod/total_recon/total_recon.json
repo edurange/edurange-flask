@@ -8,8 +8,7 @@
           ],
           "system_files":[
             "motd_home",
-            "adjust_motd",
-            "start_flag"
+            "adjust_motd"
           ],
           "user_files":[
           ]
@@ -44,43 +43,53 @@
             "start_apache"
           ],
           "user_files":[
-            "id_rsa"
           ]
         }
       ]
     },
     {
-      "name":"ThirdStop",
+      "name":"EarthSpaceport",
       "files":[
         {
           "global_files":[
           ],
           "system_files":[
-            "motd_third",
+            "motd_earth",
             "adjust_motd",
-            "authorize_rsa",
-            "make_maze",
-            "third_flag"
+            "block_http",
+            "block_ping",
+            "ssh_port_666"
           ],
           "user_files":[
-            "id_rsa"
           ]
         }
       ]
     },
     {
-      "name":"FourthStop",
+      "name":"MarsSpaceport",
       "files":[
         {
           "global_files":[
           ],
           "system_files":[
-            "motd_fourth",
+            "motd_mars",
+            "adjust_motd"
+          ],
+          "user_files":[
+          ]
+        }
+      ]
+    },
+    {
+      "name":"Venusville",
+      "files":[
+        {
+          "global_files":[
+          ],
+          "system_files":[
+            "motd_venus",
             "adjust_motd",
-            "reset_pass_fourth",
-            "block_third_stop",
-            "decrypt_script",
-            "fourth_flag"
+            "ssh_port_123"
           ],
           "user_files":[
           ]
@@ -88,17 +97,15 @@
       ]
     },
     {
-      "name":"FifthStop",
+      "name":"LastResort",
       "files":[
         {
           "global_files":[
           ],
           "system_files":[
-            "motd_fifth",
+            "motd_resort",
             "adjust_motd",
-            "reset_pass_fifth",
-            "base64_msg",
-            "fifth_flag"
+            "ssh_port_2345"
           ],
           "user_files":[
           ]
@@ -106,15 +113,16 @@
       ]
     },
     {
-      "name":"SatansPalace",
+      "name":"ResistanceBase",
       "files":[
         {
           "global_files":[
           ],
           "system_files":[
-            "satans_palace_setup",
-            "ssh_port_666",
-            "last_flag"
+            "motd_base",
+            "adjust_motd",
+            "ssh_port_632",
+            "nmap_to_sudoers"
           ],
           "user_files":[
           ]
@@ -122,17 +130,21 @@
       ]
     },
     {
-      "name":"AnonFTP",
+      "name":"ControlRoom",
       "files":[
         {
           "global_files":[
-
           ],
           "system_files":[
-
+            "motd_control",
+            "adjust_motd",
+            "ssh_port_1938",
+            "nmap_to_sudoers",
+            "reactor_control"
           ],
           "user_files":[
-
+            "check_reactors",
+            "control_script"
           ]
         }
       ]

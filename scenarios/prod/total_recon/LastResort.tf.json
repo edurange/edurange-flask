@@ -3,7 +3,7 @@
     {
       "docker_container": [
         {
-          "SNAME_Rekall": [
+          "SNAME_LastResort": [
             {
               "capabilities": [
                 {
@@ -26,17 +26,17 @@
                   "user": "root"
                 }
               ],
-              "hostname": "Rekall",
+              "hostname": "LastResort",
               "image": "sanivo/edurange-ubuntu-sshd:16.04",
-              "name": "SNAME_Rekall",
+              "name": "SNAME_LastResort",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.3",
+                  "ipv4_address": "OCTET.1.0.9",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.0.4",
-                  "name": "SNAME_PLAYER"
+                  "ipv4_address": "OCTET.0.216.144",
+                  "name": "SNAME_MARS"
                 }
               ],
               "ports": [
@@ -50,7 +50,8 @@
                     {
                       "inline": [
                         "USERS",
-                        "EXECS"
+                        "EXECS",
+                        "chmod -x /usr/bin/nmap"
                       ]
                     }
                   ]
@@ -64,17 +65,17 @@
     }],
   "locals": [
     {
-      "SNAME_Rekall_extern": "${tostring(docker_container.SNAME_Rekall.ports[0].external)}"
+      "SNAME_LastResort_extern": "${tostring(docker_container.SNAME_LastResort.ports[0].external)}"
     }
   ],
   "output": [
     {
-      "SNAME_Rekall": [
+      "SNAME_LastResort": [
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_Rekall_extern])}",
-              "name": "SNAME_Rekall"
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_LastResort_extern])}",
+              "name": "SNAME_LastResort"
             }
           ]
         }

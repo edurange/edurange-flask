@@ -1,0 +1,40 @@
+#!/bin/bash
+# This is a script to be put in every users home directory, in the folder
+# ~/reactor/.secret/
+
+# The first argument should be the user
+control_user=$1
+
+#countdown and reactor_state variables should be read from files in the directory
+countdown=$(cat /home/$control_user/reactor/.secret/countdown)
+reactor_state=$(cat /home/$control_user/reactor/.secret/reactor_state)
+
+win_message="As air is rushing out of the cracked glass and you are being sucked towards the harsh martian atmosphere, you pull yourself, hand over hand, to the reactor controls. You hack the mainframe and activate the reactor controls, changing the control state to ON. The bomb then EXPLODES, and you are sucked out into the Martian atmosphere. Fortunately for you, you are not dead! The reactor that you activated fills the surrounding area with fresh, breathable air. You breath in deeply, thankful you are not dead. Congratulations, you win."
+
+lose_message="As the air is rushing out of the cracked glass, you try to pull yourself, hand over hand to the reactor controls. You just barely manage it, but before you can hack the reactor, the bomb EXPLODES, and sends you flying out into the harsh Martian atmosphere. Unable to breath, you quickly sufficate and die. Game Over."
+
+
+
+
+if [ $reactor_state = "ON" ]; then
+        if [ -e /home/$control_user/SAVE ]; then
+                        :
+        else
+                write $control_user <<< $win_message
+        fi
+        echo "You win! Mars is saved!" > /home/$control_user/SAVE
+else
+        if [ $countdown -lt 1 ]; then
+                if [ -e /home/$control_user/BOOM ]; then
+                        :
+                else
+                        write $control_user <<< $lose_message
+                fi
+                echo "You messed up you're dead" > /home/$control_user/BOOM
+        else
+                echo $((countdown - 1)) > /home/$control_user/reactor/.secret/countdown
+                write $control_user <<< "You must activate the reactor. Change reactor_state to 'ON' ! Time is running out. You only have $countdown minutes until the bomb explodes..."
+        fi
+fi
+
+#echo "test test $control_user" >> /home/$control_user/.cron_test
