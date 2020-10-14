@@ -49,8 +49,6 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-                                                "apt update",
-                                                "apt install -y nmap iptables ftp",
                                                 "USERS",
                                                 "EXECS"
                                             ]

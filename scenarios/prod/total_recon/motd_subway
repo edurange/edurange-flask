@@ -1,0 +1,41 @@
+***********************************************************************************
+***********************************************************************************
+_________          _______    _______           ______            _______
+\__   __/|\     /|(  ____ \  (  ____ \|\     /|(  ___ \ |\     /|(  ___  )|\     /|
+   ) (   | )   ( || (    \/  | (    \/| )   ( || (   ) )| )   ( || (   ) |( \   / )
+   | |   | (___) || (__      | (_____ | |   | || (__/ / | | _ | || (___) | \ (_) /
+   | |   |  ___  ||  __)     (_____  )| |   | ||  __ (  | |( )| ||  ___  |  \   /
+   | |   | (   ) || (              ) || |   | || (  \ \ | || || || (   ) |   ) (
+   | |   | )   ( || (____/\  /\____) || (___) || )___) )| () () || )   ( |   | |
+   )_(   |/     \|(_______/  \_______)(_______)|/ \___/ (_______)|/     \|   \_/
+
+You find your way to the subway and head home, looking forward to some well-
+deserved sleep. Suddently, you're jumped by five people with guns, and the leader
+points a gun at your head. It's your best friend, Harry! Before he can pull the
+trigger, you kick away the gun with a lightning-fast move. You defeat all five and
+run back to your house. Everything is getting strange. How did you just do that?
+
+"If I'm not me, who the hell am I?"
+
+When you get home, more bad news. Your partner is not your partner, your memories
+are fake, and now you're a wanted criminal. As if by magic, you recieve a call from
+a man claiming to be your former special agent partner. He has a briefcase for you
+waiting in an unmarked hotel room. Without another option, you go there.
+
+                    ____
+               .---[[__]]----.
+              ;-------------.|
+              |             ||
+              |             ||
+              |             ||
+              |_____________|/
+
+In the suitcase you find a cache of spy supplies -- guns, fake passports, currency,
+and most importantly, the secret earth-spaceport address, OCTET.0.0.115. Strange that 
+it didn't appear on your subnet scan. Could it be hidden somehow? Only your newly
+discovered spy skills can get you the truth. Find the open port and get there!
+
+Useful commands: man, nmap, ssh -p port_number user@ip_address
+
+***********************************************************************************
+***********************************************************************************

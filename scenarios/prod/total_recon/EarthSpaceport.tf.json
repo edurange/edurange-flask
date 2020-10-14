@@ -3,13 +3,13 @@
     {
       "docker_container": [
         {
-          "SNAME_nat": [
+          "SNAME_Home": [
             {
               "capabilities": [
                 {
                   "add": [
                     "NET_ADMIN",
-		    "SYS_ADMIN"
+                    "SYS_PTRACE"
                   ]
                 }
               ],
@@ -26,9 +26,9 @@
                   "user": "root"
                 }
               ],
-              "hostname": "NAT",
+              "hostname": "Home",
               "image": "sanivo/edurange-ubuntu-sshd:16.04",
-              "name": "SNAME_nat",
+              "name": "SNAME_Home",
               "networks_advanced": [
                 {
                   "ipv4_address": "OCTET.0.1.2",
@@ -61,25 +61,25 @@
           ]
         }
       ]
-    }
-  ],
+    }],
   "locals": [
     {
-      "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+      "SNAME_Home_extern": "${tostring(docker_container.SNAME_Home.ports[0].external)}"
     }
   ],
   "output": [
     {
-      "SNAME_nat": [
+      "SNAME_Home": [
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_nat_extern])}",
-              "name": "SNAME_nat"
+              "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_Home_extern])}",
+              "name": "SNAME_Home"
             }
           ]
         }
       ]
     }
   ]
+
 }

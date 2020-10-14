@@ -50,8 +50,7 @@
                                         {
                                             "inline": [
                                                 "USERS",
-                                                "EXECS",
-                                                "service ssh reload"
+                                                "EXECS"
                                             ]
                                         }
                                     ]

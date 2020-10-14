@@ -1,0 +1,59 @@
+{
+  "resource": [
+    {
+      "docker_network": [
+        {
+          "SNAME_NAT": [
+            {
+              "driver": "bridge",
+              "internal": "false",
+              "ipam_config": [
+                {
+                  "subnet": "OCTET.1.0.0/27"
+                }
+              ],
+              "name": "SNAME_NAT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "docker_network": [
+        {
+          "SNAME_PLAYER": [
+            {
+              "driver": "bridge",
+              "internal": "true",
+              "ipam_config": [
+                {
+                  "subnet": "OCTET.0.0.0/24"
+                }
+              ],
+              "name": "SNAME_PLAYER"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "docker_network": [
+        {
+          "SNAME_MARS": [
+            {
+              "driver": "bridge",
+              "internal": "true",
+              "ipam_config": [
+                {
+                  "subnet": "OCTET.0.192.0/18"
+                }
+              ],
+              "name": "SNAME_PLAYER"
+            }
+          ]
+        }
+      ]
+    }
+
+  ]
+}

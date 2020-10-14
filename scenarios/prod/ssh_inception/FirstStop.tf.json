@@ -49,7 +49,6 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
-                                                "apt install -y nmap",
                                                 "USERS",
                                                 "EXECS"
                                             ]

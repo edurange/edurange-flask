@@ -13,3 +13,5 @@ while read line; do
 	rm id_rsa id_rsa.pub
 	passwd -d $line
 done</usr/local/src/user_names.txt
+
+service ssh reload

@@ -3,13 +3,13 @@
     {
       "docker_container": [
         {
-          "SNAME_nat": [
+          "SNAME_Rekall": [
             {
               "capabilities": [
                 {
                   "add": [
                     "NET_ADMIN",
-		    "SYS_ADMIN"
+                    "SYS_PTRACE"
                   ]
                 }
               ],
@@ -26,16 +26,16 @@
                   "user": "root"
                 }
               ],
-              "hostname": "NAT",
+              "hostname": "Rekall",
               "image": "sanivo/edurange-ubuntu-sshd:16.04",
-              "name": "SNAME_nat",
+              "name": "SNAME_Rekall",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.0.1.2",
+                  "ipv4_address": "OCTET.0.1.4",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.0.2",
+                  "ipv4_address": "OCTET.0.0.4",
                   "name": "SNAME_PLAYER"
                 }
               ],
@@ -61,25 +61,25 @@
           ]
         }
       ]
-    }
-  ],
+    }],
   "locals": [
     {
-      "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+      "SNAME_Rekall_extern": "${tostring(docker_container.SNAME_Rekall.ports[0].external)}"
     }
   ],
   "output": [
     {
-      "SNAME_nat": [
+      "SNAME_Rekall": [
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_nat_extern])}",
-              "name": "SNAME_nat"
+              "ip_address_public": "${join(\":\", [\"localhost\", local.SNAME_Rekall_extern])}",
+              "name": "SNAME_Rekall"
             }
           ]
         }
       ]
     }
   ]
+
 }
