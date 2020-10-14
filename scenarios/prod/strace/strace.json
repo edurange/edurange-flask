@@ -3,7 +3,6 @@
 		"name" : "nat",
 		"files": [{
 			"global_files": [
-				"iamfrustrated",
 				"cat"
 			],
 			"system_files": [
@@ -12,15 +11,6 @@
 			],
 			"user_files": [
 				"files"
-			],
-			"packages": [
-				"locales",
-				"sudo",
-				"man-db",
-				"manpages-posix",
-				"gcc",
-				"strace",
-				"colordiff"
 			]
 		}]
 	}

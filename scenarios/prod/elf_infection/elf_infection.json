@@ -3,7 +3,6 @@
 		"name" : "nat",
 		"files": [{
 			"global_files": [
-				"iamfrustrated"
 			],
 			"system_files": [
 				"install",
@@ -11,16 +10,6 @@
 			],
 			"user_files": [
 				"elfit"
-			],
-			"packages": [
-				"locales",
-				"sudo",
-				"man-db",
-				"manpages-posix",
-				"make",
-				"gcc",
-				"nasm",
-				"strace"
 			]
 		}]
 	}

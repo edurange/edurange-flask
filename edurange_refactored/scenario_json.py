@@ -136,11 +136,13 @@ def write_resource(address, name, s_type,
             for j, t in enumerate(config['resource'][i][s]):
                 config['resource'][i][s][j] = eval(str(t).replace('SNAME', name).replace('OCTET', address))
 
+    host = os.getenv('HOST_EXTERN_ADDRESS')
+
     for i, l in enumerate(config['locals']):
-        config['locals'][i] = eval(str(l).replace('SNAME', name))
+        config['locals'][i] = eval(str(l).replace('SNAME', name).replace('EXTERN_HOST', host))
 
     for i, o in enumerate(config['output']):
-        config['output'][i] = eval(str(o).replace('SNAME', name))
+        config['output'][i] = eval(str(o).replace('SNAME', name).replace('EXTERN_HOST', host))
 
     # Use a temporary file to hold the updated data
     with open('tmp.tf.json', 'w') as f:
