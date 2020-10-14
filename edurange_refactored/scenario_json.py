@@ -116,9 +116,9 @@ def write_resource(address, name, s_type,
     # Generate a list of 'provisioner' blocks to upload all files
     uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
 
-    s_files = s_files + ["tty_setup"]
-    g_files = g_files + ["iamfrustrated", "clearlogs"]
-    u_files = u_files + ["ttylog", "analyze_cyclic.pl", "start_ttylog.sh", "makeTsv.py", "analyze.py"]
+    s_files = ["tty_setup"] + s_files
+    g_files = ["iamfrustrated", "clearlogs"] + g_files
+    u_files = ["ttylog", "analyze_cyclic.pl", "start_ttylog.sh", "makeTsv.py", "analyze.py"] + u_files
     # Generate a list of commands to move files, and run them if needed
     execs = build_execute_files(s_files, g_files, u_files, flags)
 

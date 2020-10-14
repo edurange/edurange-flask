@@ -370,11 +370,11 @@ def responseCheck(qnum, sid, resp, uid):
                 if "${" in ans:
                     ans = bashAnswer(sid, uid, ans)
                 if resp == ans:
-                    return True
+                    return int(text['Points'])
                 elif ans == 'ESSAY':
-                    return True
+                    return int(text['Points'])
                 else:
-                    return False
+                    return 0
             elif len(text['Values']) > 1:  # if there's multiple correct answers in the yml file
                 yes = False
                 for i in text['Values']:
@@ -384,9 +384,9 @@ def responseCheck(qnum, sid, resp, uid):
                     if resp == ans:
                         yes = True
                 if yes:
-                    return True
+                    return int(i['Points'])
                 else:
-                    return False
+                    return 0
 
 
 def bashAnswer(sid, uid, ans):
@@ -427,7 +427,7 @@ def responseQuery(uid, att, query, questions):
 
     for response in tmpList:
         qNum = response.question
-        corr = response.correct
+        pts = response.points
         for text in questions:
             order = int(text['Order'])
             if order == qNum:
@@ -435,7 +435,7 @@ def responseQuery(uid, att, query, questions):
                 poi = text['Points']
                 val = text['Values'][0]['Value']
                 sR = response.student_response
-                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'correct':corr}
+                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'earned': pts}
                 tableList.append(dictionary)
     return tableList
 
@@ -453,28 +453,36 @@ def responseSelector(resp):
 
 # -----
 
+# scoring functions used in functions such as queryPolish()
+# used as:
+# scr = score(getScore(uid, att, query), questionReader(sName))
 
+# required query entries:
+# user_id, attempt, question, correct, student_response
+
+'''
 def getScore(usr, att, query):
-    sL = []
+    sL = []  # student response list
     for resp in query:
         if usr == resp.user_id and att == resp.attempt:
-            sL.append({'question': resp.question, 'correct': resp.correct, 'response': resp.student_response})
+            sL.append({'question': resp.question, 'correct': resp.correct, 'response': resp.student_response})  # qnum, correct, student response
     return sL
+'''
 
 
 def totalScore(questions):
-    tS = 0
+    tS = 0  # total number of possible points
     for text in questions:
         tS += int(text['Points'])
     return tS
 
-
+'''
 def score(scrLst, questions):
-    sS = 0
-    checkList = scoreSetup(questions)
-    for sR in scrLst:
+    sS = 0  # student score
+    checkList = scoreSetup(questions)  # questions scored checklist
+    for sR in scrLst:  # response in list of student responses
         if sR['correct']:
-            num = int(sR['question'])
+            num = int(sR['question'])  # question number
             for text in questions:
                 if int(text['Order']) == num:
                     check, checkList = scoreCheck(num, checkList)
@@ -487,14 +495,15 @@ def score(scrLst, questions):
                             sS += int(text['Points'])
     scr = '' + str(sS) + ' / ' + str(totalScore(questions))
     return scr
+'''
 
 
 def scoreSetup(questions):
-    checkList = {}
+    checkList = {}  # list of question to be answered so duplicates are not scored
     for text in questions:
         if str(text['Type']) == "Multi String":
             count = 1
-            for d in text['Values']:
+            for d in text['Values']:  # d is not used  #TODO: need to check if this is a problem
                 k = str(text['Order']) + str(count)
                 checkList[k] = False
         else:
@@ -518,7 +527,24 @@ def scoreCheck(qnum, checkList):
                 checkList[k] = True
                 return False, checkList  # answer was not checked before but is now
 
+# query(Responses.user_id, Responses.attempt, Responses.question, Responses.points, Responses.student_response)
+# .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
 
+# make sure score doesn't score multi string questions more than is necessary
+
+
+def score(uid, att, query, questions):
+    stuScore = 0
+    checkList = scoreSetup(questions)
+    for resp in query:
+        if resp.user_id == uid and resp.attempt == att:
+            if resp.points > 0:
+                qNum = int(resp.question)
+                check, checkList = scoreCheck(qNum, checkList)
+                if not check:
+                    stuScore += resp.points
+    scr = '' + str(stuScore) + ' / ' + str(totalScore(questions))
+    return scr
 # -----
 
 
@@ -539,7 +565,7 @@ def queryPolish(query, sName):
         att = entry.attempt
         usr = entry.username
         if qList is None:
-            scr = score(getScore(uid, att, query), questionReader(sName))
+            scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             qList.append(d)
         else:
@@ -548,7 +574,7 @@ def queryPolish(query, sName):
                 if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
-                scr = score(getScore(uid, att, query), questionReader(sName))
+                scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
                 qList.append(d)
     return qList
@@ -667,7 +693,7 @@ def readScenario():
 
 def recentCorrect(uid, qnum, sid):
     db_ses = db.session
-    recent = db_ses.query(Responses.correct).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
+    recent = db_ses.query(Responses.points).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
         .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
     return recent
 
@@ -685,3 +711,47 @@ def displayCorrect(sName, uName):
             rec = rec[0]
         ques[order] = rec
     return ques
+
+
+def displayProgress(sid, uid):
+    db_ses = db.session
+    att = getAttempt(sid)
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    query = db_ses.query(Responses.attempt, Responses.question, Responses.points, Responses.student_response, Responses.scenario_id, Responses.user_id)\
+        .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).all()
+    questions = questionReader(sName)
+    answered, tQuest = getProgress(query, questions)
+    scr, tScr = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
+    progress = {'questions': answered, 'total_questions': tQuest, 'score': scr, 'total_score': tScr}
+    return progress
+
+
+def calcScr(uid, sid, att):
+    score = 0
+    db_ses = db.session
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    query = db_ses.query(Responses.points, Responses.question).filter(Responses.scenario_id == sid).filter(Responses.user_id == uid)\
+        .filter(Responses.attempt == att).order_by(Responses.response_time.desc()).all()
+    checkList = scoreSetup(questionReader(sName))
+    for r in query:
+        check, checkList = scoreCheck(r.question, checkList)
+        if not check:
+            score += int(r.points)
+    # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))
+    tScore = totalScore(questionReader(sName))
+    return score, tScore
+
+
+def getProgress(query, questions):
+    checkList = scoreSetup(questions)
+    corr = 0
+    total = list(checkList.keys())[-1]
+    for resp in query:
+        if int(resp.points) > 0:
+            q = int(resp.question)
+            check, checkList = scoreCheck(q, checkList)
+            if not check:
+                corr += 1
+    # progress = "" + str(corr) + " / " + str(total)
+    return corr, total
+
