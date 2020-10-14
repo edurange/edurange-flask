@@ -25,7 +25,7 @@ def build_users(usernames, passwords):
     return users
 
 
-def build_uploads(s_files, g_files, u_files, s_type):
+def build_uploads(s_files, g_files, u_files, log_files, s_type):
     all_files = s_files + g_files + u_files
     uploads = ""
     for f in all_files:
@@ -43,10 +43,25 @@ def build_uploads(s_files, g_files, u_files, s_type):
     }
   ],
 """)
+    for lf in log_files:
+        uploads += str("""
+  "provisioner": [
+    { 
+    "file": [ 
+      {
+      "source"      : "${path.module}/../../../scenarios/global_scripts/""" + lf + '",'
+                       + """
+      "destination" : """ + '"/' + lf + '"'
+                       + """
+      }
+    ]
+    }
+  ],
+""")
     return uploads
 
 
-def build_execute_files(s_files, g_files, u_files, address, template_folder, flags):
+def build_execute_files(s_files, g_files, u_files, flags):
     execs = "mkdir /home/ubuntu\",\n"
 
     for i, f in enumerate(g_files):
@@ -96,11 +111,16 @@ def write_resource(address, name, s_type,
     template_folder = "../../../scenarios/prod/" + s_type + "/"
     users = build_users(usernames, passwords)
 
+    log_files = ["tty_setup", "analyze.py", "makeTsv.py", "start_ttylog.sh",
+                 "ttylog", "analyze_cyclic.pl", "clearlogs", "iamfrustrated"]
     # Generate a list of 'provisioner' blocks to upload all files
-    uploads = build_uploads(s_files, g_files, u_files, s_type)
+    uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
 
+    s_files = ["tty_setup"] + s_files
+    g_files = ["iamfrustrated", "clearlogs"] + g_files
+    u_files = ["ttylog", "analyze_cyclic.pl", "start_ttylog.sh", "makeTsv.py", "analyze.py"] + u_files
     # Generate a list of commands to move files, and run them if needed
-    execs = build_execute_files(s_files, g_files, u_files, address, template_folder, flags)
+    execs = build_execute_files(s_files, g_files, u_files, flags)
 
     # Make sure the container has a known template
     try:

@@ -3,23 +3,16 @@
 		"name" : "nat",
 		"files": [{
 			"global_files": [
-				"iamfrustrated"
 			],
 			"system_files": [
 				"install",
-				"motd_nat",
-				"tty_setup"
+				"motd_nat"
 			],
 			"user_files": [
 				"setup_player",
 				"codes",
 				"files",
-				"python",
-				"analyze.py",
-				"analyze_cyclic.pl",
-				"makeTsv.py",
-				"start_ttylog.sh",
-				"ttylog"
+				"python"
 			]
 		}]
 	}

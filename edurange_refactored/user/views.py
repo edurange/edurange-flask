@@ -157,14 +157,14 @@ def student_scenario(i):
             uid = session.get("_user_id")
             # att = db_ses.query(Scenarios.attempt).filter(Scenarios.id == i).first()
             addresses = identify_state(s_name, status)
-            aList = displayCorrect(s_name, u_name)
             example = None
-            progress = displayProgress(i, uid)
             # query = db_ses.query(Responses.user_id, Responses.attempt, Responses.question, Responses.points,
             #                     Responses.student_response).filter(Responses.scenario_id == i)\
             #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
             if request.method == "GET":
                 scenarioResponder = scenarioResponseForm()
+                aList = displayCorrect(s_name, u_name)
+                progress = displayProgress(i, uid)
                 return render_template("dashboard/student_scenario.html",
                                        id=i,
                                        status=status,
@@ -184,7 +184,31 @@ def student_scenario(i):
 
             elif request.method == "POST":
                 ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
-                return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
+                #return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
+
+                aList = displayCorrect(s_name, u_name)
+                progress = displayProgress(i, uid)
+                if ajax:
+                    return render_template("dashboard/student_scenario.html",
+                                           id=i,
+                                           status=status,
+                                           owner=owner,
+                                           desc=desc,
+                                           s_type=s_type,
+                                           s_name=s_name,
+                                           u_name=u_name,
+                                           pw=pw,
+                                           add=addresses,
+                                           guide=guide,
+                                           questions=questions,
+                                           srF=scenarioResponder,
+                                           aList=aList,
+                                           example=example,
+                                           progress=progress) # TODO: create new 'student_answer_response.html' template to avoid rendering unused elements (for ajax only)
+                                                              # i.e only render new progress meters and indicators for correctness of newly answered question
+                else:
+                    return redirect(url_for("dashboard.student_scenario", i=i))
+
                 # if ajax:  # if forms.py scenarioResponseForm returns true
                 #    current_app.logger.info("########Ajax Response is: {} ".format(request.data))
                 #    # #query db to convert username to user_id
