@@ -184,8 +184,7 @@ def student_scenario(i):
 
             elif request.method == "POST":
                 ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
-                #return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
-
+                scenarioResponder = scenarioResponseForm()
                 aList = displayCorrect(s_name, u_name)
                 progress = displayProgress(i, uid)
                 if ajax:
@@ -208,15 +207,6 @@ def student_scenario(i):
                                                               # i.e only render new progress meters and indicators for correctness of newly answered question
                 else:
                     return redirect(url_for("dashboard.student_scenario", i=i))
-
-                # if ajax:  # if forms.py scenarioResponseForm returns true
-                #    current_app.logger.info("########Ajax Response is: {} ".format(request.data))
-                #    # #query db to convert username to user_id
-                #    # form_utils.py/process_scenarioResponse();
-                #    # utils.py/responseCheck boolean value then somehow pass back to template.
-                # else:
-                #    return redirect(url_for("dashboard.student_scenario", i=i))
-
         else:
             return abort(404)
     else:
