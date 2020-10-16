@@ -1,0 +1,5 @@
+#!/bin/bash
+
+iptables -I INPUT -s *.0.204.64 -j ACCEPT
+iptables -A INPUT -j DROP
+iptables -P INPUT DROP

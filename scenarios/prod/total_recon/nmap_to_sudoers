@@ -1,0 +1,5 @@
+#!/bin/bash
+
+while read line; do
+	echo "$line ALL=(root)NOPASSWD:/usr/bin/nmap" >> /etc/sudoers
+done</usr/local/src/user_names.txt

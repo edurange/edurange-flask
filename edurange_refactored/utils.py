@@ -273,7 +273,8 @@ def getGuide2(t):
 
 def getGuide(t):
     t = t.title().replace(" ", "_")
-    g = "http://127.0.0.1:5000/tutorials/" + t + "#0"
+    host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
+    g = host + "/tutorials/" + t + "#0"
     return g
 
 

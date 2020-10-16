@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -eoux pipefail
+
+cat << \EOF >/etc/motd
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ ____            __                ___    ___     ______
+/\  _`\         /\ \              /\_ \  /\_ \   /\__  _\
+\ \ \L\ \     __\ \ \/'\      __  \//\ \ \//\ \  \/_/\ \/     ___     ___
+ \ \ ,  /   /'__`\ \ , <    /'__`\  \ \ \  \ \ \    \ \ \   /' _ `\  /'___\
+  \ \ \\ \ /\  __/\ \ \\`\ /\ \L\.\_ \_\ \_ \_\ \_   \_\ \__/\ \/\ \/\ \__/  __
+   \ \_\ \_\ \____\\ \_\ \_\ \__/.\_\/\____\/\____\  /\_____\ \_\ \_\ \____\/\_\
+    \/_/\/ /\/____/ \/_/\/_/\/__/\/_/\/____/\/____/  \/_____/\/_/\/_/\/____/\/_/
+
+You're in luck; you found a way in. You're directed to a chair and strapped
+down. Selecting a beautiful dream for implantation, you prepare for a much
+earned vacation. But wait! Something's wrong... You break into a violent rage,
+screaming about your blown cover and the deaths of your comrades! The director
+of Rekall Inc. tries to calm you, but you yell "My name is not Quaid!".
+
+       _---~~(~~-_.           You wake up in a cab, with your memory fuzzy. What
+     _{        )   )          happened? You get the sense that you're in danger.
+   ,   ) -~~- ( ,-' )_        Can you find your way to the subway? With your
+  (  `-,_..`., )-- '_,)       memory so fuzzy, you had better get a sense of
+ ( ` _)  (  -~( -_ `,  }      your surroundings.
+ (_-  _  ~_-~~~~`,  ,' )
+   `~ -^(    __;-,((()))      Try scanning the subnet OCTET.0.0.0/24 to see what's
+         ~~~~ {_ -_(())       around you. You'll find the subway on the host
+                `\  }         with an open webserver. The ssh user and password
+                  { }         is the same as this host. Good luck!
+
+Helpful commands: nmap, ssh, ifconfig, man
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+EOF
