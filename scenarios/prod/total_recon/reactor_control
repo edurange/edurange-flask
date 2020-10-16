@@ -15,10 +15,10 @@ while read line;
     echo $line > user
     echo "OFF" > reactor_state
     chown $line reactor_state
-    444 reactor_state
-    722 countdown
-    744 user
-    700 control_script
+    chmod 444 reactor_state
+    chmod 722 countdown
+    chmod 744 user
+    chmod 700 control_script
 done</usr/local/src/user_names.txt
 
 echo "echo 5 > ~/reactor/.secret/countdown;if [ -e ~/BOOM ]; then rm -f ~/BOOM;fi" >> /etc/bash.bashrc
