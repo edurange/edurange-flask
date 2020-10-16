@@ -136,7 +136,7 @@ def write_resource(address, name, s_type,
             for j, t in enumerate(config['resource'][i][s]):
                 config['resource'][i][s][j] = eval(str(t).replace('SNAME', name).replace('OCTET', address))
 
-    host = os.getenv('HOST_EXTERN_ADDRESS')
+    host = os.getenv('HOST_EXTERN_ADDRESS', 'localhost')
 
     for i, l in enumerate(config['locals']):
         config['locals'][i] = eval(str(l).replace('SNAME', name).replace('EXTERN_HOST', host))
