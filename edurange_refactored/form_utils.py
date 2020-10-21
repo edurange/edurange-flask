@@ -213,10 +213,10 @@ def process_scenarioResponse():
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
         if score > 0:
             flash("A CORRECT answer was given for question {0}.".format(qnum))
-            return True
+            return 'utils/student_answer_response.html', score
         else:
             flash("An INCORRECT answer was given for question {0}.".format(qnum))
-            return True
+            return 'utils/student_answer_response.html', score
     else:
         flash_errors(sR)
         return False

@@ -43,7 +43,7 @@
                                     {{ srF.csrf_token }}
                                     <div class="form-group">
                                         {% if aList[i] == example%}
-                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} </label>
+                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i></i></label> <!-- added i element so replaceWith() works in all cases -->
                                         {% endif %}
                                         {% if aList[i] != 0 and aList[i] != example %}
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-check">Correct</i></label>
@@ -127,10 +127,10 @@
                     data : data
                 });
                 request.done(function(response) {
-                    let q_label = $(response).find("#question_ID" + q).html();
+                    let q_label = $(response).filter("i");
                     let progress_q = $(response).find("#progress_q").html();
                     let progress_s = $(response).find("#progress_s").html();
-                    $("#question_ID" + q).replaceWith(q_label);
+                    $("#question_ID" + q + " i").replaceWith(q_label);
                     $("#progress_q").replaceWith(progress_q);
                     $("#progress_s").replaceWith(progress_s);
                 });
