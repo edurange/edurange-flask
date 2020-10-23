@@ -51,7 +51,7 @@
                                             "inline": [
                                                 "iptables -A INPUT -p tcp --dport 21 -j ACCEPT",
                                                 "iptables -A OUTPUT -p tcp --sport 20 -j ACCEPT",
-                                                "service vsftpd start"
+                                                "service vsftpd restart &"
                                             ]
                                         }
                                     ]
