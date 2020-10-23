@@ -39,6 +39,30 @@ Or each service can be run separately
 flask run --host=0.0.0.0
 celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks
 ```
+#### WSGI Server
+
+To launch using best practice production settings, with SSL certificates and everything, you'll need to install and configure nginx and certbot
+```bash
+sudo apt install nginx certbot python-certbot-nginx
+```
+Once installed, you'll need to edit your nginx config file. 
+We have an example config file that should work with minor editing located in our docs repository:
+https://github.com/edurange/edurange-flask-docs/blob/master/configs/nginx.conf
+You'll only need to change the path to the edurange templates and static folders, which should only require changing the username (edurange_flask) in the template. 
+
+Once that's updated, the app runs using two commands (We highly recommend using tmux to split the terminal and detach the session)
+```bash
+gunicorn --threads 3 --bind 0.0.0.0:5000 edurange_refactored.wsgi:app
+celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks 
+```
+
+You'll then need to use your domain registrar to make your host server publicly discoverable.
+
+Once the site is running and discoverable, you can generate and install your certificates using
+```bash
+sudo certbot --nginx
+```
+
 If you want to host the app on port 80, but don't have any WSGI set up, you can use the following iptables rules
 ```bash
 sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 5000
