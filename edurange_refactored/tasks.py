@@ -161,7 +161,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
             else:
                 outfile.write(questions.read())
 
-        active_scenarios = Scenarios.query.filter(Scenarios.status != 0).count()
+        active_scenarios = Scenarios.query.count()
 
         # Local addresses begin at the subnet 10.0.0.0/24
         address = str(10 + active_scenarios)

@@ -25,17 +25,15 @@
                   title="Getting Started"
                   environment="web"
                   feedback-link="dontKnow.com">
-    
+
       <google-codelab-step label="Welcome to Cybersec" duration="1">
         <h2 class="checklist" is-upgraded>What You&#39;ll Learn</h2>
 <p>Congratulations recruit and welcome to CyberSec. As you should know we provide security services to you, our communities, and small businesses. You&#39;ve made it this far, I suppose that means you may be helpful. But first comes the training. We need to strengthen your skills before you can truly be of use. Go through each tab to the left and at the end we will test what you have learned. Remember, this world is being controlled by the malicious corporations and individuals and we must learn to protect ourselves from their invasive attacks. We must protect our data. This is why you are here. To protect yourself, your company and your community. And it all starts here, at the beginning, with a terminal command.</p>
         <h2>How to Connect</h2>
         <p>Use the credentials and IP Address provided on the scenario page to SSH into the exercise </p>
-        <img src="img/3.png">
-        <img src="img/2.png">
-     
+
     </google-codelab-step>
-    
+
       <google-codelab-step label="Terminal" duration="2">
         <p>When using your computer (Mac, Linux, Windows) you typically are using a GUI (Graphical User Interface). It&#39;s a pretty representation of how your computer works. To really get into the ‘guts&#39; of your computer and to really learn how to control it we will learn how to use the terminal. The terminal is a text based representation of your computer (rather than graphical). Learning to use the terminal will help you along your path to protecting your community and your self.</p>
 <p>Why should you learn the command line?</p>
@@ -54,7 +52,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="Linux File System" duration="3">
         <h2 is-upgraded>Hierarchy</h2>
 <p>Linux folders and files are arranged like an upside down tree, where the slash / is called the root, or beginning, of all your files in the entire computer. The root is the base of the tree and as you go down it keeps splitting into branches and leaves. The leaves would be a file and the branches are folders.</p>
@@ -65,7 +63,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="Commands" duration="10">
         <p>What is a command? A command is something you type into your terminal to make something happen. That&#39;s a bit vague but essentially the idea. You can do a lot of things with commands. Let&#39;s get started right away and use two different commands. Let&#39;s go to your home directory.</p>
 <h2 is-upgraded>cd</h2>
@@ -114,7 +112,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="Man Pages" duration="10">
         <p>Man Pages is short for manual pages. These are text documents with lots of information on commands. Remember the command we did for listing our files? ls! Let&#39;s find that man page.</p>
 <p>Type</p>
@@ -136,7 +134,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="File Types" duration="10">
         <p>Not all files appear as they really are. Just because you see a file that says, imanimage.png does not mean that it is an image. It could be a text file or a harmful file if executed! So... how do you protect yourself? One way is with the file command!</p>
 <h2 is-upgraded>file</h2>
@@ -165,7 +163,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="Case Sensitivity/touch/echo/Angle Brackets" duration="10">
         <h2 is-upgraded>Case Sensitivity</h2>
 <p>Case sensitivity means that HoW yoU labEL yoUR files matters. If you search for a file called hiya.docx, it would not be the same as finding a file, hiyA.docX.</p>
@@ -211,7 +209,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="vim, Regular expresssions, and find" duration="10">
         <h2 is-upgraded>vim</h2>
 <p>vim is a program that is used to edit files, and will hopefully be your new best friend! There are different editors out there for example, nano and emacs. To create a file just type</p>
@@ -252,7 +250,7 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="More Commands" duration="10">
         <h2 is-upgraded>mv</h2>
 <p>mv is used to move a file from one location to another, or to rename a file. type ‘man mv&#39;<br>to learn more.</p>
@@ -287,19 +285,19 @@
 
 
       </google-codelab-step>
-    
+
       <google-codelab-step label="Final Mission" duration="15">
         <p>Here at CyberSec you have been well trained recruit, now let&#39;s put your training to test! This is a real mission of the utmost importance. Complete this and you are assured a spot on our team.</p>
 <p>TASK: Our intelligence has told us that somewhere in your computer is an image that is vital to our company. This image has a weird name but we know for certain that it contains the word ‘cowFJS&#39; in it. Through our sources we also know that there is ANOTHER file in that folder. COPY both the image and second file to your home directory in a new folder, called final-mission. Then create a new file in the folder, final-mission, called ‘cowsay.file&#39; with the contents of the cowsay man file in it.</p>
 <p>HINT: If you are using 'find /' to search from the root of the filesystem, you will want a way to block 'Permission denied' error messages from filling your terminal. </p>
-        <p>To do this, add '2>/dev/null' to the end of your command, as in:</p> 
+        <p>To do this, add '2>/dev/null' to the end of your command, as in:</p>
           <ul>
             <li>'find / [arguments for your find command] 2>/dev/null'.</li>
         </ul>
             <p>In this code snippet, '2' represents the output stream for error messages, and /dev/null is a device reserved for garbage collection.</p>
 
       </google-codelab-step>
-    
+
   </google-codelab>
 
   <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>

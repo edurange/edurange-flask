@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo root:$1 | /usr/sbin/chpasswd
