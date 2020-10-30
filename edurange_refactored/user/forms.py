@@ -2,7 +2,7 @@
 """User forms."""
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp, NoneOf
 from .models import User, StudentGroups
 
 from .models import StudentGroups, User
@@ -11,8 +11,11 @@ from .models import StudentGroups, User
 class RegisterForm(FlaskForm):
     """Register form."""
 
+    banned_names = ["root", "ubuntu", "user", "student", "guest", "ec2-user", "nobody", '']
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=3, max=25), Regexp('^\w+-?\w+-?\w+$', message="Username must be alphanumeric")]
+        "Username", validators=[DataRequired(), Length(min=3, max=25),
+                                Regexp('^\w+-?\w+-?\w+$', message="must be alphanumeric"),
+                                NoneOf(values=banned_names, message="not permitted, try a different one")]
     )
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
