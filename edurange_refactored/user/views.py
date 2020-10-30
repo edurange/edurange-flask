@@ -157,14 +157,14 @@ def student_scenario(i):
             uid = session.get("_user_id")
             # att = db_ses.query(Scenarios.attempt).filter(Scenarios.id == i).first()
             addresses = identify_state(s_name, status)
-            aList = displayCorrect(s_name, u_name)
             example = None
-            progress = displayProgress(i, uid)
             # query = db_ses.query(Responses.user_id, Responses.attempt, Responses.question, Responses.points,
             #                     Responses.student_response).filter(Responses.scenario_id == i)\
             #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
             if request.method == "GET":
                 scenarioResponder = scenarioResponseForm()
+                aList = displayCorrect(s_name, u_name)
+                progress = displayProgress(i, uid)
                 return render_template("dashboard/student_scenario.html",
                                        id=i,
                                        status=status,
@@ -184,28 +184,16 @@ def student_scenario(i):
 
             elif request.method == "POST":
                 ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
-                return redirect(url_for("dashboard.student_scenario", i=i))  # TODO: work from here to make ajax stop refreshing the page
-                # if ajax:  # if forms.py scenarioResponseForm returns true
-                #    current_app.logger.info("########Ajax Response is: {} ".format(request.data))
-                #    # #query db to convert username to user_id
-                #    # form_utils.py/process_scenarioResponse();
-                #    # utils.py/responseCheck boolean value then somehow pass back to template.
-                # else:
-                #    return redirect(url_for("dashboard.student_scenario", i=i))
+                progress = displayProgress(i, uid)
+                if ajax:
+                    return render_template("utils/student_answer_response.html", score=ajax[1], progress=progress)
 
+                else:
+                    return redirect(url_for("dashboard.student_scenario", i=i))
         else:
             return abort(404)
     else:
         return abort(403)
-    # STUDENT RESPONSE POST REQUEST
-    # if request.method == "POST":
-    #    ajax = scenarioResponseForm(request.form) #this validates it
-    #    if ajax: #if forms.py scenarioResponseForm returns true
-    #        current_app.logger.info("########Ajax Response is: {} ".format(request.data))
-    #        ##query db to convert username to user_id
-    #        #form_utils.py/process_scenarioResponse();
-    #        #utils.py/responseCheck boolean value then somehow pass back to template.
-
 
 # ---- scenario routes
 

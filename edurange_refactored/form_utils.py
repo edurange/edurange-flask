@@ -33,7 +33,7 @@ def process_request(form):  # Input must be request.form
         "GroupForm":                ["name", "create", "size"],  # "csrf_token",
         "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
         "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
-        "scenarioResponseForm":     ["scenario", "question", "response", "submit"],  # "csrf_token",
+        "scenarioResponseForm":     ["scenario", "question", "response"],  # "csrf_token",
         "deleteGroupForm":          ["group_name", "delete"]  # "csrf_token",
     }
 
@@ -213,8 +213,13 @@ def process_scenarioResponse():
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
         if score > 0:
             flash("A CORRECT answer was given for question {0}.".format(qnum))
+            return 'utils/student_answer_response.html', score
         else:
             flash("An INCORRECT answer was given for question {0}.".format(qnum))
+            return 'utils/student_answer_response.html', score
+    else:
+        flash_errors(sR)
+        return False
 
 
 def process_groupEraser():

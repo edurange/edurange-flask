@@ -34,8 +34,8 @@
             <div id="Responses" class="tab-pane show active">
                 <div class="container mt-3">
                     <h3> Response Form </h3>
-                    <h5> Questions Completed: {{ progress['questions'] }} / {{ progress['total_questions'] }} </h5>
-                    <h5> Points Earned: {{ progress['score'] }} / {{ progress['total_score'] }} </h5>
+                    <h5 id="progress_q"> Questions Completed: {{ progress['questions'] }} / {{ progress['total_questions'] }} </h5>
+                    <h5 id="progress_s"> Points Earned: {{ progress['score'] }} / {{ progress['total_score'] }} </h5>
                     <div class="card-body">
                         <div class="container">
                             {% for i in questions %}
@@ -43,7 +43,7 @@
                                     {{ srF.csrf_token }}
                                     <div class="form-group">
                                         {% if aList[i] == example%}
-                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} </label>
+                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i></i></label> <!-- added i element so replaceWith() works in all cases -->
                                         {% endif %}
                                         {% if aList[i] != 0 and aList[i] != example %}
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-check">Correct</i></label>
@@ -52,9 +52,9 @@
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-ban">Incorrect</i></label>
                                         {% endif %}
                                         <input class="form-control" type="hidden" name="scenario" value="{{ id }}" readonly>
-                                        <input class="form-control" type="hidden" name="question" value="{{ i }}" readonly>
+                                        {#<input class="form-control" type="hidden" name="question" value="{{ i }}" readonly>#}
                                         <input type="text" name="response" id="input_ID{{i}}" class="form-control mb-5">
-                                        <button class="btn btn-dark" value="submit" type="submit" name="submit"> Submit </button>
+                                        <button class="btn btn-dark" value="{{ i }}" type="submit" name="question"> Submit </button>
                                     </div>
                                 </form>
                             {% endfor %}
@@ -77,9 +77,9 @@
 {% endblock %}
 
 {% block js %}
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
-            {% for i in questions: %}
+            {#{% for i in questions: %}
                 //loop through all <input> ids
                 $("#"+"{{i}}").keypress(function(event){
                     console.log("i");
@@ -109,7 +109,36 @@
 
                     }
                 });
-            {% endfor %}
+            {% endfor %}#}
+
+            $("#Responses form button[type='submit']").on("click", function(e) {
+                e.preventDefault();
+                /*------------ POST request data -------------*/
+                let csrf_token = $("#csrf_token").val(); //here I assume all questions share the same csrf (can't view page myself)
+                let scenario = {{ id }}; //get scenario id from jinja variable
+                let q = $(this).val(); //get question number from submit button pressed
+                let response = $("#input_ID" + q).val(); //get proper response from "input_ID" plus question number
+                /*--------------------------------------------*/
+                let data = {'csrf_token': csrf_token, 'scenario': scenario, 'question': q, 'response': response}; //packaged data
+
+                request = $.ajax({
+                    type : 'POST',
+                    url : "{{ url_for('dashboard.student_scenario', i=id) }}",
+                    data : data
+                });
+                request.done(function(response) {
+                    let q_label = $(response).filter("i");
+                    let progress_q = $(response).find("#progress_q").html();
+                    let progress_s = $(response).find("#progress_s").html();
+                    $("#question_ID" + q + " i").replaceWith(q_label);
+                    $("#progress_q").replaceWith(progress_q);
+                    $("#progress_s").replaceWith(progress_s);
+                });
+                request.fail(function(response) {
+                    alert("Something went wrong!");
+                });
+            });
+
         });
     </script>
 {% endblock %}
