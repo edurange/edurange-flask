@@ -1,13 +1,17 @@
-M1,pwd
-M2,man pwd
-M3,ls
-M4,man ls
-M5,ls -l
-M6,cd view
-M7,ls -a
-M8,cd ..
-M9,ls -l -a,ls -la,ls -al,ls -a -l 
-M10,mv .* renamed_file1.txt,mv
-M11,cp .* copied_file2.txt
-M12,chmod 660 copied_perm1.txt
-M13,chmod 764 copied_perm2.txt
+﻿*,pwd,*
+*,man pwd,*
+*,^ls$,*
+*,man ls,*
+*,ls -l,*
+*,cd view,*
+*,man ls,*
+*,ls -a,*
+*,cd ..,*
+*,ls -la |ls -al |ls -a -l| ls -l -a,*
+*,mv file1.txt renamed_file1.txt,*
+*,cp file2.txt copied_file2.txt,*
+*,cp perm1.txt copied_perm1.txt,*
+*,man chmod,*
+*,chmod copied_perm.txt 660,*
+*,cp perm2.txt copied_perm2.txt,*
+*,chmod copied_perm2.txt 764,*

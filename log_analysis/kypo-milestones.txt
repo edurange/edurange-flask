@@ -1,0 +1,10 @@
+nmap.* (\s\d*\.\d*\.\d*\.\d*)?
+set exploit 2019-15107
+ls -a /home/eve
+.* \.bash_history 
+cd /home/eve/\.ssh
+python ssh2john.py .*
+john --wordlist /usr/share/wordlists/rockyou.txt .*
+chmod 0600 id_rsa
+cat flag.txt
+pwd

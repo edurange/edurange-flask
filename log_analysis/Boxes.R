@@ -1,4 +1,4 @@
-students <- read.csv("/home/jack/edudata/R_df.csv",
+students <- read.csv("/home/jack/production/edurange-flask/log_analysis/R_df.csv",
                      header = TRUE,
                      na.strings=c("", "NA"),
                      sep = ",")
@@ -20,7 +20,7 @@ ggplot(dat4, aes(x = Student, y = Time)) +
   geom_boxplot(outlier.colour='RED', outlier.size=3) + 
   scale_y_continuous(name = "Time spent (Seconds)") +
   scale_x_discrete(name = "Student (First 3 characters of username)") +
-  ggtitle("Distribution of time spent by each student on each milestone") +
+  ggtitle("Time spent per student per milestone") +
   geom_text(aes(label=outlier), na.rm=TRUE, nudge_y = 40)
 
 
@@ -30,7 +30,7 @@ dat4$outlier[which(is.na(dat4$is_outlier))] <- as.numeric(NA)
 
 dat4 <- edit(dat4)
 
-students2 <- read.csv("/home/jack/milestone logging/R_df2.csv",
+students2 <- read.csv("/home/jack/production/edurange-flask/log_analysis/R_df2.csv",
                      header = TRUE,
                      na.strings=c("", "NA"),
                      sep = ",")
@@ -61,7 +61,7 @@ ggplot(dat, aes(x = Student, y = Attempts)) +
   scale_y_continuous(name = "Number of attempts") +
   geom_boxplot(outlier.colour='RED', outlier.size=3) + 
   scale_x_discrete(name = "Student (First 3 characters of username)") +
-  ggtitle("Distribution of number of attempts by each student on each milestone") + 
+  ggtitle("Attempts per student") + 
   geom_text(aes(label=outlier), na.rm=TRUE, nudge_y = 1)
 
 dat2 <- dat
@@ -84,7 +84,7 @@ ggplot(dat2, aes(x = Milestone, y = Attempts)) +
   scale_y_continuous(name = "Number of attempts") +
   geom_boxplot(outlier.colour='RED', outlier.size=3) + 
   scale_x_discrete(name = "Milestone #") +
-  ggtitle("Distribution of number of attempts at each milestone") + 
+  ggtitle("Attempts per milestone") + 
   geom_text(aes(label=outlier), na.rm=TRUE, nudge_y = .5)
 
 students2 <- edit(students2)

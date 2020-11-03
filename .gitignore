@@ -86,3 +86,7 @@ logs/
 celery.log
 
 migrations/
+
+assets/js/.Rhistory
+
+assets/css/.Rhistory

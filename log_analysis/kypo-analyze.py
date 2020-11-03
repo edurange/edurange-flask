@@ -1,37 +1,137 @@
-import sys
-import re
-import os
 import csv
 import operator
+import re
+import os
+import sys
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import rpy2.robjects as ro
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
+from graphviz import Digraph
 
-from rpy2.robjects.conversion import localconverter
-from datetime import datetime as dt
 
 def process_files(log_dir, mNum):
     for file in os.listdir(log_dir):
         filename = os.fsdecode(file)
         #print(file)
-        if filename.endswith("."):
+        if filename.endswith(".json"):
             #print('test')
-            with open(os.path.join(log_dir, filename), 'r', encoding='latin-1') as csv_file:
-                stuName = filename[0:-1]
-                if stuName == 'jack3':
-                    continue
+            new_file = reformat_file(log_dir, filename)
+            with open(os.path.join(log_dir, new_file), 'r', encoding='latin-1') as csv_file:
+                stuName = filename.split('-')[2]
+
                 process_student(csv_file, stuName, mNum)
 
     time_spent(allStu)
     calculate_average()
     calculate_variances()
 
+def reformat_file(log_dir, name):
+    with open(os.path.join(log_dir, name), 'r') as csv_file:
+        log_lines = []
+        reader = list(csv.reader(csv_file))
+        for line in csv_file:
+            log_lines.append(line[line.find('{'):])
+
+        user_id = name.split('-')[2]
+
+        formatted_lines = []
+        first_line = ["User " + user_id + " start time " + \
+                     reader[0][5][13:] + \
+                     " end " + \
+                     reader[-1][5][13:] ]
+
+        formatted_lines.append(first_line)
+        for i in range(3):
+            formatted_lines.append(["PADDING"])
+
+
+        for i, line in enumerate(reader):
+            stdin = line[8][line[8].index(':') + 1:].replace("\\", "").replace('"', "")
+            tag = check_milestones(stdin, milestones)
+            timestamp = line[5][13:]
+
+            new_line = ["INPUT|" + user_id + "--" + str(i) + \
+                       "|" + tag + "|" + timestamp + "|" + user_id + \
+                       "|" + stdin + "|OUTPUT"]
+
+            formatted_lines.append(new_line)
+
+    csv_output_file = name[:name.find('.json')] + '.csv'
+    csvfile = open(os.path.join(log_dir, csv_output_file), 'w', newline='\n',encoding='utf-8')
+    csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_NONE)
+
+    for line in formatted_lines:
+        csvwriter.writerow(line)
+
+    csvfile.close()
+    create_graph(csv_output_file, user_id)
+    return csv_output_file
+
+
+def check_milestones(input, milestones):
+    tag = ''
+    for i, m in enumerate(milestones):
+        if re.match(m, input) is not None:
+            tag += 'A' + str(i) + ' '
+            if re.fullmatch(m, input) is not None:
+                tag += 'M' + str(i) + ' '
+    if tag == '':
+        tag = 'U'
+    return tag
+
+def create_graph(logfile, uid):
+    with open(os.path.join(log_dir, logfile), 'r') as csv_file:
+
+        testreader = list(csv.reader(csv_file, delimiter='|', quotechar='%'))
+        commands = {}
+        hourTime = ""
+        for row in testreader:
+            if len(row) > 0:
+                if row[0] != 'INPUT':
+                    continue
+                msTime = row[3]
+                tags = row[2]
+                # user_dir = row[0].split(":")[-1]
+                if uid not in commands.keys():
+                    commands[uid] = []
+                    commands[uid].append('{} {}'.format(row[5], tags))
+                else:
+                    commands[uid].append('{} {}'.format(row[5], tags))
+
+    for key in commands.keys():
+        user = key
+        graph = Digraph(node_attr={'shape': 'box'}, comment="creating graph for user: {}".format(user))
+        print(commands[user])
+        for j in range(0, len(commands[user])):
+            if commands[user][j][-1] == 'U':
+                continue
+            graph.node(str(j), commands[user][j])
+        misses = 0
+        for j in range(1, len(commands[user])):
+            if commands[user][j][-1] == 'U':
+                misses += 1
+                continue
+            graph.edge(str(j - 1 - misses), str(j), constraint='false')
+            misses=0
+        graph.attr(rankdir='LR')
+    # print(graph.source)
+        graph.render('kypo-output/' + uid + '_successes_graph.dot')
+
+    for key in commands.keys():
+        user = key
+        graph = Digraph(node_attr={'shape': 'box'}, comment="creating graph for user: {}".format(user))
+        print(commands[user])
+        for j in range(0, len(commands[user])):
+            graph.node(str(j), commands[user][j])
+        misses = 0
+        for j in range(1, len(commands[user])):
+            graph.edge(str(j - 1), str(j), constraint='false')
+            misses=0
+        graph.attr(rankdir='LR')
+        # print(graph.source)
+        graph.render('kypo-output/' + uid + '_all_graph.dot')
+
 
 def process_student(csv_file, student, mNum):
-    reader = list(csv.reader(csv_file, delimiter='|'))
+    reader = list(csv.reader(csv_file, delimiter='|', quotechar='%'))
     count = 0
 
     allStu[student] = {}
@@ -206,6 +306,7 @@ if __name__ == "__main__":
 
     mAvgs = []
     mAtts = []
+    milestones = []
 
     with open(milestone_file, 'r') as mFile:
         mNum = 0
@@ -213,6 +314,7 @@ if __name__ == "__main__":
             mNum += 1
             mAvgs.append(0)
             mAtts.append(0)
+            milestones.append(line.strip('\n'))
 
     allStu = {}
 

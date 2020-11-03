@@ -1,24 +1,21 @@
-import sys
-import re
-import os
 import csv
 import operator
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import rpy2.robjects as ro
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
+import re
+import os
+import sys
 
-from rpy2.robjects.conversion import localconverter
-from datetime import datetime as dt
+string = 'i think that that that that student wrote there is not that right'
+pattern = 'that'
+
+print([match.start() for match in re.finditer(pattern, string)])
 
 def process_files(log_dir, mNum):
     for file in os.listdir(log_dir):
         filename = os.fsdecode(file)
         #print(file)
-        if filename.endswith("."):
+        if filename.endswith(".json"):
             #print('test')
+            reformat_file(filename)
             with open(os.path.join(log_dir, filename), 'r', encoding='latin-1') as csv_file:
                 stuName = filename[0:-1]
                 if stuName == 'jack3':
@@ -28,6 +25,61 @@ def process_files(log_dir, mNum):
     time_spent(allStu)
     calculate_average()
     calculate_variances()
+
+def reformat_file(name):
+    with open(os.path.join(log_dir, name), 'r') as csv_file:
+        log_lines = []
+        reader = list(csv.reader(csv_file))
+        for line in csv_file:
+            log_lines.append(line[line.find('{'):])
+
+        user_id = name.split('-')[2]
+
+        formatted_lines = []
+        first_line = "User " + user_id + " start time " + \
+                     reader[0][4][13:] + \
+                     " end " + \
+                     reader[-1][4][13:]
+
+        formatted_lines.append(first_line)
+        for i in range(3):
+            formatted_lines.append("PADDING")
+
+
+        for i, line in enumerate(reader):
+            stdin = line[8][line[8].index(':') + 1:].strip("\"")
+            tag = check_milestones(stdin, milestones)
+            timestamp = line[4][13:]
+
+            new_line = "INPUT|" + user_id + "--" + i + \
+                       "|" + tag + "|" + timestamp + "|" + user_id + \
+                       "|" + stdin + "|OUTPUT"
+
+            formatted_lines.append(new_line)
+
+        csv_output_file = name[:name.find('.json')] + '.csv'
+        csvfile = open(csv_output_file,'w', newline='',encoding='utf-8')
+        csvwriter = csv.writer(csvfile, delimiter='|', quoting=csv.QUOTE_MINIMAL)
+
+        for line in formatted_lines:
+            csvwriter.writerow(line)
+
+        csvfile.close()
+
+
+def check_milestones(input, milestones):
+    tag = ''
+    for i, m in enumerate(milestones):
+        if re.match(m, input) is not None:
+            if re.fullmatch(m, input) is not None:
+                tag += 'M' + i + ' '
+            else:
+                tag += 'A' + i + ' '
+    if tag == '':
+        tag = 'U'
+    return tag
+
+
 
 
 def process_student(csv_file, student, mNum):
@@ -206,6 +258,7 @@ if __name__ == "__main__":
 
     mAvgs = []
     mAtts = []
+    milestones = []
 
     with open(milestone_file, 'r') as mFile:
         mNum = 0
@@ -213,6 +266,7 @@ if __name__ == "__main__":
             mNum += 1
             mAvgs.append(0)
             mAtts.append(0)
+            milestones.append(line)
 
     allStu = {}
 
