@@ -1,4 +1,4 @@
-students <- read.csv("/home/jack/production/edurange-flask/log_analysis/R_df.csv",
+students <- read.csv("/home/jack/production/edurange-flask/log_analysis/kypo-git/R_df.csv",
                      header = TRUE,
                      na.strings=c("", "NA"),
                      sep = ",")
@@ -30,7 +30,7 @@ dat4$outlier[which(is.na(dat4$is_outlier))] <- as.numeric(NA)
 
 dat4 <- edit(dat4)
 
-students2 <- read.csv("/home/jack/production/edurange-flask/log_analysis/R_df2.csv",
+students2 <- read.csv("/home/jack/production/edurange-flask/log_analysis/kypo-git/R_df2.csv",
                      header = TRUE,
                      na.strings=c("", "NA"),
                      sep = ",")

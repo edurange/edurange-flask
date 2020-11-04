@@ -49,9 +49,5 @@ fi
 service ssh reload
 service cron start
 
-echo 'if [[ -n $SSH_CONNECTION ]] ; then' >> /etc/bash.bashrc
-echo "	perl /usr/local/src/ttylog/analyze_cyclic.pl &" >> /etc/bash.bashrc
-echo "fi" >> /etc/bash.bashrc
-
 
 

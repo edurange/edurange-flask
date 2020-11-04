@@ -1,0 +1,7 @@
+// creating graph for user: 66
+digraph {
+	node [shape=box]
+	5 [label="nmap -h A0 "]
+	0 -> 5 [constraint=false]
+	rankdir=LR
+}

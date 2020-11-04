@@ -1,0 +1,16 @@
+// creating graph for user: 80
+digraph {
+	node [shape=box]
+	0 [label="nmap -A 172.18.1.5 A0 "]
+	1 [label="nmap -A -p 1-65536 A0 "]
+	2 [label="nmap -A -p 1-65536 172.18.1.5 A0 "]
+	3 [label="nmap -A -p 1-65535 172.18.1.5 A0 "]
+	12 [label="nmap -A 10.1.17.4 A0 "]
+	46 [label="cat flag.txt A8 M8 "]
+	0 -> 1 [constraint=false]
+	1 -> 2 [constraint=false]
+	2 -> 3 [constraint=false]
+	3 -> 12 [constraint=false]
+	12 -> 46 [constraint=false]
+	rankdir=LR
+}

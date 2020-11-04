@@ -3,6 +3,8 @@ import operator
 import re
 import os
 import sys
+import random
+import string
 import pandas as pd
 from graphviz import Digraph
 
@@ -14,8 +16,9 @@ def process_files(log_dir, mNum):
         if filename.endswith(".json"):
             #print('test')
             new_file = reformat_file(log_dir, filename)
-            with open(os.path.join(log_dir, new_file), 'r', encoding='latin-1') as csv_file:
-                stuName = filename.split('-')[2]
+            print(new_file)
+            with open(os.path.join(out_dir, new_file), 'r', encoding='latin-1') as csv_file:
+                stuName = ''.join(random.choice(string.ascii_lowercase) for i in range(3))
 
                 process_student(csv_file, stuName, mNum)
 
@@ -30,7 +33,7 @@ def reformat_file(log_dir, name):
         for line in csv_file:
             log_lines.append(line[line.find('{'):])
 
-        user_id = name.split('-')[2]
+        user_id = name.split('-')[1]
 
         formatted_lines = []
         first_line = ["User " + user_id + " start time " + \
@@ -55,7 +58,7 @@ def reformat_file(log_dir, name):
             formatted_lines.append(new_line)
 
     csv_output_file = name[:name.find('.json')] + '.csv'
-    csvfile = open(os.path.join(log_dir, csv_output_file), 'w', newline='\n',encoding='utf-8')
+    csvfile = open(os.path.join(out_dir, csv_output_file), 'w', newline='\n',encoding='utf-8')
     csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_NONE)
 
     for line in formatted_lines:
@@ -69,10 +72,11 @@ def reformat_file(log_dir, name):
 def check_milestones(input, milestones):
     tag = ''
     for i, m in enumerate(milestones):
-        if re.match(m, input) is not None:
-            tag += 'A' + str(i) + ' '
-            if re.fullmatch(m, input) is not None:
-                tag += 'M' + str(i) + ' '
+        for pattern in m.split('|'):
+            if re.match(pattern, input) is not None:
+                tag += 'A' + str(i) + ' '
+                if re.fullmatch(pattern, input) is not None:
+                    tag += 'M' + str(i) + ' '
     if tag == '':
         tag = 'U'
     return tag
@@ -99,7 +103,6 @@ def create_graph(logfile, uid):
     for key in commands.keys():
         user = key
         graph = Digraph(node_attr={'shape': 'box'}, comment="creating graph for user: {}".format(user))
-        print(commands[user])
         for j in range(0, len(commands[user])):
             if commands[user][j][-1] == 'U':
                 continue
@@ -113,12 +116,13 @@ def create_graph(logfile, uid):
             misses=0
         graph.attr(rankdir='LR')
     # print(graph.source)
-        graph.render('kypo-output/' + uid + '_successes_graph.dot')
+        os.chdir(out_dir)
+        graph.render('kypo_output_' + uid + '_successes_graph.dot')
+        os.chdir('..')
 
     for key in commands.keys():
         user = key
         graph = Digraph(node_attr={'shape': 'box'}, comment="creating graph for user: {}".format(user))
-        print(commands[user])
         for j in range(0, len(commands[user])):
             graph.node(str(j), commands[user][j])
         misses = 0
@@ -127,8 +131,9 @@ def create_graph(logfile, uid):
             misses=0
         graph.attr(rankdir='LR')
         # print(graph.source)
-        graph.render('kypo-output/' + uid + '_all_graph.dot')
-
+        os.chdir(out_dir)
+        graph.render('kypo_output_' + uid + '_all_graph.dot')
+        os.chdir('..')
 
 def process_student(csv_file, student, mNum):
     reader = list(csv.reader(csv_file, delimiter='|', quotechar='%'))
@@ -288,21 +293,22 @@ def calculate_variances():
 
     print(pd_df2)
 
-    pd_df2.to_csv("R_df2.csv", index=True)
+    pd_df2.to_csv(os.path.join(out_dir, "R_df2.csv"), index=True)
 
-    pd_df.to_csv("R_df.csv", index=True)
+    pd_df.to_csv(os.path.join(out_dir, "R_df.csv"), index=True)
 
 if __name__ == "__main__":
     # Proper usage check
     # if len(sys.argv) != 4:
-    #     print('usage:\n milestone_logger.py <log_dir> <milestone_file> <out_file>')
+    #     print('usage:\n milestone_logger.py <log_dir> <milestone_file> <out_dir>')
     #     exit(1)
 
     # Read Arguments
     print(sys.argv[1])
     log_dir = sys.argv[1]
     milestone_file = sys.argv[2]
-    out_file = sys.argv[3]
+    out_dir = sys.argv[3]
+    os.mkdir(out_dir)
 
     mAvgs = []
     mAtts = []
