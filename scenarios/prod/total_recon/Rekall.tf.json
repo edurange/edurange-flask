@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_Rekall_extern": "${tostring(docker_container.SNAME_Rekall.ports[0].external)}"
+      "SNAME_Rekall_extern": "HIDDEN"
     }
   ],
   "output": [

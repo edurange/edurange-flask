@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_ControlRoom_extern": "${tostring(docker_container.SNAME_ControlRoom.ports[0].external)}"
+      "SNAME_ControlRoom_extern": "HIDDEN"
     }
   ],
   "output": [

@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_ResistanceBase_extern": "${tostring(docker_container.SNAME_ResistanceBase.ports[0].external)}"
+      "SNAME_ResistanceBase_extern": "HIDDEN"
     }
   ],
   "output": [

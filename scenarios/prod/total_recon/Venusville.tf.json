@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_Venusville_extern": "${tostring(docker_container.SNAME_Venusville.ports[0].external)}"
+      "SNAME_Venusville_extern": "HIDDEN"
     }
   ],
   "output": [
