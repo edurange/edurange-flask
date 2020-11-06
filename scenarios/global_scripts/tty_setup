@@ -3,6 +3,9 @@ set -eoux pipefail
 
 mkdir /usr/local/src/logs
 mkdir /usr/local/src/ttylog
+mkdir /usr/local/src/logs/root
+
+touch /usr/local/src/logs/root/.cli.csv
 
 chmod 755 /usr/local/src
 chmod 777 /usr/local/src/logs
@@ -11,12 +14,10 @@ chmod 777 /usr/local/src/ttylog
 mv /home/ubuntu/analyze.py /usr/local/src/ttylog/
 mv /home/ubuntu/start_ttylog.sh /usr/local/src/ttylog/
 mv /home/ubuntu/ttylog /usr/local/src/ttylog/
-mv /home/ubuntu/analyze_cyclic.pl /usr/local/src/ttylog/
 mv /home/ubuntu/makeTsv.py /usr/local/src/ttylog/makeTsv.py
 
 chmod +x /usr/local/src/ttylog/start_ttylog.sh
 chmod +x /usr/local/src/ttylog/ttylog
-chmod +x /usr/local/src/ttylog/analyze_cyclic.pl
 chmod +x /usr/local/src/ttylog/analyze.py
 chmod +x /usr/local/src/ttylog/makeTsv.py
 
@@ -32,11 +33,10 @@ while read line; do
 	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.$(hostname)" | sudo EDITOR='tee -a' visudo
 	#echo "$line ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog .*" | sudo EDITOR='tee -a' visudo
 	echo "$line ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/tee -a /usr/local/src/logs/ttylog.*.*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/analyze_cyclic.pl &" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3.4 /usr/local/src/analyze.py /usr/local/src/logs/alltty.$(hostname)* /usr/local/src/logs/cli.$(hostname)*" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/tee -a /usr/local/src/logs/$line/ttylog.*.*.*" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/$line/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/$line/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3.4 /usr/local/src/analyze.py /usr/local/src/logs/$line/alltty.$(hostname)* /usr/local/src/logs/$line/cli.$(hostname)*" | sudo EDITOR='tee -a' visudo
 done</usr/local/src/user_names.txt
 
 
