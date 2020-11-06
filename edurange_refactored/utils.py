@@ -503,13 +503,25 @@ def scoreSetup(questions):
     checkList = {}  # list of question to be answered so duplicates are not scored
     for text in questions:
         if str(text['Type']) == "Multi String":
-            count = 1
-            for d in text['Values']:  # d is not used  #TODO: need to check if this is a problem
-                k = str(text['Order']) + str(count)
-                checkList[k] = False
+            # count = 1
+            tmp = []
+            for d in text['Values']:  # d is not used  # it's probably fine (possibly bad practice though)
+                tmp.append(False)
+                # k = str(text['Order']) + '.' + str(count)
+                # checkList[k] = False
+                # count += 1
+            k = str(text['Order'])
+            checkList[k] = tmp
         else:
             checkList[str(text['Order'])] = False
+    # bloop()
     return checkList
+
+
+# {'1': True, '2': False, ... , '6': [True, False, False, ...], '7': False}
+#                                       0    1      2     ...
+
+# if multi string, take student response into account to find the index within '6': [...] and mark true or false as normal
 
 
 def scoreCheck(qnum, checkList):
@@ -528,20 +540,40 @@ def scoreCheck(qnum, checkList):
                 checkList[k] = True
                 return False, checkList  # answer was not checked before but is now
 
+
+def scoreCheck2(qnum, checkList, resp, quest):
+    keys = list(checkList.keys())
+    for k in keys:
+        if k == str(qnum):
+            if type(checkList[k]) == list:  # if multi string
+                return False
+                # check stu_resp against q.yml
+                #   if stu_resp in q.yml
+                #       if i in q.yml = false in checkList[k][i]
+                #           return true
+                #       else
+            elif type(checkList[k]) == bool:    # if NOT a multi string
+                if checkList[k]:
+                    return True, checkList  # answer has already been checked
+            elif not checkList[k]:
+                checkList[k] = True
+                return False, checkList  # answer has not been checked before but is now checked
+
+
 # query(Responses.user_id, Responses.attempt, Responses.question, Responses.points, Responses.student_response)
 # .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
-
-# make sure score doesn't score multi string questions more than is necessary
+#     |
+#     V
 
 
 def score(uid, att, query, questions):
     stuScore = 0
     checkList = scoreSetup(questions)
     for resp in query:
-        if resp.user_id == uid and resp.attempt == att:
-            if resp.points > 0:
+        if resp.user_id == uid and resp.attempt == att:     # if response entry matches uid and attempt number
+            if resp.points > 0:                             # if the student has points i.e. if the student answered correctly
                 qNum = int(resp.question)
-                check, checkList = scoreCheck(qNum, checkList)
+                check, checkList = scoreCheck(qNum, checkList)      # check against checkList with question number
                 if not check:
                     stuScore += resp.points
     scr = '' + str(stuScore) + ' / ' + str(totalScore(questions))
