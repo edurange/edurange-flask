@@ -17,9 +17,10 @@ def process_files(log_dir, mNum):
             #print('test')
             new_file = reformat_file(log_dir, filename)
             print(new_file)
+            uid = new_file.split('-')[1]
             with open(os.path.join(out_dir, new_file), 'r', encoding='latin-1') as csv_file:
                 stuName = ''.join(random.choice(string.ascii_lowercase) for i in range(3))
-
+                students[uid] = stuName
                 process_student(csv_file, stuName, mNum)
 
     time_spent(allStu)
@@ -27,6 +28,10 @@ def process_files(log_dir, mNum):
     calculate_variances()
 
 def reformat_file(log_dir, name):
+    completed_milestones = []
+    for m in milestones:
+        completed_milestones.append(0)
+
     with open(os.path.join(log_dir, name), 'r') as csv_file:
         log_lines = []
         reader = list(csv.reader(csv_file))
@@ -34,6 +39,7 @@ def reformat_file(log_dir, name):
             log_lines.append(line[line.find('{'):])
 
         user_id = name.split('-')[1]
+        students[user_id] = ''
 
         formatted_lines = []
         first_line = ["User " + user_id + " start time " + \
@@ -48,7 +54,7 @@ def reformat_file(log_dir, name):
 
         for i, line in enumerate(reader):
             stdin = line[8][line[8].index(':') + 1:].replace("\\", "").replace('"', "")
-            tag = check_milestones(stdin, milestones)
+            tag, completed_milestones = check_milestones(stdin, milestones, completed_milestones)
             timestamp = line[5][13:]
 
             new_line = ["INPUT|" + user_id + "--" + str(i) + \
@@ -69,17 +75,35 @@ def reformat_file(log_dir, name):
     return csv_output_file
 
 
-def check_milestones(input, milestones):
+def check_milestones(input, milestones, completed_milestones):
     tag = ''
     for i, m in enumerate(milestones):
-        for pattern in m.split('|'):
-            if re.match(pattern, input) is not None:
+        commands = m.split('|')[0].split(',')
+        args = m.split('|')[1].split(',')
+        found_command = False
+        found_arg = False
+        for c in commands:
+            if c in input:
+                found_command = True
+        for a in args:
+            if a in input:
+                found_arg = True
+
+        if found_arg and found_command:
+            # if completed_milestones[i] == 0:
+            tag = 'M' + str(i) + ' '
+            #     completed_milestones[i] = 1
+            #
+            # elif completed_milestones[i] == 1:
+            #     tag = 'V' + str(i) + ' '
+
+        elif found_command and not found_arg:
+            if not tag.startswith('M') and not tag.startswith('V'):
                 tag += 'A' + str(i) + ' '
-                if re.fullmatch(pattern, input) is not None:
-                    tag += 'M' + str(i) + ' '
     if tag == '':
         tag = 'U'
-    return tag
+
+    return tag, completed_milestones
 
 def create_graph(logfile, uid):
     with open(os.path.join(log_dir, logfile), 'r') as csv_file:
@@ -304,16 +328,18 @@ if __name__ == "__main__":
     #     exit(1)
 
     # Read Arguments
-    print(sys.argv[1])
     log_dir = sys.argv[1]
     milestone_file = sys.argv[2]
     out_dir = sys.argv[3]
     os.mkdir(out_dir)
 
+    #Initialize lists for milestone averages, attempts, and milestone patterns
     mAvgs = []
     mAtts = []
     milestones = []
+    students = {}
 
+    #Initialize lists to zeroes for each milestone, and load in regex patterns
     with open(milestone_file, 'r') as mFile:
         mNum = 0
         for line in mFile:
@@ -326,3 +352,5 @@ if __name__ == "__main__":
 
 
     process_files(log_dir, mNum)
+    for s in students:
+        print("Student id: {} Anonymized Name: {}".format(s, students[s]))
