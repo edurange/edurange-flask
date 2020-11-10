@@ -25,7 +25,7 @@ digraph {
 	21 [label="ls -la A10 "]
 	22 [label="ls A10 "]
 	23 [label="ls -la A10 "]
-	24 [label="ls -a M10 "]
+	24 [label="ls -a A10 "]
 	25 [label="ls -l A10 "]
 	26 [label="ssh eve@10.1.17.4 --help M16 "]
 	27 [label="ssh -i eve.key eve@10.1.17.4 M16 "]

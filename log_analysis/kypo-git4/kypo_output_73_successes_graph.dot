@@ -127,7 +127,7 @@ digraph {
 	136 [label="cp id_rsa .ssh/id_rsa A16 "]
 	137 [label="ssh eve@10.1.17.4 M16 "]
 	138 [label="ls A10 "]
-	139 [label="ls -a M10 "]
+	139 [label="ls -a A10 "]
 	142 [label="ssh-add id_rsa A16 "]
 	143 [label="ssh eve@10.1.17.4 M16 "]
 	144 [label="ls A10 "]

@@ -8,7 +8,7 @@ set|RHOSTS,THREADS,PORTS,LHOST,PAYLOAD,RPORT
 check|exploit_used,rhost_set,rport_set,lhost_set
 run,exploit|
 cat,less,more,head,tail|WARNING-READ-ME.txt
-ls,find,locate|/home/eve,-a,-name,.bash_history
+ls,find,locate|/home/eve,-name,.bash_history
 cat,less,more,head,tail|.bash_history
 cat,less,more,head,tail|id_rsa
 python|ssh2john.py
