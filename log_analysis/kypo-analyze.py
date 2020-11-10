@@ -20,7 +20,7 @@ def process_files(log_dir, mNum):
             uid = new_file.split('-')[1]
             with open(os.path.join(out_dir, new_file), 'r', encoding='latin-1') as csv_file:
                 stuName = ''.join(random.choice(string.ascii_lowercase) for i in range(3))
-                students[uid] = stuName
+                student_names[uid] = stuName
                 process_student(csv_file, stuName, mNum)
 
     time_spent(allStu)
@@ -39,7 +39,7 @@ def reformat_file(log_dir, name):
             log_lines.append(line[line.find('{'):])
 
         user_id = name.split('-')[1]
-        students[user_id] = ''
+        student_names[user_id] = ''
 
         formatted_lines = []
         first_line = ["User " + user_id + " start time " + \
@@ -106,8 +106,7 @@ def check_milestones(input, milestones, completed_milestones):
     return tag, completed_milestones
 
 def create_graph(logfile, uid):
-    with open(os.path.join(log_dir, logfile), 'r') as csv_file:
-
+    with open(os.path.join(out_dir, logfile), 'r') as csv_file:
         testreader = list(csv.reader(csv_file, delimiter='|', quotechar='%'))
         commands = {}
         hourTime = ""
@@ -337,7 +336,7 @@ if __name__ == "__main__":
     mAvgs = []
     mAtts = []
     milestones = []
-    students = {}
+    student_names = {}
 
     #Initialize lists to zeroes for each milestone, and load in regex patterns
     with open(milestone_file, 'r') as mFile:
@@ -352,5 +351,5 @@ if __name__ == "__main__":
 
 
     process_files(log_dir, mNum)
-    for s in students:
-        print("Student id: {} Anonymized Name: {}".format(s, students[s]))
+    for s in student_names:
+        print("Student id: {} Anonymized Name: {}".format(s, student_names[s]))

@@ -13,6 +13,6 @@ cat,less,more,head,tail|.bash_history
 cat,less,more,head,tail|id_rsa
 python|ssh2john.py
 john|--wordlist
-chmod|0600
+chmod|600
 ssh|-i,eve@
 cat,less,more,head,tail|flag.txt

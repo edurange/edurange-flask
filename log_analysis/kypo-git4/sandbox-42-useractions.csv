@@ -172,7 +172,7 @@ INPUT|42--166|A16 |1594803416|42|ssh|OUTPUT
 INPUT|42--167|M16 |1594803440|42|ssh -i /root/Desktop/ssh 10.1.17.4|OUTPUT
 INPUT|42--168|A9 A11 A12 A16 A17 |1594803559|42|sessions 3 -c less ssh_config|OUTPUT
 INPUT|42--169|M16 |1594803790|42|ssh -i /etc/ssh/ssh_comp 10.1.17.4|OUTPUT
-INPUT|42--170|A15 A16 |1594803895|42|chmod 600 /etc/ssh/ssh_comp|OUTPUT
+INPUT|42--170|M15 |1594803895|42|chmod 600 /etc/ssh/ssh_comp|OUTPUT
 INPUT|42--171|M16 |1594803901|42|ssh -i /etc/ssh/ssh_comp 10.1.17.4|OUTPUT
 INPUT|42--172|A16 |1594804015|42|sessions 3 -c cd /usr/bin/ssh|OUTPUT
 INPUT|42--173|A10 |1594804024|42|sessions 3 -c ls|OUTPUT
@@ -199,5 +199,5 @@ INPUT|42--193|M14 |1594805526|42|john --wordlist /usr/share/wordlists/rockyou.tx
 INPUT|42--194|M16 |1594805581|42|ssh -i /etc/ssh/ssh_comp 10.1.17.4|OUTPUT
 INPUT|42--195|M16 |1594805631|42|ssh -i /usr/Desktop/ssh_comp 10.1.17.4|OUTPUT
 INPUT|42--196|M16 |1594805663|42|ssh -i /root/Desktop/ssh_comp 10.1.17.4|OUTPUT
-INPUT|42--197|A15 A16 |1594805696|42|chmod 600 /root/Desktop/ssh_comp|OUTPUT
+INPUT|42--197|M15 |1594805696|42|chmod 600 /root/Desktop/ssh_comp|OUTPUT
 INPUT|42--198|M16 |1594805700|42|ssh -i /root/Desktop/ssh_comp 10.1.17.4|OUTPUT
