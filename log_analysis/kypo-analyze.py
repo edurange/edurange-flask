@@ -78,6 +78,8 @@ def reformat_file(log_dir, name):
 def check_milestones(input, milestones, completed_milestones):
     tag = ''
     for i, m in enumerate(milestones):
+        if completed_milestones[i] == 1:
+            continue
         commands = m.split('|')[0].split(',')
         args = m.split('|')[1].split(',')
         found_command = False
@@ -85,17 +87,18 @@ def check_milestones(input, milestones, completed_milestones):
         for c in commands:
             if c in input:
                 found_command = True
+                break
         for a in args:
             if a in input:
                 found_arg = True
 
         if found_arg and found_command:
-            # if completed_milestones[i] == 0:
-            tag = 'M' + str(i) + ' '
-            #     completed_milestones[i] = 1
-            #
-            # elif completed_milestones[i] == 1:
-            #     tag = 'V' + str(i) + ' '
+            if completed_milestones[i] == 0:
+                tag = 'M' + str(i) + ' '
+                completed_milestones[i] = 1
+
+            elif completed_milestones[i] == 1:
+                tag = 'V' + str(i) + ' '
 
         elif found_command and not found_arg:
             if not tag.startswith('M') and not tag.startswith('V'):
