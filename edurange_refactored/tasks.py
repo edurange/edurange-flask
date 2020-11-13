@@ -375,7 +375,7 @@ def scenarioCollectLogs(self, arg):
                           current_directory=line[3],
                           input=line[4],
                           output=line[5],
-                          prompt=line[6]
+                          prompt=line[6][:-1]
             )
 
 
