@@ -140,6 +140,7 @@
             "adjust_motd",
             "ssh_port_1938",
             "nmap_to_sudoers",
+            "control_fake_ports",
             "reactor_control"
           ],
           "user_files":[

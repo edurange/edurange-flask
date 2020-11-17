@@ -9,7 +9,7 @@
                 {
                   "add": [
                     "NET_ADMIN",
-		    "SYS_ADMIN"
+                    "SYS_PTRACE"
                   ]
                 }
               ],

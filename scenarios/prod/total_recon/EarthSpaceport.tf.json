@@ -68,7 +68,7 @@
     }],
   "locals": [
     {
-      "SNAME_EarthSpaceport_extern": "${tostring(docker_container.SNAME_EarthSpaceport.ports[0].external)}"
+      "SNAME_EarthSpaceport_extern": "HIDDEN"
     }
   ],
   "output": [

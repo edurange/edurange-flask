@@ -23,7 +23,7 @@ if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
 
 	export TTY_SID=$CNT
 	export TTY_USER=$USER
-	LOGPATH=$LOGDIR/ttylog.$HOST.$USER.$CNT
+	LOGPATH=$LOGDIR/$USER/ttylog.$HOST.$USER.$CNT
 
 	sudo touch "$LOGPATH"
 	sudo chmod ugo+rw "$LOGPATH"
