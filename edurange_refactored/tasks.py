@@ -134,7 +134,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     logger.info("All names: {}".format(students))
 
     with app.test_request_context():
-
+        scenario = Scenarios.query.filter_by(id=s_id).first()
         name = "".join(e for e in name if e.isalnum())
         own_id = owner
 
@@ -181,7 +181,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
                                c_names[i], usernames, passwords,
                                s_files[i], g_files[i], u_files[i], flags)
 
-
+        scenario.update(status=0)
         os.chdir("../../..")
 
         ScenarioGroups.create(group_id=g_id, scenario_id=s_id)
@@ -375,7 +375,7 @@ def scenarioCollectLogs(self, arg):
                           current_directory=line[3],
                           input=line[4],
                           output=line[5],
-                          prompt=line[6]
+                          prompt=line[6][:-1]
             )
 
 

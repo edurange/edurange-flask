@@ -675,7 +675,7 @@ def readCSV_by_name(name):
 def formatCSV(arr):
     nArr = []
     for entry in arr:
-        tmpArr = entry.replace("#%#", "\n").split("\t")
+        tmpArr = entry.replace("#%#", "\n").replace("%", "").split("\t")
         nArr.append(tmpArr)
     return nArr
 
