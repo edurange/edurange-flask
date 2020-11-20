@@ -125,14 +125,14 @@ th.fit button:focus {
 .sidebar {
   height: 100%;
   margin-left: 0;
-  transition: margin .25s ease-out;
   padding-top: 55px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
+  display: none;
 }
-.sidebar .list-group {
+.sidebar.list-group {
   width: 20rem;
 }
 .list-group-item .fa-info {
