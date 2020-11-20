@@ -18,7 +18,10 @@
   /* Update sidebar class list if sidebar is true (for hidden) in session storage */
   if (sessionStorage.getItem("sidebar") === 'true') {
     let bar = document.getElementById("sidebar");
-    bar.classList.add("pausetransition"); bar.classList.add("hidden"); bar.offsetHeight; bar.classList.remove("pausetransition");
+    bar.classList.add("pausetransition"); 
+    bar.classList.add("hidden"); 
+    bar.offsetHeight; 
+    bar.classList.remove("pausetransition");
   } //offsetHeight to force the application of css changes in modern browsers before script is finished executing
 
   /* Change bg color of link to the currently loaded page */
