@@ -1,0 +1,78 @@
+INPUT|8a8f2c--0|M0 |1579210405|8a8f2c|pwd|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--1|A6|1579210453|8a8f2c|ls -a|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--2|M2 |1579210457|8a8f2c|ls|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--3|A5|1579210494|8a8f2c|cd .|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--4|A4|1579210496|8a8f2c|ls|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--5|U|1579210528|8a8f2c|cat task1|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--6|U|1579210535|8a8f2c|cat task2|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--7|U|1579210540|8a8f2c|cat task3|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--8|U|1579210552|8a8f2c|cat task4|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--9|A4|1579210557|8a8f2c|ls|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--10|A6|1579210599|8a8f2c|ls -a|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--11|U|1579210640|8a8f2c|cat task4|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--12|M3 |1579210652|8a8f2c|man ls|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--13|M4 |1579210726|8a8f2c|ls -l|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--14|U|1579210759|8a8f2c|cat task5|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--15|M5 |1579210766|8a8f2c|cd view|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--16|A6|1579210772|8a8f2c|ls -l|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--17|A6|1579210828|8a8f2c|ls|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--18|U|1579210854|8a8f2c|cat task6|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--19|M6 |1579210872|8a8f2c|ls -al|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--20|U|1579210886|8a8f2c|cd..|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--21|M7 |1579210888|8a8f2c|cd ..|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--22|V0|1579210896|8a8f2c|pwd|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--23|V0|1579210896|8a8f2c|pwd|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--24|V5|1579210912|8a8f2c|cd view|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--25|U|1579210914|8a8f2c|cat task7|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--26|V7|1579210918|8a8f2c|cd ..|OUTPUT|/home/8a8f2c/view
+INPUT|8a8f2c--27|V0|1579210920|8a8f2c|pwd|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--28|A8|1579210935|8a8f2c|ls -a|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--29|U|1579210950|8a8f2c|cd manipulate|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--30|U|1579210955|8a8f2c|sude manflag|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--31|U|1579210960|8a8f2c|sudo manflag|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--32|V7|1579210969|8a8f2c|cd ..|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--33|U|1579210977|8a8f2c|cat task8|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--34|U|1579210981|8a8f2c|cat task9|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--35|U|1579210997|8a8f2c|cd manipulate|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--36|A1|1579211000|8a8f2c|man mv|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--37|M9 |1579211086|8a8f2c|mv file1.txt renamed_file1.txt|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--38|V2|1579211087|8a8f2c|ls|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--39|M10 |1579211105|8a8f2c|cp file2.txt copied_file2.txt|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--40|V2|1579211108|8a8f2c|ls|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--41|U|1579211117|8a8f2c|sudo manflag|OUTPUT|/home/8a8f2c/manipulate
+INPUT|8a8f2c--42|U|1579211171|8a8f2c|cd permissions|OUTPUT|/home/8a8f2c
+INPUT|8a8f2c--43|U|1579211174|8a8f2c|cat task10|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--44|V2|1579211195|8a8f2c|ls|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--45|M11 |1579211233|8a8f2c|cp perm1.txt copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--46|V2|1579211235|8a8f2c|ls|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--47|M12 |1579211289|8a8f2c|man chmod|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--48|V12|1579211323|8a8f2c|man chmod|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--49|M13 |1579211429|8a8f2c|chmod copied_perm1.txt a -rwxXst|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--50|A15|1579211470|8a8f2c|chmod a -rwxXst copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--51|V12|1579211476|8a8f2c|man chmod|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--52|V12|1579211476|8a8f2c|man chmod|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--53|A15|1579211616|8a8f2c|chmod g=rw copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--54|A15|1579211625|8a8f2c|chmod u= copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--55|U|1579211645|8a8f2c|cat task10|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--56|M14 |1579211656|8a8f2c|cp perm2txt copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--57|A15|1579211667|8a8f2c|cp perm2.txt copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--58|M15 |1579211706|8a8f2c|chmod o=rwx copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--59|V15|1579211713|8a8f2c|chmod g=rw copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--60|V15|1579211722|8a8f2c|chmod u=r copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--61|U|1579211728|8a8f2c|sudo perflag|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--62|V2|1579211731|8a8f2c|ls|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--63|V13|1579211774|8a8f2c|chmod u-rwxXst copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--64|U|1579211781|8a8f2c|sudo perflag|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--65|U|1579211808|8a8f2c|ls-l|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--66|U|1579211812|8a8f2c|ls -s|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--67|V4|1579211814|8a8f2c|ls -l|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--68|U|1579211964|8a8f2c|cat task10|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--69|U|1579211964|8a8f2c|cat task10|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--70|V4|1579212102|8a8f2c|ls -l|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--71|V4|1579212102|8a8f2c|ls -l|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--72|V15|1579212185|8a8f2c|chmod o=r copied_perm2.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--73|U|1579212192|8a8f2c|sudo perflag|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--74|V13|1579212213|8a8f2c|chmod u = rw copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--75|V13|1579212221|8a8f2c|chmod u=rw copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--76|V13|1579212230|8a8f2c|chmod o-rw copied_perm1.txt|OUTPUT|/home/8a8f2c/permissions
+INPUT|8a8f2c--77|U|1579212234|8a8f2c|sudo perflag|OUTPUT|/home/8a8f2c/permissions

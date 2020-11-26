@@ -1,0 +1,56 @@
+INPUT|fca93d--0|U|1579210403|fca93d|cat instructions.txt|OUTPUT|/home/fca93d
+INPUT|fca93d--1|U|1579210614|fca93d|cat task1|OUTPUT|/home/fca93d
+INPUT|fca93d--2|M0 |1579210625|fca93d|pwd|OUTPUT|/home/fca93d
+INPUT|fca93d--3|U|1579210674|fca93d|cat task22|OUTPUT|/home/fca93d
+INPUT|fca93d--4|U|1579210679|fca93d|cat task2|OUTPUT|/home/fca93d
+INPUT|fca93d--5|A1|1579210705|fca93d|man <pwd>|OUTPUT|/home/fca93d
+INPUT|fca93d--6|M1 |1579210718|fca93d|man pwd|OUTPUT|/home/fca93d
+INPUT|fca93d--7|U|1579210747|fca93d|cat task3|OUTPUT|/home/fca93d
+INPUT|fca93d--8|A2|1579210768|fca93d|ls |OUTPUT|/home/fca93d
+INPUT|fca93d--9|U|1579210817|fca93d|cat task4|OUTPUT|/home/fca93d
+INPUT|fca93d--10|M3 |1579210951|fca93d|man ls|OUTPUT|/home/fca93d
+INPUT|fca93d--11|M4 |1579211048|fca93d|ls -l|OUTPUT|/home/fca93d
+INPUT|fca93d--12|M5 |1579211088|fca93d|cd view|OUTPUT|/home/fca93d
+INPUT|fca93d--13|A6|1579211091|fca93d|ls -l|OUTPUT|/home/fca93d/view
+INPUT|fca93d--14|M7 |1579211165|fca93d|cd ..|OUTPUT|/home/fca93d/view
+INPUT|fca93d--15|A8|1579211172|fca93d|ls -l|OUTPUT|/home/fca93d
+INPUT|fca93d--16|U|1579211333|fca93d|cat task5|OUTPUT|/home/fca93d
+INPUT|fca93d--17|V5|1579211349|fca93d|cd view|OUTPUT|/home/fca93d
+INPUT|fca93d--18|A6|1579211352|fca93d|ls -l|OUTPUT|/home/fca93d/view
+INPUT|fca93d--19|U|1579211357|fca93d|cat task 6|OUTPUT|/home/fca93d/view
+INPUT|fca93d--20|V7|1579211360|fca93d|cd ..|OUTPUT|/home/fca93d/view
+INPUT|fca93d--21|U|1579211364|fca93d|cat task6|OUTPUT|/home/fca93d
+INPUT|fca93d--22|A2|1579211369|fca93d|cd|OUTPUT|/home/fca93d
+INPUT|fca93d--23|A8|1579211373|fca93d|ls -l|OUTPUT|/home/fca93d
+INPUT|fca93d--24|V5|1579211404|fca93d|cd view|OUTPUT|/home/fca93d
+INPUT|fca93d--25|A6|1579211406|fca93d|ls -l|OUTPUT|/home/fca93d/view
+INPUT|fca93d--26|U|1579211412|fca93d|cat task6|OUTPUT|/home/fca93d/view
+INPUT|fca93d--27|A12|1579211436|fca93d|man ls|OUTPUT|/home/fca93d/view
+INPUT|fca93d--28|M6 |1579211455|fca93d|ls -a|OUTPUT|/home/fca93d/view
+INPUT|fca93d--29|U|1579211484|fca93d|cat task7|OUTPUT|/home/fca93d/view
+INPUT|fca93d--30|V7|1579211526|fca93d|cd ..|OUTPUT|/home/fca93d/view
+INPUT|fca93d--31|A2|1579211529|fca93d|pwd|OUTPUT|/home/fca93d
+INPUT|fca93d--32|A12|1579211595|fca93d|man ls|OUTPUT|/home/fca93d
+INPUT|fca93d--33|A8|1579211720|fca93d|ls -a|OUTPUT|/home/fca93d
+INPUT|fca93d--34|U|1579211746|fca93d|cat task8|OUTPUT|/home/fca93d
+INPUT|fca93d--35|A2|1579211786|fca93d|ls la|OUTPUT|/home/fca93d
+INPUT|fca93d--36|A8|1579211792|fca93d|ls -l -a|OUTPUT|/home/fca93d
+INPUT|fca93d--37|U|1579211818|fca93d|cat task9|OUTPUT|/home/fca93d
+INPUT|fca93d--38|U|1579212018|fca93d|cd manipulate|OUTPUT|/home/fca93d
+INPUT|fca93d--39|M2 |1579212031|fca93d|ls|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--40|A12|1579212040|fca93d|man mv|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--41|M9 |1579212099|fca93d|mv file1.txt renamed_file1.txt|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--42|A12|1579212105|fca93d|man cp|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--43|M10 |1579212140|fca93d|cp file2.txt copied_file2.txt|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--44|U|1579212155|fca93d|sudo manflag|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--45|V7|1579212198|fca93d|cd ..|OUTPUT|/home/fca93d/manipulate
+INPUT|fca93d--46|V0|1579212199|fca93d|pwd|OUTPUT|/home/fca93d
+INPUT|fca93d--47|U|1579212206|fca93d|cd permissions|OUTPUT|/home/fca93d
+INPUT|fca93d--48|U|1579212215|fca93d|cat task10|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--49|V2|1579212227|fca93d|ls|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--50|M11 |1579212466|fca93d|cp perm1.txt copied_perm1.txt|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--51|M12 |1579212484|fca93d|man chmod|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--52|M13 |1579212685|fca93d|chmod 660 copied_perm1.txt|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--53|M14 |1579212725|fca93d|cp perm2.txt copied_perm2.txt|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--54|M15 |1579212787|fca93d|chmod 764 copied_perm2.txt|OUTPUT|/home/fca93d/permissions
+INPUT|fca93d--55|U|1579212796|fca93d|sudo perflag|OUTPUT|/home/fca93d/permissions

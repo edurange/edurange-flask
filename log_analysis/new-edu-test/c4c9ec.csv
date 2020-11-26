@@ -1,0 +1,25 @@
+INPUT|c4c9ec--0|M2 |1579211958|c4c9ec|ls|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--1|M0 |1579211962|c4c9ec|pwd|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--2|U|1579211972|c4c9ec|view task1|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--3|V0|1579212037|c4c9ec|pwd|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--4|U|1579212166|c4c9ec|iamfrustrated|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--5|A4|1579212208|c4c9ec|ls|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--6|M5 |1579212490|c4c9ec|cd view|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--7|A6|1579212493|c4c9ec|ls|OUTPUT|/home/c4c9ec/view
+INPUT|c4c9ec--8|M6 |1579212496|c4c9ec|ls -a|OUTPUT|/home/c4c9ec/view
+INPUT|c4c9ec--9|V0|1579212539|c4c9ec|pwd|OUTPUT|/home/c4c9ec/view
+INPUT|c4c9ec--10|V0|1579212539|c4c9ec|pwd|OUTPUT|/home/c4c9ec/view
+INPUT|c4c9ec--11|A8|1579212628|c4c9ec|ls -a|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--12|U|1579212635|c4c9ec|clear|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--13|A4|1579212636|c4c9ec|ls|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--14|A8|1579212638|c4c9ec|ls -a|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--15|U|1579212676|c4c9ec|cd manipulate/|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--16|U|1579212678|c4c9ec|sudo manflag|OUTPUT|/home/c4c9ec/manipulate
+INPUT|c4c9ec--17|U|1579212754|c4c9ec|cd|OUTPUT|/home/c4c9ec/manipulate
+INPUT|c4c9ec--18|A4|1579212755|c4c9ec|ls|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--19|U|1579212771|c4c9ec|view instructions.txt |OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--20|U|1579212826|c4c9ec|view task2|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--21|U|1579212833|c4c9ec|view task3|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--22|U|1579212839|c4c9ec|view task4|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--23|U|1579212867|c4c9ec|view task5|OUTPUT|/home/c4c9ec
+INPUT|c4c9ec--24|U|1579212876|c4c9ec|cd codes|OUTPUT|/home/c4c9ec

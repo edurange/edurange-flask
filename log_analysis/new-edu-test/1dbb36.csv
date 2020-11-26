@@ -1,0 +1,68 @@
+INPUT|1dbb36--0|U|1579215165|1dbb36|cat instructions.txt |OUTPUT|/home/1dbb36
+INPUT|1dbb36--1|U|1579215176|1dbb36|cat task1|OUTPUT|/home/1dbb36
+INPUT|1dbb36--2|M0 |1579215182|1dbb36|pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--3|U|1579215200|1dbb36|cat task2|OUTPUT|/home/1dbb36
+INPUT|1dbb36--4|A1|1579215219|1dbb36|man pawd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--5|M1 |1579215300|1dbb36|man pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--6|A3|1579215308|1dbb36|man pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--7|U|1579216005|1dbb36|cat task3|OUTPUT|/home/1dbb36
+INPUT|1dbb36--8|M2 |1579216075|1dbb36|ls|OUTPUT|/home/1dbb36
+INPUT|1dbb36--9|A5|1579216165|1dbb36|cd ./|OUTPUT|/home/1dbb36
+INPUT|1dbb36--10|A5|1579216168|1dbb36|cd /|OUTPUT|/home/1dbb36
+INPUT|1dbb36--11|V2|1579216170|1dbb36|ls|OUTPUT|/
+INPUT|1dbb36--12|A5|1579216968|1dbb36|cd /|OUTPUT|/home/1dbb36
+INPUT|1dbb36--13|U|1579216977|1dbb36|cd |OUTPUT|/
+INPUT|1dbb36--14|A4|1579216979|1dbb36|ls|OUTPUT|/home/1dbb36
+INPUT|1dbb36--15|M4 |1579217006|1dbb36|ls -la|OUTPUT|/home/1dbb36
+INPUT|1dbb36--16|M5 |1579217232|1dbb36|cd view|OUTPUT|/home/1dbb36
+INPUT|1dbb36--17|M6 |1579217235|1dbb36|ls -a|OUTPUT|/home/1dbb36/view
+INPUT|1dbb36--18|A7|1579217270|1dbb36|cd|OUTPUT|/home/1dbb36/view
+INPUT|1dbb36--19|V0|1579217272|1dbb36|pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--20|A7|1579217278|1dbb36|cd ..|OUTPUT|/home/1dbb36
+INPUT|1dbb36--21|V0|1579217280|1dbb36|pwd|OUTPUT|/home
+INPUT|1dbb36--22|V5|1579217293|1dbb36|cd view|OUTPUT|/home
+INPUT|1dbb36--23|U|1579217296|1dbb36|cd |OUTPUT|/home
+INPUT|1dbb36--24|V5|1579217298|1dbb36|cd view|OUTPUT|/home/1dbb36
+INPUT|1dbb36--25|M7 |1579217301|1dbb36|cd ..|OUTPUT|/home/1dbb36/view
+INPUT|1dbb36--26|V0|1579217303|1dbb36|pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--27|A8|1579217329|1dbb36|ls -a|OUTPUT|/home/1dbb36
+INPUT|1dbb36--28|A8|1579217335|1dbb36|ls|OUTPUT|/home/1dbb36
+INPUT|1dbb36--29|V0|1579217378|1dbb36|pwd|OUTPUT|/home/1dbb36
+INPUT|1dbb36--30|U|1579217382|1dbb36|cd /|OUTPUT|/home/1dbb36
+INPUT|1dbb36--31|V0|1579217385|1dbb36|pwd|OUTPUT|/
+INPUT|1dbb36--32|U|1579217389|1dbb36|cd home|OUTPUT|/
+INPUT|1dbb36--33|V6|1579217392|1dbb36|ls -a|OUTPUT|/home
+INPUT|1dbb36--34|V2|1579217395|1dbb36|ls|OUTPUT|/home
+INPUT|1dbb36--35|U|1579217434|1dbb36|cd|OUTPUT|/home
+INPUT|1dbb36--36|U|1579217440|1dbb36|cd manipulate/|OUTPUT|/home/1dbb36
+INPUT|1dbb36--37|U|1579217446|1dbb36|sudo manflag|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--38|V7|1579217478|1dbb36|cd ..|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--39|U|1579217480|1dbb36|cat task5|OUTPUT|/home/1dbb36
+INPUT|1dbb36--40|U|1579217488|1dbb36|cat task8|OUTPUT|/home/1dbb36
+INPUT|1dbb36--41|U|1579217495|1dbb36|cat task9|OUTPUT|/home/1dbb36
+INPUT|1dbb36--42|U|1579217504|1dbb36|cd manipulate/|OUTPUT|/home/1dbb36
+INPUT|1dbb36--43|M9 |1579217522|1dbb36|mv file1.txt copied_file1.txt|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--44|M10 |1579217542|1dbb36|cp file2.txt copied_file2.txt|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--45|U|1579217550|1dbb36|sudo manflag|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--46|V2|1579217635|1dbb36|ls|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--47|V9|1579217672|1dbb36|mv file1.txt renamed_file1.txt|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--48|V2|1579217674|1dbb36|ls|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--49|U|1579217676|1dbb36|sudo manflag|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--50|V2|1579217679|1dbb36|ls|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--51|U|1579217710|1dbb36|cp file1.txt renamed_file1.txt|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--52|V2|1579217716|1dbb36|ls|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--53|U|1579217771|1dbb36|sudo manflag|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--54|V7|1579218070|1dbb36|cd ..|OUTPUT|/home/1dbb36/manipulate
+INPUT|1dbb36--55|U|1579218073|1dbb36|cd permissions/|OUTPUT|/home/1dbb36
+INPUT|1dbb36--56|V2|1579218074|1dbb36|ls|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--57|U|1579218082|1dbb36|cat task10|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--58|M13 |1579218187|1dbb36|chmod 660 copied_perm1.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--59|V2|1579218193|1dbb36|ls|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--60|M11 |1579218209|1dbb36|cp perm1.txt copied_perm1.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--61|A15|1579218213|1dbb36|chmod 660 copied_perm1.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--62|A15|1579218213|1dbb36|chmod 660 copied_perm1.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--63|U|1579218289|1dbb36|sudo perflag|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--64|A8|1579218293|1dbb36|ls -la|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--65|U|1579218500|1dbb36|14Psudo perflagd_perm2.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--66|M15 |1579218553|1dbb36|chmod 764 copied_perm2.txt|OUTPUT|/home/1dbb36/permissions
+INPUT|1dbb36--67|U|1579218555|1dbb36|14Psudo perflagd_perm2.txt|OUTPUT|/home/1dbb36/permissions

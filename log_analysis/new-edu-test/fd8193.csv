@@ -1,0 +1,60 @@
+INPUT|fd8193--0|M0 |1579210110|fd8193|pwd|OUTPUT|/home/fd8193
+INPUT|fd8193--1|M2 |1579210286|fd8193|ls|OUTPUT|/home/fd8193
+INPUT|fd8193--2|M1 |1579210425|fd8193|man pwd|OUTPUT|/home/fd8193
+INPUT|fd8193--3|A6|1579210820|fd8193|ls -a|OUTPUT|/home/fd8193
+INPUT|fd8193--4|M5 |1579210991|fd8193|cd view|OUTPUT|/home/fd8193
+INPUT|fd8193--5|M6 |1579211002|fd8193|ls -a|OUTPUT|/home/fd8193/view
+INPUT|fd8193--6|M7 |1579211047|fd8193|cd ..|OUTPUT|/home/fd8193/view
+INPUT|fd8193--7|A4|1579211083|fd8193|ls|OUTPUT|/home/fd8193
+INPUT|fd8193--8|A8|1579211103|fd8193|ls -a|OUTPUT|/home/fd8193
+INPUT|fd8193--9|U|1579211129|fd8193|cd manipulate|OUTPUT|/home/fd8193
+INPUT|fd8193--10|V2|1579211134|fd8193|ls|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--11|A9|1579211148|fd8193|pico file1.txt|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--12|A10|1579211164|fd8193|pico file2.txt|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--13|U|1579211240|fd8193|sudo|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--14|U|1579211301|fd8193|sudo manflag|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--15|V2|1579211312|fd8193|ls|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--16|U|1579211782|fd8193|manflag|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--17|U|1579211893|fd8193|cd task9|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--18|V7|1579211897|fd8193|cd ..|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--19|U|1579211908|fd8193|cat task9|OUTPUT|/home/fd8193
+INPUT|fd8193--20|A4|1579211976|fd8193|ls|OUTPUT|/home/fd8193
+INPUT|fd8193--21|U|1579211995|fd8193|cd manipulate|OUTPUT|/home/fd8193
+INPUT|fd8193--22|A9|1579211999|fd8193|mv|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--23|V2|1579212008|fd8193|ls|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--24|M9 |1579212030|fd8193|mv file1.txt to renamed_file1.txt|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--25|V9|1579212051|fd8193|mv file1.txt renamed_file1.txt|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--26|A10|1579212062|fd8193|cp|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--27|U|1579212075|fd8193|sudo manflag|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--28|M10 |1579212147|fd8193|cp file2.txt copied_file2.txt|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--29|U|1579212160|fd8193|sudo manflag|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--30|U|1579212201|fd8193|cat task10|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--31|V7|1579212214|fd8193|cd ..|OUTPUT|/home/fd8193/manipulate
+INPUT|fd8193--32|A4|1579212215|fd8193|ls|OUTPUT|/home/fd8193
+INPUT|fd8193--33|U|1579212230|fd8193|cd permission |OUTPUT|/home/fd8193
+INPUT|fd8193--34|U|1579212239|fd8193|cd permissions|OUTPUT|/home/fd8193
+INPUT|fd8193--35|V2|1579212240|fd8193|ls|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--36|U|1579212246|fd8193|cat task10|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--37|V2|1579212253|fd8193|ls|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--38|M11 |1579212290|fd8193|cp perm1.txt copied_perm1.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--39|A13|1579212310|fd8193|chmod |OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--40|M13 |1579212335|fd8193|chmod permission copied_perm1.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--41|M14 |1579212373|fd8193|cp perm2.txt copied_perm2.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--42|U|1579212378|fd8193|sudo perflag|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--43|A15|1579212441|fd8193|chmod permission copied_perm1.txt Owner |OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--44|A15|1579212452|fd8193|chmod --help|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--45|U|1579212506|fd8193|http://linuxcommand.org/lc3_lts0090.php|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--46|V11|1579212534|fd8193|cp perm1.txt copied_perm1.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--47|V7|1579212611|fd8193|cd ..|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--48|A4|1579212613|fd8193|ls|OUTPUT|/home/fd8193
+INPUT|fd8193--49|U|1579212619|fd8193|cd permissions|OUTPUT|/home/fd8193
+INPUT|fd8193--50|V2|1579212620|fd8193|ls|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--51|U|1579212627|fd8193|cat task10|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--52|V2|1579212643|fd8193|ls|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--53|M12 |1579212749|fd8193|man chmod |OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--54|U|1579213076|fd8193|sudo perflag|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--55|U|1579213159|fd8193|ls-l|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--56|A4|1579213164|fd8193|ls -l|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--57|A15|1579213380|fd8193|chmod 660 copied_perm1.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--58|M15 |1579213468|fd8193|chmod 764 copied_perm2.txt|OUTPUT|/home/fd8193/permissions
+INPUT|fd8193--59|U|1579213475|fd8193|sudo perflag|OUTPUT|/home/fd8193/permissions

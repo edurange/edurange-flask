@@ -1,0 +1,76 @@
+INPUT|0decd8--0|U|1579216314|0decd8|cat instructions.txt|OUTPUT|/home/0decd8
+INPUT|0decd8--1|U|1579216371|0decd8|cat task1|OUTPUT|/home/0decd8
+INPUT|0decd8--2|M0 |1579216388|0decd8|pwd|OUTPUT|/home/0decd8
+INPUT|0decd8--3|U|1579216419|0decd8|cat task2|OUTPUT|/home/0decd8
+INPUT|0decd8--4|A1|1579216455|0decd8|man <pwd>|OUTPUT|/home/0decd8
+INPUT|0decd8--5|M1 |1579216467|0decd8|man pwd|OUTPUT|/home/0decd8
+INPUT|0decd8--6|U|1579216596|0decd8|cat task3|OUTPUT|/home/0decd8
+INPUT|0decd8--7|M2 |1579216611|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--8|A4|1579216698|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--9|A4|1579216698|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--10|M3 |1579216801|0decd8|man ls|OUTPUT|/home/0decd8
+INPUT|0decd8--11|A12|1579217124|0decd8|man ls|OUTPUT|/home/0decd8
+INPUT|0decd8--12|A12|1579217124|0decd8|man ls|OUTPUT|/home/0decd8
+INPUT|0decd8--13|A12|1579217152|0decd8|man ls|OUTPUT|/home/0decd8
+INPUT|0decd8--14|U|1579217171|0decd8|-l ls|OUTPUT|/home/0decd8
+INPUT|0decd8--15|M4 |1579217178|0decd8|ls -l|OUTPUT|/home/0decd8
+INPUT|0decd8--16|U|1579217221|0decd8|cat task4|OUTPUT|/home/0decd8
+INPUT|0decd8--17|A8|1579217238|0decd8|ls -l|OUTPUT|/home/0decd8
+INPUT|0decd8--18|U|1579217274|0decd8|cat task5|OUTPUT|/home/0decd8
+INPUT|0decd8--19|M5 |1579217300|0decd8|cd view|OUTPUT|/home/0decd8
+INPUT|0decd8--20|A6|1579217303|0decd8|ls|OUTPUT|/home/0decd8/view
+INPUT|0decd8--21|U|1579217492|0decd8|cat task6|OUTPUT|/home/0decd8/view
+INPUT|0decd8--22|A12|1579217518|0decd8|man ls|OUTPUT|/home/0decd8/view
+INPUT|0decd8--23|A6|1579217625|0decd8|ls --all|OUTPUT|/home/0decd8/view
+INPUT|0decd8--24|A12|1579217665|0decd8|man ls|OUTPUT|/home/0decd8/view
+INPUT|0decd8--25|U|1579217792|0decd8|cat task7|OUTPUT|/home/0decd8/view
+INPUT|0decd8--26|M7 |1579217802|0decd8|cd ..|OUTPUT|/home/0decd8/view
+INPUT|0decd8--27|V0|1579217805|0decd8|pwd|OUTPUT|/home/0decd8
+INPUT|0decd8--28|V0|1579217805|0decd8|pwd|OUTPUT|/home/0decd8
+INPUT|0decd8--29|A6|1579217905|0decd8|ls -l -a|OUTPUT|/home/0decd8
+INPUT|0decd8--30|U|1579218059|0decd8|cat task9|OUTPUT|/home/0decd8
+INPUT|0decd8--31|U|1579218082|0decd8|cat task8|OUTPUT|/home/0decd8
+INPUT|0decd8--32|U|1579218082|0decd8|cat task8|OUTPUT|/home/0decd8
+INPUT|0decd8--33|U|1579218216|0decd8|cd manipulate|OUTPUT|/home/0decd8
+INPUT|0decd8--34|A12|1579218227|0decd8|man mv|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--35|V2|1579218283|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--36|V2|1579218298|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--37|V2|1579218359|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--38|U|1579218368|0decd8|sudo manflag|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--39|V2|1579218409|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--40|A10|1579218433|0decd8|cd file2.txt copied_file2.txt|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--41|V2|1579218439|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--42|V2|1579218439|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--43|V2|1579218479|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--44|U|1579218492|0decd8|18Psudo manflagnamed_file1.txt|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--45|U|1579218568|0decd8|18Pls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--46|V2|1579218739|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--47|U|1579218743|0decd8|cat10|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--48|U|1579218748|0decd8|cat task10|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--49|U|1579218763|0decd8|18Pcat task10|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--50|U|1579218767|0decd8|cat task9|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--51|V2|1579218768|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--52|U|1579218810|0decd8|cat task10|OUTPUT|/home/0decd8
+INPUT|0decd8--53|A8|1579218815|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--54|A8|1579218838|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--55|U|1579218844|0decd8|cd permissions|OUTPUT|/home/0decd8
+INPUT|0decd8--56|U|1579218850|0decd8|sudo perflag|OUTPUT|/home/0decd8/permissions
+INPUT|0decd8--57|U|1579218850|0decd8|sudo perflag|OUTPUT|/home/0decd8/permissions
+INPUT|0decd8--58|V2|1579218920|0decd8|ls|OUTPUT|/home/0decd8/permissions
+INPUT|0decd8--59|M11 |1579218944|0decd8|cp perm1.txt copied_perm1.txt|OUTPUT|/home/0decd8/permissions
+INPUT|0decd8--60|M12 |1579218958|0decd8|man chmod|OUTPUT|/home/0decd8/permissions
+INPUT|0decd8--61|U|1579219116|0decd8|cat task10|OUTPUT|/home/0decd8
+INPUT|0decd8--62|U|1579219119|0decd8|cat task9|OUTPUT|/home/0decd8
+INPUT|0decd8--63|U|1579219124|0decd8|cat task10|OUTPUT|/home/0decd8
+INPUT|0decd8--64|A8|1579219133|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--65|U|1579219136|0decd8|cd manipulate|OUTPUT|/home/0decd8
+INPUT|0decd8--66|V2|1579219137|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--67|U|1579219144|0decd8|cat task10|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--68|V2|1579219158|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--69|U|1579219163|0decd8|cd permissions|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--70|V2|1579219164|0decd8|ls|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--71|U|1579219169|0decd8|cat task10|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--72|U|1579219177|0decd8|cd|OUTPUT|/home/0decd8/manipulate
+INPUT|0decd8--73|A8|1579219178|0decd8|ls|OUTPUT|/home/0decd8
+INPUT|0decd8--74|U|1579219184|0decd8|cd permissions|OUTPUT|/home/0decd8
+INPUT|0decd8--75|U|1579219188|0decd8|cat task10|OUTPUT|/home/0decd8/permissions

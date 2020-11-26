@@ -1,0 +1,58 @@
+INPUT|9b7f7e--0|U|1579210183|9b7f7e|cat instructions.txt |OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--1|U|1579210183|9b7f7e|cat instructions.txt |OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--2|U|1579210324|9b7f7e|cat task1|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--3|M1 |1579210355|9b7f7e|man pwd|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--4|A0|1579210394|9b7f7e|getcwd|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--5|U|1579210449|9b7f7e|cat task2|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--6|A3|1579210499|9b7f7e|man pwd|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--7|M2 |1579210546|9b7f7e|ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--8|U|1579210595|9b7f7e|cat task4|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--9|M3 |1579210643|9b7f7e|man ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--10|M4 |1579210680|9b7f7e|ls -l|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--11|A12|1579210711|9b7f7e|man ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--12|A8|1579210741|9b7f7e|ls -G|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--13|A12|1579210745|9b7f7e|man ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--14|A6|1579210870|9b7f7e|ls -a|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--15|M5 |1579210886|9b7f7e|cd view|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--16|M6 |1579210908|9b7f7e|ls -a|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--17|A8|1579210916|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--18|V4|1579210928|9b7f7e|ls -l|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--19|M7 |1579210951|9b7f7e|cd ..|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--20|M0 |1579210953|9b7f7e|pwd|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--21|U|1579210987|9b7f7e|cat task5|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--22|U|1579211001|9b7f7e|cat task6|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--23|U|1579211021|9b7f7e|cat task7|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--24|V7|1579211036|9b7f7e|cd ..|OUTPUT|/home/9b7f7e/view
+INPUT|9b7f7e--25|U|1579211052|9b7f7e|cat task8|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--26|A8|1579211073|9b7f7e|ls -l|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--27|M8 |1579211077|9b7f7e|ls -la|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--28|U|1579211141|9b7f7e|cat task9|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--29|V2|1579211145|9b7f7e|ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--30|U|1579211150|9b7f7e|cd manipulate/|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--31|V2|1579211153|9b7f7e|ls|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--32|A12|1579211167|9b7f7e|man mv|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--33|M9 |1579211238|9b7f7e|mv -T file1.txt renamed_file1.txt|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--34|V2|1579211240|9b7f7e|ls|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--35|A12|1579211254|9b7f7e|man cp|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--36|M10 |1579211276|9b7f7e|cp -T file2.txt copied_file2.txt|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--37|V2|1579211277|9b7f7e|ls|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--38|U|1579211290|9b7f7e|sudo manflag|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--39|U|1579211323|9b7f7e|cd..|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--40|V7|1579211325|9b7f7e|cd ..|OUTPUT|/home/9b7f7e/manipulate
+INPUT|9b7f7e--41|V2|1579211326|9b7f7e|ls|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--42|U|1579211331|9b7f7e|cd permissions/|OUTPUT|/home/9b7f7e
+INPUT|9b7f7e--43|U|1579211345|9b7f7e|cat task10|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--44|V2|1579211349|9b7f7e|ls|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--45|V8|1579211363|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--46|V8|1579211363|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--47|V8|1579211883|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--48|M12 |1579212073|9b7f7e|man chmod|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--49|M13 |1579212148|9b7f7e|chmod 850 copied_perm1.txt |OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--50|V12|1579212155|9b7f7e|man chmod|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--51|A15|1579212202|9b7f7e|chmod 660 copied_perm1.txt |OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--52|V8|1579212205|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--53|A14|1579212229|9b7f7e|18P18Pcp -T perm2.txt copied_perm2.txt|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--54|V8|1579212231|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--55|M15 |1579212268|9b7f7e|chmod 764 copied_perm2.txt |OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--56|V8|1579212272|9b7f7e|ls -la|OUTPUT|/home/9b7f7e/permissions
+INPUT|9b7f7e--57|U|1579212296|9b7f7e|sudo perflag|OUTPUT|/home/9b7f7e/permissions
