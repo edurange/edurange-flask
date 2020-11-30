@@ -393,6 +393,7 @@ def responseCheck(qnum, sid, resp, uid):
 def bashAnswer(sid, uid, ans):
     db_ses = db.session
     uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    uName = "".join(e for e in uName if e.isalnum())
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
     if "${player.login}" in ans:
         students = open("./data/tmp/" + sName + "/students.json", "r")
