@@ -1,4 +1,4 @@
-﻿/home/$USER,pwd|,*
+/home/$USER,pwd|,*
 *,man|pwd,*
 *,ls|,*
 *,man|ls,*

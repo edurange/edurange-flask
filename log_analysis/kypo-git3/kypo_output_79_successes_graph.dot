@@ -1,9 +1,0 @@
-// creating graph for user: 79
-digraph {
-	node [shape=box]
-	1 [label="nmap -sv 172.18.1.5 A0 "]
-	2 [label="nmap -sV 172.18.1.5 A0 "]
-	0 -> 1 [constraint=false]
-	1 -> 2 [constraint=false]
-	rankdir=LR
-}

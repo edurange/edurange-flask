@@ -1,8 +1,0 @@
-// creating graph for user: 71
-digraph {
-	node [shape=box]
-	0 [label="nmap 172.18.1.5 A0 "]
-	213 [label="cat flag.txt A8 M8 "]
-	0 -> 213 [constraint=false]
-	rankdir=LR
-}

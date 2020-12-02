@@ -1,5 +1,0 @@
-// creating graph for user: 69
-digraph {
-	node [shape=box]
-	rankdir=LR
-}
