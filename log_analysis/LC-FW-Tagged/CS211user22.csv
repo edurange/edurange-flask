@@ -1,0 +1,67 @@
+INPUT|null|A0 M0 T0|null|null|Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
+INPUT|null|A13 M13 T13|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
+INPUT|null|A14 M14 T14|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
+INPUT|null|A15 M15 T15|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+INPUT|CS211user22--0|M0 |1606766631|CS211user22|pwd|OUTPUT|/home/CS211user22
+INPUT|CS211user22--1|M1 |1606766650|CS211user22|man pwd|OUTPUT|/home/CS211user22
+INPUT|CS211user22--2|U|1606766667|CS211user22|pwd -L|OUTPUT|/home/CS211user22
+INPUT|CS211user22--3|A3|1606766670|CS211user22|man pwd|OUTPUT|/home/CS211user22
+INPUT|CS211user22--4|U|1606766693|CS211user22|pwd -P|OUTPUT|/home/CS211user22
+INPUT|CS211user22--5|M2 |1606766799|CS211user22|ls|OUTPUT|/home/CS211user22
+INPUT|CS211user22--6|M3 |1606766822|CS211user22|man ls|OUTPUT|/home/CS211user22
+INPUT|CS211user22--7|A6|1606766901|CS211user22|ls -a|OUTPUT|/home/CS211user22
+INPUT|CS211user22--8|A5|1606767135|CS211user22|cd manipulate|OUTPUT|/home/CS211user22
+INPUT|CS211user22--9|U|1606767137|CS211user22|sudo manflag|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--10|U|1606767159|CS211user22|cd|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--11|U|1606767166|CS211user22|cat instructions.txt|OUTPUT|/home/CS211user22
+INPUT|CS211user22--12|U|1606767171|CS211user22|cat task1|OUTPUT|/home/CS211user22
+INPUT|CS211user22--13|U|1606767175|CS211user22|cat task11|OUTPUT|/home/CS211user22
+INPUT|CS211user22--14|U|1606767179|CS211user22|cat task8|OUTPUT|/home/CS211user22
+INPUT|CS211user22--15|M4 |1606767201|CS211user22|ls -a -l|OUTPUT|/home/CS211user22
+INPUT|CS211user22--16|U|1606767212|CS211user22|cat task9|OUTPUT|/home/CS211user22
+INPUT|CS211user22--17|A9|1606767369|CS211user22|mv file1.txt renamed_file1.txt|OUTPUT|/home/CS211user22
+INPUT|CS211user22--18|A8|1606767373|CS211user22|ls|OUTPUT|/home/CS211user22
+INPUT|CS211user22--19|A5|1606767378|CS211user22|cd task9|OUTPUT|/home/CS211user22
+INPUT|CS211user22--20|A5|1606767390|CS211user22|cd manipulate|OUTPUT|/home/CS211user22
+INPUT|CS211user22--21|V2|1606767390|CS211user22|ls|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--22|M9 |1606767400|CS211user22|mv file1.txt renamed_file1.txt|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--23|M10 |1606767415|CS211user22|cp file2.txt copied_file2.txt|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--24|U|1606767422|CS211user22|sudo manflag|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--25|A7|1606767442|CS211user22|cd ..|OUTPUT|/home/CS211user22/manipulate
+INPUT|CS211user22--26|A5|1606767445|CS211user22|cd permissions|OUTPUT|/home/CS211user22
+INPUT|CS211user22--27|U|1606767454|CS211user22|cat task10|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--28|M11 |1606767590|CS211user22|cp perm1.txt copied_perm1.txt|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--29|M13 |1606767599|CS211user22|chmod 220 copied_perm1.txt|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--30|M14 |1606767613|CS211user22|cp perm2.txt copied_perm2.txt|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--31|A15|1606767620|CS211user22|chmod 720|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--32|M15 |1606767627|CS211user22|chmod 720 copied_perm2.txt|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--33|U|1606767632|CS211user22|sudo perflag|OUTPUT|/home/CS211user22/permissions
+INPUT|CS211user22--34|V4|1606767665|CS211user22|ls -l|OUTPUT|/home/CS211user22/permissions
+INPUT|R|A0 M0||null||OUTPUT
+INPUT|R|A1 M1||null||OUTPUT
+INPUT|R|A2 M2||null||OUTPUT
+INPUT|R|A3 M3||null||OUTPUT
+INPUT|R|A4 M4||null||OUTPUT
+INPUT|R|A5 M5||null||OUTPUT
+INPUT|R|A6 M6||null||OUTPUT
+INPUT|R|A7 M7||null||OUTPUT
+INPUT|R|A8 M8||null||OUTPUT
+INPUT|R|A9 M9||null||OUTPUT
+INPUT|R|A10 M10||null||OUTPUT
+INPUT|R|A11 M11||null||OUTPUT
+INPUT|R|A12 M12||null||OUTPUT
+INPUT|R|A13 M13||null||OUTPUT
+INPUT|R|A14 M14||null||OUTPUT
+INPUT|R|A15 M15||null||OUTPUT

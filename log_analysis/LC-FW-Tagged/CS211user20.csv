@@ -1,0 +1,112 @@
+INPUT|null|A0 M0 T0|null|null|Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
+INPUT|null|A13 M13 T13|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
+INPUT|null|A14 M14 T14|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
+INPUT|null|A15 M15 T15|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+INPUT|CS211user20--0|U|1606765717|CS211user20|cat instructions.txt|OUTPUT|/home/CS211user20
+INPUT|CS211user20--1|A0|1606765854|CS211user20|cd|OUTPUT|/home/CS211user20
+INPUT|CS211user20--2|M2 |1606765857|CS211user20|ls|OUTPUT|/home/CS211user20
+INPUT|CS211user20--3|A4|1606765860|CS211user20|ls -wc|OUTPUT|/home/CS211user20
+INPUT|CS211user20--4|A4|1606765862|CS211user20|ls -c|OUTPUT|/home/CS211user20
+INPUT|CS211user20--5|A4|1606765885|CS211user20|ls wc|OUTPUT|/home/CS211user20
+INPUT|CS211user20--6|M4 |1606765969|CS211user20|ls -l!|OUTPUT|/home/CS211user20
+INPUT|CS211user20--7|M3 |1606765973|CS211user20|man ls|OUTPUT|/home/CS211user20
+INPUT|CS211user20--8|U|1606766041|CS211user20|! ls -l|OUTPUT|/home/CS211user20
+INPUT|CS211user20--9|M5 |1606766172|CS211user20|cd view|OUTPUT|/home/CS211user20
+INPUT|CS211user20--10|A6|1606766173|CS211user20|ls|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--11|A6|1606766189|CS211user20|ls .|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--12|M6 |1606766212|CS211user20|ls -a|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--13|M7 |1606766237|CS211user20|cd ..|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--14|M0 |1606766239|CS211user20|pwd|OUTPUT|/home/CS211user20
+INPUT|CS211user20--15|A8|1606766253|CS211user20|ls -a|OUTPUT|/home/CS211user20
+INPUT|CS211user20--16|A8|1606766275|CS211user20|ls|OUTPUT|/home/CS211user20
+INPUT|CS211user20--17|A8|1606766282|CS211user20|ls -a|OUTPUT|/home/CS211user20
+INPUT|CS211user20--18|U|1606766344|CS211user20|cd manipulate|OUTPUT|/home/CS211user20
+INPUT|CS211user20--19|U|1606766349|CS211user20|sudo manflag|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--20|U|1606766358|CS211user20|cd|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--21|U|1606766363|CS211user20|cat task4|OUTPUT|/home/CS211user20
+INPUT|CS211user20--22|U|1606766381|CS211user20|cat task4|OUTPUT|/home/CS211user20
+INPUT|CS211user20--23|U|1606766385|CS211user20|cat task3|OUTPUT|/home/CS211user20
+INPUT|CS211user20--24|U|1606766388|CS211user20|cat task6|OUTPUT|/home/CS211user20
+INPUT|CS211user20--25|A8|1606766390|CS211user20|ls|OUTPUT|/home/CS211user20
+INPUT|CS211user20--26|U|1606766397|CS211user20|cat task5|OUTPUT|/home/CS211user20
+INPUT|CS211user20--27|V5|1606766417|CS211user20|cd view|OUTPUT|/home/CS211user20
+INPUT|CS211user20--28|U|1606766419|CS211user20|cat task6|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--29|V2|1606766443|CS211user20|ls|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--30|U|1606766448|CS211user20|cat task7|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--31|V7|1606766480|CS211user20|cd ..|OUTPUT|/home/CS211user20/view
+INPUT|CS211user20--32|U|1606766482|CS211user20|cat tas8|OUTPUT|/home/CS211user20
+INPUT|CS211user20--33|U|1606766485|CS211user20|cat task8|OUTPUT|/home/CS211user20
+INPUT|CS211user20--34|A8|1606766524|CS211user20|ls -l -a|OUTPUT|/home/CS211user20
+INPUT|CS211user20--35|U|1606766586|CS211user20|cat task9|OUTPUT|/home/CS211user20
+INPUT|CS211user20--36|U|1606766595|CS211user20|cd manipulate|OUTPUT|/home/CS211user20
+INPUT|CS211user20--37|V2|1606766596|CS211user20|ls|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--38|M9 |1606766618|CS211user20|mv file1.txt renamd_file1.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--39|V9|1606766629|CS211user20|mv file1.txt renamed_file1.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--40|V2|1606766633|CS211user20|ls|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--41|U|1606766647|CS211user20|mc renamd_file1.txt renamed_file1.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--42|V9|1606766653|CS211user20|mv renamd_file1.txt renamed_file1.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--43|U|1606766658|CS211user20|cat renamed_file1.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--44|M10 |1606766677|CS211user20|cp file2.txt copied_file2.txt|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--45|U|1606766680|CS211user20|sudo manflag|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--46|V7|1606766706|CS211user20|cd ..|OUTPUT|/home/CS211user20/manipulate
+INPUT|CS211user20--47|A8|1606766707|CS211user20|ls|OUTPUT|/home/CS211user20
+INPUT|CS211user20--48|U|1606766709|CS211user20|cd permissions|OUTPUT|/home/CS211user20
+INPUT|CS211user20--49|U|1606766711|CS211user20|cat task10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--50|M11 |1606766734|CS211user20|cp perm1.txt copied_perm1.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--51|A13|1606766878|CS211user20|chmod u-rwx|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--52|A13|1606766886|CS211user20|chmod u-rwx coped_perm1.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--53|M13 |1606766892|CS211user20|chmod u-rwx copied_perm1.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--54|A15|1606766907|CS211user20|chmod go+rw|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--55|A15|1606766913|CS211user20|chmod go+rw copied_perm1.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--56|V4|1606766917|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--57|M14 |1606766943|CS211user20|cp perm2.txt copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--58|U|1606766957|CS211user20|cat task10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--59|M15 |1606767036|CS211user20|chmod g+rw u+r copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--60|V15|1606767042|CS211user20|chmod g+rw copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--61|V15|1606767053|CS211user20|chmod o+rwx copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--62|V15|1606767060|CS211user20|chmod u+r copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--63|V4|1606767064|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--64|U|1606767072|CS211user20|sudo perflag|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--65|V4|1606767081|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--66|U|1606767093|CS211user20|cat task10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--67|V15|1606767117|CS211user20|chmod u-w copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--68|U|1606767120|CS211user20|sudo perflag|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--69|V4|1606767122|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--70|U|1606767220|CS211user20|cat tas10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--71|U|1606767225|CS211user20|cat task10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--72|U|1606767236|CS211user20|sudo perflag|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--73|V4|1606767336|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--74|U|1606767440|CS211user20|cat copied_perm1.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--75|U|1606767451|CS211user20|cat copied_perm2.txt|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--76|U|1606767480|CS211user20|sudo perflag|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--77|U|1606767500|CS211user20|cat task10|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--78|V4|1606767504|CS211user20|ls -l|OUTPUT|/home/CS211user20/permissions
+INPUT|CS211user20--79|U|1606767761|CS211user20|nc E08-target.allyourbases.co 8024|OUTPUT|/home/CS211user20/permissions
+INPUT|R|A0 M0||null||OUTPUT
+INPUT|R|A1 M1||null||OUTPUT
+INPUT|R|A2 M2||null||OUTPUT
+INPUT|R|A3 M3||null||OUTPUT
+INPUT|R|A4 M4||null||OUTPUT
+INPUT|R|A5 M5||null||OUTPUT
+INPUT|R|A6 M6||null||OUTPUT
+INPUT|R|A7 M7||null||OUTPUT
+INPUT|R|A8 M8||null||OUTPUT
+INPUT|R|A9 M9||null||OUTPUT
+INPUT|R|A10 M10||null||OUTPUT
+INPUT|R|A11 M11||null||OUTPUT
+INPUT|R|A12 M12||null||OUTPUT
+INPUT|R|A13 M13||null||OUTPUT
+INPUT|R|A14 M14||null||OUTPUT
+INPUT|R|A15 M15||null||OUTPUT

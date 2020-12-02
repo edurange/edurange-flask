@@ -5,60 +5,66 @@ import csv
 import random
 import string
 
+
 def prepend_edurange(csvwriter):
     headers = ["INPUT|null|A0 M0 T0|null|null|Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT",
-"INPUT|null|A1 M1 T1|null|null|Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT",
-"INPUT|null|A2 M2 T2|null|null|Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT",
-"INPUT|null|A3 M3 T3|null|null|Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT",
-"INPUT|null|A4 M4 T4|null|null|Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT",
-"INPUT|null|A5 M5 T5|null|null|Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT",
-"INPUT|null|A6 M6 T6|null|null|Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT",
-"INPUT|null|A7 M7 T7|null|null|Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT",
-"INPUT|null|A8 M8 T8|null|null|Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT",
-"INPUT|null|A9 M9 T9|null|null|Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT",
-"INPUT|null|A10 M10 T10|null|null|Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT",
-"INPUT|null|A11 M11 T11|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT",
-"INPUT|null|A12 M12 T12|null|null|Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT",
-"INPUT|null|A13 M13 T13|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT",
-"INPUT|null|A14 M14 T14|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT",
-"INPUT|null|A15 M15 T15|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT"]
+               "INPUT|null|A1 M1 T1|null|null|Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT",
+               "INPUT|null|A2 M2 T2|null|null|Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT",
+               "INPUT|null|A3 M3 T3|null|null|Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT",
+               "INPUT|null|A4 M4 T4|null|null|Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT",
+               "INPUT|null|A5 M5 T5|null|null|Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT",
+               "INPUT|null|A6 M6 T6|null|null|Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT",
+               "INPUT|null|A7 M7 T7|null|null|Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT",
+               "INPUT|null|A8 M8 T8|null|null|Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT",
+               "INPUT|null|A9 M9 T9|null|null|Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT",
+               "INPUT|null|A10 M10 T10|null|null|Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT",
+               "INPUT|null|A11 M11 T11|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT",
+               "INPUT|null|A12 M12 T12|null|null|Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT",
+               "INPUT|null|A13 M13 T13|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT",
+               "INPUT|null|A14 M14 T14|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT",
+               "INPUT|null|A15 M15 T15|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT"]
     for line in headers:
         csvwriter.writerow([line])
 
+
 def append_reports_edurange(csvwriter):
     reports = ["INPUT|R|A0 M0||null||OUTPUT",
-"INPUT|R|A1 M1||null||OUTPUT",
-"INPUT|R|A2 M2||null||OUTPUT",
-"INPUT|R|A3 M3||null||OUTPUT",
-"INPUT|R|A4 M4||null||OUTPUT",
-"INPUT|R|A5 M5||null||OUTPUT",
-"INPUT|R|A6 M6||null||OUTPUT",
-"INPUT|R|A7 M7||null||OUTPUT",
-"INPUT|R|A8 M8||null||OUTPUT",
-"INPUT|R|A9 M9||null||OUTPUT",
-"INPUT|R|A10 M10||null||OUTPUT",
-"INPUT|R|A11 M11||null||OUTPUT",
-"INPUT|R|A12 M12||null||OUTPUT",
-"INPUT|R|A13 M13||null||OUTPUT",
-"INPUT|R|A14 M14||null||OUTPUT",
-"INPUT|R|A15 M15||null||OUTPUT"]
+               "INPUT|R|A1 M1||null||OUTPUT",
+               "INPUT|R|A2 M2||null||OUTPUT",
+               "INPUT|R|A3 M3||null||OUTPUT",
+               "INPUT|R|A4 M4||null||OUTPUT",
+               "INPUT|R|A5 M5||null||OUTPUT",
+               "INPUT|R|A6 M6||null||OUTPUT",
+               "INPUT|R|A7 M7||null||OUTPUT",
+               "INPUT|R|A8 M8||null||OUTPUT",
+               "INPUT|R|A9 M9||null||OUTPUT",
+               "INPUT|R|A10 M10||null||OUTPUT",
+               "INPUT|R|A11 M11||null||OUTPUT",
+               "INPUT|R|A12 M12||null||OUTPUT",
+               "INPUT|R|A13 M13||null||OUTPUT",
+               "INPUT|R|A14 M14||null||OUTPUT",
+               "INPUT|R|A15 M15||null||OUTPUT"]
     for line in reports:
         csvwriter.writerow([line])
+
 
 def process_logs(log_dir, completed_milestones):
     for file in os.listdir(log_dir):
         filename = os.fsdecode(file)
-        #print(file)
+        # print(file)
         if filename.endswith(".json"):
             process_kypo(log_dir, filename, completed_milestones)
         elif filename.endswith(".csv"):
             process_edurange(log_dir, filename)
+
 
 def process_edurange(log_dir, name):
     with open(os.path.join(log_dir, name), 'r') as csv_file:
         reader = list(csv.reader(csv_file))
         for line in reader:
             s_name = ''
+            if len(line) < 6:
+                continue
             try:
                 prompt_index = line[6].index('@')
                 s_name = line[6][:prompt_index]
@@ -80,7 +86,6 @@ def process_edurange(log_dir, name):
         completed_milestones[s] = []
         for m in milestones:
             completed_milestones[s].append(0)
-
 
     for line in log_lines:
         print(line)
@@ -115,7 +120,7 @@ def process_edurange(log_dir, name):
 
     for s in student_names:
         csv_output_file = s + '.csv'
-        csvfile = open(os.path.join(out_dir, csv_output_file), 'w', newline='\n',encoding='utf-8')
+        csvfile = open(os.path.join(out_dir, csv_output_file), 'w', newline='\n', encoding='utf-8')
         csvwriter = csv.writer(csvfile, quotechar='%', escapechar='#', quoting=csv.QUOTE_NONE, )
         prepend_edurange(csvwriter)
         for line in student_logs[s]:
@@ -124,6 +129,7 @@ def process_edurange(log_dir, name):
         csvfile.close()
 
     pass
+
 
 def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, student):
     tag = ''
@@ -147,7 +153,7 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
         expected_opts = mStoneFields[1].split('|')[1].split(' ')
         expected_out = mStoneFields[2].split(' ')
         print("--------- START MILESTONE --------")
-        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs,expected_cmds, expected_opts))
+        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
         print("With wd:{} stdin:{}".format(working_dir, stdin))
 
         if expected_dirs[0] == "*":
@@ -245,13 +251,14 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
     print("------ END LOOP -----")
     return tag
 
+
 def process_kypo(log_dir, name, completed_milestones):
     with open(os.path.join(log_dir, name), 'r') as csv_file:
         reader = list(csv.reader(csv_file))
         for line in csv_file:
             log_lines.append(line[line.find('{'):])
 
-        #Anonymize student usernames
+        # Anonymize student usernames
         user_id = name.split('-')[1]
         anon_names[user_id] = ''
         stuName = ''.join(random.choice(string.ascii_lowercase) for i in range(3))
@@ -265,12 +272,11 @@ def process_kypo(log_dir, name, completed_milestones):
         first_line = ["User " + user_id + " start time " + \
                       reader[0][5][13:] + \
                       " end " + \
-                      reader[-1][5][13:] ]
+                      reader[-1][5][13:]]
 
         formatted_lines.append(first_line)
         for i in range(3):
             formatted_lines.append(["PADDING"])
-
 
         for i, line in enumerate(reader):
             stdin = line[8][line[8].index(':') + 1:].replace("\\", "").replace('"', "")
@@ -284,12 +290,12 @@ def process_kypo(log_dir, name, completed_milestones):
 
             new_line = ["INPUT|" + user_id + "--" + str(i) + \
                         "|" + tag + "|" + timestamp + "|" + user_id + \
-                        "|" + stdin + "|OUTPUT" ]
+                        "|" + stdin + "|OUTPUT"]
 
             formatted_lines.append(new_line)
 
     csv_output_file = name[:name.find('.json')] + '.csv'
-    csvfile = open(os.path.join(out_dir, csv_output_file), 'w', newline='\n',encoding='utf-8')
+    csvfile = open(os.path.join(out_dir, csv_output_file), 'w', newline='\n', encoding='utf-8')
     csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_NONE)
 
     for line in formatted_lines:
@@ -297,6 +303,7 @@ def process_kypo(log_dir, name, completed_milestones):
 
     csvfile.close()
     return csv_output_file
+
 
 def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, student):
     tag = ''
@@ -320,7 +327,7 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
         expected_opts = mStoneFields[1].split('|')[1].split(' ')
         expected_out = mStoneFields[2].split(' ')
         print("--------- START MILESTONE --------")
-        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs,expected_cmds, expected_opts))
+        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
         print("With wd:{} stdin:{}".format(working_dir, stdin))
 
         if expected_dirs[0] == "*":
@@ -360,7 +367,7 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
                     if not found_ls:
                         continue
                     else:
-                            found_opt = True
+                        found_opt = True
                 elif re.match(eo, cmd):
                     print("Options Matched: {} - {}".format(eo, cmd))
                     found_opt = True
@@ -475,7 +482,7 @@ if __name__ == "__main__":
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
-    #Initialize lists for milestone averages, attempts, and milestone patterns
+    # Initialize lists for milestone averages, attempts, and milestone patterns
     milestones = []
     completed_milestones = {}
     log_lines = []
@@ -483,7 +490,7 @@ if __name__ == "__main__":
     allStu = {}
     anon_names = {}
 
-    #Initialize lists to zeroes for each milestone, and load in regex patterns
+    # Initialize lists to zeroes for each milestone, and load in regex patterns
     with open(milestone_file, 'r', encoding='utf-8-sig') as mFile:
         mNum = 0
         for line in mFile:
@@ -491,8 +498,6 @@ if __name__ == "__main__":
             milestones.append(line.strip('\n'))
     for m in milestones:
         print(m)
-
-
 
     process_logs(log_dir, completed_milestones)
     print(completed_milestones)
