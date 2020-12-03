@@ -141,8 +141,8 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
         found_cmd = False
         found_opt = False
         found_output = False
-        # if completed_milestones[student][i] == 1:
-        #     continue
+        if completed_milestones[student][i] == 1:
+            continue
 
         mStoneFields = m.split(',')
         expected_dirs = mStoneFields[0].split(' ')
