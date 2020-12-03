@@ -234,6 +234,8 @@ def make_scenario():
 
         Scenarios.create(name=name, description=s_type, owner_id=own_id)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
+        scenario = Scenarios.query.filter_by(id=s_id).first()
+        scenario.update(status=7)
         g_id = (
             db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
         )
