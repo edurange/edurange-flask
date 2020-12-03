@@ -14,6 +14,7 @@ echo "TODO: make output more concise (i.e. be less verbose)"
 
 function main {
 	cd $EDU_FOLDER
+	exit_on_error $? !!
 	updateGit
 	updateDocker
 
@@ -76,4 +77,12 @@ function updateDocker {
 	docker image pull sanivo/edurange-ubuntu-sshd:16.04
 }
 
+exit_on_error() {
+    exit_code=$1
+    last_command=${@:2}
+    if [ $exit_code -ne 0 ]; then
+        >&2 echo "\"${last_command}\" command failed with exit code ${exit_code}."
+        exit $exit_code
+    fi
+}
 main
