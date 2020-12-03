@@ -528,7 +528,7 @@ def scoreCheck(qnum, checkList):
             elif not checkList[k]:
                 checkList[k] = True
                 return False, checkList  # answer was not checked before but is now
-        elif str(qnum) in k:
+        #elif str(qnum) in k:
             #flash("Could not check question {0} with key {1}".format(qnum, k))
 
     return False, checkList
