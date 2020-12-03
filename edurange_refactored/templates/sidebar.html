@@ -23,5 +23,7 @@
 
   /* Change bg color of link to the currently loaded page */
   let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
-  currLink.classList.replace('bg-secondary', 'bg-dark');
+  if (currLink !== null) {
+      currLink.classList.replace('bg-secondary', 'bg-dark');
+  }
 </script>

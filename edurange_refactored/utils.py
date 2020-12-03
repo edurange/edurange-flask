@@ -527,6 +527,10 @@ def scoreCheck(qnum, checkList):
             elif not checkList[k]:
                 checkList[k] = True
                 return False, checkList  # answer was not checked before but is now
+        elif str(qnum) in k:
+            #flash("Could not check question {0} with key {1}".format(qnum, k))
+
+    return False, checkList
 
 # query(Responses.user_id, Responses.attempt, Responses.question, Responses.points, Responses.student_response)
 # .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
@@ -675,9 +679,22 @@ def readCSV_by_name(name):
 def formatCSV(arr):
     nArr = []
     for entry in arr:
-        tmpArr = entry.replace("#%#", "\n").split("\t")
+        tmpArr = entry.replace("#%#", "\n").replace("%", "").split("\t")
+        tmpArr[6] = tmpArr[6].replace("@", "") # remove '@' from end of username
         nArr.append(tmpArr)
     return nArr
+
+
+# returns dictionary of lines with common keyIndex values
+def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
+    dict = {}
+    for entry in arr:
+        key = str(entry[keyIndex])
+        if key in dict:
+            dict[key].append(entry)
+        else:
+            dict[key] = [entry]
+    return dict
 
 
 def readScenario():

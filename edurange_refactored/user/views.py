@@ -47,6 +47,7 @@ from ..utils import (
     readCSV,
     displayCorrect,
     formatCSV,
+    groupCSV,
     check_privs,
     displayProgress
 )
@@ -242,7 +243,7 @@ def make_scenario():
         # _asdict() method is needed in case celery serializer fails
         # Unknown exactly when this may occur, maybe version differences between Mac/Linux
 
-        for i, s, in enumerate(students):
+        for i, s in enumerate(students):
             students[i] = s._asdict()
         s_id = s_id._asdict()
         g_id = g_id._asdict()
@@ -304,6 +305,13 @@ def scenariosInfo(i):
             except FileNotFoundError:
                 flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
                 rc = []
+
+            gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
+            players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
+
+            u_logs = groupCSV(rc, 6) # make dictionary using 6th value as key (player name)
+
+
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -316,7 +324,9 @@ def scenariosInfo(i):
                                    guide=guide,
                                    questions=questions,
                                    resp=resp,
-                                   rc=rc)
+                                   rc=rc, # rc may not be needed with individual user logs in place
+                                   players=players,
+                                   u_logs=u_logs)
         else:
             return abort(404)
     else:
