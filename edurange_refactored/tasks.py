@@ -138,7 +138,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         name = "".join(e for e in name if e.isalnum())
         own_id = owner
 
-        os.mkdir("./data/tmp/" + name)
+        os.makedirs("./data/tmp/" + name)
         os.chdir("./data/tmp/" + name)
 
         with open("students.json", "w") as outfile:
@@ -216,7 +216,7 @@ def start(self, sid):
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
         else:
-            logger.info("Scenario folder could not be found")
+            logger.info("Scenario folder could not be found -- " + os.path.join("./data/tmp/", name))
             flash("Scenario folder could not be found")
 
 

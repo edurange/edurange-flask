@@ -63,28 +63,34 @@
     <script>
       /* autohide sidebar */
        $(window).click(function(e)
-        {
+       {
             var sidebarDiv = $("#sidebar");
             var navButton = $("#toggleSidebar");
 
             if (navButton.is(e.target)) {
-                if (sidebarDiv.css("display") == "none")
+                if (sidebarDiv.css("display") == "none") {
                     sidebarDiv.show(); //"0.1s");
-                    //sidebarDiv.css("display", "none");
-                else
+                }
+                else {
                     sidebarDiv.hide(); //"0.1s");
+                }
             }
-            else if (!sidebarDiv.is(e.target)) {
+            else if (!sidebarDiv.is(e.target) && e.target.tagName.toLowerCase() !== 'a') {
                 sidebarDiv.hide(); //"0.1");
             }
-        });
+       });
     </script>
     {% block js %}
     {% endblock %}
     <script>
       /* Store sidebar state in client session storage upon page reload/redirect */
       $(window).on('unload', function() {
-        sessionStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
+        if ($("#sidebar").css("display") === "none") {
+            sessionStorage.setItem("sidebar", "false");
+        }
+        else {
+            sessionStorage.setItem("sidebar", 'true');
+        }
       });
     </script>
 <!-- end scripts -->
