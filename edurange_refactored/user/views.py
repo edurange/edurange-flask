@@ -49,7 +49,8 @@ from ..utils import (
     formatCSV,
     groupCSV,
     check_privs,
-    displayProgress
+    displayProgress,
+    getGraph
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -364,6 +365,25 @@ def scenarioResponse(i, r):
     else:
         return abort(403)
 
+
+@blueprint.route("/scenarios/<i>/graphs/<u>")
+def scenarioGraph(i, u):
+    # i = scenario_id, u = username
+    if checkAuth(i):
+        if checkEx(i):
+            db_ses = db.session
+            scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+            graph = getGraph(scenario, u)
+            if graph:
+                return render_template("dashboard/graphs.html", graph=graph)
+            else:
+                flash("Graph for {0} in scenario {1} could not be opened.".format(u, scenario))
+                return redirect(url_for('dashboard.scenariosInfo', i=i))
+
+        else:
+            return abort(404)
+    else:
+        return abort(403)
 
 # -----
 

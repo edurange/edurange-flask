@@ -120,7 +120,10 @@
                                 {% else %}
                                 <td> <b> No Activity </b> </td>
                                 {% endif %}
-                                <td> <button id="{{ player.username }}-select" class="btn btn-dark ml-2" type="button" data-toggle="collapse" data-target="#{{ player.username }}-logTable" aria-expanded="false"> View Logs </button> </td>
+                                <td>
+                                    <button id="{{ player.username }}-select" class="btn btn-dark ml-2" type="button" data-toggle="collapse" data-target="#{{ player.username }}-logTable" aria-expanded="false"> View Logs </button>
+                                    <a id="{{ player.username }}-graph" class="btn btn-dark ml-2" href="{{ '/dashboard/scenarios/%s/graphs/%s' % (i, player.username) }}"> View Graph </a>
+                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>
