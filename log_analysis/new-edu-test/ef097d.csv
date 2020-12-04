@@ -1,19 +1,19 @@
-INPUT|null|A0 M0 T0|null|null|Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
-INPUT|null|A1 M1 T1|null|null|Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
-INPUT|null|A2 M2 T2|null|null|Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
-INPUT|null|A3 M3 T3|null|null|Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
-INPUT|null|A4 M4 T4|null|null|Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
-INPUT|null|A5 M5 T5|null|null|Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
-INPUT|null|A6 M6 T6|null|null|Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
-INPUT|null|A7 M7 T7|null|null|Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
-INPUT|null|A8 M8 T8|null|null|Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
-INPUT|null|A9 M9 T9|null|null|Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
-INPUT|null|A10 M10 T10|null|null|Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
-INPUT|null|A11 M11 T11|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
-INPUT|null|A12 M12 T12|null|null|Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
-INPUT|null|A13 M13 T13|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
-INPUT|null|A14 M14 T14|null|null|Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
-INPUT|null|A15 M15 T15|null|null|Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+INPUT|null|A0 M0 T0|null|null|MS: Find Home Dir \l Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|MS: Read man pwd \l Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|MS: List Home Dir \l Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|MS: Read man ls \l Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|MS: ls long home \l Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|MS: Change Dir View \l Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|MS: List long view \l Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|MS: Cd back home \l Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|MS: ls hidden home \l Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|MS: Move file1 \l Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|MS: Copy file2 \l Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|MS: Copy perm1 \l Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|MS: Read man chmod \l Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
+INPUT|null|A13 M13 T13|null|null|MS: Chmod perm1 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
+INPUT|null|A14 M14 T14|null|null|MS: Copy perm2 \l Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
+INPUT|null|A15 M15 T15|null|null|MS: Chmod perm2 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
 INPUT|ef097d--0|M0 |1579210116|ef097d|pwd|OUTPUT|/home/ef097d
 INPUT|ef097d--1|A2|1579210156|ef097d|pwd|OUTPUT|/home/ef097d
 INPUT|ef097d--2|A2|1579210307|ef097d|cd|OUTPUT|/home/ef097d
@@ -28,19 +28,19 @@ INPUT|ef097d--10|A4|1579210501|ef097d|ls -!|OUTPUT|/home/ef097d
 INPUT|ef097d--11|M4 |1579210506|ef097d|ls -l|OUTPUT|/home/ef097d
 INPUT|ef097d--12|A8|1579210523|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--13|A7|1579210526|ef097d|cd ..|OUTPUT|/home/ef097d
-INPUT|ef097d--14|V2|1579210527|ef097d|ls|OUTPUT|/home
+INPUT|ef097d--14|U|1579210527|ef097d|ls|OUTPUT|/home
 INPUT|ef097d--15|U|1579210597|ef097d|cd|OUTPUT|/home
 INPUT|ef097d--16|A8|1579210598|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--17|A5|1579210605|ef097d|cd permissions/|OUTPUT|/home/ef097d
-INPUT|ef097d--18|V2|1579210607|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--18|U|1579210607|ef097d|ls|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--19|A7|1579210609|ef097d|cd ..|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--20|A8|1579210610|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--21|A5|1579210612|ef097d|cd manipulate/|OUTPUT|/home/ef097d
-INPUT|ef097d--22|V2|1579210613|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--22|U|1579210613|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--23|A7|1579210615|ef097d|cd ..|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--24|A8|1579210616|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--25|A5|1579210618|ef097d|cd codes/|OUTPUT|/home/ef097d
-INPUT|ef097d--26|V2|1579210619|ef097d|ls|OUTPUT|/home/ef097d/codes
+INPUT|ef097d--26|U|1579210619|ef097d|ls|OUTPUT|/home/ef097d/codes
 INPUT|ef097d--27|A8|1579210621|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--28|A7|1579210621|ef097d|cd ..|OUTPUT|/home/ef097d/codes
 INPUT|ef097d--29|A5|1579210623|ef097d|cd vie|OUTPUT|/home/ef097d
@@ -48,55 +48,55 @@ INPUT|ef097d--30|M5 |1579210626|ef097d|cd view/|OUTPUT|/home/ef097d
 INPUT|ef097d--31|A6|1579210627|ef097d|ls|OUTPUT|/home/ef097d/view
 INPUT|ef097d--32|A7|1579210630|ef097d|cd|OUTPUT|/home/ef097d/view
 INPUT|ef097d--33|A8|1579210631|ef097d|ls|OUTPUT|/home/ef097d
-INPUT|ef097d--34|V5|1579210644|ef097d|cd view/|OUTPUT|/home/ef097d
+INPUT|ef097d--34|U|1579210644|ef097d|cd view/|OUTPUT|/home/ef097d
 INPUT|ef097d--35|A6|1579210645|ef097d|ls|OUTPUT|/home/ef097d/view
 INPUT|ef097d--36|M6 |1579210669|ef097d|ls -a|OUTPUT|/home/ef097d/view
-INPUT|ef097d--37|V2|1579210718|ef097d|ls|OUTPUT|/home/ef097d/view
-INPUT|ef097d--38|V6|1579210723|ef097d|ls -a|OUTPUT|/home/ef097d/view
-INPUT|ef097d--39|V6|1579210728|ef097d|ls -a|OUTPUT|/home/ef097d/view
+INPUT|ef097d--37|U|1579210718|ef097d|ls|OUTPUT|/home/ef097d/view
+INPUT|ef097d--38|U|1579210723|ef097d|ls -a|OUTPUT|/home/ef097d/view
+INPUT|ef097d--39|U|1579210728|ef097d|ls -a|OUTPUT|/home/ef097d/view
 INPUT|ef097d--40|M7 |1579210748|ef097d|cd ..|OUTPUT|/home/ef097d/view
 INPUT|ef097d--41|A8|1579210749|ef097d|ls|OUTPUT|/home/ef097d
-INPUT|ef097d--42|V0|1579210751|ef097d|pwd|OUTPUT|/home/ef097d
+INPUT|ef097d--42|U|1579210751|ef097d|pwd|OUTPUT|/home/ef097d
 INPUT|ef097d--43|A8|1579210782|ef097d|ls -a|OUTPUT|/home/ef097d
 INPUT|ef097d--44|A8|1579210815|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--45|U|1579210818|ef097d|cd manipulate/|OUTPUT|/home/ef097d
-INPUT|ef097d--46|V2|1579210819|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--46|U|1579210819|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--47|U|1579210824|ef097d|sudo manflag|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--48|U|1579210851|ef097d|cd|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--49|A8|1579210852|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--50|U|1579210908|ef097d|cd manipulate/|OUTPUT|/home/ef097d
-INPUT|ef097d--51|V2|1579210910|ef097d|ls|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--52|V2|1579210910|ef097d|ls|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--53|V2|1579210929|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--51|U|1579210910|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--52|U|1579210910|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--53|U|1579210929|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--54|A1|1579210940|ef097d|man manflag|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--55|A1|1579210951|ef097d|man sudo|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--56|U|1579210961|ef097d|sudo manflag|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--57|V2|1579211023|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--57|U|1579211023|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--58|U|1579211031|ef097d|cd|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--59|A8|1579211032|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--60|U|1579211052|ef097d|cat task9|OUTPUT|/home/ef097d
 INPUT|ef097d--61|U|1579211075|ef097d|cd manipulate/|OUTPUT|/home/ef097d
-INPUT|ef097d--62|V2|1579211076|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--62|U|1579211076|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--63|A1|1579211079|ef097d|man mv|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--64|V2|1579211125|ef097d|ls|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--65|V2|1579211146|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--64|U|1579211125|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--65|U|1579211146|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--66|M10 |1579211168|ef097d|cp file2.txt ./copied_file2.txt|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--67|V2|1579211169|ef097d|ls|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--68|V2|1579211178|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--67|U|1579211169|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--68|U|1579211178|ef097d|ls|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--69|U|1579211183|ef097d|sudo manflag|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--70|V2|1579211209|ef097d|ls|OUTPUT|/home/ef097d/manipulate
-INPUT|ef097d--71|V7|1579211211|ef097d|cd ..|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--70|U|1579211209|ef097d|ls|OUTPUT|/home/ef097d/manipulate
+INPUT|ef097d--71|U|1579211211|ef097d|cd ..|OUTPUT|/home/ef097d/manipulate
 INPUT|ef097d--72|A8|1579211212|ef097d|ls|OUTPUT|/home/ef097d
 INPUT|ef097d--73|U|1579211214|ef097d|cd permissions/|OUTPUT|/home/ef097d
-INPUT|ef097d--74|V2|1579211215|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--74|U|1579211215|ef097d|ls|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--75|U|1579211219|ef097d|cat task10 |OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--76|U|1579211219|ef097d|cat task10 |OUTPUT|/home/ef097d/permissions
-INPUT|ef097d--77|V2|1579211316|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--77|U|1579211316|ef097d|ls|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--78|M13 |1579211508|ef097d|chmod 660 copied_perm1.txt |OUTPUT|/home/ef097d/permissions
-INPUT|ef097d--79|V2|1579211510|ef097d|ls|OUTPUT|/home/ef097d/permissions
-INPUT|ef097d--80|V2|1579211529|ef097d|ls|OUTPUT|/home/ef097d/permissions
-INPUT|ef097d--81|V2|1579211529|ef097d|ls|OUTPUT|/home/ef097d/permissions
-INPUT|ef097d--82|V2|1579211555|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--79|U|1579211510|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--80|U|1579211529|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--81|U|1579211529|ef097d|ls|OUTPUT|/home/ef097d/permissions
+INPUT|ef097d--82|U|1579211555|ef097d|ls|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--83|U|1579211575|ef097d|sudo perflag|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--84|U|1579211608|ef097d|cd|OUTPUT|/home/ef097d/permissions
 INPUT|ef097d--85|U|1579211612|ef097d|echo done!|OUTPUT|/home/ef097d
