@@ -6,6 +6,8 @@ import csv
 import re
 
 import yaml
+import markdown as md
+import codecs
 import ast
 from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_login import current_user
@@ -274,8 +276,13 @@ def getGuide2(t):
 def getGuide(t):
     t = t.title().replace(" ", "_")
     host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
-    g = host + "/tutorials/" + t + "#0"
-    return g
+    g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
+    f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".md"
+    file = open(f, mode="r", encoding="utf-8")
+    m = file.read()
+    m = m.replace('127.0.0.1', host)
+    ht = md.markdown(m)
+    return ht
 
 
 def getPass(sn, un):

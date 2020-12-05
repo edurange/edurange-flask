@@ -203,8 +203,8 @@ def student_scenario(i):
                                            srF=scenarioResponder,
                                            aList=aList,
                                            example=example,
-                                           progress=progress) # TODO: create new 'student_answer_response.html' template to avoid rendering unused elements (for ajax only)
-                                                              # i.e only render new progress meters and indicators for correctness of newly answered question
+                                           progress=progress)  # TODO: create new 'student_answer_response.html' template to avoid rendering unused elements (for ajax only)
+                                                               # i.e only render new progress meters and indicators for correctness of newly answered question
                 else:
                     return redirect(url_for("dashboard.student_scenario", i=i))
         else:
