@@ -9,7 +9,8 @@ from flask import (
     request,
     session,
     url_for,
-    current_app
+    current_app,
+    send_file
 )
 from flask_login import login_required
 
@@ -50,7 +51,8 @@ from ..utils import (
     groupCSV,
     check_privs,
     displayProgress,
-    getGraph
+    getGraph,
+    getLogFile
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -378,6 +380,30 @@ def scenarioGraph(i, u):
                 return render_template("dashboard/graphs.html", graph=graph)
             else:
                 flash("Graph for {0} in scenario {1} could not be opened.".format(u, scenario))
+                return redirect(url_for('dashboard.scenariosInfo', i=i))
+
+        else:
+            return abort(404)
+    else:
+        return abort(403)
+
+
+@blueprint.route("/scenarios/<i>/getLogs")
+def getLogs(i):
+    # i = scenario_id
+    if checkAuth(i):
+        if checkEx(i):
+            db_ses = db.session
+            scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+            logs = getLogFile(scenario)
+            if logs is not None:
+                fname = logs.rsplit('/', 1)[-1] # ScenarioName-history.csv
+                return send_file(logs,
+                                 mimetype='text/csv',
+                                 attachment_filename=fname,
+                                 as_attachment=True)
+            else:
+                flash("Log file for scenario {0} could not be found.".format(scenario))
                 return redirect(url_for('dashboard.scenariosInfo', i=i))
 
         else:

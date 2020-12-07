@@ -103,6 +103,9 @@
             <div id="CmdHist" class="tab-pane fade">
                 <div class="card-body">
                     <div class="container">
+                        <div class="row mb-2 ml-2">
+                            <a id="logDownload" class="btn btn-dark ml-2 mr-2 mb-2" href="{{ '/dashboard/scenarios/%s/getLogs' % i }}"> Download </a> <label for="logDownload" class="mt-2">raw log file (in .csv format) </label>
+                        </div>
                         <table class="table">
                             <thead class="thead-dark">
                             <tr>

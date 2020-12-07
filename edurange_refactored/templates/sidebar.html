@@ -19,6 +19,9 @@
   if (sessionStorage.getItem("sidebar") === "true") {
     document.getElementById("sidebar").style.display = "block";
   }
+  else {
+    document.getElementById("sidebar").style.display = "none";
+  }
 
   /* Change bg color of link to the currently loaded page */
   let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
