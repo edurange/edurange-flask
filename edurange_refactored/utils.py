@@ -7,16 +7,13 @@ import re
 
 import yaml
 import markdown as md
-import codecs
 import ast
-from flask import abort, current_app, flash, redirect, request, session, url_for
+from flask import abort, flash, request, url_for
 from flask_login import current_user
-from flask_table import Col, Table
 from jwt.jwk import OctetJWK, jwk_from_dict
 from markupsafe import Markup
 
 from edurange_refactored.extensions import db
-from .scenario_utils import item_generator
 
 from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
 
