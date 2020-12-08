@@ -239,6 +239,7 @@ def statReader(s):
         3: "Starting",
         4: "Stopping",
         5: "ERROR",
+        7: "Building"
     }
     return statSwitch[s]
 
