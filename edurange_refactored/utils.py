@@ -748,8 +748,7 @@ def getGraph(s, username): # s - scenario name, username - student username
 def getLogFile(s): # s - scenario name
     logs = "./data/tmp/" + s + "/" + s + "-history.csv"
     if os.path.isfile(logs):
-        home = os.path.expanduser("~")
-        logs = home + "/edurange-flask" + logs[1:]
+        logs = "." + logs
         return logs
     else:
         return None
