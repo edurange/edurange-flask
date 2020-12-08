@@ -51,7 +51,7 @@ def append_reports_edurange(csvwriter):
 def process_logs(log_dir, completed_milestones):
     for file in os.listdir(log_dir):
         filename = os.fsdecode(file)
-        # print(file)
+        # #print(file)
         if filename.endswith(".json"):
             process_kypo(log_dir, filename, completed_milestones)
         elif filename.endswith(".csv"):
@@ -73,7 +73,8 @@ def process_edurange(log_dir, name):
                     prompt_index = line[5].index('@')
                     s_name = line[5][:prompt_index]
                 except ValueError:
-                    print("Mega bad line: {}".format(line))
+                    pass
+                    #print("Mega bad line: {}".format(line))
             if s_name not in student_names and s_name != 'UNKNOWN USER':
                 student_names.append(s_name)
 
@@ -88,7 +89,7 @@ def process_edurange(log_dir, name):
             completed_milestones[s].append(0)
 
     for line in log_lines:
-        print(line)
+        #print(line)
         timestamp = line[2]
         current_dir = line[3]
         stdin = line[4]
@@ -103,10 +104,11 @@ def process_edurange(log_dir, name):
                 prompt_index = line[5].index('@')
                 s_name = line[5][:prompt_index]
             except ValueError:
-                print("Mega bad line: {}".format(line))
+                pass
+                #print("Mega bad line: {}".format(line))
 
         if s_name == 'UNKNOWN_USER' or s_name == '':
-            print("Skipping Line: {}".format(line))
+            #print("Skipping Line: {}".format(line))
             continue
 
         tag = check_milestones_edurange(current_dir, stdin, output, completed_milestones, s_name)
@@ -152,9 +154,9 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
         expected_cmds = mStoneFields[1].split('|')[0].split(' ')
         expected_opts = mStoneFields[1].split('|')[1].split(' ')
         expected_out = mStoneFields[2].split(' ')
-        print("--------- START MILESTONE --------")
-        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
-        print("With wd:{} stdin:{}".format(working_dir, stdin))
+        #print("--------- START MILESTONE --------")
+        #print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
+        #print("With wd:{} stdin:{}".format(working_dir, stdin))
 
         if expected_dirs[0] == "*":
             found_wdir = True
@@ -171,41 +173,41 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
                     if eo == '':
                         continue
                     if re.match(eo, cmd):
-                        print("Options Matched: {} - {}".format(eo, cmd))
+                        #print("Options Matched: {} - {}".format(eo, cmd))
                         found_opt = True
 
         if expected_opts[0] == '':
             if len(stdin) == 1:
-                print("Expected opts: {}".format(expected_opts))
-                print("Stdin: {}".format(stdin))
+                #print("Expected opts: {}".format(expected_opts))
+                #print("Stdin: {}".format(stdin))
                 found_opt = True
 
         found_output = True
-        print("----- START CHECK -------")
-        print("Cmd:{} Opt:{} Wdir:{} Out:{}".format(found_cmd, found_opt, found_wdir, found_output))
-        print("-------------")
+        #print("----- START CHECK -------")
+        #print("Cmd:{} Opt:{} Wdir:{} Out:{}".format(found_cmd, found_opt, found_wdir, found_output))
+        #print("-------------")
         if found_cmd and found_opt and found_wdir and found_output:
             if completed_milestones[student][i] == 0:
                 tag = "M" + str(i) + " "
                 completed_milestones[student][i] = 1
-                print("Marked - Completed")
-                print("----- END CHECK --------")
+                #print("Marked - Completed")
+                #print("----- END CHECK --------")
                 break
             else:
                 tag = "V" + str(i)
-                print("Marked - Verified")
-                print("----- END CHECK --------")
+                #print("Marked - Verified")
+                #print("----- END CHECK --------")
                 continue
         elif found_cmd and found_opt and found_output and not found_wdir:
             if completed_milestones[student][i] == 0:
                 tag = "A" + str(i)
-                print("Marked - ATTEMPT or verify")
-                print("----- END CHECK --------")
+                #print("Marked - ATTEMPT or verify")
+                #print("----- END CHECK --------")
                 continue
             else:
                 tag = "V" + str(i)
-                print("Marked - Attempt or VERIFY")
-                print("----- END CHECK --------")
+                #print("Marked - Attempt or VERIFY")
+                #print("----- END CHECK --------")
                 continue
         if tag.startswith("M"):
             continue
@@ -215,8 +217,8 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
                     continue
                 else:
                     tag = "A" + str(i)
-                    print("Marked - Attempted")
-                    print("----- END CHECK --------")
+                    #print("Marked - Attempted")
+                    #print("----- END CHECK --------")
                     continue
             else:
                 pass
@@ -226,8 +228,8 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
                     continue
                 else:
                     tag = "A" + str(i)
-                    print("Marked - Attempted")
-                    print("----- END CHECK --------")
+                    #print("Marked - Attempted")
+                    #print("----- END CHECK --------")
                     continue
             else:
                 pass
@@ -237,18 +239,18 @@ def check_milestones_edurange(working_dir, stdin, stdout, completed_milestones, 
         #             if found_output:
         #                 if tag == '':
         #                     tag = "U" + str(i)
-        #                     print("Marked - Unrelated")
-        #                     print("----- END CHECK --------")
+        #                     #print("Marked - Unrelated")
+        #                     #print("----- END CHECK --------")
         #         else:
         #             continue
         #     continue
         else:
-            print("Not Marked")
+            #print("Not Marked")
             continue
 
     if tag == '':
         tag = "U"
-    print("------ END LOOP -----")
+    #print("------ END LOOP -----")
     return tag
 
 
@@ -284,13 +286,13 @@ def process_kypo(log_dir, name, completed_milestones):
                 workdir = line[11][line[11].index(':') + 1:].replace("\\", "").replace('"', "")
             except (ValueError, IndexError) as e:
                 workdir = 'NotFound'
-                print("Bad Line: {} Error: {}".format(line, e))
+                #print("Bad Line: {} Error: {}".format(line, e))
             tag, completed_milestones = check_milestones_kypo(workdir, stdin, milestones, completed_milestones, stuName)
             timestamp = line[5][13:]
 
             new_line = ["INPUT|" + user_id + "--" + str(i) + \
                         "|" + tag + "|" + timestamp + "|" + user_id + \
-                        "|" + stdin + "|OUTPUT"]
+                        "|" + stdin + "|OUTPUT" + "|" + workdir]
 
             formatted_lines.append(new_line)
 
@@ -326,9 +328,9 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
         expected_cmds = mStoneFields[1].split('|')[0].split(' ')
         expected_opts = mStoneFields[1].split('|')[1].split(' ')
         expected_out = mStoneFields[2].split(' ')
-        print("--------- START MILESTONE --------")
-        print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
-        print("With wd:{} stdin:{}".format(working_dir, stdin))
+        #print("--------- START MILESTONE --------")
+        #print("Milestone #{} Dirs:{} Cmds:{} Opts:{}".format(str(i), expected_dirs, expected_cmds, expected_opts))
+        #print("With wd:{} stdin:{}".format(working_dir, stdin))
 
         if expected_dirs[0] == "*":
             found_wdir = True
@@ -369,41 +371,41 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
                     else:
                         found_opt = True
                 elif re.match(eo, cmd):
-                    print("Options Matched: {} - {}".format(eo, cmd))
+                    #print("Options Matched: {} - {}".format(eo, cmd))
                     found_opt = True
 
         if expected_opts[0] == '':
             if len(stdin) == 1 and stdin[0] != 'ls' and stdin[0] != 'cd':
-                print("Expected opts: {}".format(expected_opts))
-                print("Stdin: {}".format(stdin))
+                #print("Expected opts: {}".format(expected_opts))
+                #print("Stdin: {}".format(stdin))
                 found_opt = True
 
         found_output = True
-        print("----- START CHECK -------")
-        print("Cmd:{} Opt:{} Wdir:{} Out:{}".format(found_cmd, found_opt, found_wdir, found_output))
-        print("-------------")
+        #print("----- START CHECK -------")
+        #print("Cmd:{} Opt:{} Wdir:{} Out:{}".format(found_cmd, found_opt, found_wdir, found_output))
+        #print("-------------")
         if found_cmd and found_opt and found_wdir and found_output:
             if completed_milestones[student][i] == 0:
                 tag = "M" + str(i) + " "
                 completed_milestones[student][i] = 1
-                print("Marked - Completed")
-                print("----- END CHECK --------")
+                #print("Marked - Completed")
+                #print("----- END CHECK --------")
                 break
             else:
                 tag = "V" + str(i)
-                print("Marked - Verified")
-                print("----- END CHECK --------")
+                #print("Marked - Verified")
+                #print("----- END CHECK --------")
                 continue
         elif found_cmd and found_opt and found_output and not found_wdir:
             if completed_milestones[student][i] == 0:
                 tag = "A" + str(i)
-                print("Marked - ATTEMPT or verify")
-                print("----- END CHECK --------")
+                #print("Marked - ATTEMPT or verify")
+                #print("----- END CHECK --------")
                 continue
             else:
                 tag = "V" + str(i)
-                print("Marked - Attempt or VERIFY")
-                print("----- END CHECK --------")
+                #print("Marked - Attempt or VERIFY")
+                #print("----- END CHECK --------")
                 continue
         if tag.startswith("M"):
             continue
@@ -415,8 +417,8 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
                     continue
                 else:
                     tag = "A" + str(i)
-                    print("Marked - Attempted")
-                    print("----- END CHECK --------")
+                    #print("Marked - Attempted")
+                    #print("----- END CHECK --------")
                     continue
             else:
                 pass
@@ -433,18 +435,18 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
                         if completed_milestones[student][i] == 0:
                             tag = "M" + str(i) + " "
                             completed_milestones[student][i] = 1
-                            print("Marked - Completed")
-                            print("----- END CHECK --------")
+                            #print("Marked - Completed")
+                            #print("----- END CHECK --------")
                             break
                         else:
                             tag = "V" + str(i)
-                            print("Marked - Verified")
-                            print("----- END CHECK --------")
+                            #print("Marked - Verified")
+                            #print("----- END CHECK --------")
                             continue
                 else:
                     tag = "A" + str(i)
-                    print("Marked - Attempted")
-                    print("----- END CHECK --------")
+                    #print("Marked - Attempted")
+                    #print("----- END CHECK --------")
                     continue
             else:
                 pass
@@ -454,25 +456,25 @@ def check_milestones_kypo(working_dir, stdin, milestones, completed_milestones, 
         #             if found_output:
         #                 if tag == '':
         #                     tag = "U" + str(i)
-        #                     print("Marked - Unrelated")
-        #                     print("----- END CHECK --------")
+        #                     #print("Marked - Unrelated")
+        #                     #print("----- END CHECK --------")
         #         else:
         #             continue
         #     continue
         else:
-            print("Not Marked")
+            #print("Not Marked")
             continue
 
     if tag == '':
         tag = "U"
-    print("------ END LOOP -----")
+    #print("------ END LOOP -----")
     return tag, completed_milestones
 
 
 if __name__ == "__main__":
     # Proper usage check
     if len(sys.argv) != 4:
-        print('usage:\n master_log_tagger.py <log_dir> <milestone_file> <out_dir>')
+        #print('usage:\n master_log_tagger.py <log_dir> <milestone_file> <out_dir>')
         exit(1)
 
     # Read Arguments
@@ -497,7 +499,8 @@ if __name__ == "__main__":
             mNum += 1
             milestones.append(line.strip('\n'))
     for m in milestones:
-        print(m)
+        #print(m)
+        pass
 
     process_logs(log_dir, completed_milestones)
-    print(completed_milestones)
+    #print(completed_milestones)
