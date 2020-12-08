@@ -60,7 +60,7 @@
 
 <!-- JavaScript at the bottom for fast page loading -->
     <script src="{{ url_for('static', filename='build/main_js.bundle.js') }}"></script>
-    <script>
+    <script type="text/javascript">
       /* autohide sidebar */
        $(window).click(function(e)
        {
@@ -82,9 +82,9 @@
     </script>
     {% block js %}
     {% endblock %}
-    <script>
+    <script type="text/javascript">
       /* Store sidebar state in client session storage upon page reload/redirect */
-      $(window).on('unload', function() {
+      $(window).on("unload", function() {
         if ($("#sidebar").css("display") === "none") {
             sessionStorage.setItem("sidebar", "false");
         }
