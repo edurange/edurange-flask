@@ -79,7 +79,7 @@ function updateDocker {
 
 function updatePip {
 	echo -e "${blue}[*] Updating Python Required Packages${NC}"
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 }
 
 function exit_on_error {
