@@ -51,7 +51,7 @@
   Values:
     - Value: "Mark Twain"
   Order: 9
-  Points: 10
+  Points: 15
 - Text: Who is the author of jdekka's quote?
   Type: String
   Values:
