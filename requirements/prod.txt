@@ -47,3 +47,4 @@ flask_table==0.5.0
 jwt==1.0.0
 PyYAML==5.3.1
 flower==0.9.5
+markdown==3.3.3
