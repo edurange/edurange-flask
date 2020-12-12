@@ -353,7 +353,10 @@ def scenarioCollectLogs(self, arg):
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
+        if os.path.exists("data/tmp/" +s + '/' + s + '-history.csv'):
+            continue
+        else:
+            os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
 
     for f in files:
             for s in scenarios:

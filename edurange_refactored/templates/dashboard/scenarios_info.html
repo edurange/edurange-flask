@@ -33,7 +33,13 @@
                         <p> Created at : {{ dt }} </p>
                         <b> Connection Information: </b>
                         {% for container in add %}
-                            <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                            {% if ':' not in add[container] %}
+                                <p>Container address not found, is it running?</p>
+                            {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                                <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
+                                <p><b>SSH Command: </b>ssh root@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}  </p>
+                                <p><b>Password:</b> Check the .env file for your root password.</p>
+                            {% endif %}
                         {% endfor %}
                         <b>Questions:</b>
                         <p></p>
