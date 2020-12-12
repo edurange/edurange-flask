@@ -33,7 +33,9 @@
                         <p> Created at : {{ dt }} </p>
                         <b> Connection Information: </b>
                         {% for container in add %}
-                            {% if ':' not in add[container] %}
+                            {% if not add[container] %}
+                                <p>Container not found, something went wrong</p>
+                            {% elif ':' not in add[container] %}
                                 <p>Container address not found, is it running?</p>
                             {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
                                 <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
@@ -54,7 +56,8 @@
             <div id="Guide" class="tab-pane fade">
                 <div class="card-body">
                     <div class="container">
-                        <iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe>
+                        <!--<iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe>-->
+                        <iframe src="{{ "data:text/html;charset=utf-8,%s" % guide }}" title="Guide" style="width:1100px; height:1000px;"></iframe>
                     </div>
                 </div>
             </div>
@@ -109,46 +112,75 @@
             <div id="CmdHist" class="tab-pane fade">
                 <div class="card-body">
                     <div class="container">
+                        <div class="row mb-2 ml-2">
+                            <a id="logDownload" class="btn btn-dark ml-2 mr-2 mb-2" href="{{ '/dashboard/scenarios/%s/getLogs' % i }}"> Download </a> <label for="logDownload" class="mt-2">raw log file (in .csv format) </label>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th> Player </th>
+                                <th> Last Command </th>
+                                <th> Select </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for player in players %}
+                            <tr>
+                                <td> {{ player.username }}</td>
+                                {% if player.username in u_logs %}
+                                <td> {{ u_logs[player.username][-1][2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td>
+                                {% else %}
+                                <td> <b> No Activity </b> </td>
+                                {% endif %}
+                                <td>
+                                    <button id="{{ player.username }}-select" class="btn btn-dark ml-2" type="button" data-toggle="collapse" data-target="#{{ player.username }}-logTable" aria-expanded="false"> View Logs </button>
+                                    <a id="{{ player.username }}-graph" class="btn btn-dark ml-2" href="{{ '/dashboard/scenarios/%s/graphs/%s' % (i, player.username) }}"> View Graph </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                         <div class="card-header" id="headingCmdHist">
                             <div class="row">
                                 <h5 class="mb-0">
                                     <h2> <i class="fa fa-code"></i> Command History <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseCmdHist" aria-expanded="false" aria-controls="collapseCmdHist">
                                         <i class="fa fa-caret-down"></i>
                                     </button> </h2>
+                                    <h2 class="ml-auto pr-1"> Player: <span id="chosenPlayer">None</span></h2>
                                 </h5>
                             </div>
                         </div>
-                        <div id="collapseCmdHist" class="collapse" aria-labelledby="headingCmdHist">
-                            <div class="card-body">
+                        <div id="collapseCmdHist" class="collapse show" aria-labelledby="headingCmdHist">
+                            <div class="card-body" id="logTables">
                                 <!--command history table stuff-->
-                                <div class="col" style="height:600px;overflow-y:auto;">
-
-                                        <table class="table">
-                                            <thead class="thead-dark">
-                                            <tr>
-                                                <th> Hostname </th>
-                                                <th> Timestamp </th>
-                                                <th> Working Directory </th>
-                                                <th> Input </th>
-                                                <th> Output </th>
-                                                <th> User </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for entry in rc %}
-                                            <tr>
-                                                <td> {{ entry[1] }} </td> {# scenario #}
-                                                <td> {{ entry[2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td> {# time #}
-                                                <td> {{ entry[3] }} </td> {# dir #}
-                                                <td> {{ entry[4] }} </td> {# cmd #}
-                                                <td> <div style="width:100%; max-height:50px; overflow:auto"> {{ entry[5] }}</div> </td> {# out #}
-                                                <td> {{ entry[6] }} </td> {# usr #}
-                                            </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-
+                                {% for player in players %}
+                                <div id="{{ player.username }}-logTable" class="col collapse" style="height:600px;overflow-y:auto;" data-parent="#logTables" aria-labelledby="headingUserLogs">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th> Hostname </th>
+                                            <th> Timestamp </th>
+                                            <th> Working Directory </th>
+                                            <th> Input </th>
+                                            <th> Output </th>
+                                            {#<th> User </th>#}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for entry in u_logs[player.username] if player.username in u_logs %}
+                                        <tr>
+                                            <td> {{ entry[1] }} </td> {# hostname #}
+                                            <td> {{ entry[2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td> {# time #}
+                                            <td> {{ entry[3] }} </td> {# dir #}
+                                            <td> {{ entry[4] }} </td> {# in #}
+                                            <td><div style="width:100%;max-height:50px;max-width:350px;overflow-y:scroll"> {{ entry[5] }} </div></td> {# out #}
+                                            {#<td> {{ entry[6] }} </td>#} {# usr #}
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -157,5 +189,25 @@
             <!--|-->
         </div>
     </div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        // show chosen player when a player is chosen
+        $("button[id$='-select']").on("click", function() {
+            $("#chosenPlayer").text(this.id.slice(0, -7)) // get player name by cutting '-select' from id
+        });
+
+        // open alert dialog box to better show a table cell's value (click on output of a row to see it better)
+        $("#logTables td").on("click", function() {
+            alert($(this).text());
+        });
+
+    });
+</script>
 
 {% endblock %}

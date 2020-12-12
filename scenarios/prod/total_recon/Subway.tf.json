@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_Subway_extern": "${tostring(docker_container.SNAME_Subway.ports[0].external)}"
+      "SNAME_Subway_extern": "HIDDEN"
     }
   ],
   "output": [

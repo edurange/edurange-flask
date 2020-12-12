@@ -1,112 +1,112 @@
-- Text: What is awan's password?
+- Text: Who is the author of awan's quote?
   Type: String
   Values:
-    - Value: "klaatu!"
-      Points: '15'
+    - Value: "Woody Allen"
+      Points: "20"
   Order: 1
-  Points: 5
-- Text: What is bduomo's password?
+  Points: 20
+- Text: Who is the author of bduomo's quote?
   Type: String
   Values:
-    - Value: "2B|!2B:t1t?"
-      Points: '15'
+    - Value: "Robert Benchley"
+      Points: "5"
   Order: 2
   Points: 5
-- Text: What is cdry's password?
+- Text: Who is the author of cdry's quote?
   Type: String
   Values:
-    - Value: "Qie,tDedf"
-      Points: '15'
+    - Value: "Benjamin Franklin"
+      Points: "20"
   Order: 3
-  Points: 5
-- Text: What is dshi's password?
+  Points: 20
+- Text: Who is the author of dshi's quote?
   Type: String
   Values:
-    - Value: "V:AvcTqpa"
-      Points: '15'
+    - Value: "Orson Welles"
+      Points: "15"
   Order: 4
-  Points: 5
-- Text: What is equintus's password?
+  Points: 15
+- Text: From what country is the proverb of equintu's quote?
   Type: String
   Values:
-    - Value: "virum&cano"
-      Points: '15'
+    - Value: "China"
+      Points: "5"
   Order: 5
   Points: 5
-- Text: What is fsexons's password?
+- Text: What is the last word in fsexon's quote?
   Type: String
   Values:
-    - Value: "scoobydoo"
-      Points: '15'
+    - Value: "man"
+      Points: "10"
   Order: 6
-  Points: 5
-- Text: What is ghepta's password?
+  Points: 10
+- Text: From what country is the proverb of ghepta's quote?
   Type: String
   Values:
-    - Value: "Ilt,al,fme:"
-      Points: '15'
+    - Value: "Japan"
+      Points: "15"
   Order: 7
-  Points: 5
-- Text: What is hochoa's password?
+  Points: 15
+- Text: Who is the author of hochoa's quote?
   Type: String
   Values:
-    - Value: "Am,ap,ac:P"
-      Points: '15'
+    - Value: "Robert Frost"
+      Points: "15"
   Order: 8
-  Points: 5
-- Text: What is inunez's password?
+  Points: 15
+- Text: Who is the author of inunez's quote?
   Type: String
   Values:
-    - Value: "C?tiiac-iist"
-      Points: '15'
+    - Value: "Mark Twain"
+      Points: "15"
   Order: 9
-  Points: 5
-- Text: What is jdekka's password?
+  Points: 15
+- Text: Who is the author of jdekka's quote?
   Type: String
   Values:
-    - Value: "Aw&0pmJadb"
-      Points: '15'
+    - Value: "Ellen DeGeneres"
+      Points: "5"
   Order: 10
   Points: 5
-- Text: What is kelva's password?
+- Text: Who is the author of kelva's quote?
   Type: String
   Values:
-    - Value: "HLE:LSS&S"
-      Points: '15'
+    - Value: "P. G. Wodehouse"
+      Points: "15"
   Order: 11
-  Points: 5
-- Text: What is ldouzette's password?
+  Points: 15
+- Text: Who is the author of ldouzette's quote?
   Type: String
   Values:
-    - Value: "G,OK:Ky!"
-      Points: '15'
+    - Value: "Norm Crosby"
+      Points: "10"
   Order: 12
-  Points: 5
-- Text: What is pkaideka's password?
+  Points: 10
+- Text: Who is the author of pkaideka's quote?
   Type: String
   Values:
-    - Value: "Wybittydu,tys"
-      Points: '15'
+    - Value: "Max Lerner"
+      Points: "10"
   Order: 13
-  Points: 5
-- Text: What is pradessime's password?
+  Points: 10
+- Text: Who is the author of pradessime's quote?
   Type: String
   Values:
-    - Value: "The0d0re"
-      Points: '15'
+    - Value: "George Burns"
+      Points: "25"
   Order: 14
-  Points: 5
-- Text: What is qsanera's password?
+  Points: 25
+- Text: Who is the author of qsanera's quote?
   Type: String
   Values:
-    - Value: "Wwe,aatbds"
-      Points: '15'
+    - Value: "Mark Twain"
+      Points: "10"
   Order: 15
-  Points: 5
-- Text: What is tdaforth's password?
+  Points: 10
+- Text: Who is the author of tdaforth's quote?
   Type: String
   Values:
-    - Value: "TiahiNO;ictRS"
-      Points: '15'
+    - Value: "Erma Bombeck"
+      Points: "15"
   Order: 16
-  Points: 5
+  Points: 15

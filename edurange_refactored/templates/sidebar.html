@@ -15,13 +15,17 @@
     </div>
 </div>
 <script type="text/javascript">
-  /* Update sidebar class list if sidebar is true (for hidden) in session storage */
-  if (sessionStorage.getItem("sidebar") === 'true') {
-    let bar = document.getElementById("sidebar");
-    bar.classList.add("pausetransition"); bar.classList.add("hidden"); bar.offsetHeight; bar.classList.remove("pausetransition");
-  } //offsetHeight to force the application of css changes in modern browsers before script is finished executing
+  /* Update sidebar css if sidebar is true (for visible) in session storage */
+  if (sessionStorage.getItem("sidebar") === "true") {
+    document.getElementById("sidebar").style.display = "block";
+  }
+  else {
+    document.getElementById("sidebar").style.display = "none";
+  }
 
   /* Change bg color of link to the currently loaded page */
   let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
-  currLink.classList.replace('bg-secondary', 'bg-dark');
+  if (currLink !== null) {
+      currLink.classList.replace('bg-secondary', 'bg-dark');
+  }
 </script>

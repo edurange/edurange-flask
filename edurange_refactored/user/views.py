@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """User views."""
+import os
+import shutil
 from flask import (
     Blueprint,
     abort,
@@ -9,7 +11,8 @@ from flask import (
     request,
     session,
     url_for,
-    current_app
+    current_app,
+    send_from_directory
 )
 from flask_login import login_required
 
@@ -47,8 +50,11 @@ from ..utils import (
     readCSV,
     displayCorrect,
     formatCSV,
+    groupCSV,
     check_privs,
-    displayProgress
+    displayProgress,
+    getGraph,
+    getLogFile
 )
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -244,7 +250,7 @@ def make_scenario():
         # _asdict() method is needed in case celery serializer fails
         # Unknown exactly when this may occur, maybe version differences between Mac/Linux
 
-        for i, s, in enumerate(students):
+        for i, s in enumerate(students):
             students[i] = s._asdict()
         s_id = s_id._asdict()
         g_id = g_id._asdict()
@@ -306,6 +312,13 @@ def scenariosInfo(i):
             except FileNotFoundError:
                 flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
                 rc = []
+
+            gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
+            players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
+
+            u_logs = groupCSV(rc, 6) # make dictionary using 6th value as key (player name)
+
+
             return render_template("dashboard/scenarios_info.html",
                                    i=i,
                                    s_type=s_type,
@@ -318,7 +331,9 @@ def scenariosInfo(i):
                                    guide=guide,
                                    questions=questions,
                                    resp=resp,
-                                   rc=rc)
+                                   rc=rc, # rc may not be needed with individual user logs in place
+                                   players=players,
+                                   u_logs=u_logs)
         else:
             return abort(404)
     else:
@@ -354,6 +369,53 @@ def scenarioResponse(i, r):
     else:
         return abort(403)
 
+
+@blueprint.route("/scenarios/<i>/graphs/<u>")
+def scenarioGraph(i, u):
+    # i = scenario_id, u = username
+    if checkAuth(i):
+        if checkEx(i):
+            db_ses = db.session
+            scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+            graph = getGraph(scenario, u)
+            if graph:
+                return render_template("dashboard/graphs.html", graph=graph)
+            else:
+                flash("Graph for {0} in scenario {1} could not be opened.".format(u, scenario))
+                return redirect(url_for('dashboard.scenariosInfo', i=i))
+
+        else:
+            return abort(404)
+    else:
+        return abort(403)
+
+
+@blueprint.route("/scenarios/<i>/getLogs")
+def getLogs(i):
+    # i = scenario_id
+    if checkAuth(i):
+        if checkEx(i):
+            db_ses = db.session
+            scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+            logs = getLogFile(scenario)
+            if logs is not None:
+                with open(logs[3:]) as fin, open('tmp.csv', 'w') as fout:
+                    for line in fin:
+                        fout.write(line.replace('\t', ','))
+                shutil.copy('tmp.csv', logs[3:])
+                os.remove('tmp.csv')
+                fname = logs.rsplit('/', 1)[-1] # 'ScenarioName-history.csv'
+                logs = logs.rsplit('/', 1)[0] # '../data/tmp/ScenarioName/'
+
+                return send_from_directory(logs, fname, as_attachment=True)
+            else:
+                flash("Log file for scenario {0} could not be found.".format(scenario))
+                return redirect(url_for('dashboard.scenariosInfo', i=i))
+
+        else:
+            return abort(404)
+    else:
+        return abort(403)
 
 # -----
 

@@ -5,5 +5,5 @@
 #include <stdio.h>
 
 int main (int argc, char** args) {
-  execv("/root/resetUsers", args);
+  execv("/home/ubuntu/resetUsers", args);
 }

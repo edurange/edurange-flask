@@ -60,19 +60,37 @@
 
 <!-- JavaScript at the bottom for fast page loading -->
     <script src="{{ url_for('static', filename='build/main_js.bundle.js') }}"></script>
-    <script>
-      /* Event listener to toggle sidebar visibility when "Navigate" button is clicked */
-      $("#toggleSidebar").on("click", function() {
-        $("#sidebar").toggleClass("hidden");
-      });
+    <script type="text/javascript">
+      /* autohide sidebar */
+       $(window).click(function(e)
+       {
+            var sidebarDiv = $("#sidebar");
+            var navButton = $("#toggleSidebar");
 
+            if (navButton.is(e.target)) {
+                if (sidebarDiv.css("display") == "none") {
+                    sidebarDiv.show(); //"0.1s");
+                }
+                else {
+                    sidebarDiv.hide(); //"0.1s");
+                }
+            }
+            else if (!sidebarDiv.is(e.target) && e.target.tagName.toLowerCase() !== 'a') {
+                sidebarDiv.hide(); //"0.1");
+            }
+       });
     </script>
     {% block js %}
     {% endblock %}
-    <script>
+    <script type="text/javascript">
       /* Store sidebar state in client session storage upon page reload/redirect */
-      $(window).on('unload', function() {
-        sessionStorage.setItem("sidebar", $("#sidebar").hasClass("hidden"));
+      $(window).on("unload", function() {
+        if ($("#sidebar").css("display") === "none") {
+            sessionStorage.setItem("sidebar", "false");
+        }
+        else {
+            sessionStorage.setItem("sidebar", 'true');
+        }
       });
     </script>
 <!-- end scripts -->

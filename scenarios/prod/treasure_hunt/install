@@ -14,6 +14,10 @@ mkdir /home/ubuntu/bin
 
 cd /home/ubuntu/bin
 
+while read user; do
+  chmod 750 /home/$user
+done</usr/local/src/user_names.txt
+
 echo "Making group apache"
 groupadd apache
 
@@ -170,7 +174,7 @@ service apache2 start
 chmod 750 /usr/bin/passwd
 chmod 750 /bin/chown
 chmod 750 /bin/chgrp
-chmod 750 /bin/chmod
+chmod 751 /bin/chmod
 chmod 750 /usr/sbin/usermod
 groupadd edurange
 chown root.edurange /bin/chmod /usr/bin/passwd

@@ -69,9 +69,9 @@ def process_scenarioModder():  # Form submitted to create a scenario |  # makeSc
         sid = sM.sid.data  # string1.data  #
         action = sM.mod_scenario.data  # string2.data  #
 
-        return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[
-            action
-        ].delay(sid)
+        return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[action].delay(sid)
+    else:
+        flash("Failed to start scenario")
 
 
 def process_scenarioStarter():  # Form submitted to start or stop an existing scenario

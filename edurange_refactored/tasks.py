@@ -138,7 +138,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         name = "".join(e for e in name if e.isalnum())
         own_id = owner
 
-        os.mkdir("./data/tmp/" + name)
+        os.makedirs("./data/tmp/" + name)
         os.chdir("./data/tmp/" + name)
 
         with open("students.json", "w") as outfile:
@@ -216,7 +216,7 @@ def start(self, sid):
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
         else:
-            logger.info("Scenario folder could not be found")
+            logger.info("Scenario folder could not be found -- " + os.path.join("./data/tmp/", name))
             flash("Scenario folder could not be found")
 
 
@@ -353,10 +353,7 @@ def scenarioCollectLogs(self, arg):
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        if os.path.exists("data/tmp/" +s + '/' + s + '-history.csv'):
-            continue
-        else:
-            os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
+        os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
 
     for f in files:
             for s in scenarios:

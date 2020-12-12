@@ -1,0 +1,15 @@
+
+{% if graph %}
+{{ graph | safe}}
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+<div class="col mb-0" id="flashed">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} mb-0">
+        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+        {{ message }}
+    </div><!-- end .alert -->
+    {% endfor %}
+</div><!-- end col -->
+{% endif %} {% endwith %}
