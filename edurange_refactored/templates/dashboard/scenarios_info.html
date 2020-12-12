@@ -33,7 +33,9 @@
                         <p> Created at : {{ dt }} </p>
                         <b> Connection Information: </b>
                         {% for container in add %}
-                            {% if ':' not in add[container] %}
+                            {% if not add[container] %}
+                                <p>Container not found, something went wrong</p>
+                            {% elif ':' not in add[container] %}
                                 <p>Container address not found, is it running?</p>
                             {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
                                 <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
