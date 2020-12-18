@@ -64,15 +64,18 @@ def build_uploads(s_files, g_files, u_files, log_files, s_type):
 def build_execute_files(s_files, g_files, u_files, flags):
     execs = "mkdir /home/ubuntu\",\n"
 
+    #Global files get 'chmod + x' and then moved to /usr/bin
     for i, f in enumerate(g_files):
         execs += str("\"chmod +x /" + f + '"' + """, 
         "mv /""" + f + " /usr/bin/" + f + '",\n')
 
+    #User files marked 777 permission and moved to /home/ubuntu
     for i, f in enumerate(u_files):
         execs += str("""
       "chmod +rwx /""" + f + '"' + """,
       "cp -R /""" + f + " /home/ubuntu/" + f + '"' + """,
 """)
+    #System files chmod+x, move to /home/ubuntu, and then RUN
     for i, f in enumerate(s_files):
         execs += str("""
       "chmod +x /""" + f + '"' + """,

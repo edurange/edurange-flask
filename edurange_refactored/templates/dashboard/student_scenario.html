@@ -15,7 +15,14 @@
             <p><b> Password : </b> {{ pw }}</p>
             <p><b> Connection Information: </b></p>
             {% for container in add %}
-                <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                {% if not add[container] %}
+                    <p>Container not found, something went wrong</p>
+                {% elif ':' not in add[container] %}
+                    <p>Container address not found, is it running?</p>
+                {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                    <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
+                    <p><b>SSH Command: </b>ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}  </p>
+                {% endif %}
             {% endfor %}
         </div>
         <ul class="nav nav-tabs mt-3 ml-3">

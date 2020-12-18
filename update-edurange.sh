@@ -17,7 +17,7 @@ function main {
 	exit_on_error $? !!
 	updateGit
 	updateDocker
-
+	updatePip
 	: '
 	while read line; do
 		key=`echo $line | cut -d= -f1`
@@ -77,7 +77,12 @@ function updateDocker {
 	docker image pull sanivo/edurange-ubuntu-sshd:16.04
 }
 
-exit_on_error() {
+function updatePip {
+	echo -e "${blue}[*] Updating Python Required Packages${NC}"
+	pip3 install -r requirements.txt
+}
+
+function exit_on_error {
     exit_code=$1
     last_command=${@:2}
     if [ $exit_code -ne 0 ]; then

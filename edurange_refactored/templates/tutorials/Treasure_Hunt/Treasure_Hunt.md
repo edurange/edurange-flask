@@ -62,22 +62,23 @@ Have a moderate understanding of some basic linux tools and how to use them
 Connect to the scenario via your instructor’s directions, or as displayed on the EDURange page.
 
 Once logged in, it is your goal to find the secrets of the following 16 fake users:
- - Alice Wan (awan)
- - Bob Duomo (bduomo)
- - Cathy Dry (cdry)
- - Debbie Shi (dshi)
- - Ellen Quintus (equintus)
- - Fred Sexon (fsexon)
- - George Hepta (ghepta)
- - Helen Ochoa (hochoa)
- - Inna Nunez (inunez)
- - Jack Dekka (jdekka)
- - Karen Elva (kelva)
- - Loretta Douzette (Idouzette)
- - Patricia Kaideka (pkaideka)
- - Pyotr Theodore Radessime (pradessime)
- - Quinn Sanera (qsanera)
- - Tudor Daforth (tdaforth)
+
+* Alice Wan (awan)
+* Bob Duomo (bduomo)
+* Cathy Dry (cdry)
+* Debbie Shi (dshi)
+* Ellen Quintus (equintus)
+* Fred Sexon (fsexon)
+* George Hepta (ghepta)
+*  Helen Ochoa (hochoa)
+* Inna Nunez (inunez)
+* Jack Dekka (jdekka)
+* Karen Elva (kelva)
+* Loretta Douzette (Idouzette)
+* Patricia Kaideka (pkaideka)
+* Pyotr Theodore Radessime (pradessime)
+* Quinn Sanera (qsanera)
+* Tudor Daforth (tdaforth)
 
 ---
 #### Important Disclaimer:
