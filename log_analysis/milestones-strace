@@ -1,9 +1,0 @@
-M1,strace ./empty
-M2,strace ./hello
-M3,strace -o,diff \w+-trace \w+-trace,colordiff \w+-trace \w +-trace
-M4,strace \./copy tiger\.txt \w+\.txt
-M5,strace -o wh,strace which start,\w*diff strace-identify \w+
-M6,strace find /etc/dhcp,strace -c find /etc/dhcp,strace -e trace=file find /etc/dhcp,strace -e trace=open.close.read.write find /etc/dhcp
-M7,strace ./script.sh,strace -f ./script.sh
-M8,.\/mystery \w+\s+\w+,cat foo,cat baz
-M9,strace -f secret.txt,strace -c secret.txt,cat \/tmp\/data\/filenames,cat \w+\W+\w+filenames,strace \/bin\/cat secret.txt

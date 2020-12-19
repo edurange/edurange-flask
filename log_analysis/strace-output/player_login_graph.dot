@@ -1,6 +1,0 @@
-// creating graph for user: player_login
-digraph {
-	node [shape=box]
-	0 [label="19:20:46 command"]
-	rankdir=LR
-}
