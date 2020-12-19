@@ -1,0 +1,49 @@
+performed_at,scenario_uuid,scenario_name,instance_name,player_login,exit_status,command
+2019-09-24 19:20:46 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,which cat
+2019-09-24 19:20:44 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,/bin/cat secret.txt
+2019-09-24 19:20:41 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cd ~
+2019-09-24 19:19:53 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cat /tmp/data/filenames
+2019-09-24 19:19:08 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,2,ls -a
+2019-09-24 19:19:06 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cd /tmp/data
+2019-09-24 19:18:16 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -f cat secret.txt
+2019-09-24 19:18:06 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -f -c cat secret.txt 
+2019-09-24 19:17:54 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -c cat secret.txt
+2019-09-24 19:17:46 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace cat secret.txt
+2019-09-24 19:17:34 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,"echo ""This is a secret"" > secret.txt"
+2019-09-24 19:17:25 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,ls
+2019-09-24 19:17:24 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cd ~
+2019-09-24 19:16:57 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace ~/mystery foo hjkl
+2019-09-24 19:16:46 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,1,strace ./mystery foo hjkl
+2019-09-24 19:16:31 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cat baz
+2019-09-24 19:16:27 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cat foo
+2019-09-24 19:16:19 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,ls
+2019-09-24 19:16:18 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cd /tmp
+2019-09-24 19:16:15 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,./mystery baz ghi
+2019-09-24 19:16:11 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,./mystery foo def
+2019-09-24 19:16:04 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,./mystery foo abc
+2019-09-24 19:15:57 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -f ./script.sh
+2019-09-24 19:15:20 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace ./script.sh
+2019-09-24 19:15:06 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cat script.sh
+2019-09-24 19:14:56 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,"strace -e trace=open,close,read,write find /etc/dhcp"
+2019-09-24 19:14:43 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -e trace=file find /etc/dhcp
+2019-09-24 19:14:27 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -c find /etc/dhcp
+2019-09-24 19:14:20 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace find /etc/dhcp
+2019-09-24 19:14:11 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,find /etc/dhcp
+2019-09-24 19:13:56 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace which start
+2019-09-24 19:13:42 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,1,colordiff strace-identify which-log 
+2019-09-24 19:13:26 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace -o which-log which start
+2019-09-24 19:12:39 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,file strace-identify 
+2019-09-24 19:12:23 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,ls
+2019-09-24 19:12:13 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,strace ./copy tiger.txt mytiger.txt
+2019-09-24 19:12:02 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,gcc -o copy copy.c
+2019-09-24 19:11:51 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,cat copy.c
+2019-09-24 19:11:17 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,1,colordiff empty-trace hello-trace 
+2019-09-24 19:11:06 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,1,diff empty-trace hello-trace 
+2019-09-24 19:10:51 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,6,strace -o hello-trace ./hello
+2019-09-24 19:10:40 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,237,strace -o empty-trace ./empty
+2019-09-24 19:10:28 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,6,strace ./hello
+2019-09-24 19:10:24 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,gcc -o hello hello.c
+2019-09-24 19:10:16 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,237,strace ./empty
+2019-09-24 19:10:13 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,gcc -o empty empty.c
+2019-09-24 19:09:54 UTC,cc770c3e-2a39-415b-b18a-8c6c08d33f64,Strace,NAT_Instance,jack,0,ls
+

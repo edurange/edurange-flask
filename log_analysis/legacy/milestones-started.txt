@@ -1,0 +1,13 @@
+M1,cd \/
+M2,cd /root
+M3,man .*
+M4,ls -la, 
+M5,file \w+.jpg
+M6,echo "This is cool" > \w+
+M7,cat .*
+M8,cat \w+ >> \w+
+M9,cat .* alltogether.txt
+M10,cd .* okYouAreHERE!
+M11,vim .+
+M12,find . -iname "?\*cowFJS\*\"? *,find / -iname "?\*cowFJS\*\"? .*,find . -type f -iname "?\*cowFJS\*\"? .*,find . -type f -iname "?\*cowFJS\*\"?,find / -type f -iname "?\*cowFJS\*\"?,find . -iname "?\*cowFJS\*\"?,find / -iname "?\*cowFJS\*\"?
+M13,cowsay .*

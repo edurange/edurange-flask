@@ -1,0 +1,16 @@
+/home/$USER,pwd|,*
+*,man|pwd,*
+*,ls|,*
+*,man|ls,*
+/home/$USER,ls|-l,*
+/home/$USER,cd|view,*
+/home/$USER/view,ls|-a -la -al,*
+/home/$USER/view,cd|\.\.,*
+/home/$USER,ls|-la -al,*
+/home/$USER/manipulate,mv|file1.txt renamed_file1.txt,*
+/home/$USER/manipulate,cp|file2.txt copied_file2.txt,*
+/home/$USER/permissions,cp|perm1.txt copied_perm1.txt,*
+*,man|chmod,*
+/home/$USER/permissions,chmod|copied_perm1.txt 660,*
+/home/$USER/permissions,cp|perm2.txt copied_perm2.txt,*
+/home/$USER/permissions,chmod|copied_perm2.txt 764,*

@@ -1,0 +1,91 @@
+INPUT|null|A0 M0 T0|null|null|MS: Find Home Dir \l Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|MS: Read man pwd \l Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|MS: List Home Dir \l Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|MS: Read man ls \l Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|MS: ls long home \l Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|MS: Change Dir View \l Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|MS: List long view \l Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|MS: Cd back home \l Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|MS: ls hidden home \l Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|MS: Move file1 \l Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|MS: Copy file2 \l Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|MS: Copy perm1 \l Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|MS: Read man chmod \l Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
+INPUT|null|A13 M13 T13|null|null|MS: Chmod perm1 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
+INPUT|null|A14 M14 T14|null|null|MS: Copy perm2 \l Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
+INPUT|null|A15 M15 T15|null|null|MS: Chmod perm2 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+INPUT|3b9263--0|U|1579210925|3b9263|cat instructions.txt|OUTPUT|/home/3b9263
+INPUT|3b9263--1|U|1579211123|3b9263|cat task1|OUTPUT|/home/3b9263
+INPUT|3b9263--2|M0 |1579211149|3b9263|pwd|OUTPUT|/home/3b9263
+INPUT|3b9263--3|U|1579211267|3b9263|cat task2|OUTPUT|/home/3b9263
+INPUT|3b9263--4|M1 |1579211367|3b9263|man pwd|OUTPUT|/home/3b9263
+INPUT|3b9263--5|U|1579211445|3b9263|cat task3|OUTPUT|/home/3b9263
+INPUT|3b9263--6|M2 |1579211533|3b9263|ls|OUTPUT|/home/3b9263
+INPUT|3b9263--7|U|1579211578|3b9263|cat task4|OUTPUT|/home/3b9263
+INPUT|3b9263--8|M3 |1579211656|3b9263|man ls|OUTPUT|/home/3b9263
+INPUT|3b9263--9|A12|1579211765|3b9263|man ls -k \"long listing\"|OUTPUT|/home/3b9263
+INPUT|3b9263--10|U|1579211958|3b9263|macat task5|OUTPUT|/home/3b9263
+INPUT|3b9263--11|M5 |1579212045|3b9263|cd view|OUTPUT|/home/3b9263
+INPUT|3b9263--12|A6|1579212050|3b9263|ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--13|A6|1579212050|3b9263|ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--14|M4 |1579212157|3b9263|ls -l|OUTPUT|/home/3b9263
+INPUT|3b9263--15|A8|1579212272|3b9263|ls -l|OUTPUT|/home/3b9263
+INPUT|3b9263--16|U|1579212302|3b9263|cd view|OUTPUT|/home/3b9263
+INPUT|3b9263--17|A6|1579212303|3b9263|ls -l|OUTPUT|/home/3b9263/view
+INPUT|3b9263--18|U|1579212560|3b9263|cat task6|OUTPUT|/home/3b9263/view
+INPUT|3b9263--19|A12|1579212661|3b9263|man ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--20|A12|1579212719|3b9263|man ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--21|A12|1579212756|3b9263|man ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--22|A12|1579212802|3b9263|man ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--23|A12|1579212802|3b9263|man ls|OUTPUT|/home/3b9263/view
+INPUT|3b9263--24|M7 |1579213038|3b9263|cd ..|OUTPUT|/home/3b9263/view
+INPUT|3b9263--25|U|1579213040|3b9263|pwd|OUTPUT|/home/3b9263
+INPUT|3b9263--26|U|1579213084|3b9263|cat task8|OUTPUT|/home/3b9263
+INPUT|3b9263--27|M8 |1579213403|3b9263|ls -la|OUTPUT|/home/3b9263
+INPUT|3b9263--28|U|1579213460|3b9263|cat task9|OUTPUT|/home/3b9263
+INPUT|3b9263--29|U|1579213536|3b9263|cd manipulate|OUTPUT|/home/3b9263
+INPUT|3b9263--30|U|1579213545|3b9263|ls|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--31|A12|1579213565|3b9263|man mv|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--32|U|1579213640|3b9263|ls|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--33|M9 |1579213661|3b9263|mv file1.txt renamed_file1.txt|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--34|U|1579213662|3b9263|ls|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--35|A12|1579213678|3b9263|man cp|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--36|M10 |1579213746|3b9263|cp file2.txt copied_file2.txt|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--37|U|1579213747|3b9263|ls|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--38|U|1579213765|3b9263|sudo manflag|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--39|U|1579213915|3b9263|cat task10|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--40|U|1579213930|3b9263|cd|OUTPUT|/home/3b9263/manipulate
+INPUT|3b9263--41|U|1579213933|3b9263|cat task10|OUTPUT|/home/3b9263
+INPUT|3b9263--42|U|1579213945|3b9263|pwd|OUTPUT|/home/3b9263
+INPUT|3b9263--43|U|1579213950|3b9263|cd ..|OUTPUT|/home/3b9263
+INPUT|3b9263--44|U|1579213960|3b9263|ls|OUTPUT|/home
+INPUT|3b9263--45|U|1579213969|3b9263|cd 3b9263|OUTPUT|/home
+INPUT|3b9263--46|U|1579213973|3b9263|ls|OUTPUT|/home/3b9263
+INPUT|3b9263--47|U|1579213977|3b9263|cd persmissions|OUTPUT|/home/3b9263
+INPUT|3b9263--48|U|1579213983|3b9263|cd permissions|OUTPUT|/home/3b9263
+INPUT|3b9263--49|U|1579213990|3b9263|cat task10|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--50|U|1579214016|3b9263|ls|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--51|M11 |1579214091|3b9263|cp perm1.txt copied_perm1.txt|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--52|U|1579214093|3b9263|ls|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--53|M12 |1579214114|3b9263|man chmod|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--54|U|1579214830|3b9263|sudo perflag|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--55|M13 |1579215487|3b9263|chmod 660 copied_perm1.txt|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--56|M14 |1579215506|3b9263|cp perm2.txt copied_perm2.txt|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--57|M15 |1579215566|3b9263|chmod 764 copied_perm2.txt|OUTPUT|/home/3b9263/permissions
+INPUT|3b9263--58|U|1579215579|3b9263|sudo perflag|OUTPUT|/home/3b9263/permissions
+INPUT|R|A0 M0||null||OUTPUT
+INPUT|R|A1 M1||null||OUTPUT
+INPUT|R|A2 M2||null||OUTPUT
+INPUT|R|A3 M3||null||OUTPUT
+INPUT|R|A4 M4||null||OUTPUT
+INPUT|R|A5 M5||null||OUTPUT
+INPUT|R|A6 M6||null||OUTPUT
+INPUT|R|A7 M7||null||OUTPUT
+INPUT|R|A8 M8||null||OUTPUT
+INPUT|R|A9 M9||null||OUTPUT
+INPUT|R|A10 M10||null||OUTPUT
+INPUT|R|A11 M11||null||OUTPUT
+INPUT|R|A12 M12||null||OUTPUT
+INPUT|R|A13 M13||null||OUTPUT
+INPUT|R|A14 M14||null||OUTPUT
+INPUT|R|A15 M15||null||OUTPUT

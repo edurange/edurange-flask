@@ -1,0 +1,134 @@
+INPUT|null|A0 M0 T0|null|null|MS: Find Home Dir \l Accepted Commands: \l pwd \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|MS: Read man pwd \l Accepted Commands: \l man \l Accepted Options: \l pwd \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|MS: List Home Dir \l Accepted Commands: \l ls \l Accepted Options: \l N/A \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|MS: Read man ls \l Accepted Commands: \l man \l Accepted Options: \l ls \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|MS: ls long home \l Accepted Commands: \l ls \l Accepted Options: \l -l \l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|MS: Change Dir View \l Accepted Commands: \l cd \l Accepted Options: \l view \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|MS: List long view \l Dir: \l /home/$USER/view \l Accepted Commands: \l ls \l Accepted Options: \l -a \l -la \l -al \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|MS: Cd back home \l Accepted Commands: \l cd \l Accepted Options: \l .. \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|MS: ls hidden home \l Dir: \l /home/$USER \l Accepted Commands: \l ls \l Accepted Options: \l -la \l -al \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|MS: Move file1 \l Accepted Commands: \l mv \l Accepted Options: \l file1.txt \l renamed_file1.txt \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|MS: Copy file2 \l Accepted Commands: \l cp \l Accepted Options: \l file2.txt \l copied_file2.txt \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|MS: Copy perm1 \l Accepted Commands: \l cp \l Accepted Options: \l perm1.txt \l copied_perm1.txt \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|MS: Read man chmod \l Accepted Commands: \l man \l Accepted Options: \l chmod \l|OUTPUT
+INPUT|null|A13 M13 T13|null|null|MS: Chmod perm1 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
+INPUT|null|A14 M14 T14|null|null|MS: Copy perm2 \l Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
+INPUT|null|A15 M15 T15|null|null|MS: Chmod perm2 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+INPUT|CS211user3--0|M2 |1606766103|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--1|A0|1606766167|CS211user3|insturction.txt|OUTPUT|/home/CS211user3
+INPUT|CS211user3--2|U|1606766175|CS211user3|view insturction.txt|OUTPUT|/home/CS211user3
+INPUT|CS211user3--3|U|1606766217|CS211user3|view instuctions.txt|OUTPUT|/home/CS211user3
+INPUT|CS211user3--4|U|1606766229|CS211user3|view instructions.yxy|OUTPUT|/home/CS211user3
+INPUT|CS211user3--5|U|1606766239|CS211user3|view instructions.txt|OUTPUT|/home/CS211user3
+INPUT|CS211user3--6|M0 |1606766325|CS211user3|pwd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--7|A5|1606766358|CS211user3|cd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--8|V0|1606766362|CS211user3|pwd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--9|A5|1606766413|CS211user3|cd task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--10|U|1606766418|CS211user3|view task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--11|U|1606766437|CS211user3|mv task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--12|U|1606766443|CS211user3|clear|OUTPUT|/home/CS211user3
+INPUT|CS211user3--13|A4|1606766451|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--14|A5|1606766463|CS211user3|cd task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--15|U|1606766497|CS211user3|enter task1 |OUTPUT|/home/CS211user3
+INPUT|CS211user3--16|U|1606766504|CS211user3|manipulate|OUTPUT|/home/CS211user3
+INPUT|CS211user3--17|A5|1606766509|CS211user3|cd manipulate|OUTPUT|/home/CS211user3
+INPUT|CS211user3--18|V2|1606766512|CS211user3|ls|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--19|A9|1606766522|CS211user3|view file1.txt|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--20|A1|1606766606|CS211user3|man cd|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--21|U|1606766661|CS211user3|ls view|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--22|V2|1606766665|CS211user3|ls|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--23|U|1606766667|CS211user3|cd|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--24|A4|1606766668|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--25|M5 |1606766672|CS211user3|cd view|OUTPUT|/home/CS211user3
+INPUT|CS211user3--26|A6|1606766673|CS211user3|ls|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--27|U|1606766687|CS211user3|view part 1.pdf|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--28|U|1606766695|CS211user3|view part1.pdf|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--29|U|1606766709|CS211user3|view part_1.pdf|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--30|M3 |1606766766|CS211user3|man ls|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--31|M6 |1606766859|CS211user3|ls -a|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--32|A12|1606766901|CS211user3|man ls|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--33|U|1606767019|CS211user3|dir|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--34|A7|1606767025|CS211user3|cd|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--35|U|1606767026|CS211user3|cd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--36|U|1606767027|CS211user3|dir|OUTPUT|/home/CS211user3
+INPUT|CS211user3--37|A4|1606767030|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--38|A1|1606767058|CS211user3|man dir|OUTPUT|/home/CS211user3
+INPUT|CS211user3--39|U|1606767091|CS211user3|chdir|OUTPUT|/home/CS211user3
+INPUT|CS211user3--40|U|1606767096|CS211user3|chdir|OUTPUT|/home/CS211user3
+INPUT|CS211user3--41|A1|1606767101|CS211user3|man chdir|OUTPUT|/home/CS211user3
+INPUT|CS211user3--42|U|1606767119|CS211user3|clear|OUTPUT|/home/CS211user3
+INPUT|CS211user3--43|U|1606767123|CS211user3|l |OUTPUT|/home/CS211user3
+INPUT|CS211user3--44|A4|1606767125|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--45|A8|1606767132|CS211user3|ls -a|OUTPUT|/home/CS211user3
+INPUT|CS211user3--46|V0|1606767160|CS211user3|pwd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--47|A4|1606767207|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--48|V5|1606767227|CS211user3|cd view|OUTPUT|/home/CS211user3
+INPUT|CS211user3--49|U|1606767228|CS211user3|l|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--50|V6|1606767256|CS211user3|ls -a|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--51|M7 |1606767286|CS211user3|cd ..|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--52|V0|1606767289|CS211user3|pwd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--53|U|1606767312|CS211user3|cd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--54|A8|1606767315|CS211user3|ls -a|OUTPUT|/home/CS211user3
+INPUT|CS211user3--55|A4|1606767356|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--56|U|1606767455|CS211user3|cd manipulate|OUTPUT|/home/CS211user3
+INPUT|CS211user3--57|U|1606767460|CS211user3|sudo manflag|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--58|V2|1606767486|CS211user3|ls|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--59|U|1606767595|CS211user3|cd task1|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--60|U|1606767599|CS211user3|view task1|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--61|U|1606767607|CS211user3|cd|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--62|A4|1606767609|CS211user3|ls|OUTPUT|/home/CS211user3
+INPUT|CS211user3--63|U|1606767613|CS211user3|view task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--64|U|1606767622|CS211user3|view task1|OUTPUT|/home/CS211user3
+INPUT|CS211user3--65|U|1606767643|CS211user3|cat task2|OUTPUT|/home/CS211user3
+INPUT|CS211user3--66|U|1606767670|CS211user3|cat task3|OUTPUT|/home/CS211user3
+INPUT|CS211user3--67|U|1606767704|CS211user3|cat task4|OUTPUT|/home/CS211user3
+INPUT|CS211user3--68|U|1606767781|CS211user3|cat task5|OUTPUT|/home/CS211user3
+INPUT|CS211user3--69|U|1606767809|CS211user3|cat task6|OUTPUT|/home/CS211user3
+INPUT|CS211user3--70|V5|1606767836|CS211user3|cd view|OUTPUT|/home/CS211user3
+INPUT|CS211user3--71|U|1606767840|CS211user3|cat task6|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--72|U|1606768262|CS211user3|cat task7|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--73|U|1606768280|CS211user3|cd..|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--74|V7|1606768284|CS211user3|cd ..|OUTPUT|/home/CS211user3/view
+INPUT|CS211user3--75|V0|1606768287|CS211user3|pwd|OUTPUT|/home/CS211user3
+INPUT|CS211user3--76|U|1606768326|CS211user3|cat task8|OUTPUT|/home/CS211user3
+INPUT|CS211user3--77|M4 |1606768935|CS211user3|ls -a -l |OUTPUT|/home/CS211user3
+INPUT|CS211user3--78|U|1606769010|CS211user3|cat task9|OUTPUT|/home/CS211user3
+INPUT|CS211user3--79|U|1606769056|CS211user3|cd manipulate|OUTPUT|/home/CS211user3
+INPUT|CS211user3--80|M9 |1606769082|CS211user3|mv file1.txt renamed_file1.txt|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--81|M10 |1606769100|CS211user3|cp file2.txt copied_file2.txt|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--82|U|1606769103|CS211user3|sudo manflag|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--83|U|1606769121|CS211user3|cat task10|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--84|U|1606769127|CS211user3|cd|OUTPUT|/home/CS211user3/manipulate
+INPUT|CS211user3--85|U|1606769132|CS211user3|cat task10|OUTPUT|/home/CS211user3
+INPUT|CS211user3--86|U|1606769139|CS211user3|cd permissions|OUTPUT|/home/CS211user3
+INPUT|CS211user3--87|U|1606769144|CS211user3|cat task10|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--88|M11 |1606769179|CS211user3|cp perm1.txt copied_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--89|M12 |1606769193|CS211user3|man chmod|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--90|V12|1606769256|CS211user3|man chmod|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--91|A13|1606769317|CS211user3|chmod r w coped_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--92|V12|1606769322|CS211user3|man chmod|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--93|A13|1606769415|CS211user3|chmod u + r w coped_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--94|V12|1606769424|CS211user3|man chmod|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--95|A13|1606769465|CS211user3|chmod g + r w coped_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--96|V12|1606769468|CS211user3|man chmod|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--97|A13|1606769570|CS211user3|chmod u                      |OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--98|A13|1606769575|CS211user3|chmod u + r|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--99|M13 |1606769606|CS211user3|chmod u + r w copied_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--100|A15|1606769612|CS211user3|chmod u + r copied_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|CS211user3--101|A15|1606769620|CS211user3|chmod u* + r copied_perm1.txt|OUTPUT|/home/CS211user3/permissions
+INPUT|R|A0 M0||null||OUTPUT
+INPUT|R|A1 M1||null||OUTPUT
+INPUT|R|A2 M2||null||OUTPUT
+INPUT|R|A3 M3||null||OUTPUT
+INPUT|R|A4 M4||null||OUTPUT
+INPUT|R|A5 M5||null||OUTPUT
+INPUT|R|A6 M6||null||OUTPUT
+INPUT|R|A7 M7||null||OUTPUT
+INPUT|R|A8 M8||null||OUTPUT
+INPUT|R|A9 M9||null||OUTPUT
+INPUT|R|A10 M10||null||OUTPUT
+INPUT|R|A11 M11||null||OUTPUT
+INPUT|R|A12 M12||null||OUTPUT
+INPUT|R|A13 M13||null||OUTPUT
+INPUT|R|A14 M14||null||OUTPUT
+INPUT|R|A15 M15||null||OUTPUT
