@@ -727,7 +727,7 @@ def formatCSV(arr):
 def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
     dict = {}
     for entry in arr:
-        key = str(entry[keyIndex])
+        key = str(entry[keyIndex].replace('@', ''))
         if key in dict:
             dict[key].append(entry)
         else:

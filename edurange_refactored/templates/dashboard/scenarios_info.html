@@ -31,15 +31,20 @@
                         <p> Status : {{ status }} </p>
                         <p> Created by : {{ owner }} </p>
                         <p> Created at : {{ dt }} </p>
-                        <b> Connection Information: </b>
+                        <!--<b> Connection Information: </b>-->
                         {% for container in add %}
                             {% if not add[container] %}
+                        <p><b> Connection Information: </b></p>
                                 <p>Container not found, something went wrong</p>
                             {% elif ':' not in add[container] %}
+                        <p><b> Connection Information: </b></p>
                                 <p>Container address not found, is it running?</p>
                             {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
                                 <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
-                                <p><b>SSH Command: </b>ssh root@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}  </p>
+                        <p style="margin-top: -10px;"><b>SSH Command: </b>
+                            <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh root@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
+                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                        </p>
                                 <p><b>Password:</b> Check the .env file for your root password.</p>
                             {% endif %}
                         {% endfor %}
@@ -196,6 +201,13 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+        // copy ssh command to clipboard
+        $("#copySSH").on("click", function(e) {
+            let command = document.getElementById("sshCmd");
+            command.select();
+            document.execCommand("copy");
+        });
 
         // show chosen player when a player is chosen
         $("button[id$='-select']").on("click", function() {
