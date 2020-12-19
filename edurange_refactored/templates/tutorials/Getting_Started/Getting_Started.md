@@ -12,9 +12,6 @@ Congratulations recruit and welcome to CyberSec. As you should know we provide s
 
 Use the credentials and IP Address provided on the scenario page to SSH into the exercise
 
-![3](http://127.0.0.1:5000/static/build/img/Getting_Started/3.png)
-
-![2](http://127.0.0.1:5000/static/build/img/Getting_Started/2.png)
 
 ---
 

@@ -13,15 +13,8 @@ levels.
 
 [Understanding Secure Shell encryption](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process) will help you complete this first task.
 
-IMPORTANT NOTE: Every stop of the journey after the NAT instanc eocnatins a file named `secret`. This contains the secret code you should enter into edurange for each stop along the way.
+IMPORTANT NOTE: Every stop of the journey after the NAT instance contains a file named `secret`. This contains the secret code you should enter into edurange for each stop along the way.
 
-To view the contents of the file:
-
-![vim secret](http://127.0.0.1:5000/static/build/img/Ssh_Inception/vim_secret.png)
-
-![cat secret](http://127.0.0.1:5000/static/build/img/Ssh_Inception/cat_secret.png)
-
-![nat](http://127.0.0.1:5000/static/build/img/Ssh_Inception/nat.png)
 
 ---
 
@@ -35,17 +28,11 @@ To find detailed instructions about each command, type `man [command]` where `[c
 
 Try typing `man ssh`
 
-![man ssh](http://127.0.0.1:5000/static/build/img/Ssh_Inception/man_ssh.png)
 
 ... and you should see something like this.
 
 Underneath the Synopsis is a list of different flags and options you can enter with each command. A flag is a letter with a `-` in front. Each flag provides options to help specify the needs of your task.
 
-Some examples commands using flags:
-
-![grep -f](http://127.0.0.1:5000/static/build/img/Ssh_Inception/grep-f.png)
-
-![pwd -L](http://127.0.0.1:5000/static/build/img/Ssh_Inception/pwd-L.png)
 
 Can you figure out what these commands mean?
 
@@ -57,23 +44,17 @@ Are there any helpful flags or options on the ssh man page, perhaps relating to 
 
 ### Subnets
 
-![servers](http://127.0.0.1:5000/static/build/img/Ssh_Inception/image1.png)
-
 [What is a subnet?](https://whatismyipaddress.com/subnet).
 
 It looks like we need to login to a new IP in our subnet.
 
 Is there a way to perform a scan of our subnetwork to see what IP addresses are available? Maybe an nmap scan will be helpful?
 
-![man nmap](http://127.0.0.1:5000/static/build/img/Ssh_Inception/nmap.png)
-
-![nmap man page](http://127.0.0.1:5000/static/build/img/Ssh_Inception/man_nmap.png)
 
 Again, let's look underneath the Synopsis. It looks like we can use the command nmap followed by the target we wish to scan.
 
 What is our target? The subnet, or in other words your local network. Hint: we revealed it in the NAT instance message!
 
-![nmap [lan]](http://127.0.0.1:5000/static/build/img/Ssh_Inception/nmap_ln.png)
 
 After this command, can you tell what you're looking at? A list of all the IP addresses in your subnet along with information about the services they provide and the status of those services.
 
@@ -89,17 +70,11 @@ Find an IP that's a few addresses higher than your current address. Login using 
 
 Use the list command to see all accessible files in your current directory. Check the contents of id_rsa using vim or cat. What are you looking at?
 
-[![Asymmetric encryption](http://127.0.0.1:5000/static/build/img/Ssh_Inception/RSA.png)](https://youtu.be/AQDCe585Lnc)
-
 Having a foundational understanding of RSA encryption will be helpful to understand how you will get to the next stop.
 
 Let's go back to the SSH man page.
 
-![ssh man page](http://127.0.0.1:5000/static/build/img/Ssh_Inception/man_ssh.png)
-
 You can search a man page by typing / and then the keyword you're searching for. Typing N will take you to the next search result.
-
-![/rsa](http://127.0.0.1:5000/static/build/img/Ssh_Inception/rsa_search.png)
 
 Maybe there is a flag that will allow you to pass a file containing a private key to the next ip address?
 
@@ -125,7 +100,6 @@ Ok, so you found the password and the next IP address, you used an nmap scan to 
 
 Is there another IP address you can SSH from?
 
-![bookshelf door](http://127.0.0.1:5000/static/build/img/Ssh_Inception/secret.png)
 
 ---
 
@@ -147,11 +121,9 @@ Again, scan the local network using nmap.
 
 The decryptpass file is [encrypted](https://en.wikipedia.org/wiki/Encryption). Run the file like this:
 
-![decryptpass](http://127.0.0.1:5000/static/build/img/Ssh_Inception/decrypt.png)
 
 Use the IP address you received from the FTP server and the password you recieved from running decryptpass to get to the Fifth Stop.
 
-![decryptpassword](http://127.0.0.1:5000/static/build/img/Ssh_Inception/decryptpassword.png)
 
 ---
 
@@ -165,7 +137,6 @@ Use that command to perform an in depth search of the man pages using a keyword 
 
 (HINT: try a few of the different commands returned in your search. Read their man pages carefully and see if any flags or options will be helpful. You will know you successfully decoded betcha_cant_read_me when you see the directions to the next stop printed on your console.)
 
-![key](http://127.0.0.1:5000/static/build/img/Ssh_Inception/key.png)
 
 ---
 
@@ -179,20 +150,17 @@ If you don't recall, perform another scan. If you're brave, try using `ssh` and 
 
 Let's go back to the SSH man page.
 
-![ssh man page](http://127.0.0.1:5000/static/build/img/Ssh_Inception/man_ssh.png)
 
 Look carefully at all the flags and options under Synopsis. The last two are pertinent to our task.
 
 This is a good opportunity to prove you understand how to use flags and options found on the man pages.
 
-![nat](http://127.0.0.1:5000/static/build/img/Ssh_Inception/nat.png)
 
 So you found the secret..... It's gibberish. It doesn't make any sense.
 Perhaps we have to decode again?
 
 Let's consider a classic form of ciphering.
 
-[Caesear Cipher](https://en.wikipedia.org/wiki/Caesar_cipher)
 
 It would be an awful lot of work to figure out what rotation this has been encrypted with. Let's just use one of the many decyphering tools online.
 
