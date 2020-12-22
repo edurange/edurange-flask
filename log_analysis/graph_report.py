@@ -1,6 +1,9 @@
+'''
+use this for multi-line comments
 # written by Aubrey Birdwell in Fall 2020
 # for the EduRange project
 # aubrey.birdwell@gmail.com
+'''
 
 #import libs
 import pygraphviz as pgv
