@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgOrange.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks\" \"flower -A edurange_refactored.tasks --port=5555 --broker=redis://localhost:6379/0\" \"node webssh2/app/index.js\"",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks\" \"flower -A edurange_refactored.tasks --port=5555 --broker=redis://localhost:6379/0\" \"node webssh2/app/index.js\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",
