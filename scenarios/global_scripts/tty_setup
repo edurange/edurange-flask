@@ -29,14 +29,24 @@ while read line; do
 	chmod 777 /usr/local/src/logs/$line
 	chmod 777 /usr/local/src/logs/$line/.cli.csv
 	echo "$line ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/" | sudo EDITOR='tee -a' visudo
+
+	echo "$line ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*" | sudo EDITOR='tee -a' visudo
+
 	echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.$(hostname)" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.$(hostname)" | sudo EDITOR='tee -a' visudo
-	#echo "$line ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog .*" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.$line.*.csv" | sudo EDITOR='tee -a' visudo
+  echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/$line/ttylog.$line.*" | sudo EDITOR='tee -a' visudo
+  echo "$line ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.$line.*" | sudo EDITOR='tee -a' visudo
+
 	echo "$line ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/tee -a /usr/local/src/logs/$line/ttylog.*.*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/$line/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/$line/ttylog.$(hostname).*.*" | sudo EDITOR='tee -a' visudo
-	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3.4 /usr/local/src/analyze.py /usr/local/src/logs/$line/alltty.$(hostname)* /usr/local/src/logs/$line/cli.$(hostname)*" | sudo EDITOR='tee -a' visudo
+
+	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*" | sudo EDITOR='tee -a' visudo
+
+	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.$(hostname)" | sudo EDITOR='tee -a' visudo
+	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/$line/ttylog.$line.*" | sudo EDITOR='tee -a' visudo
+
+	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/$line/ttylog.$line.* /usr/local/src/logs/analyze_cont/analyze.$line.*.csv" | sudo EDITOR='tee -a' visudo
 done</usr/local/src/user_names.txt
 
 
