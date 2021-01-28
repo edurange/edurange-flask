@@ -27,7 +27,7 @@
                 }
               ],
               "hostname": "Venusville",
-              "image": "sanivo/edurange-ubuntu-sshd:16.04",
+              "image": "edurange2/ubuntu-sshd:16.04",
               "name": "SNAME_Venusville",
               "networks_advanced": [
                 {
