@@ -59,9 +59,9 @@ A root user is someone who has access to everything on the computer. They could 
 
 ---
 
-## 4. COmmands
+## 4. Commands
 
-What is a command? A command is something you type into your terminal to make something happen. That's a bit vague but essentially the idea. You can do a lot of things with commands. Let's get started right away and use two different commands. Let's go to your home directory.
+What is a command? A command is something you type into your terminal to make something happen. That's a bit vague but essentially the idea. You can do a lot of things with commands. Let's get started right away and use two different commands.
 
 ### cd
 
