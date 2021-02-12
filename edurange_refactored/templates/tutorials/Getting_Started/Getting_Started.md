@@ -6,7 +6,7 @@
 
 ### What You'll Learn
 
-Congratulations recruit and welcome to CyberSec. As you should know we provide security services to you, our communities, and small businesses. You've made it this far, I suppose that means you may be helpful. But first comes the training. We need to strengthen your skills before you can truly be of use. Go through each tab to the left and at the end we will test what you have learned. Remember, this world is being controlled by the malicious corporations and individuals and we must learn to protect ourselves from their invasive attacks. We must protect our data. This is why you are here. To protect yourself, your company and your community. And it all starts here, at the beginning, with a terminal command.
+Congratulations recruit and welcome to CyberSec. As you should know we provide security services to you, our communities, and small businesses. You've made it this far, I suppose that means you may be helpful. But first comes the training. We need to strengthen your skills before you can truly be of use. Remember, this world is being controlled by the malicious corporations and individuals and we must learn to protect ourselves from their invasive attacks. We must protect our data. This is why you are here. To protect yourself, your company and your community. And it all starts here, at the beginning, with a terminal command.
 
 ### How to Connect
 
@@ -37,21 +37,19 @@ Why should you learn the command line?
 
 - Stable design
 
-In summation, it allows you to do stuff faster than GUI and provides an amazing automation support built in.
-
-Open up terminal for the rest of this training. Or ssh into the server for the command line experience.
+In summation, it allows you to do stuff faster than GUI and provides built in automation support.
 
 ---
 
 ## 3. Linux File System
 
-### Heirarchy
+### Hierarchy
 
 Linux folders and files are arranged like an upside down tree, where the slash `/` is called the root, or beginning, of all your files in the entire computer. The root is the base of the tree and as you go down it keeps splitting into branches and leaves. The leaves would be a file and the branches are folders.
 
 ### `/` vs. logging in as root
 
-The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as bermic you would typically save your files in `/home/bermic`, whereas the root user saves their files in `/root`.
+The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as bermic you would typically save your files in `/home/student`, whereas the root user saves their files in `/root`.
 
 ### Important
 
@@ -61,10 +59,11 @@ A root user is someone who has access to everything on the computer. They could 
 
 ## 4. Commands
 
-What is a command? A command is something you type into your terminal to make something happen. That's a bit vague but essentially the idea. You can do a lot of things with commands. Let's get started right away and use two different commands.
+What is a command? Commands are executable programs that you can call from your command-line terminal. The most common place to look for bash commands is in the `/bin` folder. Let's get started right away and use two different commands.
 
 ### cd
 
+`cd` stands for "change directory", meaning to navigate to a new folder.
 Type each of the following. One at a time. Hitting enter after each
 
 - `cd /`
@@ -82,21 +81,13 @@ The fourth sends you backwards (up) a level.
 
 TASK: `cd` to `/bin` then `cd` back to your home directory.
 
-### pwd
-
-Now type in
-
-- `pwd`
-
-Hit enter, `pwd` is a command to print your working directory. In other words, it prints your location so you can see where you are. You should see something similar to `/home/yourusername`. To learn more type `man pwd` , then to get out of that page type `q`
-
 ### ls
+
+`ls` "lists" the files and directories of where you are now.
 
 Type
 
 - `ls`
-
-Hit enter, `ls` lists the files and directories of where you are now.
 
 There are parameters and options you can give a command. What if you wanted to list the permissions of a file and find hidden files? (Yes there are hidden files!)
 
@@ -122,15 +113,7 @@ That's a lot of info! What you see is all the files and folders in the folder yo
 
 - And finally the file name
 
-TASK: `cd` into your home directory and then type `ls` and you will see a directory called `follow_Me`. Travel as deep as that folder will go. When you get to the end there is a file whose name is a randomized number. Find that.
-
-### sudo
-
-Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. If you try to do something and it says Permission denied, try again with sudo in front of the command.
-
----
-
-## Man Pages
+### Man Pages
 
 Man Pages is short for manual pages. These are text documents with lots of information on commands. Remember the command we did for listing our files? `ls`! Let's find that man page.
 
@@ -154,9 +137,25 @@ Type `/-a` and hit enter. Hit `n` till you can't go any further. Now hit `b` (st
 
 When in a man page and you need to get out, just type `q`
 
-TASK: Open the man page for `file`. Can you give a brief description of what the command `file` does?
+TASK: Open the man page for `mv`. Can you give a brief description of what the command `mv` does?
 
 - If you don't see it highlighted, you may have typed something by mistake or your console colors may not be optimized. If you typed something by mistake, just retype `/-l` etc.
+
+---
+### pwd
+
+`pwd` stands for "Print working directory" - it will tell you where you are within the filesystem.
+Now type in
+
+- `pwd`
+ You should see something similar to `/home/yourusername`. To learn more type `man pwd` , then to get out of that page type `q`
+
+
+TASK: `cd` into your home directory and then type `ls` and you will see a directory called `follow_Me`. Travel as deep as that folder will go. When you get to the end there is a file whose name is a randomized number. Find that.
+
+### sudo
+
+Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. The use of sudo in EDURange is restricted, however.
 
 ---
 
@@ -191,7 +190,7 @@ Now let's learn a new command, cat. cat prints out the text from a file.
 Type
 
 - `cat dog.jpg`
-
+Go throu
 You should see something like:
 
 `meow I am a doggo`
@@ -264,6 +263,8 @@ There are many ways to accomplish this in one line, here is a hint for one way, 
 
 `echo "one"; echo "two"; echo "three";`
 
+One of the most useful tricks you can use angle brackets for is suppressing error messages. If you want to suppress all errors that may result from a command, add '2>/dev/null' to the end of your command. Ex: "find . filename 2>/dev/null". To learn more about what the number 2 stands for there, and what /dev/null is, read this reference on tty streams: <link TODO>
+
 ---
 
 ## 8. vim, Regular expresssions, and find
@@ -288,7 +289,9 @@ Once you are in vim the main key strokes to editing a file are:
 
 - `:q` - These keystrokes will quit the vim program. You can also do `:wq` to save the file and quit right away. `:q` will not work unless you have saved your file or you have made no changes what-so-ever.
 
-`dd` - When you are NOT in edit mode this will delete an entire line. (Make sure your cursor is on the line you want to delete)
+`dd` - When you are NOT in edit mode this will delete an entire line. (Make sure your cursor is on the line you want to delete).
+
+`u` - If you make changes that you didn't mean to, you can press `u` for 'undo' - And if you undo too many things you can press Ctrl+R to 'redo'
 
 `0` - zero will take you to the beginning of a line
 
@@ -383,6 +386,6 @@ And you can jump from file to file with the `:b` keystrokes and using tab to go 
 
 Here at CyberSec you have been well trained recruit, now let's put your training to test! This is a real mission of the utmost importance. Complete this and you are assured a spot on our team.
 
-TASK: Our intelligence has told us that somewhere in your computer is an image that is vital to our company. This image has a weird name but we know for certain that it contains the word `cowFJS` in it. Through our sources we also know that there is ANOTHER file in that folder. COPY both the image and second file to your home directory in a new folder, called `final-mission`. Then create a new file in the folder, `final-mission`, called `cowsay.file` with the contents of the cowsay man file in it.
+TASK: Our intelligence has told us that somewhere in your computer is an image that is vital to our company. This image has a weird name but we know for certain that it contains the word `cowFJS` in it. This file is somewhere on the system, but it is NOT in your home directory. Through our sources we also know that there is ANOTHER file in that folder. COPY both the image and second file to your home directory in a new folder, called `final-mission`. Then create a new file in the folder, `final-mission`, called `cowsay.file` with the contents of the cowsay man file in it.
 
 ---
