@@ -27,7 +27,7 @@
                                 }
                             ],
                             "hostname": "SecondStop",
-                            "image": "sanivo/edurange-ubuntu-sshd:16.04",
+                            "image": "edurange2/ubuntu-sshd:16.04",
                             "name": "SNAME_SecondStop",
                             "networks_advanced": [
                                 {

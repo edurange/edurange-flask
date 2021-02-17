@@ -1,0 +1,13 @@
+*,cd \/,*
+*,cd \/root,*
+*,man,*
+*,ls -la,*
+*,file \w+.jpg,*
+*,echo "This is cool" > \w+,*
+*,cat,*
+*,cat \w+ >> \w+,*
+*,cat alltogether.txt
+*,cd okYouAreHERE!,*
+*,vim .+,*
+*,find . -iname "?\*cowFJS\*\"? |find / -iname "?\*cowFJS\*\"? |find . -iname "?\*cowFJS\*\"? |find . -type f -iname "?\*cowFJS\*\"? |find / -type f -iname "?\*cowFJS\*\"?|find . -iname "?\*cowFJS\*\"?|find / -iname "?\*cowFJS\*\"?,*
+*,cowsay,*

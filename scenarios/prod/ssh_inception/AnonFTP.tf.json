@@ -49,9 +49,10 @@
                                     "remote-exec": [
                                         {
                                             "inline": [
+                                                "EXECS",
                                                 "iptables -A INPUT -p tcp --dport 21 -j ACCEPT",
                                                 "iptables -A OUTPUT -p tcp --sport 20 -j ACCEPT",
-                                                "service vsftpd restart &"
+                                                "service vsftpd restart"
                                             ]
                                         }
                                     ]

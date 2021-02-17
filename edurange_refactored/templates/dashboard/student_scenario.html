@@ -26,6 +26,14 @@
             <p style="margin-top: -10px;"><b>SSH Command: </b>
                 <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
                 <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                <script>function showSSHConsole() {
+                    window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                }
+                </script>
+                <button class="btn btn-dark" id="openWebSSH" onClick="showSSHConsole()"><i class= "fa"> Open WebSSH Console</i></button>
+                <!-- <div id="SSHConsoleContainer" style="display:none">
+                    <iframe style="position:absolute;height:100%;width:100%;border:none" src= "http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}/{{ u_name }}/{{ pw }}" ></iframe>
+                </div> -->
             </p>
                 {% endif %}
             {% endfor %}

@@ -7,10 +7,10 @@ blue='\033[0;34m'
 cyan='\033[0;36m'
 EDU_FOLDER='CHANGE-ME'
 
-echo "TODO: ask for disabling mail notifications (sed on ~tasks.py:389)"
-echo "TODO: read .ENV variables to set up the appropriate environment"
-echo "TODO: restart gunicorn and celery (i.e. kill previous processes + start new ones)"
-echo "TODO: make output more concise (i.e. be less verbose)"
+# TODO: ask if admin wants to disable mail notifications (sed on ~tasks.py:389)
+# TODO: read .ENV variables to set up the appropriate environment
+# TODO: restart gunicorn and celery (i.e. kill previous processes + start new ones)
+# TODO: make output more concise (i.e. be less verbose)
 
 function main {
 	cd $EDU_FOLDER
@@ -74,7 +74,9 @@ function updateGit {
 
 function updateDocker {
 	echo -e "${blue}[*] Pulling docker image...${NC}"
-	docker image pull sanivo/edurange-ubuntu-sshd:16.04
+	docker image pull edurange2/ubuntu-sshd
+	docker image pull edurange2/ubuntu-vsftpd
+	docker image pull edurange2/webfu
 }
 
 function updatePip {

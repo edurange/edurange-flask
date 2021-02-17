@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks\" \"flower -A edurange_refactored.tasks --port=5555 --broker=redis://localhost:6379/0\" ",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks\" \"flower -A edurange_refactored.tasks --port=5555 --broker=redis://localhost:6379/0\" \"node webssh2/app/index.js\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",
@@ -26,10 +26,18 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "bootstrap": "^4.5.3",
+    "cidr-matcher": "^2.1.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
+    "morgan": "^1.10.0",
     "popper.js": "^1.15.0",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^3.0.5",
+    "ssh2": "^0.8.9",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
