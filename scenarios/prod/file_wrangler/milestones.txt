@@ -1,25 +1,25 @@
-### Use `pwd` in home dir
+### Use `pwd` in home dir #participation
 M1,pwd
 
-### Check `man pwd`
+### Check `man pwd`   #participation
 M2,man pwd
 
-### Use `ls` in home dir
+### Use `ls` in home dir  #participation
 M3,ls
 
-### Check `man ls`
+### Check `man ls`      #participation
 M4,man ls
 
-### Use long listing `ls`
+### Use long listing `ls`  #participation
 M5,ls -l
 
-### Change dir to `view` (from home dir)
+### Change dir to `view` (from home dir)   #participation
 M6,cd view
 
-### Look for hidden files in `view`
+### Look for hidden files in `view`  
 M7,ls -a
 
-### Go back to home dir (from view)
+### Go back to home dir (from view)   #participation
 M8,cd ..
 
 ### Use long and all listing options in home dir
@@ -31,7 +31,7 @@ M10,mv .* renamed_file1.txt,mv
 ### Copy a file
 M11,cp .* copied_file2.txt
 
-### Set permissions ug=rw o=-
+### Set permissions ug=rw o=-   #challenge
 M12,chmod 660 copied_perm1.txt
 
 ### Set permissions u=rwx g=rw o=r
