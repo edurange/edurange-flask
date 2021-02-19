@@ -2,6 +2,14 @@
 
 ---
 
+## Learning Objectives
+1. Become familiar with ls and common flags: -a, -l
+2. (see [Getting Started](https://github.com/edurange/edurange-flask/blob/master/edurange_refactored/templates/tutorials/Getting_Started/Getting_Started.md
+)) Know how to search man pages to find a specific option.
+3. Navigate file system to find specific files
+4. Move and copy files.
+5. Set permissions (access control) for files.
+
 ## Task 1
 
 The `pwd` command will give you the current working directory. This tells you where you are in the Linux file system.
