@@ -1,7 +1,14 @@
-- Text: What is the flag for level one?
+- Text: What is the flag for level 1?
   Type: String
   Values:
-  - Value: '1NJ3CT10NS_4R3_N1C3!'
+  - Value: 'FLAG{1NJ3CT10NS_4R3_N1C3!}'
+    Points: '10'
+  Order: 1
+  Points: 10
+- Text: What is the flag for level 2?
+  Type: String
+  Values:
+  - Value: 'FLAG{Y0U_D0_L1K3_QU3R13S}'
     Points: '15'
   Order: 1
   Points: 15
