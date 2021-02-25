@@ -18,7 +18,7 @@ def build_users(usernames, passwords):
         if i != 0:
             next_line += "\""
         next_line += str("useradd --home-dir /home/" + u + " --create-home --shell /bin/bash --password $(echo " + \
-                         str(passwords[i]) + " | openssl passwd -1 -stdin) " + u,)
+                         str(passwords[i]) + " | openssl passwd -1 -stdin) " + u, )
         if i != len(usernames) - 1:
             next_line += "\","
         users.append(next_line)
@@ -64,18 +64,18 @@ def build_uploads(s_files, g_files, u_files, log_files, s_type):
 def build_execute_files(s_files, g_files, u_files, flags):
     execs = "mkdir /home/ubuntu\",\n"
 
-    #Global files get 'chmod + x' and then moved to /usr/bin
+    # Global files get 'chmod + x' and then moved to /usr/bin
     for i, f in enumerate(g_files):
         execs += str("\"chmod +x /" + f + '"' + """, 
         "mv /""" + f + " /usr/bin/" + f + '",\n')
 
-    #User files marked 777 permission and moved to /home/ubuntu
+    # User files marked 777 permission and moved to /home/ubuntu
     for i, f in enumerate(u_files):
         execs += str("""
       "chmod +rwx /""" + f + '"' + """,
       "cp -R /""" + f + " /home/ubuntu/" + f + '"' + """,
 """)
-    #System files chmod+x, move to /home/ubuntu, and then RUN
+    # System files chmod+x, move to /home/ubuntu, and then RUN
     for i, f in enumerate(s_files):
         execs += str("""
       "chmod +x /""" + f + '"' + """,
@@ -85,7 +85,7 @@ def build_execute_files(s_files, g_files, u_files, flags):
             execs += " " + str(" ".join(v for v in flags))
         if f == "change_root_pass":
             root_pass = os.getenv("ROOT_PASS", "root")
-            execs +=  " " + str(root_pass)
+            execs += " " + str(root_pass)
         if i != len(s_files) - 1:
             execs += "\","
     return execs
@@ -117,15 +117,17 @@ def write_resource(address, name, s_type,
     template_folder = "../../../scenarios/prod/" + s_type + "/"
     users = build_users(usernames, passwords)
 
-    log_files = ["tty_setup", "analyze.py", "makeTsv.py", "start_ttylog.sh",
+    log_files = ["tty_setup", "analyze.py", "makeTsv.py",
+                 "milestone-lbl.pl", "intervention.py", "start_ttylog.sh",
                  "ttylog", "clearlogs", "iamfrustrated",
-                 "change_root_pass"]
+                 "place_milestone_file", "change_root_pass"]
     # Generate a list of 'provisioner' blocks to upload all files
     uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
 
-    s_files = ["tty_setup", "change_root_pass"] + s_files
+    s_files = ["tty_setup", "place_milestone_file", "change_root_pass"] + s_files
     g_files = ["iamfrustrated", "clearlogs"] + g_files
-    u_files = ["ttylog", "start_ttylog.sh", "makeTsv.py", "analyze.py"] + u_files
+    u_files = ["ttylog", "start_ttylog.sh", "makeTsv.py", "analyze.py",
+               "milestone-lbl.pl", "intervention.py"] + u_files
     # Generate a list of commands to move files, and run them if needed
     execs = build_execute_files(s_files, g_files, u_files, flags)
 

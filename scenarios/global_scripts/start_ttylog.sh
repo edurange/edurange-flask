@@ -42,15 +42,15 @@ function clean_up {
         echo "END tty_sid:$CNT" >> $LOGPATH
         PSTRING_KILL=$(ps -o args -p ${PID_CONTCSV} --no-headers 2>/dev/null)
         if [[ $PSTRING_KILL =~ ${CONTCSVPATH} ]]; then
-            sudo kill ${PID_CONTCSV} 2>/dev/null
+            sudo -u root /bin/kill ${PID_CONTCSV} 2>/dev/null
         fi
         PSTRING_KILL=$(ps -o args -p ${PID_ANNOTATOR} --no-headers 2>/dev/null)
         if [[ $PSTRING_KILL =~ ${ANNOTATORPATH} ]]; then
-            sudo kill ${PID_ANNOTATOR} 2>/dev/null
+            sudo -u root /bin/kill ${PID_ANNOTATOR} 2>/dev/null
         fi
         PSTRING_KILL=$(ps -o args -p ${PID_INTERVENTION} --no-headers 2>/dev/null)
         if [[ $PSTRING_KILL =~ ${ANNOTATORPATH} ]]; then
-            sudo kill ${PID_INTERVENTION} 2>/dev/null
+            sudo -u root /bin/kill ${PID_INTERVENTION} 2>/dev/null
         fi
         exit
     }
@@ -137,9 +137,9 @@ if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
     	if ! [ -f ${ANNOTATORPATH} ]; then
         	sudo touch ${ANNOTATORPATH}
     	fi
-        sudo perl /usr/local/src/milestones-lbl.pl ${MILESTONEFILE} ${CONTCSVPATH} ${ANNOTATORPATH} 2>/dev/null &
+        sudo perl /usr/local/src/ttylog/milestone-lbl.pl ${MILESTONEFILE} ${CONTCSVPATH} ${ANNOTATORPATH} 2>/dev/null &
         PID_ANNOTATOR=$!
-        sudo python3 /usr/local/src/intervention.py ${ANNOTATORPATH} ${MILESTONEFILE} ${MILESTONEMESS} 2>/dev/null &
+        sudo python3 /usr/local/src/ttylog/intervention.py ${ANNOTATORPATH} ${MILESTONEFILE} ${MILESTONEMESS} 2>/dev/null &
         PID_INTERVENTION=$!
     fi
 

@@ -12,6 +12,7 @@
                  "start_flag"
                ],
                "user_files":[
+                 "milestones.txt"
                ]
             }
          ]
@@ -29,6 +30,7 @@
                  "first_flag"
                ],
                "user_files":[
+                  "milestones.txt"
                ]
             }
          ]
@@ -46,7 +48,8 @@
                  "second_flag"
                ],
                "user_files":[
-                  "id_rsa"
+                  "id_rsa",
+                  "milestones.txt"
                ]
             }
          ]
@@ -65,7 +68,8 @@
                  "third_flag"
                ],
                "user_files":[
-                  "id_rsa"
+                  "id_rsa",
+                  "milestones.txt"
                ]
             }
          ]
@@ -85,6 +89,7 @@
                  "fourth_flag"
                ],
                "user_files":[
+                  "milestones.txt"
                ]
             }
          ]
@@ -103,6 +108,7 @@
                  "fifth_flag"
                ],
                "user_files":[
+                  "milestones.txt"
                ]
             }
          ]
@@ -119,6 +125,7 @@
                  "last_flag"
                ],
                "user_files":[
+                  "milestones.txt"
                ]
             }
          ]

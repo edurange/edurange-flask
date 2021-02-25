@@ -12,7 +12,8 @@
 				"setup_player",
 				"codes",
 				"files",
-				"python"
+				"python",
+				"milestones.txt"
 			]
 		}]
 	}

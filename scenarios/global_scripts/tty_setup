@@ -4,27 +4,33 @@ set -eoux pipefail
 mkdir /usr/local/src/logs
 mkdir /usr/local/src/ttylog
 mkdir /usr/local/src/logs/root
+mkdir -p /var/log/annotator
 
 touch /usr/local/src/logs/root/.cli.csv
 
 chmod 755 /usr/local/src
 chmod 777 /usr/local/src/logs
 chmod 777 /usr/local/src/ttylog
+chmod 777 /var/log/annotator/
 
 mv /home/ubuntu/analyze.py /usr/local/src/ttylog/
 mv /home/ubuntu/start_ttylog.sh /usr/local/src/ttylog/
 mv /home/ubuntu/ttylog /usr/local/src/ttylog/
 mv /home/ubuntu/makeTsv.py /usr/local/src/ttylog/makeTsv.py
+mv /home/ubuntu/milestone-lbl.pl /usr/local/src/ttylog/milestone-lbl.pl
+mv /home/ubuntu/intervention.py /usr/local/src/ttylog/intervention.py
 
 chmod +x /usr/local/src/ttylog/start_ttylog.sh
 chmod +x /usr/local/src/ttylog/ttylog
 chmod +x /usr/local/src/ttylog/analyze.py
 chmod +x /usr/local/src/ttylog/makeTsv.py
+chmod +x /usr/local/src/ttylog/intervention.py
+chmod +x /usr/local/src/ttylog/milestone-lbl.pl
 
 awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd > /usr/local/src/user_names.txt
 
 while read line; do
-	mkdir /usr/local/src/logs/$line
+	mkdir -p /usr/local/src/logs/$line
 	touch /usr/local/src/logs/$line/.cli.csv
 	chmod 777 /usr/local/src/logs/$line
 	chmod 777 /usr/local/src/logs/$line/.cli.csv
@@ -41,12 +47,17 @@ while read line; do
 
 	echo "$line ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *" | sudo EDITOR='tee -a' visudo
 
+  echo "$line ALL=(root) NOPASSWD: /bin/kill" | sudo EDITOR='tee -a' visudo
+
 	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*" | sudo EDITOR='tee -a' visudo
 
 	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.$(hostname)" | sudo EDITOR='tee -a' visudo
 	echo "$line ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/$line/ttylog.$line.*" | sudo EDITOR='tee -a' visudo
 
 	echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/$line/ttylog.$line.* /usr/local/src/logs/analyze_cont/analyze.$line.*.csv" | sudo EDITOR='tee -a' visudo
+  echo "$line ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.$line.*.csv /var/log/annotator/annotate.$line.*" | sudo EDITOR='tee -a' visudo
+  echo "$line ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.$line.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages" | sudo EDITOR='tee -a' visudo
+
 done</usr/local/src/user_names.txt
 
 

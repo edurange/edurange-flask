@@ -308,7 +308,7 @@ def scenariosInfo(i):
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             resp = queryPolish(query, s_name)
             try:
-                rc = formatCSV(readCSV(i))
+                rc = readCSV(i)
             except FileNotFoundError:
                 flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
                 rc = []
@@ -316,7 +316,7 @@ def scenariosInfo(i):
             gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
             players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
-            u_logs = groupCSV(rc, 6) # make dictionary using 6th value as key (player name)
+            u_logs = groupCSV(rc, 4) # make dictionary using 6th value as key (player name)
 
 
             return render_template("dashboard/scenarios_info.html",

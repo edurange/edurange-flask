@@ -173,7 +173,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
             #Skip the bell (^G) characters
             if line[i_stream_line] == '\x07':
                 i_stream_line += 1
-            
+
             #Carriage return ('\r') means to move the cursor at the start of the line
             # Carriage return also occurs in case of a 'soft wrap'
             elif line[i_stream_line] == '\r':
@@ -184,7 +184,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
             elif line[i_stream_line] == '\x08':
                 if cursor_pointer > 0:
                     cursor_pointer -= 1
-                i_stream_line += 1 
+                i_stream_line += 1
 
             elif line[i_stream_line] == '\x1b' and line[i_stream_line + 1] == '[':
                 i_stream_line += 2
@@ -229,7 +229,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
                         cursor_pointer += 1
                         i_stream_line += 1
                         i += 1
-                    
+
                 elif (line[i_stream_line] == 'C') or (line[i_stream_line] in string.digits and line[i_stream_line + 1] == 'C'):
 
                     """ move the cursor forward n columns """
@@ -330,7 +330,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
                     cursor_pointer += 1
 
                 i_stream_line += 1
-                
+
         buf[i_line] = ''.join(buf[i_line])
         buf[i_line] += decode_line_timestamp
         decode_line_timestamp = ''
@@ -351,7 +351,7 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, c
     elif len(ttylog_lines_from_file) >= 1:
         if len(ttylog_lines_read_next) > 0:
             ttylog_lines_read_next[-1] += ttylog_lines_from_file[0]
-            if len(ttylog_lines_from_file) > 1: 
+            if len(ttylog_lines_from_file) > 1:
                 ttylog_lines_read_next.extend(ttylog_lines_from_file[1:])
         else:
             ttylog_lines_read_next.extend(ttylog_lines_from_file)
@@ -401,7 +401,7 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, c
         # The characters from 0th index till ending of last user prompt is included is contained in line_to_append
         if len(line_to_append) > 0:
             ttylog_lines_to_decode.append(line_to_append)
-            
+
         ttylog_lines_read_next = ttylog_lines_read_next[index_ttylog_lines_file:]
         return ttylog_lines_to_decode, ttylog_lines_read_next
 
@@ -418,7 +418,7 @@ def push_files_github_user_dir(input_command, line_timestamp, local_copy_directo
         local_copy_directory += r'/'
 
     copy_directory = local_copy_directory
-    
+
     for file_path in files_path_list:
 
         # If the file does not exist OR file size > max allowed file size, then continue
@@ -503,7 +503,7 @@ def get_github_user_directory(github_repo_name='upload_modified_files', local_di
     # Construct directory where users file will be copied
     local_copy_directory = local_dir_to_clone_github + github_repo_name + r'/' + exp_name + r'/' + node + r'/'
     global_copy_directory = local_dir_to_clone_github + github_repo_name + r'/' + exp_name + r'/'
-    
+
     # Create the github user directory does not exist, if it does not exist
     if not os.path.isdir(local_copy_directory):
         os.makedirs(local_copy_directory)
@@ -550,7 +550,7 @@ def get_filenames_from_user_command(current_working_directory, input_command, us
                 # Get a new command without the editor's name
                 new_command = input_command.split(' ',maxsplit=1)[1]
 
-                # If the filename is 'test file', and user enters it as 'vim "test file"'           
+                # If the filename is 'test file', and user enters it as 'vim "test file"'
                 temp_names = re.findall(r'"[A-Za-z0-9_/#.~]+\s[A-Za-z0-9_/#.~]+"', new_command)
                 list_of_filenames.extend(temp_names)
                 new_command = re.sub(r'"[A-Za-z0-9_/#.~]+\s[A-Za-z0-9_/#.~]+"', '', new_command).strip()
@@ -596,7 +596,7 @@ def get_filenames_from_user_command(current_working_directory, input_command, us
         #logfile = open(r"/tmp/acont.log", "a")
         #logfile.write("Appended "+final_file_name+"\n")
         #logfile.close()
-            
+
     return absolute_filesnames
 
 
@@ -604,9 +604,9 @@ def process_files_from_queue():
     """Process the elements in queue """
     global files_list_queue
     while True:
-        
+
         # Get element from queue in a blocking call
-        try: 
+        try:
             queue_element = files_list_queue.get(True, 0.1)
         except queue.Empty as e:
             #print("Got nothing")
@@ -626,7 +626,7 @@ def process_files_from_queue():
 
 
 def write_to_csv(line):
-    
+
     csvfile = open(csv_output_file,'a', newline='')
     csvwriter = csv.writer(csvfile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL)
     csvwriter.writerow([line['id'],line['node_name'],line['timestamp'],line['cwd'], line['cmd'], line['output'], line['prompt']])
@@ -685,7 +685,7 @@ if __name__ == "__main__":
 
     # Get the unique id dictionary.
     # This dictionary will be used to uniquely identif a row in CSV file
-    unique_id_dict = get_unique_id_dict() 
+    unique_id_dict = get_unique_id_dict()
 
     ttylog_sessions = {}
     output_prevous_command = ''
@@ -705,9 +705,9 @@ if __name__ == "__main__":
 
     ttylog_lines_from_file, ttylog_bytes_read = get_ttylog_lines_from_file(ttylog, ttylog_seek_pointer)
     ttylog_seek_pointer += ttylog_bytes_read
-    
+
     for count, line in enumerate(ttylog_lines_from_file):
-        
+
         #Get the tty_sid from first line of the session
         if r'starting session w tty_sid' in line:
             index_start = line.find(r'starting session w tty_sid')
@@ -715,7 +715,7 @@ if __name__ == "__main__":
                 p = re.compile(r'starting session w tty_sid:\d+$')
                 if p.match(line):
                     session_id = line.split()[-1]
-                    # Check if already exists                                   
+                    # Check if already exists
                     if session_id in ttylog_sessions.keys():
                         continue
                     ttylog_sessions[session_id] = {}
@@ -731,7 +731,7 @@ if __name__ == "__main__":
         #Get the user prompt from the second line of the session
         #Same line is 'User prompt is test@intro')
         p = re.compile(r'^User prompt is ')
-        if p.match(line): 
+        if p.match(line):
             user_initial_prompt = (line.split()[-1]).casefold()
 
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
@@ -776,7 +776,7 @@ if __name__ == "__main__":
                 tline = rexp.sub('', line)
                 line = tline
 
-            command_pattern_user_prompt = re.compile("{}:.*?".format(user_initial_prompt.casefold())) 
+            command_pattern_user_prompt = re.compile("{}:.*?".format(user_initial_prompt.casefold()))
             command_pattern_root_prompt = re.compile("{}:.*?".format(root_prompt.casefold()))
 
             tstampre = re.compile(";\d{9}")
@@ -802,7 +802,7 @@ if __name__ == "__main__":
             end = False
             if r'END tty_sid' in line:
                 end = True
-                
+
             #print("Line ", line, " prompt ", prompt, " input cmd ", input_cmd)
             if (prompt) or (not prompt and first_ttylog_line):
                 isinput = True
@@ -836,7 +836,7 @@ if __name__ == "__main__":
 
 
             my_timestamp = int(time.time())
-            
+
             if isinput:
                 input_cmd = line
                 unique_id_dict['counter'] +=1
@@ -845,7 +845,7 @@ if __name__ == "__main__":
                 if not first_ttylog_line:
                     if len(output_txt) > 500:
                         output_txt = output_txt[:500]
-                        
+
                     unique_row_pid = "{}:{}:{}".format(unique_id_dict['exp_name'],unique_id_dict['start_time'],unique_id_dict['counter']-1)
                     cline = len(ttylog_sessions[current_session_id]['lines']) - 1
                     if cline >=0:
@@ -870,8 +870,9 @@ if __name__ == "__main__":
                 #logfile.write("Found input "+input_cmd+"\n")
                 #logfile.close()
                 current_home_dir = ttylog_sessions[current_session_id]['home_dir']
+                output_txt = ''
 
-                
+
             elif not end:
                 output_txt += '\n'+line
             else:

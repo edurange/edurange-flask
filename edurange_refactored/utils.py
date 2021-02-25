@@ -661,28 +661,10 @@ def readCSV(id):
     sName = "".join(e for e in sName if e.isalnum())
     csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
     arr = []
-    reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     for row in reader:
-        lineStr = ''
-        if len(row) > 7:
-            continue
-        for i, item in enumerate(row):
-            if i == 5:
-                item = item.replace("\r", "").replace("\n", "#%#")
-                item = item.replace('\"', '').replace(",", "")
-                item = item.replace('\t', '')
-                item = re.sub(r'[0-9]{10}', '\n', item)
-                if len(item) > 0:
-                    item = '%' + item + '%'
-                if len(item) > 500:
-                    item = item[:500]
-            if i == 0:
-                lineStr += item.strip('\n\r')
-            else:
-                lineStr += '\t' + item.strip('\n\r')
-            if i == 6:
-                lineStr += '\n'
-        arr.append(lineStr)
+        if len(row) == 8:
+            arr.append(row)
     return arr
 
 
