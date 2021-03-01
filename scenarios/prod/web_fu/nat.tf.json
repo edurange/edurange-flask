@@ -41,8 +41,7 @@
                             ],
                             "ports": [
                                 {
-                                    "internal": 22,
-                                    "internal": 80
+                                    "internal": 22
                                 }
                             ],
                             "provisioner": [

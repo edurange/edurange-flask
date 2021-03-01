@@ -5,7 +5,9 @@
 			"global_files": [
 			],
 			"system_files": [
-				"setup"
+				"setup.sh"
+			],
+			"user_files": [
 			]
 		}]
 	}
