@@ -1,0 +1,17 @@
+---
+Name: Web_Fu
+Description: Web Fu teaches the basics of web application security. Put in practice your SQLi and XSS skills!
+Codelab: https://edurange.github.io/web_fu_tutorial/#0
+Instructions: Follow the steps in the student guide.
+InstructionsStudent: Follow the steps in the CodeLabs and answer the questions on EDURange. Question responses are case-sensitive.
+Groups:
+- Name: Students
+  Instructions:
+  Access:
+  - Instance: web_fu
+    Administrator: false
+    IP_Visible: true
+  Users:
+  - Login: student
+Instances:
+- Name: web_fu

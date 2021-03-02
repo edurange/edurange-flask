@@ -1,0 +1,14 @@
+{
+	"containers": {
+		"name" : "nat",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+				"setup.sh"
+			],
+			"user_files": [
+			]
+		}]
+	}
+}
