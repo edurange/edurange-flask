@@ -13,6 +13,7 @@ known_types = [
     "Total_Recon",
     "Treasure_Hunt",
     "Elf_Infection",
+    "Web_Fu"
 ]
 
 
