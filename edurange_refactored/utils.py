@@ -671,28 +671,11 @@ def readCSV(id):
 def readCSV_by_name(name):
     csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")
     arr = []
-    reader = csv.reader(csvFile, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     for row in reader:
-        lineStr = ''
-        if len(row) > 7:
-            continue
-        for i, item in enumerate(row):
-            if i == 5:
-                item = item.replace("\r", "").replace("\n", "#%#")
-                item = item.replace('\"', '').replace(",", "")
-                item = item.replace('\t', '')
-                item = re.sub(r'[0-9]{10}', '\n', item)
-                if len(item) > 0:
-                    item = '%' + item + '%'
-                if len(item) > 500:
-                    item = item[:500]
-            if i == 0:
-                lineStr += item.strip('\n\r')
-            else:
-                lineStr += '\t' + item.strip('\n\r')
-            if i == 6:
-                lineStr += '\n'
-        arr.append(lineStr)
+        if len(row) == 8:
+            arr.append(row)
+
     return arr
 
 
@@ -709,7 +692,7 @@ def formatCSV(arr):
 def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
     dict = {}
     for entry in arr:
-        key = str(entry[keyIndex].replace('@', ''))
+        key = str(entry[keyIndex].replace('-', ''))
         if key in dict:
             dict[key].append(entry)
         else:

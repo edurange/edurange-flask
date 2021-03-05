@@ -399,11 +399,11 @@ def getLogs(i):
             scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
             logs = getLogFile(scenario)
             if logs is not None:
-                with open(logs[3:]) as fin, open('tmp.csv', 'w') as fout:
-                    for line in fin:
-                        fout.write(line.replace('\t', ','))
-                shutil.copy('tmp.csv', logs[3:])
-                os.remove('tmp.csv')
+                # with open(logs[3:]) as fin, open('tmp.csv', 'w') as fout:
+                #     for line in fin:
+                #         fout.write(line.replace('\t', ','))
+                # shutil.copy('tmp.csv', logs[3:])
+                # os.remove('tmp.csv')
                 fname = logs.rsplit('/', 1)[-1] # 'ScenarioName-history.csv'
                 logs = logs.rsplit('/', 1)[0] # '../data/tmp/ScenarioName/'
 

@@ -362,20 +362,22 @@ def scenarioCollectLogs(self, arg):
 
     session = db.session
     for s in scenarios:
-        data = formatCSV(readCSV_by_name(s))
+        data = readCSV_by_name(s)
 
-        for line in data:
-            line[2] = datetime.fromtimestamp(int(line[2]))
+        for i, line in enumerate(data):
+            if i == 0:
+                continue
+            line[3] = datetime.fromtimestamp(int(line[3]))
 
             get_or_create(session=session,
                           model=BashHistory,
                           scenario_name=s,
-                          container_name=line[1],
-                          timestamp=line[2],
-                          current_directory=line[3],
-                          input=line[4],
-                          output=line[5],
-                          prompt=line[6][:-1]
+                          container_name=line[6].split(':')[0],
+                          timestamp=line[3],
+                          current_directory=line[5],
+                          input=line[6].split(':')[-1],
+                          output=line[6],
+                          prompt=line[1]
             )
 
 
