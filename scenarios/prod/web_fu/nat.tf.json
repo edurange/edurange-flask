@@ -27,7 +27,7 @@
                                 }
                             ],
                             "hostname": "WebFu",
-                            "image": "edurange2/web_fu:latest",
+                            "image": "edurange2/webfu:latest",
                             "name": "SNAME_nat",
                             "networks_advanced": [
                                 {

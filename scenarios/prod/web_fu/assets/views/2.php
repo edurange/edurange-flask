@@ -10,4 +10,3 @@
   ];
 
   require('main.php');
-?>
