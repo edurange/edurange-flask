@@ -5,14 +5,14 @@ import yaml
 from flask import flash
 
 known_types = [
-    "Ssh_Inception",
-    "Strace",
+    "Elf_Infection",
+    "File_Wrangler",
     "Getting_Started",
     "Metasploitable",
-    "File_Wrangler",
+    "Ssh_Inception",
+    "Strace",
     "Total_Recon",
     "Treasure_Hunt",
-    "Elf_Infection",
     "Web_Fu"
 ]
 
