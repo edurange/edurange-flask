@@ -37,7 +37,7 @@
 						<tr>
                             <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
 							<td>{{scenario.description}}</td>
-							<td>{{scenario.owner}}</td>
+							<td>{{ scenario.owner.username }}</td>
 							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
 							<td> {% if scenario.status==0 %}
                                 <img src="/static/build/img/stopped.png">
