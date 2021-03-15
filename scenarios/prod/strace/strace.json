@@ -10,7 +10,8 @@
 				"motd_nat"
 			],
 			"user_files": [
-				"files"
+				"files",
+				"milestones.txt"
 			]
 		}]
 	}

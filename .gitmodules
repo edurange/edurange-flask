@@ -1,0 +1,3 @@
+[submodule "webssh2"]
+	path = webssh2
+	url = https://github.com/edurange/webssh2

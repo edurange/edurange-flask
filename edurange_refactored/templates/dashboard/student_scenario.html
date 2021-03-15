@@ -13,9 +13,29 @@
             <p><b>  Instructor : </b> {{ owner }} </p>
             <p><b> Username : </b><span id="user">{{ u_name }}</span></p>
             <p><b> Password : </b> {{ pw }}</p>
-            <p><b> Connection Information: </b></p>
+            <!--<p><b> Connection Information: </b></p>-->
             {% for container in add %}
-                <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                {% if not add[container] %}
+            <p><b> Connection Information: </b></p>
+                    <p>Container not found, something went wrong</p>
+                {% elif ':' not in add[container] %}
+            <p><b> Connection Information: </b></p>
+                    <p>Container address not found, is it running?</p>
+                {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                    <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
+            <p style="margin-top: -10px;"><b>SSH Command: </b>
+                <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
+                <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                <script>function showSSHConsole() {
+                    window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                }
+                </script>
+                <button class="btn btn-dark" id="openWebSSH" onClick="showSSHConsole()"><i class= "fa"> Open WebSSH Console</i></button>
+                <!-- <div id="SSHConsoleContainer" style="display:none">
+                    <iframe style="position:absolute;height:100%;width:100%;border:none" src= "http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}/{{ u_name }}/{{ pw }}" ></iframe>
+                </div> -->
+            </p>
+                {% endif %}
             {% endfor %}
         </div>
         <ul class="nav nav-tabs mt-3 ml-3">
@@ -67,7 +87,10 @@
                 <div class="container mt-3">
                     <div class="card-body">
                         <div class="container">
-                            <iframe src="{{ "data:text/html;charset=utf-8,%s" % guide }}" title="Guide" style="width:1100px; height:1000px;"></iframe>
+                            {# <iframe src="{{ "data:text/html;charset=utf-8,%s" % guide }}" title="Guide" style="width:1100px; height:1000px;"></iframe> #}
+                            <div id="GuideContent">
+                                {{ guide|safe }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,6 +133,14 @@
                     }
                 });
             {% endfor %}#}
+
+            // copy ssh command to clipboard
+            $("#copySSH").on("click", function(e) {
+                let command = document.getElementById("sshCmd");
+                command.select();
+                document.execCommand("copy");
+            });
+
 
             $("#Responses form button[type='submit']").on("click", function(e) {
                 e.preventDefault();

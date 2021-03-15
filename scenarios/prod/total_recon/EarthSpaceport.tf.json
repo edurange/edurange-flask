@@ -27,7 +27,7 @@
                 }
               ],
               "hostname": "EarthSpaceport",
-              "image": "sanivo/edurange-ubuntu-sshd:16.04",
+              "image": "edurange2/ubuntu-sshd:16.04",
               "name": "SNAME_EarthSpaceport",
               "networks_advanced": [
                 {

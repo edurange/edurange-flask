@@ -31,9 +31,22 @@
                         <p> Status : {{ status }} </p>
                         <p> Created by : {{ owner }} </p>
                         <p> Created at : {{ dt }} </p>
-                        <b> Connection Information: </b>
+                        <!--<b> Connection Information: </b>-->
                         {% for container in add %}
-                            <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p>
+                            {% if not add[container] %}
+                        <p><b> Connection Information: </b></p>
+                                <p>Container not found, something went wrong</p>
+                            {% elif ':' not in add[container] %}
+                        <p><b> Connection Information: </b></p>
+                                <p>Container address not found, is it running?</p>
+                            {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                                <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
+                        <p style="margin-top: -10px;"><b>SSH Command: </b>
+                            <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh root@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
+                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                        </p>
+                                <p><b>Password:</b> Check the .env file for your root password.</p>
+                            {% endif %}
                         {% endfor %}
                         <b>Questions:</b>
                         <p></p>
@@ -48,8 +61,11 @@
             <div id="Guide" class="tab-pane fade">
                 <div class="card-body">
                     <div class="container">
-                        <!--<iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe>-->
-                        <iframe src="{{ "data:text/html;charset=utf-8,%s" % guide }}" title="Guide" style="width:1100px; height:1000px;"></iframe>
+                        {# <iframe src="{{ guide }}" title="Codelab" style="width:1100px; height:1000px;"></iframe> #}
+                        {# <iframe src="{{ "data:text/html;charset=utf-8,%s" % guide }}" title="NotGuide" style="width:1100px; height:1000px;"></iframe> #}
+                        <div id="GuideContent">
+                            {{ guide|safe }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,7 +136,7 @@
                             <tr>
                                 <td> {{ player.username }}</td>
                                 {% if player.username in u_logs %}
-                                <td> {{ u_logs[player.username][-1][2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td>
+                                <td> {{ u_logs[player.username][-1][3]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td>
                                 {% else %}
                                 <td> <b> No Activity </b> </td>
                                 {% endif %}
@@ -150,10 +166,10 @@
                                     <table class="table">
                                         <thead class="thead-dark">
                                         <tr>
-                                            <th> Hostname </th>
+                                            <th> Milestone </th>
                                             <th> Timestamp </th>
                                             <th> Working Directory </th>
-                                            <th> Input </th>
+                                            <th> Hostname:Input </th>
                                             <th> Output </th>
                                             {#<th> User </th>#}
                                         </tr>
@@ -161,11 +177,11 @@
                                         <tbody>
                                         {% for entry in u_logs[player.username] if player.username in u_logs %}
                                         <tr>
-                                            <td> {{ entry[1] }} </td> {# hostname #}
-                                            <td> {{ entry[2]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td> {# time #}
-                                            <td> {{ entry[3] }} </td> {# dir #}
-                                            <td> {{ entry[4] }} </td> {# in #}
-                                            <td><div style="width:100%;max-height:50px;max-width:350px;overflow-y:scroll"> {{ entry[5] }} </div></td> {# out #}
+                                            <td> {{ entry[2] }} </td> {# hostname #}
+                                            <td> {{ entry[3]|ctime|formatdatetime('%d-%m-%Y %I:%M') }} </td> {# time #}
+                                            <td> {{ entry[5] }} </td> {# dir #}
+                                            <td> {{ entry[6] }} </td> {# in #}
+                                            <td><div style="width:100%;max-height:50px;max-width:350px;overflow-y:scroll"> {{ entry[7] }} </div></td> {# out #}
                                             {#<td> {{ entry[6] }} </td>#} {# usr #}
                                         </tr>
                                         {% endfor %}
@@ -188,6 +204,13 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+        // copy ssh command to clipboard
+        $("#copySSH").on("click", function(e) {
+            let command = document.getElementById("sshCmd");
+            command.select();
+            document.execCommand("copy");
+        });
 
         // show chosen player when a player is chosen
         $("button[id$='-select']").on("click", function() {

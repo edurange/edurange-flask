@@ -9,7 +9,8 @@
 				"motd_nat"
 			],
 			"user_files": [
-				"elfit"
+				"elfit",
+				"milestones.txt"
 			]
 		}]
 	}
