@@ -758,7 +758,7 @@ def displayProgress(sid, uid):
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     query = db_ses.query(Responses.attempt, Responses.question, Responses.points, Responses.student_response, Responses.scenario_id, Responses.user_id)\
         .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).all()
-    questions = questionReader(sName)
+    questions = questionReader(sName.name)
     answered, tQuest = getProgress(query, questions)
     scr, tScr = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
     progress = {'questions': answered, 'total_questions': tQuest, 'score': scr, 'total_score': tScr}
@@ -771,13 +771,13 @@ def calcScr(uid, sid, att):
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     query = db_ses.query(Responses.points, Responses.question).filter(Responses.scenario_id == sid).filter(Responses.user_id == uid)\
         .filter(Responses.attempt == att).order_by(Responses.response_time.desc()).all()
-    checkList = scoreSetup(questionReader(sName))
+    checkList = scoreSetup(questionReader(sName.name))
     for r in query:
         check, checkList = scoreCheck(r.question, checkList)
         if not check:
             score += int(r.points)
     # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))
-    tScore = totalScore(questionReader(sName))
+    tScore = totalScore(questionReader(sName.name))
     return score, tScore
 
 

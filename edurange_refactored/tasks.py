@@ -347,26 +347,36 @@ def scenarioCollectLogs(self, arg):
         if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
-
+        try:
             os.system('docker cp ' + c_name + ':/usr/local/src/merged_logs.csv logs/' + c_name + '.csv')
+        except FileNotFoundError as e:
+            print("{}".format(e))
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
+        if os.path.isdir('data/tmp/' + s):
+            try:
+                os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
+            except Exception as e:
+                print("Not a scenario: {} - Skipping".format(e))
 
     for f in files:
             for s in scenarios:
                 if f.find(s) == 0:
-                    os.system('cat logs/' + f + ' >> data/tmp/' + s + '/' + s + '-history.csv')
+                    if os.path.isdir('data/tmp/' + s):
+                        try:
+                            os.system('cat logs/' + f + ' >> data/tmp/' + s + '/' + s + '-history.csv')
+                        except Exception as e:
+                            print("Not a scenario: {} - Skipping".format(e))
 
     session = db.session
     for s in scenarios:
-        data = readCSV_by_name(s)
-
-        for i, line in enumerate(data):
-            if i == 0:
-                continue
+        try:
+            data = readCSV_by_name(s)
+            for i, line in enumerate(data):
+                if i == 0:
+                    continue
             line[3] = datetime.fromtimestamp(int(line[3]))
 
             get_or_create(session=session,
@@ -378,7 +388,10 @@ def scenarioCollectLogs(self, arg):
                           input=line[6].split(':')[-1],
                           output=line[6],
                           prompt=line[1]
-            )
+                          )
+
+        except FileNotFoundError as e:
+            print("Container not found: {} - Skipping".format(e))
 
 
 
