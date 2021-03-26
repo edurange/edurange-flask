@@ -19,4 +19,4 @@ pep8-naming==0.9.1
 
 #
 jwt==1.0.0
-PyYAML==5.3.1
+PyYAML==5.4
