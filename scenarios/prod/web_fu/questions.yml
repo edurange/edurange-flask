@@ -65,3 +65,17 @@
     Points: '20'
   Order: 8
   Points: 20
+- Text: What is the flag for level 3?
+  Type: String
+  Values:
+  - Value: 'FLAG{1M_N0T_4_H4SH3D_H4X0R}'
+    Points: '25'
+  Order: 9
+  Points: 25
+- Text: What is the password for user "backdoor"?
+  Type: String
+  Values:
+  - Value: 'supersecreto'
+    Points: '30'
+  Order: 10
+  Points: 30
