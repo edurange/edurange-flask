@@ -42,6 +42,10 @@
                             "ports": [
                                 {
                                     "internal": 22
+                                },
+                                {
+                                    "internal": 80,
+                                    "external": 8080
                                 }
                             ],
                             "provisioner": [
