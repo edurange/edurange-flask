@@ -43,7 +43,7 @@ celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks
 
 To launch using best practice production settings, with SSL certificates and everything, you'll need to install and configure nginx and certbot
 ```bash
-sudo apt install nginx certbot python-certbot-nginx
+sudo apt install nginx certbot python3-certbot-nginx
 ```
 Once installed, you'll need to edit your nginx config file. 
 We have an example config file that should work with minor editing located in our docs repository:
