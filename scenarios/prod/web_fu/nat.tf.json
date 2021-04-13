@@ -46,8 +46,18 @@
                                 {
                                     "internal": 80,
                                     "external": 8080
+                                },
+                                {
+                                    "internal": 443,
+                                    "external": 8443
                                 }
                             ],
+                            "mounts": {
+                                "source": "/etc/letsencrypt/archive/EXTERN_HOST",
+                                "target": "/etc/ssl/webfu",
+                                "type": "bind",
+                                "read_only": true
+                            },
                             "provisioner": [
                                 {
                                     "remote-exec": [
