@@ -39,7 +39,6 @@ output/*/index.html
 
 # Sphinx
 docs/_build
-
 .webassets-cache
 
 # Virtualenvs
@@ -56,39 +55,27 @@ env/
 
 # Development database
 *.db
-
 edurange_refactored/static/cache_manifest.json
-
-.idea/vcs.xml
-
-.idea/workspace.xml
-
 .idea/
 
-#JWT Generator
+# JWT Generator
 edurange_refactored/templates/utils/.keys/
 package-lock.json
 
-data/tmp/*
-
-*.info
-
-*.tfstate
-
-npm-debug.log
-
-dump.rdb
-
-celerybeat-schedule
-
+# Directories
+data/tmp/
 logs/
-
-celery.log
-
+log_analysis/
 migrations/
 
+# Files
+.csv
+.DS_Store
+*.info
+*.tfstate
+npm-debug.log
+dump.rdb
+celerybeat-schedule
+celery.log
 assets/js/.Rhistory
-
 assets/css/.Rhistory
-
-log_analysis/
