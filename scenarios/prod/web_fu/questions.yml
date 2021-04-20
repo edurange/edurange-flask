@@ -44,13 +44,13 @@
     Points: '5'
   Order: 5
   Points: 5
-- Text: What keyword could you use to query two combined tables?
+- Text: What boolean operator did you use to dump the table from level 1?
   Type: String
   Values:
-  - Value: 'UNION'
-    Points: '10'
+  - Value: 'OR'
+    Points: '15'
   Order: 6
-  Points: 10
+  Points: 15
 - Text: What is the flag for level 1?
   Type: String
   Values:
@@ -58,24 +58,38 @@
     Points: '15'
   Order: 7
   Points: 15
+- Text: What special character is the LIKE query using in level 2?
+  Type: String
+  Values:
+  - Value: '%'
+    Points: '15'
+  Order: 8
+  Points: 15
 - Text: What is the flag for level 2?
   Type: String
   Values:
   - Value: 'FLAG{Y0U_D0_L1K3_QU3R13S}'
     Points: '20'
-  Order: 8
+  Order: 9
   Points: 20
+- Text: What keyword could you use to query two combined tables?
+  Type: String
+  Values:
+  - Value: 'UNION'
+    Points: '10'
+  Order: 6
+  Points: 10
 - Text: What is the flag for level 3?
   Type: String
   Values:
   - Value: 'FLAG{1M_N0T_4_H4SH3D_H4X0R}'
     Points: '25'
-  Order: 9
+  Order: 11
   Points: 25
 - Text: What is the password for user "backdoor"?
   Type: String
   Values:
   - Value: 'supersecreto'
     Points: '30'
-  Order: 10
+  Order: 12
   Points: 30
