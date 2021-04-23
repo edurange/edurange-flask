@@ -1,0 +1,85 @@
+{
+    "resource": [
+        {
+            "docker_container": [
+                {
+                    "SNAME_nat": [
+                        {
+                            "capabilities": [
+                                {
+                                    "add": [
+                                        "NET_ADMIN",
+                                        "SYS_PTRACE"
+                                    ]
+                                }
+                            ],
+                            "command": [
+                                "/usr/sbin/sshd",
+                                "-D"
+                            ],
+                            "connection": [
+                                {
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "root",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
+                                }
+                            ],
+                            "hostname": "NAT",
+                            "image": "edurange2/metasploit.victim.dev",
+                            "name": "SNAME_nat",
+                            "networks_advanced": [
+                                {
+                                    "ipv4_address": "OCTET.0.1.2",
+                                    "name": "SNAME_NAT"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.0.2",
+                                    "name": "SNAME_PLAYER"
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "internal": 22
+                                }
+                            ],
+                            "provisioner": [
+                                {
+                                    "remote-exec": [
+                                        {
+                                            "inline": [
+                                                "USERS",
+                                                "EXECS"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "locals": [
+        {
+            "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_nat": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_nat_extern])}",
+                            "name": "SNAME_nat"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+	"containers": {
+		"name" : "victim",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+			],
+			"user_files": [
+			]
+		}]
+	}
+}
