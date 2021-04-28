@@ -5,8 +5,10 @@
 			"global_files": [
 			],
 			"system_files": [
+				"Install"
 			],
 			"user_files": [
+				"milestones.txt"
 			]
 		}]
 	}
