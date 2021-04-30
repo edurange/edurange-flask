@@ -8,5 +8,5 @@
 /etc/init.d/samba start
 /etc/init.d/xinetd start
 
-#
+# /etc/unreal/<service_name> start
 /etc/unreal/unreal start

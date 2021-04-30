@@ -1,0 +1,85 @@
+{
+    "resource": [
+        {
+            "docker_container": [
+                {
+                    "SNAME_target": [
+                        {
+                            "capabilities": [
+                                {
+                                    "add": [
+                                        "NET_ADMIN",
+                                        "SYS_PTRACE"
+                                    ]
+                                }
+                            ],
+                            "command": [
+                                "/usr/sbin/sshd",
+                                "-D"
+                            ],
+                            "connection": [
+                                {
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "root",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
+                                }
+                            ],
+                            "hostname": "Target",
+                            "image": "edurange2/metasploit.victim.dev",
+                            "name": "SNAME_target",
+                            "networks_advanced": [
+                                {
+                                    "ipv4_address": "OCTET.0.1.2",
+                                    "name": "SNAME_NAT"
+                                },
+                                {
+                                    "ipv4_address": "OCTET.0.0.2",
+                                    "name": "SNAME_PLAYER"
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "internal": 22
+                                }
+                            ],
+                            "provisioner": [
+                                {
+                                    "remote-exec": [
+                                        {
+                                            "inline": [
+                                                "USERS",
+                                                "EXECS"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "restart": "always"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "locals": [
+        {
+            "SNAME_target_extern": "${tostring(docker_container.SNAME_target.ports[0].external)}"
+        }
+    ],
+    "output": [
+        {
+            "SNAME_target": [
+                {
+                    "value": [
+                        {
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_target_extern])}",
+                            "name": "SNAME_target"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

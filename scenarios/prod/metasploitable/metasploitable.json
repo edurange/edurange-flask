@@ -1,5 +1,5 @@
 {
-	"containers": {
+	"containers": [{
 		"name" : "victim",
 		"files": [{
 			"global_files": [
@@ -11,5 +11,17 @@
 				"milestones.txt"
 			]
 		}]
-	}
+	},
+	{
+		"name" : "attacker",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+			],
+			"user_files": [
+				"milestones.txt"
+			]
+		}]
+	}]
 }
