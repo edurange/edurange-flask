@@ -1,0 +1,27 @@
+{
+	"containers": [{
+		"name" : "target",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+				"Install"
+			],
+			"user_files": [
+				"milestones.txt"
+			]
+		}]
+	},
+	{
+		"name" : "attacker",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+			],
+			"user_files": [
+				"milestones.txt"
+			]
+		}]
+	}]
+}

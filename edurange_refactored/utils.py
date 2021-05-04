@@ -207,7 +207,7 @@ def getDesc(t):
 
 
 def getGuide2(t):
-    #g = "No Codelab for this Scenario"
+    # g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
     with open(
             "./scenarios/prod/" + t + "/" + t + ".yml", "r"
@@ -216,22 +216,200 @@ def getGuide2(t):
         for item, doc in document.items():
             if item == "Codelab":
                 g = doc
-                #print(g)
-                #return g
-    #g = "No Codelab for this Scenario"
+                # print(g)
+                # return g
+    # g = "No Codelab for this Scenario"
     return g
+
+
+#
+# host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
+# g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
+# f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".html"
+# file = open(f, mode="r", encoding="utf-8")
+# m = file.read()
+# ht = m.replace('127.0.0.1', host)
+# ht = md.markdown(m)
 
 
 def getGuide(t):
     t = t.title().replace(" ", "_")
-    host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
-    g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
     f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".md"
-    file = open(f, mode="r", encoding="utf-8")
-    m = file.read()
-    m = m.replace('127.0.0.1', host)
-    ht = md.markdown(m)
-    return ht
+    lines = guideHelp1(f)
+    htL = guideHelp2(lines)
+    sections = []
+    for lines in htL:
+        lines = guideHelp3(lines)
+        sections.append(lines)
+    guide = guideHelp5(sections)
+    # test
+    #test = guideHelp3(htL[9])
+    #test = guideHelp4(test, 4)
+    return guide
+
+
+def guideHelp1(f):
+    # reads a md file into a list of lists divided by ---
+    lines = []
+    with open(f, mode="r", encoding="utf-8") as file:
+        for line in file:
+            lines.append(line)
+    tmp = []
+    lines2 = []
+    for line in lines:
+        if line == '---\n':
+            # tmp.append(line)
+            lines2.append(tmp)
+            tmp = []
+        else:
+            tmp.append(line)
+    return lines2
+
+
+def guideHelp2(ls):
+    # reads a list of lists of md and converts it to a list of lists of html
+    new = []
+    tmp = []
+    for section in ls:
+        for line in section:
+            line = md.markdown(line)
+            tmp.append(line)
+        new.append(tmp)
+        tmp = []
+    return new
+
+
+def guideHelp3(ls):
+    # reads a list of html and separates it into a list of a head string and a content string
+    h1 = '<h1>'
+    h2 = '<h2>'
+    h3 = '<h3>'
+    col3 = 'class="colH3"'
+    colSec = []
+    section_head = ''
+    hd = False
+    c3 = False
+    content = ''
+    for line in ls:
+        if not hd:
+            if col3 in line:
+                line = line.replace('<h2 class="colH3">', '').replace('</h2>', '')
+                colSec.append(line)
+                c3 = True
+                hd = True
+            if (h1 in line) or (h2 in line):
+                section_head = line
+                hd = True
+        elif c3:
+            if h3 in line:
+                colSec.append(content)
+                colSec.append(line)
+                content = ''
+            else:
+                content = content + line
+        else:
+            content = content + line
+    if c3:
+        colSec.append(content)
+        return colSec
+    # section_head = section_head.replace('<h1>', '').replace('</h1>', '')
+    section_head = section_head.replace('<h2>', '').replace('</h2>', '')
+    return [section_head, content]
+
+
+def guideHelp4(sec, num):
+    # reads a list of section head and section content and creates a html card using the information
+    head = sec[0]
+    content = sec[1]
+    if len(sec) > 2:
+        content = guideHelp6(sec[1:], num)
+    h_id = 'H' + str(num)
+    b_id = 'B' + str(num)
+    card = str("""
+<div class="card">
+    <div class="card-header" id="[HEADER_ID]">
+        <div class="row">
+            <h2> [SECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
+                <i class="fa fa-caret-down"></i> </button></h2>
+        </div>
+    </div>
+    <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#acc">
+        <div class="card-body">
+            [SECTION_CONTENT]
+        </div>
+    </div>
+</div>
+
+<hr>
+""")
+    card = card.replace('[SECTION_HEADER]', head).replace('[SECTION_CONTENT]', content)
+    card = card.replace('[HEADER_ID]', h_id).replace('[BODY_ID]', b_id)
+    return card
+
+
+def guideHelp5(sections):
+    #
+    guide = ''
+    accOpen = str("""
+<div class="container" id="acc">
+""")
+    accClose = str("""
+</div>
+""")
+    titleSec = '' + sections[0][0] + sections[0][1] + "<hr>"
+    guide += titleSec + accOpen
+    sections = sections[1:]
+    num = 0
+    for sec in sections:
+        guide = guide + guideHelp4(sec, num)
+        num += 1
+    guide += accClose
+    return guide
+
+
+def guideHelp6(sec, num):
+    h3 = '<h3>'
+    count = 0
+    h_id = 'H' + str(num) + '-'
+    b_id = 'B' + str(num) + '-'
+    content = ''
+    secAcc = 'acc' + str(num)
+    secAccOpen = str("""
+<div class="container" id="[SEC_ACC]">
+""")
+    secAccClose = str("""
+</div>
+""")
+    subCard = str("""
+<div class="card">
+    <div class="card-header" id="[HEADER_ID]">
+        <div class="row">
+            <h3> [SUBSECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
+                <i class="fa fa-caret-down"></i> </button> </h3>
+        </div>
+    </div>
+    <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#[SEC_ACC]">
+        <div class="card-body">
+            [SUBSECTION_CONTENT]
+        </div>
+    </div>
+</div>
+""")
+    if h3 not in sec[0]:
+        content += sec[0]
+        sec = sec[1:]
+    content += secAccOpen.replace('[SEC_ACC]', secAcc)
+    for i in range(0, len(sec)):
+        if h3 in sec[i]:
+            tHd = sec[i].replace('<h3>', '').replace('</h3>', '')
+            tmp = subCard
+            tmp = tmp.replace('[HEADER_ID]', (h_id + str(count))).replace('[BODY_ID]', (b_id + str(count)))
+            tmp = tmp.replace('[SUBSECTION_HEADER]', tHd).replace('[SUBSECTION_CONTENT]', sec[i+1])
+            tmp = tmp.replace('[SEC_ACC]', secAcc)
+            content += tmp
+            count += 1
+    content += secAccClose
+    return content
 
 
 def getPass(sn, un):
