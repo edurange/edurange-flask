@@ -44,6 +44,12 @@
                                     "internal": 22
                                 }
                             ],
+                            "host": [
+                                {
+                                    "host": "target",
+                                    "ip": "OCTET.0.0.2"
+                                }
+                            ],
                             "provisioner": [
                                 {
                                     "remote-exec": [

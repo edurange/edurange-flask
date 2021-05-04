@@ -1,0 +1,6 @@
+iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -s target -j ACCEPT
+iptables -A OUTPUT -d target -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP

@@ -44,6 +44,12 @@
                                     "internal": 22
                                 }
                             ],
+                            "host": [
+                                {
+                                    "host": "attacker",
+                                    "ip": "OCTET.0.0.3"
+                                }
+                            ],
                             "provisioner": [
                                 {
                                     "remote-exec": [
