@@ -26,7 +26,7 @@
                                   "user": "root"
                                 }
                             ],
-                            "hostname": "Attacker",
+                            "hostname": "attacker",
                             "image": "edurange2/metasploit.attacker.dev",
                             "name": "SNAME_attacker",
                             "networks_advanced": [

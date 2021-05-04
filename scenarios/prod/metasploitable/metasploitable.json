@@ -1,6 +1,6 @@
 {
 	"containers": [{
-		"name" : "victim",
+		"name" : "target",
 		"files": [{
 			"global_files": [
 			],

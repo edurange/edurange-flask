@@ -292,7 +292,7 @@ def getGuide(t):
         sections.append(lines)
     guide = guideHelp5(sections)
     # test
-    test = guideHelp3(htL[9])
+    #test = guideHelp3(htL[9])
     #test = guideHelp4(test, 4)
     return guide
 

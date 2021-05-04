@@ -10,6 +10,8 @@
 4. Move and copy files.
 5. Set permissions (access control) for files.
 
+---
+
 ## Task 1
 
 The `pwd` command will give you the current working directory. This tells you where you are in the Linux file system.

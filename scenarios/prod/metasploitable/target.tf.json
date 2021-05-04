@@ -3,7 +3,7 @@
         {
             "docker_container": [
                 {
-                    "SNAME_nat": [
+                    "SNAME_target": [
                         {
                             "capabilities": [
                                 {
@@ -26,9 +26,9 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "NAT",
+                            "hostname": "target",
                             "image": "edurange2/metasploit.victim.dev",
-                            "name": "SNAME_nat",
+                            "name": "SNAME_target",
                             "networks_advanced": [
                                 {
                                     "ipv4_address": "OCTET.0.1.2",
@@ -65,17 +65,17 @@
     ],
     "locals": [
         {
-            "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+            "SNAME_target_extern": "${tostring(docker_container.SNAME_target.ports[0].external)}"
         }
     ],
     "output": [
         {
-            "SNAME_nat": [
+            "SNAME_target": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_nat_extern])}",
-                            "name": "SNAME_nat"
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_target_extern])}",
+                            "name": "SNAME_target"
                         }
                     ]
                 }
