@@ -1,4 +1,4 @@
-- Text: What port is open at 10.0.0.4?
+- Question: What port is open at 10.0.0.4?
   Type: Number
   Options:
   - accept-integer
@@ -9,7 +9,7 @@
     Points: '10'
   Order: 1
   Points: 10
-- Text: What standard port does an http server use?
+- Question: What standard port does an http server use?
   Type: Number
   Options:
   - accept-integer
@@ -18,7 +18,7 @@
     Points: '10'
   Order: 2
   Points: 10
-- Text: What is the IP of the host with the web server on the subnet 10.0.0.0/24?
+- Question: What is the IP of the host with the web server on the subnet 10.0.0.0/24?
   Type: String
   Options: []
   Values:
@@ -26,7 +26,7 @@
     Points: '10'
   Order: 3
   Points: 10
-- Text: What is the state of ports 80 and 443 on the earth-spaceport host?
+- Question: What is the state of ports 80 and 443 on the earth-spaceport host?
   Type: String
   Options:
   - ignore-case
@@ -35,7 +35,7 @@
     Points: '10'
   Order: 4
   Points: 10
-- Text: What is the IP Address of the mars spaceport? (It ends in .33)
+- Question: What is the IP Address of the mars spaceport? (It ends in .33)
   Type: String
   Options: []
   Values:
@@ -43,7 +43,7 @@
     Points: '10'
   Order: 7
   Points: 10
-- Text: In the nmap man page, under "--min-rate", what --min-rate example do they
+- Question: In the nmap man page, under "--min-rate", what --min-rate example do they
     give? (Hint, it's an integer greater than 100 and less than 500)
   Type: Number
   Options:
@@ -55,7 +55,7 @@
     Points: '10'
   Order: 5
   Points: 10
-- Text: What is the nmap option for a Ping scan (disable port scan)? It should take
+- Question: What is the nmap option for a Ping scan (disable port scan)? It should take
     the form -Xx. For example, -sL is the option for List scan.
   Type: String
   Options: []
@@ -66,7 +66,7 @@
     Points: '10'
   Order: 6
   Points: 20
-- Text: What has the ssh port on Venusville been changed to?
+- Question: What has the ssh port on Venusville been changed to?
   Type: Number
   Options:
   - accept-integer
@@ -76,7 +76,7 @@
     Points: '10'
   Order: 8
   Points: 10
-- Text: What has the ssh port on Last Resort been changed to?
+- Question: What has the ssh port on Last Resort been changed to?
   Type: Number
   Options:
   - accept-integer
@@ -86,7 +86,7 @@
     Points: '10'
   Order: 9
   Points: 10
-- Text: What port was open on the Resistance Base?
+- Question: What port was open on the Resistance Base?
   Type: Number
   Options:
   - accept-integer
@@ -96,7 +96,7 @@
     Points: '20'
   Order: 10
   Points: 20
-- Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.34?
+- Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.34?
     (Do not include scan in your answer)
   Type: String
   Options:
@@ -106,7 +106,7 @@
     Points: '10'
   Order: 11
   Points: 10
-- Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.36?
+- Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.36?
     (Do not include scan in your answer)
   Type: String
   Options:
@@ -116,7 +116,7 @@
     Points: '10'
   Order: 12
   Points: 10
-- Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.38?
+- Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.38?
     (Do not include scan in your answer)
   Type: String
   Options:
@@ -126,7 +126,7 @@
     Points: '10'
   Order: 13
   Points: 10
-- Text: How many possible hosts does the subnet 10.0.192.0/18 cover?
+- Question: How many possible hosts does the subnet 10.0.192.0/18 cover?
   Type: Number
   Options:
   - accept-integer
@@ -136,7 +136,7 @@
     Points: '15'
   Order: 14
   Points: 15
-- Text: How many ports are open on the control room host? (the IP ends in .5)
+- Question: How many ports are open on the control room host? (the IP ends in .5)
   Type: Number
   Options:
   - accept-integer
@@ -146,7 +146,7 @@
     Points: '10'
   Order: 15
   Points: 10
-- Text: On the control_room box, what is the name of the directory where chmod was
+- Question: On the control_room box, what is the name of the directory where chmod was
     moved to?
   Type: String
   Options:

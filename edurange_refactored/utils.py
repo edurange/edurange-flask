@@ -300,8 +300,8 @@ def getQuestions(t):
     ) as yml:  # edurange_refactored/scenarios/prod
         document = yaml.full_load(yml)
         for item in document:
-            #questions.append(item['Text'])
-            questions[item['Order']] = item['Text']
+            #questions.append(item['Question'])
+            questions[item['Order']] = item['Question']
     return questions
 
 
@@ -438,7 +438,7 @@ def responseQuery(uid, att, query, questions):
         for text in questions:
             order = int(text['Order'])
             if order == qNum:
-                quest = text['Text']
+                quest = text['Question']
                 poi = text['Points']
                 val = text['Values'][0]['Value']
                 sR = response.student_response

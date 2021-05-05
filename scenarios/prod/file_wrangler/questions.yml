@@ -1,4 +1,4 @@
-- Text: What is the full path of your directory when you typed the pwd command?
+- Question: What is the full path of your directory when you typed the pwd command?
   Type: String
   Options: []
   Values:
@@ -6,7 +6,7 @@
     Points: '1'
   Order: 1
   Points: 1
-- Text: What command would you type into the prompt to see the manual entry for the current directory command?
+- Question: What command would you type into the prompt to see the manual entry for the current directory command?
   Type: String
   Options: []
   Values:
@@ -14,7 +14,7 @@
     Points: '1'
   Order: 2
   Points: 1
-- Text: How many visible files and directories are in the account home directory?
+- Question: How many visible files and directories are in the account home directory?
   Type: Number
   Options:
   - accept-integer
@@ -24,7 +24,7 @@
     Points: '1'
   Order: 3
   Points: 1
-- Text: What is the option for the ls command that will provide a long listing format? (Don't forget the -!)
+- Question: What is the option for the ls command that will provide a long listing format? (Don't forget the -!)
   Type: String
   Options: []
   Values:
@@ -32,7 +32,7 @@
     Points: '1'
   Order: 4
   Points: 1
-- Text: How many directories are there in the account home directory?
+- Question: How many directories are there in the account home directory?
   Type: Number
   Options:
   - accept-integer
@@ -42,7 +42,7 @@
     Points: '1'
   Order: 5
   Points: 1
-- Text: How many VISIBLE FILES are in the view directory?
+- Question: How many VISIBLE FILES are in the view directory?
   Type: Number
   Options:
   - accept-integer
@@ -52,7 +52,7 @@
     Points: '1'
   Order: 6
   Points: 1
-- Text: What is the complete command for listing all files, including hidden files?
+- Question: What is the complete command for listing all files, including hidden files?
   Type: String
   Options: []
   Values:
@@ -60,7 +60,7 @@
     Points: '1'
   Order: 7
   Points: 1
-- Text: How many HIDDEN FILES are in the view directory?
+- Question: How many HIDDEN FILES are in the view directory?
   Type: Number
   Options:
   - accept-integer
@@ -70,7 +70,7 @@
     Points: '1'
   Order: 8
   Points: 1
-- Text: What is the full path of the directory you are in after typing cd ..?
+- Question: What is the full path of the directory you are in after typing cd ..?
   Type: String
   Options: []
   Values:
@@ -78,7 +78,7 @@
     Points: '1'
   Order: 9
   Points: 1
-- Text: How many HIDDEN DIRECTORIES are in the home directory? (. and .. don't count)
+- Question: How many HIDDEN DIRECTORIES are in the home directory? (. and .. don't count)
   Type: Number
   Options:
   - accept-integer
@@ -88,14 +88,14 @@
     Points: '1'
   Order: 10
   Points: 1
-- Text: What is the flag you discovered by running sudo manflag in the manipulate directory?
+- Question: What is the flag you discovered by running sudo manflag in the manipulate directory?
   Type: String
   Values:
   - Value: "$RANDOM_ONE"
     Points: '10'
   Order: 11
   Points: 10
-- Text: What is the flag you discovered by running sudo perflag in the permissions directory?
+- Question: What is the flag you discovered by running sudo perflag in the permissions directory?
   Type: String
   Values:
   - Value: "$RANDOM_TWO"

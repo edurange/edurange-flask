@@ -1,82 +1,82 @@
-- Text: Hash of the card '8 of Clubs'
+- Question: Hash of the card '8 of Clubs'
   Type: String
   Values:
   - Value: 5b0c5fe06186c808af0627a5457f811d
     Points: '5'
   Points: 5
-- Text: Hash of the card '3 of Hearts'
+- Question: Hash of the card '3 of Hearts'
   Type: String
   Values:
   - Value: cb53b81df46068c763e6f6ec67000c8f
     Points: '5'
   Points: 5
-- Text: Hash of the card '2 of Spades'
+- Question: Hash of the card '2 of Spades'
   Type: String
   Values:
   - Value: 1e6f926e341b9daf32fe70171eb727b4
     Points: '10'
   Points: 10
-- Text: Hash of the card '10 of Spades'
+- Question: Hash of the card '10 of Spades'
   Type: String
   Values:
   - Value: 179d54b67a08326b14bd6f2109fb7921
     Points: '10'
   Points: 10
-- Text: Hash of the card 'King of Spades'
+- Question: Hash of the card 'King of Spades'
   Type: String
   Values:
   - Value: 8fc453ee48180b958f98e0d2d856d1c8
     Points: '10'
   Points: 10
-- Text: Hash of the card '10 of Clubs'
+- Question: Hash of the card '10 of Clubs'
   Type: String
   Values:
   - Value: 79c9107cf553b149a542501f5fb277d7
     Points: '10'
   Points: 10
-- Text: Hash of the card '5 of Hearts'
+- Question: Hash of the card '5 of Hearts'
   Type: String
   Values:
   - Value: 1862c5dac75e43bb8d530d54575592b7
     Points: '10'
   Points: 10
-- Text: Hash of the card '5 of Diamonds'
+- Question: Hash of the card '5 of Diamonds'
   Type: String
   Values:
   - Value: 97bf04578c58062c1440f17668f6017b
     Points: '10'
   Points: 10
-- Text: Hash of the card '9 of Diamonds'
+- Question: Hash of the card '9 of Diamonds'
   Type: String
   Values:
   - Value: 097a0b9b4b08580caa5509941d7e548d
     Points: '10'
   Points: 10
-- Text: Hash of the card '6 of Clubs'
+- Question: Hash of the card '6 of Clubs'
   Type: String
   Values:
   - Value: d9247a49d132a4f92dcc813f63eb1c8b
     Points: '15'
   Points: 15
-- Text: Hash of the card 'Ace of Clubs'
+- Question: Hash of the card 'Ace of Clubs'
   Type: String
   Values:
   - Value: 7aa0260989946155c0c6178ffc9b25e9
     Points: '15'
   Points: 15
-- Text: Hash of the card 'Joker'
+- Question: Hash of the card 'Joker'
   Type: String
   Values:
   - Value: 4ad861d9fa6cb5c7fe60d55757b2693a
     Points: '15'
   Points: 15
-- Text: Hash of the card '8 of Hearts'
+- Question: Hash of the card '8 of Hearts'
   Type: String
   Values:
   - Value: e8e2f19dad5fc32f022952690d5beee6
     Points: '20'
   Points: 20
-- Text: Hash of the card '7 of Diamonds'
+- Question: Hash of the card '7 of Diamonds'
   Type: String
   Values:
   - Value: 07e2e1a974bf5f261e9c70e5890456f4
