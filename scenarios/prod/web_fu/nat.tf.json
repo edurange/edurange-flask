@@ -44,10 +44,6 @@
                                     "internal": 22
                                 },
                                 {
-                                    "internal": 80,
-                                    "external": 8080
-                                },
-                                {
                                     "internal": 443,
                                     "external": 8443
                                 }

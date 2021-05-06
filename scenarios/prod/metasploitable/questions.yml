@@ -1,4 +1,4 @@
-- Text: Hash of the card '8 of Clubs'
+- Question: Hash of the card '8 of Clubs'
   Type: String
   Options: []
   Values:
@@ -6,7 +6,7 @@
     Points: '5'
   Order: 1
   Points: 5
-- Text: Hash of the card '3 of Hearts'
+- Question: Hash of the card '3 of Hearts'
   Type: String
   Options: []
   Values:
@@ -14,7 +14,7 @@
     Points: '5'
   Order: 2
   Points: 5
-- Text: Hash of the card '2 of Spades'
+- Question: Hash of the card '2 of Spades'
   Type: String
   Options: []
   Values:
@@ -22,7 +22,7 @@
     Points: '10'
   Order: 3
   Points: 10
-- Text: Hash of the card '10 of Spades'
+- Question: Hash of the card '10 of Spades'
   Type: String
   Options: []
   Values:
@@ -30,7 +30,7 @@
     Points: '10'
   Order: 4
   Points: 10
-- Text: Hash of the card 'King of Spades'
+- Question: Hash of the card 'King of Spades'
   Type: String
   Options: []
   Values:
@@ -38,7 +38,7 @@
     Points: '10'
   Order: 5
   Points: 10
-- Text: Hash of the card '10 of Clubs'
+- Question: Hash of the card '10 of Clubs'
   Type: String
   Options: []
   Values:
@@ -46,7 +46,7 @@
     Points: '10'
   Order: 6
   Points: 10
-- Text: Hash of the card '5 of Hearts'
+- Question: Hash of the card '5 of Hearts'
   Type: String
   Options: []
   Values:
@@ -54,7 +54,7 @@
     Points: '10'
   Order: 7
   Points: 10
-- Text: Hash of the card '5 of Diamonds'
+- Question: Hash of the card '5 of Diamonds'
   Type: String
   Options: []
   Values:
@@ -62,7 +62,7 @@
     Points: '10'
   Order: 8
   Points: 10
-- Text: Hash of the card '9 of Diamonds'
+- Question: Hash of the card '9 of Diamonds'
   Type: String
   Options: []
   Values:
@@ -70,7 +70,7 @@
     Points: '10'
   Order: 9
   Points: 10
-- Text: Hash of the card '6 of Clubs'
+- Question: Hash of the card '6 of Clubs'
   Type: String
   Options: []
   Values:
@@ -78,7 +78,7 @@
     Points: '15'
   Order: 10
   Points: 15
-- Text: Hash of the card 'Ace of Clubs'
+- Question: Hash of the card 'Ace of Clubs'
   Type: String
   Options: []
   Values:
@@ -86,7 +86,7 @@
     Points: '15'
   Order: 11
   Points: 15
-- Text: Hash of the card 'Joker'
+- Question: Hash of the card 'Joker'
   Type: String
   Options: []
   Values:
@@ -94,7 +94,7 @@
     Points: '15'
   Order: 12
   Points: 15
-- Text: Hash of the card '8 of Hearts'
+- Question: Hash of the card '8 of Hearts'
   Type: String
   Options: []
   Values:
@@ -102,7 +102,7 @@
     Points: '20'
   Order: 13
   Points: 20
-- Text: Hash of the card '7 of Diamonds'
+- Question: Hash of the card '7 of Diamonds'
   Type: String
   Options: []
   Values:
