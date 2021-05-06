@@ -2,9 +2,6 @@
 import json
 import os
 
-import csv
-import re
-
 import yaml
 import markdown as md
 import ast
@@ -15,7 +12,7 @@ from markupsafe import Markup
 
 from edurange_refactored.extensions import db
 
-from .user.models import GroupUsers, ScenarioGroups, Scenarios, User, Responses
+from .user.models import Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
@@ -46,27 +43,6 @@ def flash_errors(form, category="warning"):
     for field, errors in form.errors.items():
         for error in errors:
             flash(f"{getattr(form, field).label.text} - {error}", category)
-
-
-def check_admin():
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if not user.is_admin:
-        abort(403)
-
-
-def check_instructor():
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if not user.is_instructor:
-        abort(403)
-
-
-def check_privs():
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if not user.is_instructor and not user.is_admin:
-        abort(403)
 
 
 def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
@@ -189,15 +165,6 @@ def genStudentLinks(view=None): # needs common arg for switch statement
     return [dashboard] # return array to avoid character print in template's for loop
 
 
-def checkEx(d):
-    db_ses = db.session
-    scenId = db_ses.query(Scenarios).get(d)
-    if scenId is not None:
-        return True
-    else:
-        return False
-
-
 def checkAuth(d):
     number = current_user.id
     user = User.query.filter_by(id=number).first()
@@ -205,22 +172,6 @@ def checkAuth(d):
         return False
     else:
         return True
-
-
-def checkEnr(d):
-    db_ses = db.session
-    n = current_user.id
-    enr = (
-        db_ses.query(GroupUsers.group_id)
-            .filter(ScenarioGroups.scenario_id == d)
-            .filter(GroupUsers.group_id == ScenarioGroups.group_id)
-            .filter(GroupUsers.user_id == n)
-            .first()
-    )
-    if enr is not None:
-        return True
-    else:
-        return False
 
 
 def format_datetime(value, format="%d %b %Y %I:%M %p"):
@@ -833,67 +784,7 @@ def getAttempt(sid):
     return query
 
 
-def readCSV(id):
-    db_ses = db.session
-    sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
-    sName = "".join(e for e in sName if e.isalnum())
-    csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
-    arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
-    for row in reader:
-        if len(row) == 8:
-            arr.append(row)
-    return arr
-
-
-def readCSV_by_name(name):
-    csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")
-    arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
-    for row in reader:
-        if len(row) == 8:
-            arr.append(row)
-
-    return arr
-
-
-def formatCSV(arr):
-    nArr = []
-    for entry in arr:
-        tmpArr = entry.replace("#%#", "\n").replace("%", "").split("\t")
-        tmpArr[6] = tmpArr[6].replace("@", "") # remove '@' from end of username
-        nArr.append(tmpArr)
-    return nArr
-
-
 # returns dictionary of lines with common keyIndex values
-def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
-    dict = {}
-    for entry in arr:
-        key = str(entry[keyIndex].replace('-', ''))
-        if key in dict:
-            dict[key].append(entry)
-        else:
-            dict[key] = [entry]
-    return dict
-
-
-def getGraph(s, username): # s - scenario name, username - student username
-    try:
-        graph = open("./data/tmp/" + s + "/graphs/" + username + ".svg", "r").read()
-        return graph
-    except:
-        return None
-
-
-def getLogFile(s): # s - scenario name
-    logs = "./data/tmp/" + s + "/" + s + "-history.csv"
-    if os.path.isfile(logs):
-        logs = "." + logs
-        return logs
-    else:
-        return None
-
 
 
 def readScenario():

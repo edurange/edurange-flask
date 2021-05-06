@@ -1,7 +1,7 @@
 <?php
 
-const LEVEL = 1;
-const ARG = 'name';
-const QUERY = "SELECT * FROM countries WHERE name='<ARG>'";
+$method = 'GET';
+$param = 'name';
+$query = "SELECT * FROM countries WHERE name='<INPUT>'";
 
 require('../app.php');

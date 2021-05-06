@@ -4,7 +4,7 @@
     <form method="<?= $method ?>">
       <div class="row g-3 mb-4">
         <div class="col-6">
-          <input type="text" name="<?= ARG ?>" class="form-control" placeholder="<?= $placeholder ?>">
+          <input type="text" name="<?= $param ?>" class="form-control" placeholder="<?= $placeholder ?>">
         </div>
         <div class="col">
           <button type="submit" class="btn btn-success">Search</button>
@@ -12,10 +12,18 @@
       </div>
     </form>
 
+    <?php if(isset($error)): ?>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">SQL error!</h4>
+      <p><?= $error ?></p>
+    </div>
+    
+    <?php else: ?>
     <div class="row">
       <h3 class="col">Query results</h3>
       <p class="col" style="text-align: right;">Returned <b><?= $count ?> hits</b></p>
     </div>
+
     <table class="table table-dark">
       <thead>
         <tr>
@@ -34,5 +42,6 @@
         <?php endforeach ?>
       </tbody>
     </table>
+    <?php endif; ?>
   </div>
 </body>
