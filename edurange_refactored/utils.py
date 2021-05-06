@@ -292,16 +292,17 @@ def getPass(sn, un):
     return p
 
 
-def getQuestions(t):
+# IMPROVEMENT: instead of returning a dict with index + value, return a list with the values
+def getQuestions(scenario):
+    c = 1
     questions = {}
-    t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + "questions.yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+    scenario = scenario.lower().replace(' ', '_')
+    with open('./scenarios/prod/{}/questions.yml'.format(scenario)) as yml:
         document = yaml.full_load(yml)
         for item in document:
-            #questions.append(item['Question'])
-            questions[item['Order']] = item['Question']
+            questions[c] = item['Question']
+            c += 1
+
     return questions
 
 
@@ -345,54 +346,28 @@ def tempMaker(d, i):
         return stat, oName, desc, ty, sNom, usr, pw, guide, questions
 
 
-# --
+def responseCheck(q_number, s_id, resp, uid):
+    """Read question from YAML file and check if response is correct. Return the number of points"""
+    scenario_name = db.session.query(Scenarios.name).filter(Scenarios.id == s_id).first()[0]
+    questions = questionReader(scenario_name)
+    question = questions[q_number-1]
 
+    if len(question['Values']) == 1:  # Only one correct answer
+        answer = str(question['Values'][0]['Value'])
+        if "${" in answer:
+            answer = bashAnswer(s_id, uid, answer)
+        if resp == answer or answer == 'ESSAY':
+            return question['Points']
 
-# def responseCheck(qnum, sid, resp):
-#    # read correct response from yaml file
-#    db_ses = db.session
-#    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-#    questions = questionReader(s_name[0])
-#    for text in questions:
-#        order = int(text['Order'])
-#        if order == qnum:
-#            ans = str(text['Values'][0]['Value'])
-#    if resp == ans:
-#        return True
-#    else:
-#        return False
+    elif len(question['Values']) > 1:  # Multiple correct answers
+        for q in question['Values']:
+            answer = q['Value']
+            if "${" in answer:
+                answer = bashAnswer(s_id, uid, answer)
+            if resp == answer:
+                return int(q['Points'])
 
-
-def responseCheck(qnum, sid, resp, uid):
-    # read correct response from yaml file
-    db_ses = db.session
-    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-    questions = questionReader(s_name[0])
-    for text in questions:
-        order = int(text['Order'])  # get question number from yml file
-        if order == qnum:
-            if len(text['Values']) == 1:  # if there's only one correct answer in the yml file
-                ans = str(text['Values'][0]['Value'])
-                if "${" in ans:
-                    ans = bashAnswer(sid, uid, ans)
-                if resp == ans:
-                    return int(text['Points'])
-                elif ans == 'ESSAY':
-                    return int(text['Points'])
-                else:
-                    return 0
-            elif len(text['Values']) > 1:  # if there's multiple correct answers in the yml file
-                yes = False
-                for i in text['Values']:
-                    ans = i['Value']
-                    if "${" in ans:
-                        ans = bashAnswer(sid, uid, ans)
-                    if resp == ans:
-                        yes = True
-                if yes:
-                    return int(i['Points'])
-                else:
-                    return 0
+    return 0
 
 
 def bashAnswer(sid, uid, ans):
@@ -422,9 +397,6 @@ def bashAnswer(sid, uid, ans):
         return ans
 
 
-# --
-
-
 def responseQuery(uid, att, query, questions):
     tableList = []
     tmpList = []
@@ -434,16 +406,17 @@ def responseQuery(uid, att, query, questions):
 
     for response in tmpList:
         qNum = response.question
-        pts = response.points
-        for text in questions:
-            order = int(text['Order'])
-            if order == qNum:
-                quest = text['Question']
-                poi = text['Points']
-                val = text['Values'][0]['Value']
+        r_points = response.points
+        for i in range(len(questions)):
+            q = questions[i]
+            if i+1 == qNum:
+                question = q['Question']
+                points = q['Points']
+                answer = q['Values'][0]['Value']
                 sR = response.student_response
-                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'earned': pts}
+                dictionary = {'number': qNum, 'question': question, 'answer': answer, 'points': points, 'student_response': sR, 'earned': r_points}
                 tableList.append(dictionary)
+
     return tableList
 
 
@@ -505,27 +478,23 @@ def score(scrLst, questions):
 '''
 
 
-def scoreSetup(questions):
-    checkList = {}  # list of question to be answered so duplicates are not scored
-    for text in questions:
-        if str(text['Type']) == "Multi String":
-            # count = 1
-            tmp = []
-            for d in text['Values']:  # d is not used  # it's probably fine (possibly bad practice though)
-                tmp.append(False)
-                # k = str(text['Order']) + '.' + str(count)
-                # checkList[k] = False
-                # count += 1
-            k = str(text['Order'])
-            checkList[k] = tmp
-        else:
-            checkList[str(text['Order'])] = False
-    # bloop()
-    return checkList
-
-
+# IMPROVEMENT: simplify function (try getting rid of `i`)
 # {'1': True, '2': False, ... , '6': [True, False, False, ...], '7': False}
-#                                       0    1      2     ...
+def scoreSetup(questions):
+    """Return a dict containing the question number as index and `False` as value."""
+    i = 1
+    checklist = {}  # list of question to be answered so duplicates are not scored
+    for text in questions:
+        if str(text['Type']) == 'Multi String':
+            checklist[str(i)] = []
+            for x in text['Values']:  # x is not used (possibly bad practice)
+                checklist[str(i)].append(False)
+        else:
+            checklist[str(i)] = False
+
+        i += 1
+
+    return checklist
 
 # if multi string, take student response into account to find the index within '6': [...] and mark true or false as normal
 
@@ -736,19 +705,18 @@ def recentCorrect(uid, qnum, sid):
         .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
     return recent
 
-
 def displayCorrect(sName, uName):
     db_ses = db.session
     uid = db_ses.query(User.id).filter(User.username == uName).first()
     sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()
     questions = questionReader(sName)
     ques = {}
-    for text in questions:
-        order = int(text['Order'])
-        rec = recentCorrect(uid, order, sid)
+    for i in range(1, len(questions)+1):
+        rec = recentCorrect(uid, i, sid)
         if rec is not None:
             rec = rec[0]
-        ques[order] = rec
+        ques[i] = rec
+
     return ques
 
 
@@ -793,4 +761,3 @@ def getProgress(query, questions):
                 corr += 1
     # progress = "" + str(corr) + " / " + str(total)
     return corr, total
-

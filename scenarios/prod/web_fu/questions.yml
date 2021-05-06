@@ -3,7 +3,6 @@
   Values:
   - Value: 'MySQL'
     Points: '5'
-  Order: 1
   Points: 5
 - Question: What are the 3 different types of "comment" symbol in this database type?
   Type: Multi String
@@ -15,7 +14,6 @@
     Points: '5'
   - Value: '/**/'
     Points: '5'
-  Order: 2
   Points: 15
 - Question: What symbol is used to mark the end of a query?
   Type: String
@@ -25,7 +23,6 @@
     Points: '5'
   - Value: 'semicolon'
     Points: '5'
-  Order: 3
   Points: 5
 - Question: What technique could be used to avoid these types of SQL injection?
   Type: String
@@ -35,61 +32,52 @@
     Points: '5'
   - Value: 'prepared statements'
     Points: '5'
-  Order: 4
   Points: 5
 - Question: What programming language is the scenario website built with?
   Type: String
   Values:
   - Value: 'PHP'
     Points: '5'
-  Order: 5
   Points: 5
 - Question: What boolean operator did you use to dump the table from level 1?
   Type: String
   Values:
   - Value: 'OR'
     Points: '15'
-  Order: 6
   Points: 15
 - Question: What is the flag for level 1?
   Type: String
   Values:
   - Value: 'FLAG{1NJ3CT10NS_4R3_N1C3!}'
     Points: '15'
-  Order: 7
   Points: 15
 - Question: What special character is the LIKE query using in level 2?
   Type: String
   Values:
   - Value: '%'
     Points: '15'
-  Order: 8
   Points: 15
 - Question: What is the flag for level 2?
   Type: String
   Values:
   - Value: 'FLAG{Y0U_D0_L1K3_QU3R13S}'
     Points: '20'
-  Order: 9
   Points: 20
 - Question: What keyword could you use to query two combined tables?
   Type: String
   Values:
   - Value: 'UNION'
     Points: '10'
-  Order: 6
   Points: 10
 - Question: What is the flag for level 3?
   Type: String
   Values:
   - Value: 'FLAG{1M_N0T_4_H4SH3D_H4X0R}'
     Points: '25'
-  Order: 11
   Points: 25
 - Question: What is the password for user "backdoor"?
   Type: String
   Values:
   - Value: 'supersecreto'
     Points: '30'
-  Order: 12
   Points: 30

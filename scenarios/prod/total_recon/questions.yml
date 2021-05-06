@@ -7,7 +7,6 @@
   Values:
   - Value: '444'
     Points: '10'
-  Order: 1
   Points: 10
 - Question: What standard port does an http server use?
   Type: Number
@@ -16,7 +15,6 @@
   Values:
   - Value: '80'
     Points: '10'
-  Order: 2
   Points: 10
 - Question: What is the IP of the host with the web server on the subnet 10.0.0.0/24?
   Type: String
@@ -24,7 +22,6 @@
   Values:
   - Value: "${scenario.instances.subway.ip_address_private}"
     Points: '10'
-  Order: 3
   Points: 10
 - Question: What is the state of ports 80 and 443 on the earth-spaceport host?
   Type: String
@@ -33,7 +30,6 @@
   Values:
   - Value: filtered
     Points: '10'
-  Order: 4
   Points: 10
 - Question: What is the IP Address of the mars spaceport? (It ends in .33)
   Type: String
@@ -41,7 +37,6 @@
   Values:
   - Value: "${scenario.instances.mars_spaceport.ip_address_private}"
     Points: '10'
-  Order: 7
   Points: 10
 - Question: In the nmap man page, under "--min-rate", what --min-rate example do they
     give? (Hint, it's an integer greater than 100 and less than 500)
@@ -53,7 +48,6 @@
   Values:
   - Value: '300'
     Points: '10'
-  Order: 5
   Points: 10
 - Question: What is the nmap option for a Ping scan (disable port scan)? It should take
     the form -Xx. For example, -sL is the option for List scan.
@@ -64,7 +58,6 @@
     Points: '10'
   - Value: -sP
     Points: '10'
-  Order: 6
   Points: 20
 - Question: What has the ssh port on Venusville been changed to?
   Type: Number
@@ -74,7 +67,6 @@
   Values:
   - Value: '123'
     Points: '10'
-  Order: 8
   Points: 10
 - Question: What has the ssh port on Last Resort been changed to?
   Type: Number
@@ -84,7 +76,6 @@
   Values:
   - Value: '2345'
     Points: '10'
-  Order: 9
   Points: 10
 - Question: What port was open on the Resistance Base?
   Type: Number
@@ -94,7 +85,6 @@
   Values:
   - Value: '632'
     Points: '20'
-  Order: 10
   Points: 20
 - Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.34?
     (Do not include scan in your answer)
@@ -104,7 +94,6 @@
   Values:
   - Value: xmas
     Points: '10'
-  Order: 11
   Points: 10
 - Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.36?
     (Do not include scan in your answer)
@@ -114,7 +103,6 @@
   Values:
   - Value: 'null'
     Points: '10'
-  Order: 12
   Points: 10
 - Question: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.38?
     (Do not include scan in your answer)
@@ -124,7 +112,6 @@
   Values:
   - Value: fin
     Points: '10'
-  Order: 13
   Points: 10
 - Question: How many possible hosts does the subnet 10.0.192.0/18 cover?
   Type: Number
@@ -134,7 +121,6 @@
   Values:
   - Value: '16382'
     Points: '15'
-  Order: 14
   Points: 15
 - Question: How many ports are open on the control room host? (the IP ends in .5)
   Type: Number
@@ -144,7 +130,6 @@
   Values:
   - Value: '9'
     Points: '10'
-  Order: 15
   Points: 10
 - Question: On the control_room box, what is the name of the directory where chmod was
     moved to?
@@ -154,5 +139,4 @@
   Values:
   - Value: look-in-here
     Points: '10'
-  Order: 16
   Points: 10
