@@ -69,7 +69,8 @@ def check_privs():
         abort(403)
 
 
-def check_role_view(mode):  # check if view mode compatible with role (admin/inst/student)
+def check_role_view(mode):
+    """Check if view mode is compatible with role (admin, instructor, student)."""
     number = current_user.id
     user = User.query.filter_by(id=number).first()
     if not user.is_admin and not user.is_instructor:
@@ -89,16 +90,14 @@ def check_role_view(mode):  # check if view mode compatible with role (admin/ins
         elif user.is_admin:
             if mode in ["studentView", "instructorView"]:
                 return True
-            else:
-                return False
+
+            return False
         else:
             abort(403)  # who are you?!
             return None
 
 
-# --------
-
-def generateNavElements(role, view): # generate all navigational elements
+def generateNavElements(role, view):
     """Makes decisions and calls correct generators for navigational links based on role."""
     views = None
     links = None
@@ -107,22 +106,24 @@ def generateNavElements(role, view): # generate all navigational elements
 
     if role in ['a', 'a/i', 'i']:
         viewSwitch = {
-            'a': genAdminViews,   #
-            'a/i': genAdminViews, # ^ call generator for admins view links
+            'a': genAdminViews,     # call generator for admins view links
+            'a/i': genAdminViews,   # call generator for admins view links
             'i': genInstructorViews # call generator for instructors view links
         }
         views = viewSwitch[role]() # call view link generator function based on role
 
     linkSwitch = {
-        'a': genAdminLinks,    # call generator for admin links,
-        'a/i': genAdminLinks,  # ^ pass view so function can redirect to correct link generator
+        'a': genAdminLinks,      # call generator for admin links,
+        'a/i': genAdminLinks,    # ^ pass view so function can redirect to correct link generator
         'i': genInstructorLinks, # call generator for instructor links
-        's': genStudentLinks # call generator for student links
+        's': genStudentLinks     # call generator for student links
     }
     links = linkSwitch[role](view) # call link generator function based on role
 
-    return {'views': views, 'links': links} # views: dropdown list items for view change, to render in navbar
-                                            # links: redirecting links, to render in sidebar
+    return {
+        'views': views,  # dropdown list items for view change, to render in navbar
+        'links': links   # redirecting links, to render in sidebar
+    }
 
 
 def create_link(route, icon, text):
@@ -142,19 +143,19 @@ def create_view(route, text):
 
 def genAdminViews():
     """Generate 'select view' elements for admin users."""
-    views = [create_view('?mode=adminView', 'Admin View'),
-             create_view('?mode=instructorView', 'Instructor View'),
-             create_view('?mode=studentView', 'Student View')]
-
-    return views
+    return [
+        create_view('?mode=adminView', 'Admin View'),
+        create_view('?mode=instructorView', 'Instructor View'),
+        create_view('?mode=studentView', 'Student View')
+    ]
 
 
 def genInstructorViews():
     """Generate 'select view' elements for instructors."""
-    views = [create_view('?mode=instructorView', 'Instructor View'),
-             create_view('?mode=studentView', 'Student View')]
-
-    return views
+    return [
+        create_view('?mode=instructorView', 'Instructor View'),
+        create_view('?mode=studentView', 'Student View')
+    ]
 
 
 def genAdminLinks(view):
@@ -167,8 +168,8 @@ def genAdminLinks(view):
         return genInstructorLinks(None)
     elif view == 'studentView':
         return genStudentLinks()
-    else:
-        return None
+
+    return None
 
 
 def genInstructorLinks(view):
@@ -179,8 +180,8 @@ def genInstructorLinks(view):
         dashboard = create_link('dashboard.instructor', 'fa-desktop', 'Instructor Dashboard')
         scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
         return [dashboard, scenarios]
-    else:
-        return None
+
+    return None
 
 
 def genStudentLinks(view=None): # needs common arg for switch statement
@@ -194,102 +195,82 @@ def checkEx(d):
     scenId = db_ses.query(Scenarios).get(d)
     if scenId is not None:
         return True
-    else:
-        return False
+
+    return False
 
 
 def checkAuth(d):
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
+    user = User.query.filter_by(id=current_user.id).first()
     if not user.is_instructor and not user.is_admin:
         return False
-    else:
-        return True
+
+    return True
 
 
-def checkEnr(d):
-    db_ses = db.session
-    n = current_user.id
+def checkEnr(_id):
     enr = (
-        db_ses.query(GroupUsers.group_id)
-            .filter(ScenarioGroups.scenario_id == d)
-            .filter(GroupUsers.group_id == ScenarioGroups.group_id)
-            .filter(GroupUsers.user_id == n)
-            .first()
+        db.session.query(GroupUsers.group_id)
+                  .filter(ScenarioGroups.scenario_id == _id)
+                  .filter(GroupUsers.group_id == ScenarioGroups.group_id)
+                  .filter(GroupUsers.user_id == current_user.id)
+                  .first()
     )
+
     if enr is not None:
         return True
-    else:
-        return False
+
+    return False
 
 
 def format_datetime(value, format="%d %b %Y %I:%M %p"):
     """Format a date time to (Default): d Mon YYYY HH:MM P"""
     if value is None:
         return ""
+
     return value.strftime(format)
 
 
-def statReader(s):
-    statSwitch = {
-        0: "Stopped",
-        1: "Started",
-        2: "Something went very wrong",
-        3: "Starting",
-        4: "Stopping",
-        5: "ERROR",
-        7: "Building"
-    }
-    return statSwitch[s]
-
-
+# IMPROV: write helper function to read YAML file.
 def getDesc(t):
     t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+    with open("./scenarios/prod/{0}/{0}.yml".format(t)) as yml:
         document = yaml.full_load(yml)
         for item, doc in document.items():
             if item == "Description":
-                d = doc
-    return d
+                return doc
 
 
+# IMPROV: write helper function to read YAML file.
 def getGuide2(t):
-    #g = "No Codelab for this Scenario"
     t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+    with open("./scenarios/prod/{0}/{0}.yml".format(t)) as yml:
         document = yaml.full_load(yml)
         for item, doc in document.items():
             if item == "Codelab":
-                g = doc
-                #print(g)
-                #return g
-    #g = "No Codelab for this Scenario"
-    return g
+                return doc
+
+    return "No Codelab for this Scenario"
 
 
-def getGuide(t):
-    t = t.title().replace(" ", "_")
+def getGuide(scenario):
+    """Return the markdown guide for the given scenario."""
+    scenario = scenario.title().replace(" ", "_")
     host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
-    g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
-    f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".md"
-    file = open(f, mode="r", encoding="utf-8")
-    m = file.read()
-    m = m.replace('127.0.0.1', host)
-    ht = md.markdown(m)
-    return ht
+    g = host + "/tutorials/{0}/{0}.md".format(scenario)
+    file = "./edurange_refactored/templates/tutorials/{0}/{0}.md".format(scenario)
+    with open(file, encoding="utf-8") as fd:
+        contents = fd.read()
+        contents = contents.replace('127.0.0.1', host)
+        return md.markdown(contents)
 
 
-def getPass(sn, un):
-    sn = "".join(e for e in sn if e.isalnum())
-    with open('./data/tmp/' + sn + '/students.json', 'r') as f:
-        data = json.load(f)
-        d1 = data.get(un)[0]
-        p = d1.get('password')
-    return p
+def getPass(scenario, username):
+    """Return the username's password for the given scenario."""
+    scenario = "".join(e for e in scenario if e.isalnum())
+    with open('./data/tmp/{}/students.json'.format(scenario)) as fd:
+        data = json.load(fd)
+        password = data.get(username)[0].get('password')
+        return password
 
 
 # IMPROVEMENT: instead of returning a dict with index + value, return a list with the values
@@ -306,44 +287,38 @@ def getQuestions(scenario):
     return questions
 
 
-def getPort(n):
-    n = 0  # [WIP]
-    return n
-
-
 def tempMaker(d, i):
     db_ses = db.session
-    # status
-    stat = db_ses.query(Scenarios.status).filter(Scenarios.id == d).first()
-    stat = statReader(stat[0])
-    # owner name
-    oName = (
+    status = db_ses.query(Scenarios.status).filter(Scenarios.id == d).first()
+    status = {
+        0: "Stopped",
+        1: "Started",
+        2: "Something went very wrong",
+        3: "Starting",
+        4: "Stopping",
+        5: "ERROR",
+        7: "Building"
+    }[status[0]]
+
+    ownerName = (
         db_ses.query(User.username).filter(Scenarios.id == d).filter(Scenarios.owner_id == User.id).first()
-    )
-    oName = oName[0]
-    # description
-    ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
-    ty = ty[0]
-    desc = getDesc(ty)
+    )[0]
+
+    ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()[0]
+    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()[0]
+
+    description = getDesc(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
-    # current_app.logger.info(questions) #--
-    # scenario name
-    sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
-    sNom = sNom[0]
+
     if i == "ins":
-        # creation time
-        bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
-        bTime = bTime[0]
-        return stat, oName, bTime, desc, ty, sNom, guide, questions
+        creationTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()[0]
+        return status, ownerName, creationTime, description, ty, scenario, guide, questions
     elif i == "stu":
-        # username
-        ud = current_user.id
-        usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
-        usr = "".join(e for e in usr if e.isalnum())
-        # password
-        pw = getPass(sNom, usr)
-        return stat, oName, desc, ty, sNom, usr, pw, guide, questions
+        user = db_ses.query(User.username).filter(User.id == current_user.id).first()[0]
+        user = "".join(e for e in user if e.isalnum())
+        password = getPass(scenario, user)
+        return status, ownerName, description, ty, scenario, user, password, guide, questions
 
 
 def responseCheck(q_number, s_id, resp, uid):
@@ -370,31 +345,31 @@ def responseCheck(q_number, s_id, resp, uid):
     return 0
 
 
-def bashAnswer(sid, uid, ans):
+def bashAnswer(sid, uid, answer):
     db_ses = db.session
-    uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
-    uName = "".join(e for e in uName if e.isalnum())
-    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
-    if "${player.login}" in ans:
-        students = open("./data/tmp/" + sName + "/students.json", "r")
-        user = ast.literal_eval(students.read())
-        username = user[uName][0]["username"]
-        ansFormat = ans[0:6]
-        newAns = ansFormat + username
-        return newAns
-    elif "${scenario.instances" in ans:
+    username = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    username = "".join(e for e in username if e.isalnum())
+    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+
+    if "${player.login}" in answer:
+        with open("./data/tmp/{}/students.json".format(scenario)) as fd:
+            user = ast.literal_eval(fd.read())
+
+        username = user[username][0]["username"]
+        answerFormat = ans[0:6]
+        answer = answerFormat + username
+    elif "${scenario.instances" in answer:
         wordIndex = ans[21:-1].index(".")
-        containerName = ans[21:21+wordIndex]
-        containerFile = open("./data/tmp/" + sName + "/" + containerName + ".tf.json", "r")
-        content = ast.literal_eval(containerFile.read())
-        index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
-        ans = ""
+        container = ans[21:21+wordIndex]
+        with open("./data/tmp/{}/{}.tf.json".format(scenario, container)) as fd:
+            content = ast.literal_eval(fd.read())
+
+        index = content["resource"][0]["docker_container"][0][scenario + "_" + container][0]["networks_advanced"]
         for d in index:
-            if d["name"] == (sName + "_PLAYER"):
-                ans = d["ipv4_address"]
-        return ans
-    else:
-        return ans
+            if d["name"] == (scenario + "_PLAYER"):
+                answer = d["ipv4_address"]
+
+    return answer
 
 
 def responseQuery(uid, att, query, questions):
@@ -421,24 +396,15 @@ def responseQuery(uid, att, query, questions):
 
 
 def responseSelector(resp):
-    # response selector
-    db_ses = db.session
-    query = db_ses.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
+    query = db.session.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
     for entry in query:
         if entry.id == int(resp):
-            data = entry
-            break
-    return data
+            return entry
 
-
-# -----
 
 # scoring functions used in functions such as queryPolish()
-# used as:
-# scr = score(getScore(uid, att, query), questionReader(sName))
-
-# required query entries:
-# user_id, attempt, question, correct, student_response
+# used as: scr = score(getScore(uid, att, query), questionReader(sName))
+# required query entries: user_id, attempt, question, correct, student_response
 
 '''
 def getScore(usr, att, query):
@@ -451,10 +417,12 @@ def getScore(usr, att, query):
 
 
 def totalScore(questions):
-    tS = 0  # total number of possible points
-    for text in questions:
-        tS += int(text['Points'])
-    return tS
+    """Return the total number of possible points."""
+    total = 0
+    for question in questions:
+        total += int(question['Points'])
+
+    return total
 
 '''
 def score(scrLst, questions):
@@ -546,27 +514,24 @@ def scoreCheck2(qnum, checkList, resp, quest):
 
 
 def score(uid, att, query, questions):
-    stuScore = 0
+    """Return the student's score and the total score."""
+    score = 0
     checkList = scoreSetup(questions)
     for resp in query:
-        if resp.user_id == uid and resp.attempt == att:     # if response entry matches uid and attempt number
-            if resp.points > 0:                             # if the student has points i.e. if the student answered correctly
+        if resp.user_id == uid and resp.attempt == att:  # response entry matches uid and attempt number
+            if resp.points > 0:  # the student has points i.e. if the student answered correctly
                 qNum = int(resp.question)
-                check, checkList = scoreCheck(qNum, checkList)      # check against checkList with question number
+                check, checkList = scoreCheck(qNum, checkList)  # check against checkList with question number
                 if not check:
-                    stuScore += resp.points
-    scr = '' + str(stuScore) + ' / ' + str(totalScore(questions))
-    return scr
-# -----
+                    score += resp.points
+
+    return '{} / {}'.format(score, totalScore(questions))
 
 
 def questionReader(name):
     name = "".join(e for e in name if e.isalnum())
-    with open(
-            "./data/tmp/" + name + "/questions.yml", "r"
-    ) as yml:
-        document = yaml.full_load(yml)
-    return document
+    with open('./data/tmp/{}/questions.yml'.format(name)) as yml:
+        return yaml.full_load(yml)
 
 
 def queryPolish(query, sName):
@@ -581,66 +546,65 @@ def queryPolish(query, sName):
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             qList.append(d)
         else:
-            error = 0
+            error = False
             for lst in qList:
                 if uid == lst['user_id'] and att == lst['attempt']:
-                    error += 1
-            if error == 0:
+                    error = True
+                    break
+
+            if not error:
                 scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
                 qList.append(d)
+
     return qList
 
 
 def responseProcessing(data):
-    # response info getter
+    """Response info getter."""
     db_ses = db.session
-    # user info
     uid = data.user_id
-    uname = db_ses.query(User.username).filter(User.id == uid).first()
-    uname = uname[0]
-    # scenario info
+    username = db_ses.query(User.username).filter(User.id == uid).first()[0]
+
     sid = data.scenario_id
-    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-    sname = sname[0]
-    # response info
-    att = data.attempt
-    return uid, uname, sid, sname, att
+    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+
+    return uid, username, sid, sname, data.attempt
 
 
 def setAttempt(sid):
-    db_ses = db.session
-    currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
-    if currAtt[0] == 0:
-        att = 1
-    else:
-        att = int(currAtt[0]) + 1
-    return att
+    attempt = db.session.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
+    if attempt[0] == 0:
+        return 1
+    
+    return int(attempt[0]) + 1
 
 
 def getAttempt(sid):
-    db_ses = db.session
-    query = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid)
-    return query
+    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid)
 
 
+# IMPROVEMENT: refactor into single function with readCSV_by_name
 def readCSV(id):
-    db_ses = db.session
-    sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
-    sName = "".join(e for e in sName if e.isalnum())
-    csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
     arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    sName = str(db.session.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
+    sName = "".join(e for e in sName if e.isalnum())
+
+    file = open("./data/tmp/{0}/{0}-history.csv".format(sName))
+    reader = csv.reader(file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     for row in reader:
         if len(row) == 8:
             arr.append(row)
+
     return arr
 
 
+# IMPROVEMENT: refactor into single function with readCSV
 def readCSV_by_name(name):
-    csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")
     arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+    file = open("./data/tmp/{0}/{0}-history.csv".format(name))
+    reader = csv.reader(file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
+
     for row in reader:
         if len(row) == 8:
             arr.append(row)
@@ -649,16 +613,17 @@ def readCSV_by_name(name):
 
 
 def formatCSV(arr):
-    nArr = []
+    arr = []
     for entry in arr:
         tmpArr = entry.replace("#%#", "\n").replace("%", "").split("\t")
         tmpArr[6] = tmpArr[6].replace("@", "") # remove '@' from end of username
-        nArr.append(tmpArr)
-    return nArr
+        arr.append(tmpArr)
+
+    return arr
 
 
-# returns dictionary of lines with common keyIndex values
 def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
+    """Returns dictionary of lines with common keyIndex values."""
     dict = {}
     for entry in arr:
         key = str(entry[keyIndex].replace('-', ''))
@@ -666,25 +631,26 @@ def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
             dict[key].append(entry)
         else:
             dict[key] = [entry]
+
     return dict
 
 
-def getGraph(s, username): # s - scenario name, username - student username
+def getGraph(scenario, username):
+    """Return SVG file for the given scenario and username."""
     try:
-        graph = open("./data/tmp/" + s + "/graphs/" + username + ".svg", "r").read()
-        return graph
+        with open('./data/tmp/{}/graphs/{}.svg'.format(scenario, username)) as fd:
+            return fd.read()
     except:
         return None
 
 
-def getLogFile(s): # s - scenario name
-    logs = "./data/tmp/" + s + "/" + s + "-history.csv"
+def getLogFile(scenario):
+    """Return the CSV log file's path for the given scenario."""
+    logs = './data/tmp/{0}/{0}-history.csv'.format(scenario)
     if os.path.isfile(logs):
-        logs = "." + logs
-        return logs
-    else:
-        return None
+        return "." + logs
 
+    return None
 
 
 def readScenario():
@@ -696,13 +662,17 @@ def readScenario():
     desc = []
     for s in scenarios:
         desc.append(getDesc(s))
+
     return 0
 
 
 def recentCorrect(uid, qnum, sid):
-    db_ses = db.session
-    recent = db_ses.query(Responses.points).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
-        .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
+    recent = db.session.query(Responses.points) \
+        .filter(Responses.user_id == uid) \
+        .filter(Responses.scenario_id == sid) \
+        .filter(Responses.question == qnum) \
+        .order_by(Responses.response_time.desc()).first()
+
     return recent
 
 def displayCorrect(sName, uName):
@@ -721,15 +691,17 @@ def displayCorrect(sName, uName):
 
 
 def displayProgress(sid, uid):
-    db_ses = db.session
     att = getAttempt(sid)
-    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-    query = db_ses.query(Responses.attempt, Responses.question, Responses.points, Responses.student_response, Responses.scenario_id, Responses.user_id)\
-        .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).all()
-    questions = questionReader(sName.name)
+    db_ses = db.session
+    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    query = db_ses.query(
+        Responses.attempt, Responses.question, Responses.points, Responses.student_response, Responses.scenario_id, Responses.user_id
+    ).filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).all()
+    questions = questionReader(scenario.name)
     answered, tQuest = getProgress(query, questions)
-    scr, tScr = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
+    scr, tScr = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(scenario))  # score(getScore(uid, att, query), questionReader(sName))
     progress = {'questions': answered, 'total_questions': tQuest, 'score': scr, 'total_score': tScr}
+
     return progress
 
 
@@ -750,14 +722,14 @@ def calcScr(uid, sid, att):
 
 
 def getProgress(query, questions):
+    correct = 0
     checkList = scoreSetup(questions)
-    corr = 0
     total = list(checkList.keys())[-1]
     for resp in query:
         if int(resp.points) > 0:
             q = int(resp.question)
             check, checkList = scoreCheck(q, checkList)
             if not check:
-                corr += 1
-    # progress = "" + str(corr) + " / " + str(total)
-    return corr, total
+                correct += 1
+    # progress = "" + str(correct) + " / " + str(total)
+    return correct, total
