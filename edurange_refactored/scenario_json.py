@@ -131,6 +131,7 @@ def write_resource(address, name, s_type,
     # Generate a list of commands to move files, and run them if needed
     execs = build_execute_files(s_files, g_files, u_files, flags)
 
+    host = os.getenv('HOST_EXTERN_ADDRESS', 'localhost')
     # Make sure the container has a known template
     try:
         tf = open(c_name + '.tf.json', 'r+')
@@ -143,9 +144,10 @@ def write_resource(address, name, s_type,
     for i, r in enumerate(config['resource']):
         for s in r:
             for j, t in enumerate(config['resource'][i][s]):
-                config['resource'][i][s][j] = eval(str(t).replace('SNAME', name).replace('OCTET', address))
+                config['resource'][i][s][j] = eval(str(t).replace('SNAME', name)
+                                                   .replace('OCTET', address)
+                                                   .replace('EXTERN_HOST', host))
 
-    host = os.getenv('HOST_EXTERN_ADDRESS', 'localhost')
 
     for i, l in enumerate(config['locals']):
         config['locals'][i] = eval(str(l).replace('SNAME', name).replace('EXTERN_HOST', host))

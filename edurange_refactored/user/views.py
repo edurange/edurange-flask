@@ -55,6 +55,10 @@ from ..utils import (
     getScenarioGraph,
     getScenarioLogs
 )
+from ..role_utils import check_admin, check_instructor, check_privs, checkEx, return_roles, checkEnr
+from ..graph_utils import getGraph, getLogFile
+from ..csv_utils import readCSV, groupCSV
+
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
 blueprint = Blueprint(
@@ -295,48 +299,43 @@ def scenarios():
 @blueprint.route("/scenarios/<i>")
 def scenariosInfo(i):
     # i = scenario_id
-    if checkAuth():
-        if scenarioExists(i):
-            status, owner, bTime, desc, s_type, s_name, guide, questions = makeTmpDir(i, "ins")
-            addresses = identify_state(s_name, status)
-            db_ses = db.session
-            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.points,
-                                 Responses.question, Responses.student_response, Responses.scenario_id, User.username)\
-                .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
-            resp = queryPolish(query, s_name)
-            try:
-                rc = readCSV(i)
-            except FileNotFoundError:
-                flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
-                rc = []
+    admin, instructor = return_roles()
+    if not admin and not instructor:
+        return abort(403)
+    status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
+    addresses = identify_state(s_name, status)
+    db_ses = db.session
+    query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.points,
+                         Responses.question, Responses.student_response, Responses.scenario_id, User.username)\
+        .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
+    resp = queryPolish(query, s_name)
+    try:
+        rc = readCSV(i)
+    except FileNotFoundError:
+        flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
+        rc = []
 
-            gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
-            players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
+    gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
+    players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
-            u_logs = groupCSV(rc, 4) # make dictionary using 6th value as key (player name)
+    u_logs = groupCSV(rc, 4) # make dictionary using 6th value as key (player name)
 
 
-            return render_template(
-                "dashboard/scenarios_info.html",
-                i=i,
-                s_type=s_type,
-                desc=desc,
-                status=status,
-                owner=owner,
-                dt=bTime,
-                s_name=s_name,
-                add=addresses,
-                guide=guide,
-                questions=questions,
-                resp=resp,
-                rc=rc, # rc may not be needed with individual user logs in place
-                players=players,
-                u_logs=u_logs
-            )
-
-        return abort(404)
-
-    return abort(403)
+    return render_template("dashboard/scenarios_info.html",
+                           i=i,
+                           s_type=s_type,
+                           desc=desc,
+                           status=status,
+                           owner=owner,
+                           dt=bTime,
+                           s_name=s_name,
+                           add=addresses,
+                           guide=guide,
+                           questions=questions,
+                           resp=resp,
+                           rc=rc, # rc may not be needed with individual user logs in place
+                           players=players,
+                           u_logs=u_logs)
 
 
 @blueprint.route("/scenarios/<i>/<r>")

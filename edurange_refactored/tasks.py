@@ -322,7 +322,7 @@ def scenarioTimeoutWarningEmail(self, arg):
 
 @celery.task(bind=True)
 def scenarioCollectLogs(self, arg):
-    from edurange_refactored.utils import readCSV_by_name, formatCSV
+    from edurange_refactored.csv_utils import readCSV_by_name
     from edurange_refactored.extensions import db
     from edurange_refactored.user.models import BashHistory
 

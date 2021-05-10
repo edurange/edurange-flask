@@ -1,0 +1,29 @@
+{
+	"containers": [{
+		"name" : "target",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+				"Install",
+				"target_firewall_rules"
+			],
+			"user_files": [
+				"milestones.txt"
+			]
+		}]
+	},
+	{
+		"name" : "attacker",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+				"attacker_firewall_rules"
+			],
+			"user_files": [
+				"milestones.txt"
+			]
+		}]
+	}]
+}

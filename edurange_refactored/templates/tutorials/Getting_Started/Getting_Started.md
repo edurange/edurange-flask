@@ -12,7 +12,6 @@ Congratulations recruit and welcome to CyberSec. As you should know we provide s
 
 Use the credentials and IP Address provided on the scenario page to SSH into the exercise
 
-
 ---
 
 ## 2. Using the Terminal Commands
@@ -57,7 +56,7 @@ A root user is someone who has access to everything on the computer. They could 
 
 ---
 
-## 4. Commands
+<h2 class="colH3"> 4. Commands </h2>
 
 What is a command? Commands are executable programs that you can call from your command-line terminal. The most common place to look for bash commands is in the `/bin` folder. Let's get started right away and use two different commands.
 
@@ -125,15 +124,15 @@ and hit enter.
 
 Remember we typed `ls -la`? Let's learn what `-l` and `-a` is!
 
-### -l
+#### -l
 
 To search inside a man page, you use a `/` . Now type `/-l` and hit enter. You will probably see the page move to the first occurrence found and on top of that you should see that `-l` was highlighted. To move around your search keep hitting `n` (stands for next) until you see `-l` highlighted to the left. This will be above `-L` Long listing stands for listing the items in a row as seen in figure 2
 
-### -a
+#### -a
 
 Type `/-a` and hit enter. Hit `n` till you can't go any further. Now hit `b` (stands for back) until you find the entry for `-a` which is above `-A`. The man page is telling you that files that start with `.` like `.bashrc` (which are typically hidden) are now going to be displayed.
 
-### q
+#### q
 
 When in a man page and you need to get out, just type `q`
 
@@ -141,7 +140,6 @@ TASK: Open the man page for `mv`. Can you give a brief description of what the c
 
 - If you don't see it highlighted, you may have typed something by mistake or your console colors may not be optimized. If you typed something by mistake, just retype `/-l` etc.
 
----
 ### pwd
 
 `pwd` stands for "Print working directory" - it will tell you where you are within the filesystem.
@@ -158,8 +156,9 @@ TASK: `cd` into your home directory and then type `ls` and you will see a direct
 Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. The use of sudo in EDURange is restricted, however.
 
 ---
+### pwd
 
-## File Types
+## 5. File Types
 
 Not all files appear as they really are. Just because you see a file that says, `imanimage.png` does not mean that it is an image. It could be a text file or a harmful file if executed! So... how do you protect yourself? One way is with the file command!
 
@@ -199,7 +198,7 @@ TASK: In your home directory there is a folder called `stuff`. Open that up and 
 
 ---
 
-## 7. Case Sensitivity/touch/echo/Angle Brackets
+## 6. Case Sensitivity/touch/echo/Angle Brackets
 
 ### Case Sensitivity
 
@@ -267,7 +266,7 @@ One of the most useful tricks you can use angle brackets for is suppressing erro
 
 ---
 
-## 8. vim, Regular expresssions, and find
+## 7. vim, Regular expresssions, and find
 
 ### vim
 
@@ -333,7 +332,7 @@ TASK: Hidden throughout your home directory are image files with the name, `edur
 
 ---
 
-## 9. More Commands
+## 8. More Commands
 
 ### mv
 
@@ -382,7 +381,7 @@ And you can jump from file to file with the `:b` keystrokes and using tab to go 
 
 ---
 
-## 10. Final Mission
+## 9. Final Mission
 
 Here at CyberSec you have been well trained recruit, now let's put your training to test! This is a real mission of the utmost importance. Complete this and you are assured a spot on our team.
 

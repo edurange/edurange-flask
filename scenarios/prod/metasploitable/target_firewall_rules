@@ -1,0 +1,6 @@
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -s attacker -j ACCEPT
+iptables -A OUTPUT -d attacker -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
