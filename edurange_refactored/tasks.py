@@ -162,7 +162,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
                 outfile.write(questions.read())
 
         active_scenarios = Scenarios.query.count()
-        starting_octet = int(os.getenv("SUBNET_STARTING_OCTET"))
+        starting_octet = int(os.getenv("SUBNET_STARTING_OCTET", 10))
 
         # Local addresses begin at the subnet 10.0.0.0/24
         address = str(starting_octet + active_scenarios)
