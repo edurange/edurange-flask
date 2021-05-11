@@ -1,16 +1,14 @@
-- Text: "question 1"
+- Question: "question 1"
   Type: String
   Options: []
   Values:
     - Value: "answer 1"
     Points: '0'
-  Order: 1
   Points: 0
-- Text: "question 2"
+- Question: "question 2"
   Type: String
   Options: []
   Values:
     - Value: "answer 2"
     Points: '0'
-  Order: 2
   Points: 0
