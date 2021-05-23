@@ -5,7 +5,8 @@ set -eoux pipefail
 cat << \EOF >/etc/motd
     #############  GETTING STARTED #############
     Welcome to the Getting Started EDURange scenario!
-    Follow the instructions in the CodeLabs and answer the questions on EDURange.
+    You can use this bash environment to try out the commands shown in the student guide.
+    Follow the student guide and answer the questions on EDURange in browser.
     ############################################
 EOF
 
