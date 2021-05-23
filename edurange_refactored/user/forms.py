@@ -105,7 +105,7 @@ class GroupForm(FlaskForm):
     )
     size = IntegerField(
         "Group Size", validators=[
-            NumberRange(min=0, max=40, message="Account generation may not surpass a count of 40 (and must be positive)")]
+            NumberRange(min=0, max=60, message="Account generation may not surpass a count of 60 (and must be positive)")]
     )
 
     def __init__(self, *args, **kwargs):

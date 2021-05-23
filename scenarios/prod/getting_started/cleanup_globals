@@ -1,0 +1,15 @@
+rm /analyze.py
+rm /intervention.py
+rm /mergeLogs.sh
+rm /makeTsv.py
+rm /milestone-lbl.pl
+rm /milestones.txt
+rm /setup_home
+rm /start_ttylog.sh
+rm /ttylog
+rm -rf /home/ubuntu/change_root_pass
+rm -rf /home/ubuntu/milestones.txt
+rm -rf /home/ubuntu/motd_nat
+rm -rf /home/ubuntu/place_milestone_file
+rm -rf /home/ubuntu/tty_setup
+rm -rf /home/ubuntu/cleanup_globals
