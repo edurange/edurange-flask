@@ -9,7 +9,7 @@ We recommend running on a clean ubuntu or debian instance.
 First, clone this repository
 
 ```bash
-git clone https://github.com/edurange/edurange-flask.git
+git clone https://github.com/edurange/edurange-flask.git --recurse-submodules
 ```
 
 Next, change directory, copy the '.env.example' file to '.env' and edit it where marked
