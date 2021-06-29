@@ -42,7 +42,7 @@ Work in Process
 
 The following is an example use of the metasploit framework that has been generalized to show how the given commands can be used.
 
-![Metasploit Command Line Example](/assets/img/Metasploitable/m-h_example_cmd_line.png)
+![Metasploit Command Line Example](/static/build/img/Metasploitable/m-h_example_cmd_line.png)
 
 ---
 
