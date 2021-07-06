@@ -79,3 +79,7 @@ celerybeat-schedule
 celery.log
 assets/js/.Rhistory
 assets/css/.Rhistory
+
+
+.notes
+terraform*.zip*
