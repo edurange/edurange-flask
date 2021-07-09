@@ -5,12 +5,11 @@ Work in Process
 ---
 
 ## Learning Objectives
-
-- Learn to identify which services running on open ports are exploitable vulnerabilities.
-
-- Learn which exploits provided by the Metasploit framework to use.
-
-- Learn to use the Metasploit Framework to exploit a vulnerable service.
+- use the Metasploit shell.
+- identify targets and services running on open ports
+- given the service running and the version, find known vulnerabilities and severity.
+- find exploits provided by the Metasploit framework to use.
+- use the Metasploit Framework to exploit a vulnerable service.
 
 ---
 
