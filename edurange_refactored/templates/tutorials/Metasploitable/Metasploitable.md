@@ -63,11 +63,14 @@ The following is a list of the types of vulnerable services provided by Metasplo
 
 ## Information
 
-Once you have logged into the attacker machine, the target machine can be accessed using the keyword `target` instead of using an IP Address.
+Once you have logged into the attacker machine, you should be able to run nmap, which is the standard tool for scanning a target. The use of nmap
+is covered in the scenarios SSH_inception and Total Recon. In this exercise, the target machine can be accessed using the keyword `target` instead of scanning a network to find the IP Address.
 
-It is recommended that when you scan the target machine, to scan all ports from 0 to 65535. Once you have identified the open ports you can narrow down the range of ports that you scan.
+It is recommended that when you scan the target machine, to scan all ports from 0 to 65535. Once you have identified the open ports you can narrow down the range of ports that you scan for additional information.
 
 When you scan the target machine you should see 15 open ports.
+
+The next step is to identify services with known vulnerabilites.
 
 When looking for exploits to use on a service, we highly recommend that you only try exploits that are ranked `excellent`.
 
