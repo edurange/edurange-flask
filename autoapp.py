@@ -10,10 +10,6 @@ from datetime import datetime
 from flask import session
 from flask_login import current_user
 
-from edurange_refactored.app import create_app
-from edurange_refactored.extensions import db
-from edurange_refactored.user.models import StudentGroups, User
-
 app = create_app()
 app.app_context().push()
 db.create_all()
