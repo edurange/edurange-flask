@@ -1,0 +1,19 @@
+install docker desktop for windows and enable integration for your wsl instance in settings -> resources -> wsl integration
+
+install postgresql before running install.sh
+sudo service postgresql start
+
+./install.sh
+
+make 
+
+add to .bashrc:
+if ! pgrep redis > /dev/null; then
+    echo "enter password to start redis-server and postgresql"
+    sudo service redis-server start
+    sudo service postgresql start
+fi
+
+restart shell
+
+add required images in Docker for Windows before starting scenarios
