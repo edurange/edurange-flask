@@ -48,7 +48,7 @@ Linux folders and files are arranged like an upside down tree, where the slash `
 
 ### `/` vs. logging in as root
 
-The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as bermic you would typically save your files in `/home/student`, whereas the root user saves their files in `/root`.
+The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as student you would typically save your files in `/home/student`, whereas the root user saves their files in `/root`.
 
 ### Important
 
