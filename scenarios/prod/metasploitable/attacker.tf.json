@@ -19,11 +19,11 @@
                             ],
                             "connection": [
                                 {
-                                  "host": "${self.ports[0].ip}",
-                                  "password": "root",
-                                  "port": "${self.ports[0].external}",
-                                  "type": "ssh",
-                                  "user": "root"
+                                    "host": "${self.ports[0].ip}",
+                                    "password": "root",
+                                    "port": "${self.ports[0].external}",
+                                    "type": "ssh",
+                                    "user": "root"
                                 }
                             ],
                             "hostname": "attacker",
@@ -80,8 +80,8 @@
                 {
                     "value": [
                         {
-                          "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_attacker_extern])}",
-                          "name": "SNAME_attacker"
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_attacker_extern])}",
+                            "name": "SNAME_attacker"
                         }
                     ]
                 }

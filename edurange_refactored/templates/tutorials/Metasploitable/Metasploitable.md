@@ -1,9 +1,4 @@
 # Metasploitable
-
-Work in Process
-
----
-
 ## Learning Objectives
 - use the Metasploit shell.
 - identify targets and services running on open ports
@@ -11,13 +6,10 @@ Work in Process
 - find exploits provided by the Metasploit framework to use.
 - use the Metasploit Framework to exploit a vulnerable service.
 
----
-
+<hr>
 <h2 class="colH3"> Basic Metasploit Commands </h2>
 
-> Square brackets indicate the command input.
-
-- `msfconsole`: opens the Metasploit shell, which allows for Metasploit commands to be run.
+Much like Bash, a Metasploit command is often followed by one or more input flags/values (we use square brackets to show when those are necessary). Enter the `msfconsole` command in the attacker machine to open a Metasploit shell, then try a couple of the following commands:
 
 - `help`: when used alone, shows the possible options; when used with a command as input, shows information on the specified command.
 
