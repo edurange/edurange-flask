@@ -5,12 +5,12 @@ Work in Process
 ---
 ## What is Metasploit
 Metasploit is a framework for automating the process of exploiting vulnerabilities in application software. It has tools to support the cyber kill chain. which consists of the steps: 
-- reconnaissance, identifying the target and software and services running on the target
+- reconnaissance, identifying the target and software services running on the target
 - finding vulnerabilities, this may include CVEs for the specific software versions running on the target and severity of the vulnerabilities
 - weaponization, identifying exploits that could be used for the vulnerabilities
 - delivery, in order to get the exploit to the target, it may be necessary to bypass firewalls
 - exploitation, choosing a payload, producing packets that contain the exploit with payload and delivering them to the target
-- persistence, creating accounts, backdoors, etc. 
+- persistence, creating accounts, backdoors, beacons, etc. 
 
 ## Learning Objectives
 - use the Metasploit shell.
