@@ -25,7 +25,8 @@ from edurange_refactored.user.forms import (
     modScenarioForm,
     changeEmailForm,
     deleteGroupForm,
-    scenarioResponseForm
+    scenarioResponseForm,
+    notifyDeleteForm
 )
 
 from ..form_utils import process_request
@@ -50,7 +51,9 @@ from ..role_utils import check_admin, check_instructor, check_privs, checkEx, re
 from ..graph_utils import getGraph, getLogFile
 from ..csv_utils import readCSV, groupCSV
 
-from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
+from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses, Notification
+
+from edurange_refactored.notification_utils import NotifyCapture, NotifyClear
 
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
@@ -232,6 +235,8 @@ def make_scenario():
         )
 
         Scenarios.create(name=name, description=s_type, owner_id=own_id)
+        NotifyCapture("Scenario " + name + " has been created.")
+        #Notification.create(details=something, date=something)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
         scenario = Scenarios.query.filter_by(id=s_id).first()
         scenario.update(status=7)
@@ -296,7 +301,7 @@ def scenariosInfo(i):
     if not admin and not instructor:
         return abort(403)
     status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
-    addresses = identify_state(s_name, status)
+    addresses =  _state(s_name, status)
     db_ses = db.session
     query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.points,
                          Responses.question, Responses.student_response, Responses.scenario_id, User.username)\
@@ -524,4 +529,22 @@ def admin():
                     return render_template(temp, group=ajax[1], users=ajax[2])
         else:
             return redirect(url_for("dashboard.admin"))
+
+
+# routing for notification page
+@blueprint.route("/notification", methods=["GET", "POST"])
+@login_required
+def notification():
+    """Notification"""
+    if request.method == "POST":
+        process_request(request.form)
+
+    notificationList = Notification.query.all()
+    deleteNotify = notifyDeleteForm()
+
+    return render_template(
+        "dashboard/notification.html",
+        notifications=notificationList,
+        deleteNotify=deleteNotify
+    )
 

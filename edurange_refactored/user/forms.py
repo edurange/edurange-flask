@@ -282,3 +282,15 @@ class type2Form(FlaskForm):                 # addUsersForm, makeScenarioForm,   
 
 
 # -
+
+class notifyDeleteForm(FlaskForm):
+    notification = StringField("notification", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(notifyDeleteForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(notifyDeleteForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

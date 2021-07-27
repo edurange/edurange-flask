@@ -33,7 +33,7 @@
 						</tr>
 					</thead>
 					<tbody> <!--Content of scenario table-->
-						{% for scenario in scenarios%}
+						{% for scenario in scenarios%} <!-- ask where this from -->
 						<tr>
                             <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
 							<td>{{scenario.description}}</td>
@@ -54,21 +54,32 @@
                             {% endif %} </td>
                             <td>
                                 <div class="btn-group">
-                            <form id="startScenario" method="POST" action="" role="">
-                                {{ scenarioModder.csrf_token }}
-                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                <input name="mod_scenario" class="btn btn-success btn-group" type="submit" value="Start">
-                            </form>
-                                <form id="stopScenario" method="POST" action="" role="">
-                                    {{ scenarioModder.csrf_token }}
-                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-dark btn-group" type="submit" value="Stop">
-                                </form>
-                                <form id="destroyScenario" method="POST" action="" role="">
-                                    {{ scenarioModder.csrf_token }}
-                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
-                                </form>
+                                    <form id="startScenario" method="POST" action="" role="">
+                                        {{ scenarioModder.csrf_token }}
+                                        <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                        <input name="mod_scenario" class="btn btn-success btn-group" type="submit" value="Start">
+                                    </form>
+                                    <form id="stopScenario" method="POST" action="" role="">
+                                        {{ scenarioModder.csrf_token }}
+                                        <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                        <input name="mod_scenario" class="btn btn-dark btn-group" type="submit" value="Stop">
+                                    </form>
+                                    <form id="destroyScenario" method="POST" action="" role="">
+                                        {{ scenarioModder.csrf_token }}
+                                        <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                        <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
+                                    </form>
+
+                                    <!-- Archive button could go here -->
+                                    <!--
+                                    <form id="archiveScenario" method="POST" action="" role="">
+                                        {{ scenarioModder.csrf_token }}
+                                        <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                        <input name="mod_scenario" class="btn btn-(gray color?) btn-group" type="submit" value="Archive>
+                                    </form>
+                                    -->
+
+
                                 </div>
                             </td>
 						</tr>

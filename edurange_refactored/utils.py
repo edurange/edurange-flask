@@ -138,7 +138,9 @@ def genAdminLinks(view):
     if not view:
         dashboard = create_link('dashboard.admin', 'fa-desktop', 'Admin Dashboard')
         scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
-        return [dashboard, scenarios]
+        notification = create_link('dashboard.notification', 'fa-bell', 'Notifications')
+        # return [dashboard, scenarios]
+        return [dashboard, scenarios, notification]
     elif view == 'instructorView':
         return genInstructorLinks(None)
     elif view == 'studentView':
@@ -162,6 +164,7 @@ def genInstructorLinks(view):
 def genStudentLinks(view=None): # needs common arg for switch statement
     """Generate links for students."""
     dashboard = create_link('dashboard.student', 'fa-desktop', 'Dashboard')
+    # testing = create_link('public.testing', *icon*, *name*)
     return [dashboard] # return array to avoid character print in template's for loop
 
 

@@ -101,6 +101,10 @@ class Scenarios(UserMixin, SurrogatePK, Model):
         """Represent instance as a unique string."""
         return f"<Scenario({self.name!r})>"
 
+class Notification(UserMixin, SurrogatePK, Model):
+    #more columns could be added. Type of notification is one thing
+    detail = Column(db.String(60), unique=False, nullable=False)
+    date = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
 
 class ScenarioGroups(UserMixin, SurrogatePK, Model):
     """Groups associated with scenarios"""
