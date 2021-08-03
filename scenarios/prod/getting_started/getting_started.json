@@ -6,7 +6,8 @@
 			],
 			"system_files": [
 				"install",
-				"motd_nat"
+				"motd_nat",
+				"cleanup_globals"
 			],
 			"user_files": [
 				"setup_home",

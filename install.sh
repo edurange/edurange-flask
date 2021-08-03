@@ -46,12 +46,10 @@ chmod +x docker.sh
 echo -e "${GRN}Creating a user group for docker, and adding your account...${NC}"
 sudo groupadd docker
 sudo usermod -aG docker $username
+sudo su $USER --login
 
 echo -e "${GRN}Done! Next run the first-run setup: ${NC} npm run build"
 echo -e "${GRN}Then, you should be able to run the app any time with ${NC} npm start"
 echo -e "${GRN}You may need to make sure that pip-executables are accessible${NC}"
 echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not recognized, try:"
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
-
-
-

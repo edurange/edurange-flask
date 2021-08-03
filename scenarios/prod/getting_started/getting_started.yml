@@ -3,7 +3,7 @@ Name: Getting_Started
 Description: Getting Started teaches the basics of using the terminal on Linux (but also can extend to Mac)
 Codelab: https://edurange.github.io/getting_started_tutorial/#0
 Instructions: Follow the steps in the student guide.
-InstructionsStudent: Follow the steps in the CodeLabs and answer the questions on EDURange. Question responses are case-sensitive.
+InstructionsStudent: Answer the following questions as you are following the student guide. Question responses are case-sensitive.
 Groups:
 - Name: Students
   Instructions:

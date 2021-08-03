@@ -1,0 +1,14 @@
+- Question: "question 1"
+  Type: String
+  Options: []
+  Values:
+    - Value: "answer 1"
+    Points: '0'
+  Points: 0
+- Question: "question 2"
+  Type: String
+  Options: []
+  Values:
+    - Value: "answer 2"
+    Points: '0'
+  Points: 0

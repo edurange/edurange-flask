@@ -56,7 +56,7 @@ from ..utils import (
     getScenarioLogs
 )
 from ..role_utils import check_admin, check_instructor, check_privs, checkEx, return_roles, checkEnr
-from ..graph_utils import getGraph, getLogFile
+from ..graph_utils import getGraph
 from ..csv_utils import readCSV, groupCSV
 
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
@@ -302,6 +302,7 @@ def scenariosInfo(i):
     admin, instructor = return_roles()
     if not admin and not instructor:
         return abort(403)
+
     status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
     addresses = identify_state(s_name, status)
     db_ses = db.session
@@ -393,6 +394,7 @@ def scenarioGraph(i, u):
 @blueprint.route("/scenarios/<i>/getLogs")
 def getLogs(i):
     # i = scenario_id
+<<<<<<< HEAD
     if checkAuth():
         if scenarioExists(i):
             db_ses = db.session
@@ -411,11 +413,33 @@ def getLogs(i):
             else:
                 flash("Log file for scenario {0} could not be found.".format(scenario))
                 return redirect(url_for('dashboard.scenariosInfo', i=i))
+=======
+    admin, instructor = return_roles(i)
+>>>>>>> master
 
-        else:
-            return abort(404)
-    else:
+    if not admin or not instructor:
         return abort(403)
+
+    db_ses = db.session
+    id_test = db_ses.query(Scenarios).get(id)
+
+    if id_test is None:
+        flash("Scenario with ID # {0} could not be found".format(i))
+        redirect(url_for('dashboard.scenarios'))
+
+    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+
+    logs = "./data/tmp/" + scenario + "/" + scenario + "-history.csv"
+    if os.path.isfile(logs):
+        logs = "." + logs
+        fname = logs.rsplit('/', 1)[-1] # 'ScenarioName-history.csv'
+        logs = logs.rsplit('/', 1)[0] # '../data/tmp/ScenarioName/'
+        return send_from_directory(logs, fname, as_attachment=True)
+
+    else:
+        flash("Log file for scenario {0} could not be found.".format(scenario))
+        return redirect(url_for('dashboard.scenariosInfo', i=i))
+
 
 # -----
 

@@ -32,6 +32,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.notes
+.vscode/
 
 # Complexity
 output/*.html
@@ -79,3 +81,7 @@ celerybeat-schedule
 celery.log
 assets/js/.Rhistory
 assets/css/.Rhistory
+
+
+.notes
+terraform*.zip*

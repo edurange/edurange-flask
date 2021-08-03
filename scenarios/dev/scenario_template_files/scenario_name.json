@@ -1,0 +1,13 @@
+{
+	"containers": [{
+		"name" : "|container_name|",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+			],
+			"user_files": [
+			]
+		}]
+	}]
+}

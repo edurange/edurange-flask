@@ -1,0 +1,85 @@
+{
+  "resource": [
+    {
+      "docker_container": [
+        {
+          "SNAME_|cName|": [
+            {
+              "capabilities": [
+                {
+                  "add": [
+                    "NET_ADMIN",
+                    "SYS_PTRACE"
+                  ]
+                }
+              ],
+              "command": [
+                "/usr/sbin/sshd",
+                "-D"
+              ],
+              "connection": [
+                {
+                  "host": "${self.ports[0].ip}",
+                  "password": "root",
+                  "port": "${self.ports[0].external}",
+                  "type": "ssh",
+                  "user": "root"
+                }
+              ],
+              "hostname": "|hostname|",
+              "image": "|image path|",
+              "name": "SNAME_|cName|",
+              "networks_advanced": [
+                {
+                  "ipv4_address": "OCTET.0.1.2",
+                  "name": "SNAME_NAT"
+                },
+                {
+                  "ipv4_address": "OCTET.0.0.2",
+                  "name": "SNAME_PLAYER"
+                }
+              ],
+              "ports": [
+                {
+                  "internal": 22
+                }
+              ],
+              "provisioner": [
+                {
+                  "remote-exec": [
+                    {
+                      "inline": [
+                        "USERS",
+                        "EXECS"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "restart": "always"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "locals": [
+    {
+      "SNAME_|cName|_extern": "${tostring(docker_container.SNAME_|cName|.ports[0].external)}"
+    }
+  ],
+  "output": [
+    {
+      "SNAME_|cName|": [
+        {
+          "value": [
+            {
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_|cName|_extern])}",
+              "name": "SNAME_|cName|"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

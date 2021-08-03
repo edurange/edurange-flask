@@ -1,0 +1,13 @@
+{
+	"containers": [{
+		"name" : "ransom",
+		"files": [{
+			"global_files": [
+			],
+			"system_files": [
+			],
+			"user_files": [
+			]
+		}]
+	}]
+}
