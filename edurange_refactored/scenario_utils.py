@@ -9,6 +9,7 @@ known_types = [
     "File_Wrangler",
     "Getting_Started",
     "Metasploitable",
+    "Ransomware",
     "Ssh_Inception",
     "Strace",
     "Total_Recon",
@@ -164,3 +165,7 @@ def identify_state(name, state):
 
     else:
         return {"Could not find scenario folder": "Please destroy and re-make this scenario"}
+
+def query_valid_scenario_id(id, session):
+    scenId = session.query(Scenarios).get(id)
+    return scenId
