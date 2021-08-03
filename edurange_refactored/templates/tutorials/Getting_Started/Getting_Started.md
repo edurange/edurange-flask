@@ -4,9 +4,9 @@
 
 ## 1. Welcome to Cybersec
 
-### What You'll Learn
+### Your Briefing
 
-Congratulations recruit and welcome to CyberSec. As you should know we provide security services to you, our communities, and small businesses. You've made it this far, I suppose that means you may be helpful. But first comes the training. We need to strengthen your skills before you can truly be of use. Remember, this world is being controlled by the malicious corporations and individuals and we must learn to protect ourselves from their invasive attacks. We must protect our data. This is why you are here. To protect yourself, your company and your community. And it all starts here, at the beginning, with a terminal command.
+Congratulations and welcome to CyberSec. As an intern you will need to complete this training on how to use the command line. You may need to strengthen your command line skills before you can complete the other parts of your training. Remember, this world is being controlled by the malicious corporations and individuals and we must learn to protect ourselves from their invasive attacks. We must protect our data. This is why you are here. To protect yourself, your company and your community. And it all starts here, at the beginning, with a terminal command prompt.
 
 ### How to Connect
 
@@ -20,11 +20,11 @@ When using your computer (Mac, Linux, Windows) you typically are using a GUI (Gr
 
 Why should you learn the command line?
 
-- You gain greater control over the system (computer)
+- You gain greater control over the system (computer) because you have more options
 
-- A GUI interface just doesn't have the power needed to run repetitive tasks.
+- You can script repetitive tasks. A GUI interface just doesn't have the option to loop.
 
-- Doing anything from a simple task of renaming a file, changing a user information and searching for files is faster and easier through command line once it is learned.
+- Doing anything from a simple task of renaming a file, changing a user information and searching for files is faster and easier through command line once you are comfortable with it.
 
 - Scalability
 
@@ -44,11 +44,11 @@ In summation, it allows you to do stuff faster than GUI and provides built in au
 
 ### Hierarchy
 
-Linux folders and files are arranged like an upside down tree, where the slash `/` is called the root, or beginning, of all your files in the entire computer. The root is the base of the tree and as you go down it keeps splitting into branches and leaves. The leaves would be a file and the branches are folders.
+Linux folders and files are arranged like an upside down tree, where the slash `/` is called the root node, or beginning, of all your files in the entire computer. The root is the base of the tree and as you go down it keeps splitting into branches and leaves. The leaves would be a file and the branches are folders. This means that if you want to search the entire file system, you need to start at `/`
 
 ### `/` vs. logging in as root
 
-The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as bermic you would typically save your files in `/home/student`, whereas the root user saves their files in `/root`.
+The root, signified by a `/` , is the beginning of your files. But you can also log in as the root user. When you do this, your home directory (where your files are typically saved) is in the folder `/root` not at, `/`. The `/root` folder is not to be confused with the slash (root) the beginning of all the files. Just like if you were logged in as student you would typically save your files in `/home/student`, whereas the root user saves their files in `/root`.
 
 ### Important
 
@@ -156,7 +156,6 @@ TASK: `cd` into your home directory and then type `ls` and you will see a direct
 Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. The use of sudo in EDURange is restricted, however.
 
 ---
-### pwd
 
 ## 5. File Types
 
