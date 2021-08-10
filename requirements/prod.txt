@@ -48,4 +48,4 @@ jwt==1.0.0
 PyYAML==5.4
 flower==0.9.5
 markdown==3.3.3
-flask-socketio #needs version
+flask-socketio==5.1.0
