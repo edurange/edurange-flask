@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 """Create an application instance."""
+from flask.globals import current_app
 from edurange_refactored.app import create_app
-from edurange_refactored.user.models import User, StudentGroups
+from edurange_refactored.user.models import User, StudentGroups, Scenarios
 from edurange_refactored.extensions import db
 from edurange_refactored.utils import generateNavElements
+from edurange_refactored.tasks import stop
 import os
 from datetime import datetime
 
 from flask import session
 from flask_login import current_user
 
-from edurange_refactored.app import create_app
-from edurange_refactored.extensions import db
-from edurange_refactored.user.models import StudentGroups, User
-
 app = create_app()
 app.app_context().push()
 db.create_all()
 
+## pivot to db sync when starting as opposed to 
+## check to see which containers are running and update the db
 
 @app.context_processor
 def utility_processor():

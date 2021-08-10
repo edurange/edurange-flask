@@ -2,9 +2,13 @@
 """The app module, containing the app factory function."""
 import logging
 import sys
+import os
+import signal
+from time import sleep
 
 from celery import Celery
 from flask import Flask, render_template
+from sqlalchemy.orm import with_expression
 
 from edurange_refactored import commands, public, user, tutorials
 from edurange_refactored.extensions import (
@@ -18,7 +22,8 @@ from edurange_refactored.extensions import (
     migrate,
 )
 from edurange_refactored.settings import CELERY_BROKER_URL
-from edurange_refactored.user.models import User
+from edurange_refactored.user.models import User, Scenarios
+from edurange_refactored.tasks import stop
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -34,6 +39,8 @@ def create_app(config_object="edurange_refactored.settings"):
     register_shellcontext(app)
     register_commands(app)
     configure_logger(app)
+
+    sync_docker(app)
 
     return app
 
@@ -97,3 +104,36 @@ def configure_logger(app):
     handler = logging.StreamHandler(sys.stdout)
     if not app.logger.handlers:
         app.logger.addHandler(handler)
+
+
+def sync_docker(app):
+    import docker
+    from edurange_refactored.user.models import Scenarios
+    """Synchronize the state of the Docker daemon 
+    with the database/what Flask shows on the scenarios page"""
+
+    # get state of db
+    try:
+        with app.app_context():
+            scenarios_in_db = Scenarios.query.all()
+            print("scenarios:")
+            for s in scenarios_in_db:
+                print("\t", s.name)
+    except:
+        # send message to celery saying there are no scenarios
+        print("no scenarios...?")
+
+    # compare against state of docker
+    print()
+    try:
+        client = docker.from_env()
+        active_containers = client.containers.list()
+        print(active_containers)
+
+        # match names of scenarios_in_db to active containers from docker client
+
+        print("docker section no error")
+    except:
+        print("docker section error")
+
+    # make changes to
