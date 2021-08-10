@@ -1,135 +1,137 @@
-
-
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
+<div class="container">
 
-        <div class="row">
-            <div class="col-sm-6" align="left">
+  <div class="row">
+    <div class="col-sm-6" align="left">
 
-            </div>
-        </div>
-        <form action="/dashboard/catalog" method="get">
-            <input class="btn btn-dark" type="submit" value="New Scenario"
-                   name="Submit" id="new_scenario" />
-        </form>
     </div>
+  </div>
+  <form action="/dashboard/catalog" method="get">
+    <input class="btn btn-dark" type="submit" value="New Scenario" name="Submit" id="new_scenario" />
+  </form>
+</div>
 
-    <p></p>
+<p></p>
 
 
-            <div id="body">
-            <div class="container" id="scenarios"><!--scenarios table-->
-				<table class="table" id="s_table">
-					<caption>List of scenarios</caption>
-					<thead class="thead-dark">
-						<tr>
-							<th data-sort="string"scope="col">NAME</th>
-							<th data-sort="string"scope="col">DESCRIPTION</th>
-							<th data-sort="string"scope="col">OWNER</th>
-							<th data-sort="float" data-sort-default="desc" scope="col">CREATED AT</th>
-							<th data-sort="int" scope="col">STATUS</th>
-                            <th scope="col">CONTROL</th>
-						</tr>
-					</thead>
-					<tbody> <!--Content of scenario table-->
-						{% for scenario in scenarios%}
-						<tr>
-                            <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
-							<td>{{scenario.description}}</td>
-							<td>{{ scenario.owner.username }}</td>
-							<td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
-							<td> {% if scenario.status==0 %}
-                                <img src="/static/build/img/stopped.png">
-                            {% elif scenario.status==1 %}
-                                <img src="/static/build/img/started.png">
-                            {% elif scenario.status==3 %}
-                                <img src="/static/build/img/booting.png">
-                            {% elif scenario.status==4 %}
-                                <img src="/static/build/img/stopping.png">
-                            {% elif scenario.status==7 %}
-                                <img src="/static/build/img/building.png">
-                            {% else %}
-                                {{ super() }}
-                            {% endif %} </td>
-                            <td>
-                                <div class="btn-group">
-                            <form id="startScenario" method="POST" action="" role="">
-                                {{ scenarioModder.csrf_token }}
-                                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                <input name="mod_scenario" class="btn btn-success btn-group" type="submit" value="Start">
-                            </form>
-                                <form id="stopScenario" method="POST" action="" role="">
-                                    {{ scenarioModder.csrf_token }}
-                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-dark btn-group" type="submit" value="Stop">
-                                </form>
-                                <form id="destroyScenario" method="POST" action="" role="">
-                                    {{ scenarioModder.csrf_token }}
-                                    <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
-                                    <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
-                                </form>
-                                </div>
-                            </td>
-						</tr>
-						{% endfor %}
-					</tbody> <!--Content of scenario table-->
-				</table>
-			</div> <!--scenario table-->
+<div id="body">
+  <div class="container" id="scenarios">
+    <!--scenarios table-->
+    <table class="table" id="s_table">
+      <caption>List of scenarios</caption>
+      <thead class="thead-dark">
+        <tr>
+          <th data-sort="string" scope="col">NAME</th>
+          <th data-sort="string" scope="col">DESCRIPTION</th>
+          <th data-sort="string" scope="col">OWNER</th>
+          <th data-sort="float" data-sort-default="desc" scope="col">CREATED AT</th>
+          <th data-sort="int" scope="col">STATUS</th>
+          <th scope="col">CONTROL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Content of scenario table-->
+        {% for scenario in scenarios%}
+        <tr>
+          <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
+          <td>{{scenario.description}}</td>
+          <td>{{scenario.owner.username}}</td>
+          <td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
+          <td> {% if scenario.status==0 %}
+            <img src="/static/build/img/stopped.png">
+            {% elif scenario.status==1 %}
+            <img src="/static/build/img/started.png">
+            {% elif scenario.status==3 %}
+            <img src="/static/build/img/booting.png">
+            {% elif scenario.status==4 %}
+            <img src="/static/build/img/stopping.png">
+            {% elif scenario.status==7 %}
+            <img src="/static/build/img/building.png">
+            {% else %}
+            {{ super() }}
+            {% endif %}
+          </td>
+          <td>
+            <div class="btn-group">
+              <form id="startScenario" method="POST" action="" role="">
+                {{ scenarioModder.csrf_token }}
+                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                <input name="mod_scenario" class="btn btn-success btn-group" type="submit" value="Start">
+              </form>
+              <form id="stopScenario" method="POST" action="" role="">
+                {{ scenarioModder.csrf_token }}
+                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                <input name="mod_scenario" class="btn btn-dark btn-group" type="submit" value="Stop">
+              </form>
+              <form id="destroyScenario" method="POST" action="" role="">
+                {{ scenarioModder.csrf_token }}
+                <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
+              </form>
             </div>
-        {% endblock %}
-        {% block js %}
-        <script>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <!--Content of scenario table-->
+    </table>
+  </div>
+  <!--scenario table-->
+</div>
+{% endblock %}
+{% block js %}
+<script>
 
-          function sort(index, sort_mode) {
-            console.log(index, sort_mode);
+  function sort(index, sort_mode) {
+    console.log(index, sort_mode);
 
-            var $table = $("#s_table").stupidtable();
-            var $th_to_sort = $table.find("thead th").eq(index);
+    var $table = $("#s_table").stupidtable();
+    var $th_to_sort = $table.find("thead th").eq(index);
 
-            switch(sort_mode) {
-              case 1:
-                $th_to_sort.stupidsort('asc')
-                break;
-              case 2:
-                $th_to_sort.stupidsort('desc')
-                break;
-              default:
-                $('table').stupidsort();
-            }
-          }
+    switch (sort_mode) {
+      case 1:
+        $th_to_sort.stupidsort('asc')
+        break;
+      case 2:
+        $th_to_sort.stupidsort('desc')
+        break;
+      default:
+        $('table').stupidsort();
+    }
+  }
 
-          function refresh() {
-            console.log("refreshing");
-            var index = 3;
-            var sort_mode = 2;
+  function refresh() {
+    console.log("refreshing");
+    var index = 3;
+    var sort_mode = 2;
 
-            var x = document.getElementById("s_table").rows[0].cells
-            for (var i = 0; i < x.length; i++) {
-              if (x[i].className === 'sorting-asc') {
-                console.log('ascending sort found')
-                index = i;
-                sort_mode = 1;
-              } else if (x[i].className === 'sorting-desc') {
-                console.log('descending sort found')
-                index = i;
-                sort_mode = 2;
-              }
-            }
+    var x = document.getElementById("s_table").rows[0].cells
+    for (var i = 0; i < x.length; i++) {
+      if (x[i].className === 'sorting-asc') {
+        console.log('ascending sort found')
+        index = i;
+        sort_mode = 1;
+      } else if (x[i].className === 'sorting-desc') {
+        console.log('descending sort found')
+        index = i;
+        sort_mode = 2;
+      }
+    }
 
-            $('#body').load('/dashboard/scenarios #scenarios', function() {
-              $('#body').hide()
-              sort(index, sort_mode);
-              $('#body').show()
-            });
-            return 0
-          }
+    $('#body').load('/dashboard/scenarios #scenarios', function () {
+      $('#body').hide()
+      sort(index, sort_mode);
+      $('#body').show()
+    });
+    return 0
+  }
 
-          $(document).ready( function () {
-            sort(3, 2)
-            window.setInterval( function() {
-              refresh();
-            }, 5000);
-          });
-        </script>
-        {% endblock %}
+  $(document).ready(function () {
+    sort(3, 2)
+    window.setInterval(function () {
+      refresh();
+    }, 5000);
+  });
+</script>
+{% endblock %}
