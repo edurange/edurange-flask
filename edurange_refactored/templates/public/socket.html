@@ -1,0 +1,54 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+
+      <h1 class="display-3">Socket Test Page</h1>
+
+      </div>
+</div><!-- /.jumbotron -->
+
+<div class="container" id="content">
+    <div class="row">
+        <p>Asynchronous page updates will appear here:</p>
+        <h3>Number list:</h3>
+        <div id="log">
+        </div> <!-- /#log -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block  js %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script>
+$(document).ready(function(){
+//connect to the socket server.
+  console.log("Starting")
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket_test');
+  console.log("Connected")
+var numbers_received = [];
+
+//receive details from server
+socket.on('database_changed', function(msg) {
+  console.log("Here1")
+console.log("Received number" + msg.number);
+//maintain a list of ten numbers
+if (numbers_received.length >= 10){
+numbers_received.shift()
+}
+numbers_received.push(msg.number);
+numbers_string = '';
+for (var i = 0; i < numbers_received.length; i++){
+numbers_string = numbers_string + '<p>' + numbers_received[i].toString() + '</p>';
+}
+$('#log').html(numbers_string);
+});
+
+});
+</script>
+{% endblock %}
+
+
