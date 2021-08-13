@@ -378,18 +378,19 @@ def scenarioCollectLogs(self, arg):
             for i, line in enumerate(data):
                 if i == 0:
                     continue
-            line[3] = datetime.fromtimestamp(int(line[3]))
+                line[3] = datetime.fromtimestamp(int(line[3]))
 
-            get_or_create(session=session,
-                          model=BashHistory,
-                          scenario_name=s,
-                          container_name=line[6].split(':')[0],
-                          timestamp=line[3],
-                          current_directory=line[5],
-                          input=line[6].split(':')[-1],
-                          output=line[6],
-                          prompt=line[1]
-                          )
+                get_or_create(session=session,
+                              model=BashHistory,
+                              scenario_name=s,
+                              container_name=line[6].split(':')[0],
+                              timestamp=line[3],
+                              current_directory=line[5],
+                              input=line[6].split(':')[-1],
+                              output=line[7],
+                              prompt=line[1],
+                              tag=line[2]
+                              )
 
         except FileNotFoundError as e:
             print("Container not found: {} - Skipping".format(e))

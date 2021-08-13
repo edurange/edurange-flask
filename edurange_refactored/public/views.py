@@ -14,7 +14,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from jwt import JWT
 from jwt.exceptions import JWTDecodeError
 
-from edurange_refactored.extensions import bcrypt, login_manager
+from edurange_refactored.extensions import bcrypt, login_manager, db
 from edurange_refactored.public.forms import (
     LoginForm,
     RequestResetPasswordForm,
@@ -22,7 +22,7 @@ from edurange_refactored.public.forms import (
 )
 from edurange_refactored.tasks import test_send_async_email
 from edurange_refactored.user.forms import RegisterForm
-from edurange_refactored.user.models import GroupUsers, StudentGroups, User
+from edurange_refactored.user.models import GroupUsers, StudentGroups, User, BashHistory
 from edurange_refactored.utils import TokenHelper, flash_errors
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
@@ -153,3 +153,14 @@ def about():
 def socket_test():
 
     return render_template("public/socket.html")
+
+
+@blueprint.route("/graph_test")
+def graph_test():
+
+    db_ses = db.session
+
+    data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+
+    print("Found Log Data: {}".format(data))
+    return render_template("public/graph.html", log_data=data)

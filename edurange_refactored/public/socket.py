@@ -17,7 +17,7 @@ def randomNumberGenerator():
         socketapp.emit('newnumber', {'number': number}, namespace='/socket_test')
         socketapp.sleep(5)
 
-@socketapp.on('connect', namespace='/scenarios')
+@socketapp.on('connect', namespace='/socket_test')
 def test_connect():
     # need visibility of the global thread object
     global thread
@@ -31,6 +31,6 @@ def test_connect():
 
 @socketapp.on('disconnect', namespace='/socket_test')
 def test_disconnect():
-    from autoapp import socketapp
+    from edurange_refactored.app import socketapp
     print('Client disconnected')
 
