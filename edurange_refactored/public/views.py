@@ -25,6 +25,8 @@ from edurange_refactored.user.forms import RegisterForm
 from edurange_refactored.user.models import GroupUsers, StudentGroups, User, BashHistory
 from edurange_refactored.utils import TokenHelper, flash_errors
 
+import graphviz
+
 blueprint = Blueprint("public", __name__, static_folder="../static")
 jwtToken = JWT()
 helper = TokenHelper()
@@ -149,10 +151,24 @@ def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
 
+
 @blueprint.route("/socket_test")
 def socket_test():
 
     return render_template("public/socket.html")
+
+
+@blueprint.route("/svgtest")
+def svgtest():
+    chart_data = graphviz.Graph(comment='simple test', format='svg')
+
+    chart_data.node('H', 'Hello')
+    chart_data.node('G', 'Graphviz')
+    chart_data.edge('H', 'G')
+
+    chart_output = chart_data.pipe(format='svg').decode('utf-8')
+
+    return render_template("public/svgtest.html", chart_output=chart_output)
 
 
 @blueprint.route("/graph_test")
@@ -161,6 +177,5 @@ def graph_test():
     db_ses = db.session
 
     data = db_ses.query(BashHistory.input, BashHistory.tag).all()
-
     print("Found Log Data: {}".format(data))
     return render_template("public/graph.html", log_data=data)
