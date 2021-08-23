@@ -525,3 +525,7 @@ def admin():
         else:
             return redirect(url_for("dashboard.admin"))
 
+
+@blueprint.route("/sio_test")
+def sio_test():
+    return render_template('public/sio_test.html')
