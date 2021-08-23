@@ -3,7 +3,6 @@
 import logging
 import sys
 
-from celery import Celery
 from flask import Flask, render_template
 
 from edurange_refactored import commands, public, user, tutorials
@@ -17,8 +16,7 @@ from edurange_refactored.extensions import (
     login_manager,
     migrate,
 )
-from edurange_refactored.settings import CELERY_BROKER_URL
-from edurange_refactored.user.models import User
+from edurange_refactored.user.models import User, Scenarios
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -34,6 +32,8 @@ def create_app(config_object="edurange_refactored.settings"):
     register_shellcontext(app)
     register_commands(app)
     configure_logger(app)
+
+    sync_docker(app)
 
     return app
 
@@ -97,3 +97,37 @@ def configure_logger(app):
     handler = logging.StreamHandler(sys.stdout)
     if not app.logger.handlers:
         app.logger.addHandler(handler)
+
+
+def sync_docker(app):
+    """Synchronize the state of the Docker daemon active containers
+    with the database/what Flask shows on the scenarios page"""
+    import docker
+
+    # get a list of scenarios in database
+    #
+    try:
+        with app.app_context():
+            scenarios_in_db = Scenarios.query.all()
+
+            print("scenarios in db:")
+            for s in scenarios_in_db:
+                print(f"\tname: {s.name}\tstatus: {s.status}\tid: {s.id}")
+    except:
+        # send message to celery saying there are no scenarios
+        print("no scenarios...?")
+
+    # compare against state of docker
+    # only checks for running containers 
+    try:
+        client = docker.from_env()
+        running_containers = client.containers.list()
+        for c in running_containers:
+            print(c.name)
+
+        # match names of scenarios_in_db to active containers from docker client
+
+    except:
+        print("docker section error")
+
+    # make changes to
