@@ -25,7 +25,10 @@ from edurange_refactored.user.forms import RegisterForm
 from edurange_refactored.user.models import GroupUsers, StudentGroups, User, BashHistory
 from edurange_refactored.utils import TokenHelper, flash_errors
 
-import graphviz
+import graphviz as gv
+from edurange_refactored import graph_util
+from edurange_refactored import csv_graph_utility
+
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 jwtToken = JWT()
@@ -159,13 +162,21 @@ def socket_test():
 
 
 @blueprint.route("/svgtest")
-def svgtest():
-    chart_data = graphviz.Graph(comment='simple test', format='svg')
+def svgtest():    
+    #db_ses = db.session
+    #data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+    
+    #chart_data = Graph.Graph(comment='simple test', format='svg')
 
-    chart_data.node('H', 'Hello')
-    chart_data.node('G', 'Graphviz')
-    chart_data.edge('H', 'G')
+    #chart_data.node('H', label='Hello')
+    #chart_data.node('G', label='Graphviz')
+    #chart_data.edge('H', 'G', label='morphism')
 
+    #replace this with query info
+    file_name = "sample_data.csv"
+    log = csv_graph_utility.file_load("sample_data.csv")
+    chart_data = graph_util.get_graph(log)
+    
     chart_output = chart_data.pipe(format='svg').decode('utf-8')
 
     return render_template("public/svgtest.html", chart_output=chart_output)
@@ -175,7 +186,7 @@ def svgtest():
 def graph_test():
 
     db_ses = db.session
-
+    
     data = db_ses.query(BashHistory.input, BashHistory.tag).all()
     print("Found Log Data: {}".format(data))
     return render_template("public/graph.html", log_data=data)
