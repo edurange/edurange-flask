@@ -13,6 +13,14 @@ else
 	source ~/.bashrc
 fi
 
+# Add env variable for edurange folder
+if grep -q "export EDURANGE_HOME" ~/.bashrc; then
+	:
+else
+	echo "export EDURANGE_HOME=$(pwd)" >> ~/.bashrc &&
+	source ~/.bashrc
+fi
+
 echo -e "${GRN}Installing python3-pip, npm, redis-server,  unzip, postgresql, lib-pq-dev, and wget${NC}"
 
 sudo apt update
@@ -22,7 +30,7 @@ pip3 install -r requirements/dev.txt &&
 npm install &&
 mkdir data
 mkdir data/tmp
-mkdir data/tmp/plugin_cache # used by terraform to cache plugins
+mkdir data/tmp/plugin_cache
 mkdir logs
 
 echo -e "${YLW}Please enter your database password, as written in the '.env' file in the DATABASE_URL field:${NC}"
