@@ -167,7 +167,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         # write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
-        os.system("terraform init")
+        os.system("export TF_PLUGIN_CACHE_DIR=\"$(pwd)/../plugin_cache/\" && terraform init")
         os.system("terraform plan -out network")
 
         logger.info("All flags: {}".format(flags))
@@ -378,9 +378,9 @@ def scenarioCollectLogs(self, arg):
             for i, line in enumerate(data):
                 if i == 0:
                     continue
-            line[3] = datetime.fromtimestamp(int(line[3]))
+                line[3] = datetime.fromtimestamp(int(line[3]))
 
-            get_or_create(session=session,
+                get_or_create(session=session,
                           model=BashHistory,
                           scenario_name=s,
                           container_name=line[6].split(':')[0],

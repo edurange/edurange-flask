@@ -22,6 +22,7 @@ pip3 install -r requirements/dev.txt &&
 npm install &&
 mkdir data
 mkdir data/tmp
+mkdir data/tmp/plugin_cache # used by terraform to cache plugins
 mkdir logs
 
 echo -e "${YLW}Please enter your database password, as written in the '.env' file in the DATABASE_URL field:${NC}"
