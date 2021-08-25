@@ -16,7 +16,8 @@ from edurange_refactored.extensions import (
     login_manager,
     migrate,
 )
-from edurange_refactored.user.models import User, Scenarios
+from edurange_refactored.user.models import Scenarios
+from edurange_refactored.tasks import stop
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -99,84 +100,81 @@ def configure_logger(app):
         app.logger.addHandler(handler)
 
 
+# TODO this got longer than expected. can it fit better somewhere else? tasks.py?
 def sync_docker(app):
     """Synchronize the state of the Docker daemon active containers
     with the database/what Flask shows on the scenarios page.
-    
+
     Execution flow:
     - iterate through the folders in data/tmp/
     - extract name of the docker containers/networks using `terraform state list`
         docker_container.sname_nat OR docker_network.sname_NAT/PLAYER
-    - 
+    -
     """
     import docker
     import os
     import subprocess
 
     # get a list of scenarios in database
-    init_dir = os.getcwd() # preserve starting dir
+    init_dir = os.getcwd() # preserve initial dir
     tmp_root = os.environ['EDURANGE_HOME'] + '/data/tmp/'
     os.chdir(tmp_root)
 
     # iterate over scenario folders and get terraform states
-    tf_objects = []
+    tf_containers = set()
     for folder in os.listdir():
         if folder == 'plugin_cache':
+            # skip plugin cache
             continue
         os.chdir(tmp_root + folder) # chdir to scenario folder
 
-        # skip scenario folders that do not contain a .tfstate file (never been started)
-        previously_started = any('tfstate' in file for file in os.listdir())
-        if previously_started:
-            # print(folder)
+        # verify that folder contains a .tfstate file (has been started)
+        if any('tfstate' in file for file in os.listdir()):
             tf_state = subprocess.run(['terraform', 'state', 'list'], capture_output=True, text=True)
 
-            # print(tf_state)
-            tf_objects += [name.split('.')[-1] for name in tf_state.stdout.split('\n')[:-1]]
+            # split stdout from above command by '\n' char
+            # leave off last item (always '')
+            # iterate across list and get containers (exclude networks)
+            tmp = [name.split('.')[-1].split('_')[0] for name in tf_state.stdout.split('\n')[:-1] if 'docker_container' in name]
+            for name in tmp:
+                tf_containers.add(name)
             continue
-    print('tf containers/networks:')
-    print(tf_objects)
-
-    # reset cwd
+    # reset to initial working dir
     os.chdir(init_dir)
+    # DEBUG
+    # print('containers only:', tf_containers)
+    # print('tf containers/networks:\n', tf_objects)
 
-    # get active containers from docker 
+    # get active containers from docker
     try:
         client = docker.from_env()
-        running_containers = client.containers.list()
-        print()
-        print('docker containers:')
-        for c in running_containers:
-            print(c.name)
+        docker_containers = client.containers.list()
+        docker_containers = set([c.name.split('_')[0] for c in docker_containers])
+        # print()
+        # print('docker containers:', docker_containers)
     except:
-        print("docker section error")
-    
+        # print("docker section error")
+        pass
+
 
     # get update db to match docker
-    try:
-        with app.app_context():
-            scenarios_in_db = Scenarios.query.all()
-            print()
-            print("scenarios in db:")
-            for s in scenarios_in_db:
-                '''
-                create set from active scenarios in both db and docker
-                
-                difference(*others)
-                set - other - ...
-                    Return a new set with elements in the set that are not in the others.
-                '''
-                print("type:",type(s))
-                # s.name = s.name.replace("_", "")
-                print(f"{s.name}\ttype: {s.description}\tstatus: {s.status}\tid: {s.id}")
-    except:
-        # send message to celery saying there are no scenarios
-        print("no scenarios...?")
+    # try:
+    with app.app_context():
+        scenarios_in_db = Scenarios.query.all()
+        # print()
+        db_scenario_dict = dict((s.name.replace('_',''), s) for s in scenarios_in_db if s.status == 1)
+        # print("scenarios in db:", db_scenario_dict)
+        db_scenario_set = set(db_scenario_dict.keys())
+        db_docker_diff = db_scenario_set.difference(docker_containers)
+        # print('db set diff docker set', db_docker_diff)
+        for s in db_docker_diff:
+            init_dir = os.getcwd()
+            os.chdir(os.environ['EDURANGE_HOME'] + '/data/tmp/'+ s)
+            os.system('terraform destroy --auto-approve')
+            db_scenario_dict[s].update(status=0)
+            os.chdir(init_dir)
 
-    # update db to match docker daemon state
-    try:
-        for c in running_containers:
-            c_name = c.name.split('_')[0]
-            print(c_name)
-    except:
-        pass
+
+    # except:
+    #     # send message to celery saying there are no scenarios
+    #     pass
