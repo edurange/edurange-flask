@@ -1,0 +1,94 @@
+{
+  "resource": [
+    {
+      "docker_container": [
+        {
+          "SNAME_ransom": [
+            {
+              "capabilities": [
+                {
+                  "add": [
+                    "NET_ADMIN",
+                    "SYS_PTRACE"
+                  ]
+                }
+              ],
+              "command": [
+
+              ],
+              "connection": [
+                {
+                  "host": "${self.ports[0].ip}",
+                  "password": "root",
+                  "port": "${self.ports[0].external}",
+                  "type": "ssh",
+                  "user": "root"
+                }
+              ],
+              "hostname": "ransom",
+              "image": "edurange2/ubuntu_desktop_testing",
+              "name": "SNAME_ransom",
+              "networks_advanced": [
+                {
+                  "ipv4_address": "OCTET.0.1.2",
+                  "name": "SNAME_NAT"
+                },
+                {
+                  "ipv4_address": "OCTET.0.0.2",
+                  "name": "SNAME_PLAYER"
+                }
+              ],
+              "ports": [
+                {
+                  "internal": 80,
+                  "external": 6080
+                },
+                {
+                  "internal": 22
+                }
+              ],
+              "mounts": {
+                "source": "/dev/shm",
+                "target": "/dev/shm",
+                "type": "bind",
+                "read_only": false
+              },
+              "provisioner": [
+                {
+                  "remote-exec": [
+                    {
+                      "inline": [
+                        "USERS",
+                        "EXECS"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "restart": "always"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "locals": [
+    {
+      "SNAME_ransom_extern": "${tostring(docker_container.SNAME_ransom.ports[0].external)}"
+    }
+  ],
+  "output": [
+    {
+      "SNAME_ransom": [
+        {
+          "value": [
+            {
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_ransom_extern])}",
+              "name": "SNAME_ransom"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

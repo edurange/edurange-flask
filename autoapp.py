@@ -44,39 +44,6 @@ def create_all_group(id):
     StudentGroups.create(name="ALL", owner_id=id, code="", hidden=True)
 
 
-def Aid():
-    # number = session.get('_user_id')
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if user.is_admin:
-        return True
-    return False
-
-
-def Iid():
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if user.is_instructor:
-        return True
-    return False
-
-
-def get_role():
-    if current_user and current_user.is_authenticated:
-        number = current_user.id
-        user = User.query.filter_by(id=number).first()
-        if user.is_admin and user.is_instructor:
-            return "a/i"  # this option may not be needed
-        elif user.is_admin:
-            return "a"
-        elif user.is_instructor:
-            return "i"
-        else:
-            return 's'
-    else:
-        return None  # no role --> not logged in
-
-
 admin = User.query.limit(1).all()
 if not admin:
     create_admin()
@@ -86,20 +53,3 @@ admin = User.query.filter_by(username=os.environ["FLASK_USERNAME"]).first()
 a_id = admin.get_id()
 if not group:
     create_all_group(a_id)
-app.jinja_env.globals.update(Aid=Aid)
-app.jinja_env.globals.update(Iid=Iid)
-app.jinja_env.globals.update(get_role=get_role)
-
-
-def format_datetime(value, format="%d %b %Y %I:%M %p"):
-    """Format a date time to (Default): d Mon YYYY HH:MM P"""
-    if value is None:
-        return ""
-    return value.strftime(format)
-
-def timectime(s):
-    return datetime.fromtimestamp(int(s))
-
-
-app.jinja_env.filters["formatdatetime"] = format_datetime
-app.jinja_env.filters["ctime"] = timectime

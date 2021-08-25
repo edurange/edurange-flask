@@ -1,6 +1,6 @@
 {
 	"containers": [{
-		"name" : "|container_name|",
+		"name" : "ransom",
 		"files": [{
 			"global_files": [
 			],
