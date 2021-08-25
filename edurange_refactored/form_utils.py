@@ -10,13 +10,15 @@ from edurange_refactored.user.forms import (
     manageInstructorForm,
     modScenarioForm,
     scenarioResponseForm,
-    deleteGroupForm
+    deleteGroupForm,
+    notifyDeleteForm
 )
 
 from . import tasks
 from .user.models import GroupUsers, StudentGroups, User, Responses, ScenarioGroups
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors, responseCheck, getAttempt
+from edurange_refactored.notification_utils import NotifyClear
 
 
 def process_request(form):  # Input must be request.form
@@ -34,7 +36,8 @@ def process_request(form):  # Input must be request.form
         "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
         "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
         "scenarioResponseForm":     ["scenario", "question", "response"],  # "csrf_token",
-        "deleteGroupForm":          ["group_name", "delete"]  # "csrf_token",
+        "deleteGroupForm":          ["group_name", "delete"],  # "csrf_token",
+        "notifyDeleteForm":         ["clearButton"]  # "csrf_token"
     }
 
     switchVals = []
@@ -58,7 +61,8 @@ def process_request(form):  # Input must be request.form
         "manageInstructorForm":     process_manInst,
         "addUsersForm":             process_addUser,
         "scenarioResponseForm":     process_scenarioResponse,
-        "deleteGroupForm":          process_groupEraser
+        "deleteGroupForm":          process_groupEraser,
+        "notifyDeleteForm":         process_notifyEmpty
     }
     return process_switch[f]()
 
@@ -246,4 +250,7 @@ def process_groupEraser():
         flash("Successfully deleted group {0}".format(gname))
     else:
         flash_errors(dG)
+
+def process_notifyEmpty():
+    NotifyClear()
 

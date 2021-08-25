@@ -11,10 +11,6 @@
     <input class="btn btn-dark" type="submit" value="New Scenario" name="Submit" id="new_scenario" />
   </form>
 </div>
-
-<p></p>
-
-
 <div id="body">
   <div class="container" id="scenarios">
     <!--scenarios table-->
@@ -33,10 +29,11 @@
       <tbody>
         <!--Content of scenario table-->
         {% for scenario in scenarios%}
+        <!-- ask where this from -->
         <tr>
           <td><a class="btn btn-dark" href="{{ '/dashboard/scenarios/%s'%scenario.id }}"> {{scenario.name}} </a></td>
           <td>{{scenario.description}}</td>
-          <td>{{scenario.owner.username}}</td>
+          <td>{{ scenario.owner.username }}</td>
           <td>{{scenario.created_at|formatdatetime('%d-%m-%Y %I:%M') }}</td>
           <td> {% if scenario.status==0 %}
             <img src="/static/build/img/stopped.png">
@@ -69,6 +66,17 @@
                 <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
                 <input name="mod_scenario" class="btn btn-danger btn-group" type="submit" value="Destroy">
               </form>
+
+              <!-- Archive button could go here -->
+              <!--
+                                    <form id="archiveScenario" method="POST" action="" role="">
+                                        {{ scenarioModder.csrf_token }}
+                                        <input class="form-control" type="hidden" id="scenario_id" name="sid" value={{ scenario.id }} readonly>
+                                        <input name="mod_scenario" class="btn btn-(gray color?) btn-group" type="submit" value="Archive>
+                                    </form>
+                                    -->
+
+
             </div>
           </td>
         </tr>
