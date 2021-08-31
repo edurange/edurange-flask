@@ -162,12 +162,14 @@ def socket_test():
 
 
 @blueprint.route("/svgtest")
-def svgtest():    
+def svgtest():
+    #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
     #db_ses = db.session
     #data = db_ses.query(BashHistory.input, BashHistory.tag).all()
-    
-    #chart_data = Graph.Graph(comment='simple test', format='svg')
 
+    # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+    # WILL BE REMOVED LATER
+    #chart_data = gv.Graph(comment='simple test', format='svg')
     #chart_data.node('H', label='Hello')
     #chart_data.node('G', label='Graphviz')
     #chart_data.edge('H', 'G', label='morphism')
@@ -175,11 +177,16 @@ def svgtest():
     #replace this with query info
     file_name = "sample_data.csv"
     log = csv_graph_utility.file_load("sample_data.csv")
-    chart_data = graph_util.get_graph(log)
-    
-    chart_output = chart_data.pipe(format='svg').decode('utf-8')
 
-    return render_template("public/svgtest.html", chart_output=chart_output)
+    file_name = "sample_data.csv"
+    log = csv_graph_utility.file_load("sample_data.csv")
+
+    test_report = graph_util.Report(log)
+    graph_data = test_report.get_graph()
+    
+    graph_output = graph_data.pipe(format='svg').decode('utf-8')
+
+    return render_template("public/svgtest.html", graph_output=graph_output)
 
 
 @blueprint.route("/graph_test")
@@ -188,5 +195,6 @@ def graph_test():
     db_ses = db.session
     
     data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+    #current_app.logger.info("Got data: {}".format(query)) 
     print("Found Log Data: {}".format(data))
     return render_template("public/graph.html", log_data=data)

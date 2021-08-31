@@ -4,12 +4,46 @@
 #for the EduRange project
 #aubrey.birdwell@gmail.com
 
-#import sys
 import graphviz as gv
+#may be needed to debug
 #import csv_graph_utility
+ 
 
-G = None
-root = None
+class Report:
+    """
+    Report class stores a tree of log data
+    
+    Attributes
+    ----------
+    G : graphviz object
+    root : root node
+    log : log stream
+    """
+    def __init__(self, log):
+        #stream of log entries from database
+        #contains report and milestone templates
+        self.log = log        
+        self.root = Node(self.log[0]) 
+
+    def get_graph(self):
+
+        G = gv.Digraph(comment='test log', format='svg')
+
+        for i in range(1, len(self.log)):
+            try:
+                if 'U' not in self.log[i][2]:
+                    if 'T' in self.log[i][2]:
+                        self.root.insert_right(self.log[i])
+                    elif 'T' not in self.log[i][2]:
+                        self.root.insert_left_report(self.log[i])
+            except IndexError:
+                print('Exception located here:')
+                print(self.log[i])
+
+        #output_graph()
+        G = self.root.label_nodes(G)
+        G = self.root.label_edges(G)
+        return G
 
 
 class Node:
@@ -54,7 +88,6 @@ class Node:
                 self.right.insert_right(data)
         else:
             self.data = data
-            #print(str(self.data[0]) + " -> " + str(data[0]))
 
 
     def insert_left(self, data):
@@ -112,7 +145,7 @@ class Node:
                     #end of the line
                     self.left = Node(data)
 
-    def label_nodes(self):
+    def label_nodes(self, G):
         """
         Traverses and labels vertices/nodes for graphviz.
 
@@ -121,10 +154,8 @@ class Node:
         None
         """
         
-        global G
-        
         if self.left:
-            self.left.label_nodes()
+            self.left.label_nodes(G)
         try:
             if 'T' in self.data[2]:
                 text = str(self.data[4])
@@ -167,9 +198,12 @@ class Node:
             print('Exception located here:')
             print(self.data)
         if self.right:
-            self.right.label_nodes()
+            self.right.label_nodes(G)
 
-    def label_edges(self):
+        return G
+            
+            
+    def label_edges(self, G):
         """
         Traverses and labels edges for graphviz.
 
@@ -177,10 +211,9 @@ class Node:
         ----------
         None
         """
-        global G
         
         if self.left:
-            self.left.label_edges()
+            self.left.label_edges(G)
         try:
             if self.left:
                 G.edge(str(self.data[0]), str(self.left.data[0]), label='', penwidth='2')                
@@ -188,7 +221,8 @@ class Node:
             print('Exception located here:')
             print(self.data)
         if self.right:
-            self.right.label_edges()
+            self.right.label_edges(G)
+        return G
 
     def print_tree(self):
         """
@@ -204,39 +238,11 @@ class Node:
         if self.right:
             self.right.print_tree()
 
-# outputs graphviz file
-def output_graph():
-    """
-    Outputs a graphviz file (svg).
+# this may be used to debug
+# in order to do so you must modify the csv_graph... util file paths for not flask...
+#if __name__ == "__main__":            
+#    file_name = "sample_data.csv"
+#    log = csv_graph_utility.file_load("sample_data.csv")
 
-    Parameters
-    ----------
-    Output directory.
-    """
-    global root
-    
-    root.label_nodes()
-    root.label_edges()
-
-def get_graph(log):
-
-    global G
-    G = gv.Digraph()
-
-    global root
-    root = Node(log[0])
-    
-    for i in range(1, len(log)):
-        try:
-            if 'U' not in log[i][2]:
-                if 'T' in log[i][2]:
-                    #print("Inserting right " + "node: " + str(log[i][2]))
-                    root.insert_right(log[i])
-                elif 'T' not in log[i][2]:
-                    #print("Inserting left " + "node: " + str(log[i][2]))
-                    root.insert_left_report(log[i])
-        except IndexError:
-            print('Exception located here:')
-            print(log[i])
-    output_graph()
-    return G
+#    R = Report(log)
+#    G = R.get_graph()
