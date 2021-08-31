@@ -8,7 +8,8 @@ import pytest
 from flask.testing import FlaskClient
 from webtest import TestApp
 
-from autoapp import Aid, Iid, create_admin, create_all_group, get_role
+from edurange_refactored.app import Aid, Iid, get_role
+from autoapp import create_admin, create_all_group
 from edurange_refactored.app import create_app
 from edurange_refactored.database import db as _db
 from edurange_refactored.user.models import StudentGroups, User
