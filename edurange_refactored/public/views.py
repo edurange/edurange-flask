@@ -161,7 +161,7 @@ def socket_test():
     return render_template("public/socket.html")
 
 
-@blueprint.route("/svgtest")
+@blueprint.route("/progress")
 def svgtest():
     #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
     #db_ses = db.session
@@ -186,15 +186,5 @@ def svgtest():
     
     graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
-    return render_template("public/svgtest.html", graph_output=graph_output)
+    return render_template("public/progress.html", graph_output=graph_output)
 
-
-@blueprint.route("/graph_test")
-def graph_test():
-
-    db_ses = db.session
-    
-    data = db_ses.query(BashHistory.input, BashHistory.tag).all()
-    #current_app.logger.info("Got data: {}".format(query)) 
-    print("Found Log Data: {}".format(data))
-    return render_template("public/graph.html", log_data=data)

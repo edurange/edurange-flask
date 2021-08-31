@@ -15,6 +15,7 @@ def file_load(file_name):
     """
     #ignore linter error, csv_file is closed at end...
     csv_file = open("./edurange_refactored/" + file_name, 'r')
+    #csv_file = open(file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
 
     log = []
@@ -66,6 +67,7 @@ def append_milestones(file_name):
     log object todo...
     """
     csv_file = open("./edurange_refactored/" + file_name, 'r')
+    #csv_file = open(file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
     count = 0
@@ -103,6 +105,7 @@ def append_reports(file_name):
     log object todo...
     """
     csv_file = open("./edurange_refactored/" + file_name, 'r')
+    #csv_file = open(file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
     count = 89
