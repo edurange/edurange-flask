@@ -16,9 +16,23 @@
             <input class="btn btn-dark" type="submit" value="Generate" name="Submit" id="make_graph" />
         </form>
     </div>
-</div>
-
-<div class="container" id="content">
-    {{ graph_output|safe }}
+</div><!-- /.jumbotron -->
+<style>
+  h1 { 
+      color:black; 
+  } 
+  div.scroll { 
+      margin: 4px, 4px; 
+      padding: 20px; 
+      background-color: #e9ecef; 
+      width: 100%; 
+      overflow: auto; 
+      white-space: nowrap; 
+  } 
+</style>
+<div class = "scroll", id="Graph Window">
+  <p> Log data goes here </p>
+  {{graph_output|safe}}
 </div>
 {% endblock %}
+

@@ -162,7 +162,7 @@ def socket_test():
 
 
 @blueprint.route("/progress", methods=["GET", "POST"])
-def svgtest():
+def progress_update():
     #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
     #db_ses = db.session
     #data = db_ses.query(BashHistory.input, BashHistory.tag).all()
