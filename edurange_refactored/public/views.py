@@ -161,7 +161,7 @@ def socket_test():
     return render_template("public/socket.html")
 
 
-@blueprint.route("/progress")
+@blueprint.route("/progress", methods=["GET", "POST"])
 def svgtest():
     #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
     #db_ses = db.session
@@ -174,17 +174,23 @@ def svgtest():
     #chart_data.node('G', label='Graphviz')
     #chart_data.edge('H', 'G', label='morphism')
 
-    #replace this with query info
-    file_name = "sample_data.csv"
-    log = csv_graph_utility.file_load("sample_data.csv")
+    # get active scenarios and students from db
 
-    file_name = "sample_data.csv"
-    log = csv_graph_utility.file_load("sample_data.csv")
+    # populate drop downs with above lists
 
-    test_report = graph_util.Report(log)
-    graph_data = test_report.get_graph()
-    
-    graph_output = graph_data.pipe(format='svg').decode('utf-8')
+    if request.method == 'POST':
+        #replace this with query info
+        file_name = "sample_data.csv"
+        log = csv_graph_utility.file_load("sample_data.csv")
 
-    return render_template("public/progress.html", graph_output=graph_output)
+        file_name = "sample_data.csv"
+        log = csv_graph_utility.file_load("sample_data.csv")
 
+        test_report = graph_util.Report(log)
+        graph_data = test_report.get_graph()
+        
+        graph_output = graph_data.pipe(format='svg').decode('utf-8')
+
+        return render_template("public/progress.html", graph_output=graph_output)
+
+    return render_template("public/progress.html", graph_output='')

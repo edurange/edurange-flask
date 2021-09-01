@@ -2,15 +2,23 @@
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
-    <div class="container">
+    <div id="graph_selector">
+        <h5>Select a Student and Scenario to Graph:</h5>
+        <form action="/progress" method="post">
+            <!-- {{ form.csrf_token }} -->
+            <select name="student" title="students">
+                <option value="TEST_STUDENT" SELECTED>"STUDENT"</option>
+            </select>
+            <select name="scenario" title="scenarios">
+                <option value="TEST_SCENARIO" SELECTED>"SCENARIO"</option>
+            </select>
 
-        <h1 class="display-3">Graph Test Page</h1>
-
+            <input class="btn btn-dark" type="submit" value="Generate" name="Submit" id="make_graph" />
+        </form>
     </div>
-</div><!-- /.jumbotron -->
+</div>
 
 <div class="container" id="content">
-  <p> Log data goes here </p>
-   {{graph_output|safe}}
+    {{ graph_output|safe }}
 </div>
 {% endblock %}
