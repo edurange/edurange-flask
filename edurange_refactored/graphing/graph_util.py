@@ -204,8 +204,9 @@ class Node:
                     complete = 'maybe'
                     #color = 'orange'
                     color = 'orange1'
+                #can add + str(self.data[3]) + to node for debugging
                 text = 'Report: ' + str(self.data[2]) + '\\l# attempts: ' \
-                    + str(attempts) + '\\lCompleted: ' + complete + '\\l' + str(self.data[3]) + '\\l'
+                    + str(attempts) + '\\lCompleted: ' + complete + '\\l'
                 G.node(str(self.data[0]), label=text, shape='oval', \
                            style='filled', fillcolor=color, fontcolor='black')
         except IndexError:
