@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div id="graph_selector">
+        <h5>Select a Student and Scenario to Graph:</h5>
+        <form action="/progress" method="post">
+            <!-- {{ form.csrf_token }} -->
+            <select name="student" title="students">
+                <option value="TEST_STUDENT" SELECTED>"STUDENT"</option>
+            </select>
+            <select name="scenario" title="scenarios">
+                <option value="TEST_SCENARIO" SELECTED>"SCENARIO"</option>
+            </select>
+
+            <input class="btn btn-dark" type="submit" value="Generate" name="Submit" id="make_graph" />
+        </form>
+    </div>
+</div><!-- /.jumbotron -->
+<style>
+  h1 { 
+      color:black; 
+  } 
+  div.scroll { 
+      margin: 4px, 4px; 
+      padding: 20px; 
+      background-color: #e9ecef; 
+      width: 100%; 
+      overflow: auto; 
+      white-space: nowrap; 
+  } 
+</style>
+<div class = "scroll", id="Graph Window">
+  <p> Log data goes here </p>
+  {{graph_output|safe}}
+</div>
+{% endblock %}

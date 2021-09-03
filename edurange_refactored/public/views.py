@@ -160,7 +160,8 @@ def socket_test():
 
     return render_template("public/socket.html")
 
-#@blueprint.route("/progress", methods=["GET", "POST"])
+
+
 @blueprint.route("/progress")
 def progress_update():
     #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
@@ -178,21 +179,52 @@ def progress_update():
 
     # populate drop downs with above lists
 
-    #if request.method == 'POST':
 
     #replace this with query info
+        
     file_name = "fw_sample_data.csv"
     log = custom_csv_utility.file_load(file_name, "file_wrangler")
+
     for l in log:
         print(l)
     
-    #file_name = "fw_sample_data.csv"
-    #log = custom_csv_utility.file_load("sample_data.csv", "file_wrangler")
-
     test_report = graph_util.Report(log)
-    graph_data = test_report.get_graph()
-    
+    graph_data = test_report.get_graph()        
     graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
     return render_template("public/progress.html", graph_output=graph_output)
-#return render_template("public/progress.html", graph_output='')
+
+
+#@blueprint.route("/progress_dev", methods=["GET", "POST"])
+#def progress_update():
+    #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
+    #db_ses = db.session
+    #data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+
+    # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+    # WILL BE REMOVED LATER
+    #chart_data = gv.Graph(comment='simple test', format='svg')
+    #chart_data.node('H', label='Hello')
+    #chart_data.node('G', label='Graphviz')
+    #chart_data.edge('H', 'G', label='morphism')
+
+    # get active scenarios and students from db
+
+    # populate drop downs with above lists
+
+#    if request.method == 'POST':
+        #replace this with query info
+#        file_name = "sample_data.csv"
+#        log = csv_graph_utility.file_load("sample_data.csv")
+
+#        file_name = "sample_data.csv"
+#        log = csv_graph_utility.file_load("sample_data.csv")
+
+#        test_report = graph_util.Report(log)
+#        graph_data = test_report.get_graph()
+        
+#        graph_output = graph_data.pipe(format='svg').decode('utf-8')
+
+#        return render_template("public/progress.html", graph_output=graph_output)
+
+#    return render_template("public/progress_dev.html", graph_output='')
