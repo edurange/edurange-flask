@@ -1,7 +1,7 @@
 """ Module for handling csv imports and possibly yaml content on milestone information"""
 import csv
 
-def file_load(file_name):
+def file_load(file_name, scenario):
     """
     Loads csv into data structure usable for graphviz.
 
@@ -14,15 +14,15 @@ def file_load(file_name):
     log object todo...
     """
     #ignore linter error, csv_file is closed at end...
-    csv_file = open(file_name, 'r')
+    csv_file = open("./edurange_refactored/graphing/" + file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
 
     log = []
 
     #this is where the milestone and report nodes are built
     #currently from a file but to be created from yaml info
-    milestones = append_milestones('milestone_nodes.csv')
-    reports = append_reports('report_nodes.csv')
+    milestones = append_milestones(scenario + '_' + 'ms_nodes.csv')
+    reports = append_reports(scenario + '_' + 'report_nodes.csv')
 
     for item in milestones:
         log.append(item)
@@ -65,7 +65,7 @@ def append_milestones(file_name):
     -------
     log object todo...
     """
-    csv_file = open(file_name, 'r')
+    csv_file = open('./edurange_refactored/graphing/cli_tool/csv_templates/' + file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
     count = 0
@@ -102,7 +102,7 @@ def append_reports(file_name):
     -------
     log object todo...
     """
-    csv_file = open(file_name, 'r')
+    csv_file = open('./edurange_refactored/graphing/cli_tool/csv_templates/' + file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
     count = 89

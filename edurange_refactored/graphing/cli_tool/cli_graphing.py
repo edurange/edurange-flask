@@ -1,53 +1,17 @@
 """Visualization tool for edurange. This creates tool creates a graph of user behavior."""
 
 #written by Aubrey Birdwell in Fall 2020
-#revised in summer 2021
 #for the EduRange project
 #aubrey.birdwell@gmail.com
 
-import graphviz as gv
-#may be needed to debug
-#import csv_graph_utility
- 
+#old imports
+#import libs
+#import avro
+#import csv
+import sys
+import pygraphviz as pgv
+import custom_csv_utility
 
-class Report:
-    """
-    Report class stores a tree of log data
-    
-    Attributes
-    ----------
-    G : graphviz object
-    root : root node
-    log : log stream
-    """
-    def __init__(self, log):
-        #stream of log entries from database
-        #contains report and milestone templates
-        self.log = log        
-        self.root = Node(self.log[0]) 
-
-    def get_graph(self):
-
-        G = gv.Digraph(comment='test log', format='svg')
-
-        for i in range(1, len(self.log)):
-            try:
-                if 'U' not in self.log[i][2]:
-                    if 'T' in self.log[i][2]:                        
-                        self.root.insert_right(self.log[i])
-                    if 'T' not in self.log[i][2]:
-                        if 'A' in self.log[i][2] and 'M' in self.log[i][2]:
-                            self.root.insert_left_report(self.log[i])
-                        else:
-                            self.root.insert_left(self.log[i])
-            except IndexError:
-                print('Exception located here:')
-                print(self.log[i])
-        
-        #output_graph()
-        G = self.root.label_nodes(G)
-        G = self.root.label_edges(G)
-        return G
 
 class Node:
     """
@@ -138,11 +102,10 @@ class Node:
                         data[3] = 'M'
                     else:
                         data[3] += 'M'
+                                
                 #advance one left node if not a report node
                 self.left.insert_left_report(data)                        
         else:
-            #have to have this again for the final case
-            #where report is attached to end of tree
             if 'A' in self.data[2]:
                 if data[3] == 'None':
                     data[3] = 'A'
@@ -156,9 +119,30 @@ class Node:
                     data[3] += 'M'
             #end of the line
             self.left = Node(data)
-                    
-                    
-    def label_nodes(self, G):
+
+
+    def in_order_traverse(self):
+        """
+        Simplified example of traversal for debugging.
+
+        Parameters
+        ----------
+        None
+        """
+        #no longer needed
+        if self.left:
+            self.left.in_order_traverse()
+        try:
+            if 'U' in self.data[2]:
+                print(self.data)
+        except IndexError:
+            print('Exception located here:')
+            print(self.data)
+        if self.right:
+            self.right.in_order_traverse()
+
+
+    def label_nodes(self):
         """
         Traverses and labels vertices/nodes for graphviz.
 
@@ -166,27 +150,25 @@ class Node:
         ----------
         None
         """
-        
         if self.left:
-            self.left.label_nodes(G)
+            self.left.label_nodes()
         try:
             if 'T' in self.data[2]:
                 text = str(self.data[4])
-                G.node(str(self.data[0]), label=self.data[4], shape='box3d', \
+                G.add_node(self.data[0], label=self.data[4], shape='box3d', \
                            style='filled', fillcolor='white', fontcolor='black')
             elif('M' in self.data[2] and 'A' not in self.data[2]):
                 text = 'Milestone: ' + str(self.data[2]) + '\\lCommand used: \\l' \
-                    + str(self.data[4]) + '\\lTTY Entry: ' + str(self.data[0]) + '\\l'                
-                G.node(str(self.data[0]), label=text, shape='rectangle', \
+                    + str(self.data[4]) + '\\lTTY Entry: ' + str(self.data[0]) + '\\l'
+                G.add_node(self.data[0], label=text, shape='rectangle', \
                            style='filled', fillcolor='green3', fontcolor='black')
             elif('A' in self.data[2] and 'M' not in self.data[2]):
                 text = 'Milestone: ' + str(self.data[2]) + '\\lCommand used: \\l' \
                     + str(self.data[4]) + '\\lTTY Entry: ' + str(self.data[0]) + '\\l'
-                G.node(str(self.data[0]), label=text, shape='rectangle', \
+                G.add_node(self.data[0], label=text, shape='rectangle', \
                            style='filled', fillcolor='gold2', fontcolor='black')
 
             else:
-
                 #could really use some work here. Then again maybe it's fine.
                 attempts = len(self.data[3])
                 if('A' not in self.data[3] and 'M' not in self.data[3]):
@@ -195,8 +177,7 @@ class Node:
                     #color = 'red'
                     color = 'firebrick3'
                     attempts = 0
-
-                if 'M' in self.data[3]:
+                elif 'M' in self.data[3]:
                     complete = 'yes'
                     #color = 'chartreuse3'
                     color = 'green3'
@@ -206,18 +187,16 @@ class Node:
                     color = 'orange1'
                 text = 'Report: ' + str(self.data[2]) + '\\l# attempts: ' \
                     + str(attempts) + '\\lCompleted: ' + complete + '\\l' + str(self.data[3]) + '\\l'
-                G.node(str(self.data[0]), label=text, shape='oval', \
+                G.add_node(self.data[0], label=text, shape='oval', \
                            style='filled', fillcolor=color, fontcolor='black')
         except IndexError:
             print('Exception located here:')
             print(self.data)
         if self.right:
-            self.right.label_nodes(G)
+            self.right.label_nodes()
 
-        return G
-            
-            
-    def label_edges(self, G):
+    
+    def label_edges(self):
         """
         Traverses and labels edges for graphviz.
 
@@ -225,18 +204,19 @@ class Node:
         ----------
         None
         """
-        
         if self.left:
-            self.left.label_edges(G)
+            self.left.label_edges()
         try:
             if self.left:
-                G.edge(str(self.data[0]), str(self.left.data[0]), label='', penwidth='2')                
+                G.add_edge(self.data[0], self.left.data[0], label='', penwidth='2')
+                #print graphviz code to console for debugging
+                #print(str(self.data[0]) + "->" + str(self.left.data[0]))
         except IndexError:
             print('Exception located here:')
             print(self.data)
         if self.right:
-            self.right.label_edges(G)
-        return G
+            self.right.label_edges()
+
 
     def print_tree(self):
         """
@@ -246,18 +226,83 @@ class Node:
         ----------
         None
         """
-        #this method is a backup test method
         if self.left:
             self.left.print_tree()
         print(self.data)
         if self.right:
             self.right.print_tree()
 
-# this may be used to debug
-# in order to do so you must modify the csv_graph... util file paths for not flask...
-#if __name__ == "__main__":            
-#    file_name = "sample_data.csv"
-#    log = csv_graph_utility.file_load("sample_data.csv")
 
-#    R = Report(log)
-#    G = R.get_graph()
+# outputs graphviz file
+def output_graph(output_dir):
+    """
+    Outputs a graphviz file (svg).
+
+    Parameters
+    ----------
+    Output directory.
+    """
+    #import pygraphviz as pgv
+    #print graphviz code to console for debugging
+    #print("digraph edurange {")
+    #print()
+    #print("node [shape=rectangle fontname=\"Helvetica\"];")
+    #print()
+    #G = pgv.AGraph(strict=False, directed=True)
+    #this needs to be dealt with... count up the milestone nodes to derive this following line...
+    #print("{rank=same; 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 ->
+    #10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 [style=invis]}")
+
+    G.graph_attr['rankdir'] = 'UD'
+    G.node_attr['shape'] = 'box'
+
+    root.label_nodes()
+    #print("# end labelling of nodes")
+    root.label_edges()
+
+    #print graphviz code to console for debug
+    #print()
+    #print("}")
+
+    #notes on use of this function:
+    ###draw(path=None,format=None,prog=None,args='')
+    G.draw((output_dir + 'graph.svg'), prog='dot')
+
+
+
+if __name__ == "__main__":
+
+    #proper arg check
+    if len(sys.argv) != 4:
+        print('usage:\n graph_report.py <file_to_graph> <scenario_name> <out_dir>')
+        sys.exit(1)
+
+    file_label = sys.argv[1]
+    scenario = sys.argv[2]
+    out_dir = sys.argv[3]
+
+    print(scenario)
+    
+    G = pgv.AGraph(strict=False, directed=True)
+
+    #call file loader function
+    log = custom_csv_utility.file_load(file_label, scenario)
+
+    root = Node(log[0])
+    for i in range(1, len(log)):
+        try:
+            if 'U' not in log[i][2]:
+                if 'T' in log[i][2]:
+                    #print("Inserting right " + "node: " + str(log[i][2]))
+                    root.insert_right(log[i])
+                if 'T' not in log[i][2]:
+                    #print("Inserting left " + "node: " + str(log[i][2]))
+                    if 'A' in log[i][2] and 'M' in log[i][2]:
+                        #pass
+                        root.insert_left_report(log[i])
+                    else:
+                        root.insert_left(log[i])
+        except IndexError:
+            print('Exception located here:')
+            print(log[i])
+    output_graph(out_dir)

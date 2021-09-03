@@ -14,3 +14,31 @@ INPUT|null|A12 M12 T12|null|null|null|MS: Read man chmod \l Accepted Commands: \
 INPUT|null|A13 M13 T13|null|null|null|MS: Chmod perm1 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm1.txt 660 \l|OUTPUT
 INPUT|null|A14 M14 T14|null|null|null|MS: Copy perm2 \l Accepted Commands: \l cp \l Accepted Options: \l perm2.txt \l copied_perm2.txt \l|OUTPUT
 INPUT|null|A15 M15 T15|null|null|null|MS: Chmod perm2 \l Accepted Commands: \l chmod \l Accepted Options: \l copied_perm2.txt 764 \l|OUTPUT
+
+*,cd \/,*
+
+*,cd \/root,*
+
+*,man,*
+
+*,ls -la,*
+
+*,file \w+.jpg,*
+
+*,echo "This is cool" > \w+,*
+
+*,cat,*
+
+*,cat \w+ >> \w+,*
+
+*,cat alltogether.txt
+
+*,cd okYouAreHERE!,*
+
+*,vim .+,*
+
+*,find . -iname "?\*cowFJS\*\"? |find / -iname "?\*cowFJS\*\"? |find . -iname "?\*cowFJS\*\"? |find . -type f -iname "?\*cowFJS\*\"? |find / -type f -iname "?\*cowFJS\*
+
+\"?|find . -iname "?\*cowFJS\*\"?|find / -iname "?\*cowFJS\*\"?,*
+
+*,cowsay,*

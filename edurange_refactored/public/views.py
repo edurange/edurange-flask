@@ -26,8 +26,8 @@ from edurange_refactored.user.models import GroupUsers, StudentGroups, User, Bas
 from edurange_refactored.utils import TokenHelper, flash_errors
 
 import graphviz as gv
-from edurange_refactored import graph_util
-from edurange_refactored import csv_graph_utility
+from edurange_refactored.graphing import graph_util
+from edurange_refactored.graphing import custom_csv_utility
 
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
@@ -160,7 +160,7 @@ def socket_test():
 
     return render_template("public/socket.html")
 
-
+#@blueprint.route("/progress", methods=["GET", "POST"])
 @blueprint.route("/progress")
 def progress_update():
     #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
@@ -174,12 +174,20 @@ def progress_update():
     #chart_data.node('G', label='Graphviz')
     #chart_data.edge('H', 'G', label='morphism')
 
-    #replace this with query info
-    file_name = "sample_data.csv"
-    log = csv_graph_utility.file_load("sample_data.csv")
+    # get active scenarios and students from db
 
-    file_name = "sample_data.csv"
-    log = csv_graph_utility.file_load("sample_data.csv")
+    # populate drop downs with above lists
+
+    #if request.method == 'POST':
+
+    #replace this with query info
+    file_name = "fw_sample_data.csv"
+    log = custom_csv_utility.file_load(file_name, "file_wrangler")
+    for l in log:
+        print(l)
+    
+    #file_name = "fw_sample_data.csv"
+    #log = custom_csv_utility.file_load("sample_data.csv", "file_wrangler")
 
     test_report = graph_util.Report(log)
     graph_data = test_report.get_graph()
@@ -187,4 +195,4 @@ def progress_update():
     graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
     return render_template("public/progress.html", graph_output=graph_output)
-
+#return render_template("public/progress.html", graph_output='')
