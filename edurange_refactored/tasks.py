@@ -20,7 +20,6 @@ from edurange_refactored.scenario_utils import (
 )
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 
-
 logger = get_task_logger(__name__)
 
 path_to_directory = os.path.dirname(os.path.abspath(__file__))
@@ -189,6 +188,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 def start(self, sid):
     from edurange_refactored.user.models import Scenarios
     from edurange_refactored.utils import setAttempt
+    from edurange_refactored.notification_utils import NotifyCapture
 
     app = current_app
     logger.info(
@@ -203,6 +203,7 @@ def start(self, sid):
         name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
+            NotifyCapture("Failed to start scenario " + name + ": Invalid Status")
             raise Exception(f"Scenario must be stopped before starting")
         elif os.path.isdir(os.path.join("./data/tmp/", name)):
             scenario.update(status=3)
@@ -213,14 +214,19 @@ def start(self, sid):
             os.chdir("../../..")
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
+            NotifyCapture("Scenario " + name + " has started successfully.")
         else:
+            #part that Jack discussed about
             logger.info("Scenario folder could not be found -- " + os.path.join("./data/tmp/", name))
+            NotifyCapture("Failed to start scenario " + name + ": Scenario folder could not be found. -- " + os.path.join("./data/tmp/", name))
             flash("Scenario folder could not be found")
 
+#function for grabbing notify could be made (already made in separate utils file for notification)
 
 @celery.task(bind=True)
 def stop(self, sid):
     from edurange_refactored.user.models import Scenarios
+    from edurange_refactored.notification_utils import NotifyCapture
 
     app = current_app
     logger.info(
@@ -235,6 +241,7 @@ def stop(self, sid):
         name = "".join(e for e in name if e.isalnum())
         if int(scenario.status) != 1:
             logger.info("Invalid Status")
+            NotifyCapture("Failed to stop scenario " + name + ": Invalid Status")
             flash("Scenario is not ready to start", "warning")
         elif os.path.isdir(os.path.join("./data/tmp/", name)):
             logger.info("Folder Found")
@@ -243,14 +250,17 @@ def stop(self, sid):
             os.system("terraform destroy --auto-approve")
             os.chdir("../../..")
             scenario.update(status=0)
+            NotifyCapture("Scenario " + name + " has successfully stopped.")
         else:
             logger.info("Something went wrong")
+            NotifyCapture("Failed to stop scenario " + name + ": Invalid Status")
             flash("Something went wrong", "warning")
 
 
 @celery.task(bind=True)
 def destroy(self, sid):
     from edurange_refactored.user.models import Scenarios, ScenarioGroups, Responses
+    from edurange_refactored.notification_utils import NotifyCapture
 
     app = current_app
     logger.info(
@@ -268,6 +278,7 @@ def destroy(self, sid):
             s_group = ScenarioGroups.query.filter_by(scenario_id=s_id).first()
             if int(scenario.status) != 0:
                 logger.info("Invalid Status")
+                NotifyCapture("Failed to delete scenario" + name + ": Invalid Status")
                 raise Exception(f"Scenario in an Invalid state for Destruction")
             s_responses = Responses.query.filter_by(scenario_id=s_id).all()
             for r in s_responses:
@@ -280,10 +291,13 @@ def destroy(self, sid):
                 if s_group:
                     s_group.delete()
                 scenario.delete()
+                NotifyCapture("The Scenario " + name + " is successfully deleted.")
             else:
                 logger.info("Scenario files not found, assuming broken scenario and deleting")
+                NotifyCapture("Failed to delete scenario " + name + ": Scenario files could not be found.")
                 scenario.delete()
         else:
+            NotifyCapture("Failed to delete scenario " + name + ": Scenario could not be found.")
             raise Exception(f"Could not find scenario")
 
 

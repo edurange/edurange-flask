@@ -21,7 +21,7 @@ class RegisterForm(FlaskForm):
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
     code = StringField(
-        "Registration Code (Optional)", validators=[Length(min=0, max=8)]
+        "Registration Code", validators=[DataRequired(), Length(min=0, max=8)]
     )
     password = PasswordField(
         "Password", validators=[DataRequired(), Length(min=6, max=40)]
@@ -282,3 +282,15 @@ class type2Form(FlaskForm):                 # addUsersForm, makeScenarioForm,   
 
 
 # -
+
+class notifyDeleteForm(FlaskForm):
+    notification = StringField("notification", validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(notifyDeleteForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(notifyDeleteForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

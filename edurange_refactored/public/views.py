@@ -148,3 +148,8 @@ def about():
     """About page."""
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+
+@blueprint.route("/socket_test")
+def socket_test():
+
+    return render_template("public/socket.html")

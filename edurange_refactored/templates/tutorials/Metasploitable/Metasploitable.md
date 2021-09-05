@@ -1,4 +1,17 @@
 # Metasploitable
+
+Work in Process
+
+---
+## What is Metasploit
+Metasploit is a framework for automating the process of exploiting vulnerabilities in application software. It has tools to support the cyber kill chain. which consists of the steps: 
+- reconnaissance, identifying the target and software services running on the target
+- finding vulnerabilities, this may include CVEs for the specific software versions running on the target and severity of the vulnerabilities
+- weaponization, identifying exploits that could be used for the vulnerabilities
+- delivery, in order to get the exploit to the target, it may be necessary to bypass firewalls
+- exploitation, choosing a payload, producing packets that contain the exploit with payload and delivering them to the target
+- persistence, creating accounts, backdoors, beacons, etc. 
+
 ## Learning Objectives
 - use the Metasploit shell.
 - identify targets and services running on open ports
@@ -34,6 +47,15 @@ Much like Bash, a Metasploit command is often followed by one or more input flag
 The following is an example use of the metasploit framework that has been generalized to show how the given commands can be used.
 
 ![Metasploit Command Line Example](/static/build/img/Metasploitable/m-h_example_cmd_line.png)
+<pre>
+msf > use windows/smb/ms08_067_netapi
+exploit(ms08_067_netapi) > show options
+exploit(ms08_067_netapi) > set RHOST 10.0.0.1
+exploit(ms08_067_netapi) > show targets
+exploit(ms08_067_netapi) > set target 0
+
+
+</pre>
 
 ---
 
