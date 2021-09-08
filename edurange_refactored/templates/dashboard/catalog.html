@@ -1,39 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
-        <h1>Choose a Scenario to Create</h1>
-    </div>
+<div class="container">
+    <h1>Choose a Scenario to Create</h1>
+</div>
 <div class="container">
     <form action="/dashboard/make_scenario" method="post">
-    {{ form.csrf_token }}
+        {{ form.csrf_token }}
         <input class="form-control" name="scenario_name" type="text" id="scenario_name" placeholder="Scenario Name">
         <select name="scenario_group" title="Group">
             {% for group in groups %}
-                <option value="{{group.name}}" SELECTED>{{group.name}}</option>
+            <option value="{{group.name}}" SELECTED>{{group.name}}</option>
             {% endfor %}
         </select>
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th> Scenario </th>
-            <th> Description </th>
-            <th> Action </th>
-        </tr>
-        </thead>
-    <tbody>
-        {% for s in scenarios %}
-            <tr>
-                <td> {{ s.name }}</td>
-                <td> {{ s.description }}</td>
-                <td>
-                    <input class="btn btn-dark" type="submit" value="Create"
-                           name={{ s.name }} id="new_scenario" />
-                </td>
-            </tr>
-        {% endfor  %}
-    </tbody>
-    </table>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th> Scenario </th>
+                    <th> Description </th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in scenarios %}
+                <tr>
+                    <td> {{ s.name }}</td>
+                    <td> {{ s.description }}</td>
+                    <td>
+                        <input class="btn btn-dark" type="submit" value="Create" name={{ s.name }} id="new_scenario" />
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </form>
 </div>
 
-{%  endblock %}
+{% endblock %}
