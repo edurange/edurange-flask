@@ -2,6 +2,7 @@
 """User forms."""
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
+from wtforms.fields.core import SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp, NoneOf
 from .models import User, StudentGroups
 
@@ -242,7 +243,18 @@ class deleteGroupForm(FlaskForm):
         return True
 
 
-# -
+class showProgressForm(FlaskForm):
+    scenarios = SelectField("Select Scenario")
+    students = SelectField("Select Student")
+        
+    def __init__(self, *args, **kwargs):
+        super(showProgressForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(showProgressForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
 
 
 class type1Form(FlaskForm):                 # GroupForm,    manageInstructorForm,   deleteStudentForm

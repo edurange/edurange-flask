@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
 import os
-import shutil
 from flask import (
     Blueprint,
     abort,
@@ -25,7 +24,8 @@ from edurange_refactored.user.forms import (
     modScenarioForm,
     changeEmailForm,
     deleteGroupForm,
-    scenarioResponseForm
+    scenarioResponseForm,
+    showProgressForm
 )
 
 from ..form_utils import process_request
@@ -49,6 +49,9 @@ from ..utils import (
 from ..role_utils import check_admin, check_instructor, check_privs, checkEx, return_roles, checkEnr
 from ..graph_utils import getGraph
 from ..csv_utils import readCSV, groupCSV
+from ..graphing import custom_csv_utility, graph_util
+
+import logging
 
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
 
@@ -309,11 +312,12 @@ def scenariosInfo(i):
         flash("Log file '{0}.csv' was not found, has anyone played yet? - ".format(s_name))
         rc = []
 
-    gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
-    players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
+    gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == i, ScenarioGroups.scenario_id ==
+                                                Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
+    players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id,
+                                                 StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
-    u_logs = groupCSV(rc, 4) # make dictionary using 6th value as key (player name)
-
+    u_logs = groupCSV(rc, 4)  # make dictionary using 6th value as key (player name)
 
     return render_template("dashboard/scenarios_info.html",
                            i=i,
@@ -327,7 +331,7 @@ def scenariosInfo(i):
                            guide=guide,
                            questions=questions,
                            resp=resp,
-                           rc=rc, # rc may not be needed with individual user logs in place
+                           rc=rc,  # rc may not be needed with individual user logs in place
                            players=players,
                            u_logs=u_logs)
 
@@ -345,7 +349,8 @@ def scenarioResponse(i, r):
                                  Responses.points, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).filter(Responses.attempt == aNum).all()
             table = responseQuery(u_id, aNum, query, questionReader(sName))
-            scr = score(u_id, aNum, query, questionReader(sName))  # score(getScore(u_id, aNum, query), questionReader(sName))
+            # score(getScore(u_id, aNum, query), questionReader(sName))
+            scr = score(u_id, aNum, query, questionReader(sName))
 
             return render_template("dashboard/scenario_response.html",
                                    i=i,
@@ -402,8 +407,8 @@ def getLogs(i):
     logs = "./data/tmp/" + scenario + "/" + scenario + "-history.csv"
     if os.path.isfile(logs):
         logs = "." + logs
-        fname = logs.rsplit('/', 1)[-1] # 'ScenarioName-history.csv'
-        logs = logs.rsplit('/', 1)[0] # '../data/tmp/ScenarioName/'
+        fname = logs.rsplit('/', 1)[-1]  # 'ScenarioName-history.csv'
+        logs = logs.rsplit('/', 1)[0]  # '../data/tmp/ScenarioName/'
         return send_from_directory(logs, fname, as_attachment=True)
 
     else:
@@ -528,3 +533,102 @@ def admin():
         else:
             return redirect(url_for("dashboard.admin"))
 
+
+@blueprint.route("/progress_dev", methods=["GET", "POST"])
+def progress_update_dev():
+    check_instructor()
+    logging.basicConfig(level=logging.DEBUG)
+    logger = current_app.logger
+    # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
+    # data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+
+    # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+    # WILL BE REMOVED LATER
+    # chart_data = gv.Graph(comment='simple test', format='svg')
+    # chart_data.node('H', label='Hello')
+    # chart_data.node('G', label='Graphviz')
+    # chart_data.edge('H', 'G', label='morphism')
+
+    # get active scenarios and students from db
+
+    # populate drop downs with above lists
+    form = showProgressForm(request.form)
+
+    db_ses = db.session
+
+    students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
+    students = [s[0] for s in students]
+    active_scenarios = db_ses.query(Scenarios.name).all()
+    active_scenarios = [i[0] for i in active_scenarios]
+
+    if request.method == 'POST':
+        def refresh_options_html(target_selection, items):
+            fresh_options = '<option>select</option>'
+            for i in items:
+                if i == target_selection:
+                    fresh_options += f'<option selected>{i}</option>'
+                else:
+                    fresh_options += f'<option>{i}</option>'
+            return fresh_options
+
+        source_val = request.form.get('source_val', -1)
+        source_id = request.form.get('source_id')
+        logger.info(f'source selector: {source_id}')
+
+        target_selection = request.form.get('target_selection')
+        logger.info(f'target selection: {target_selection}')
+        if request.form.get('dropdown_update', False):
+            if source_id == '#student-select':
+                if source_val == 'select':
+                    return refresh_options_html(target_selection, active_scenarios)
+                student_username = source_val
+                logger.info(f'source selector value: {source_val}')
+                student_scenarios = db_ses.query(
+                    Scenarios.name).filter(
+                        student_username == User.username,
+                        User.id == GroupUsers.user_id,
+                        GroupUsers.group_id == StudentGroups.id,
+                        StudentGroups.id == ScenarioGroups.group_id,
+                        ScenarioGroups.scenario_id == Scenarios.id).all()
+                student_scenarios = [s[0] for s in student_scenarios]
+                logger.info(f"scenarios for {student_username}: {student_scenarios}")
+                return refresh_options_html(target_selection, student_scenarios)
+
+            elif source_id == '#scenario-select':
+                if source_val == 'select':
+                    return refresh_options_html(target_selection, students)
+                scenario_name = source_val
+                logger.info(source_val)
+                scenario_students = db_ses.query(
+                    User.username).filter(
+                        scenario_name == Scenarios.name,
+                        Scenarios.id == ScenarioGroups.scenario_id,
+                        ScenarioGroups.group_id == StudentGroups.id,
+                        StudentGroups.id == GroupUsers.group_id,
+                        GroupUsers.user_id == User.id,
+                        User.is_admin == False,
+                        User.is_instructor == False).all()
+                scenario_students = [s[0] for s in scenario_students]
+                logger.info(f"students in {scenario_name}: {scenario_students}")
+                return refresh_options_html(target_selection, scenario_students)
+        else:
+            logger.info('dropdown update false')
+        # TODO 
+        # reset dropdowns so that the full list comes back when users chooses "select"
+        # fix flip flop; preserve selection
+    
+
+        # # replace this with query info
+        # log = custom_csv_utility.file_load("sample_data.csv")
+
+        # log = custom_csv_utility.file_load("sample_data.csv")
+
+        # test_report = graph_util.Report(log)
+        # graph_data = test_report.get_graph()
+
+        # graph_output = graph_data.pipe(format='svg').decode('utf-8')
+
+        # return render_template("dashboard/progress_dev.html", graph_output=graph_output)
+
+    else:
+        return render_template("dashboard/progress_dev.html", form=form, scenarios=active_scenarios, students=students, graph_output='')
