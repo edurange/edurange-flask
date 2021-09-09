@@ -50,10 +50,19 @@ from ..role_utils import check_admin, check_instructor, check_privs, checkEx, re
 from ..graph_utils import getGraph
 from ..csv_utils import readCSV, groupCSV
 from ..graphing import custom_csv_utility, graph_util
+import graphviz as gv
 
 import logging
 
-from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses
+from .models import (
+    GroupUsers, 
+    ScenarioGroups, 
+    Scenarios, 
+    StudentGroups, 
+    User, 
+    Responses,
+    BashHistory
+)
 
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
@@ -538,23 +547,14 @@ def admin():
 def progress_update_dev():
     check_instructor()
     logging.basicConfig(level=logging.DEBUG)
-    logger = current_app.logger
-    # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-    # data = db_ses.query(BashHistory.input, BashHistory.tag).all()
-
-    # SIMPLE TEST CASE IF SOMETHING IS WRONG...
-    # WILL BE REMOVED LATER
-    # chart_data = gv.Graph(comment='simple test', format='svg')
-    # chart_data.node('H', label='Hello')
-    # chart_data.node('G', label='Graphviz')
-    # chart_data.edge('H', 'G', label='morphism')
-
-    # get active scenarios and students from db
-
-    # populate drop downs with above lists
-    form = showProgressForm(request.form)
+    log = current_app.logger
 
     db_ses = db.session
+
+    # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
+    data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+
+    form = showProgressForm(request.form)
 
     students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
     students = [s[0] for s in students]
@@ -573,16 +573,16 @@ def progress_update_dev():
 
         source_val = request.form.get('source_val', -1)
         source_id = request.form.get('source_id')
-        logger.info(f'source selector: {source_id}')
+        log.info(f'source selector: {source_id}')
 
         target_selection = request.form.get('target_selection')
-        logger.info(f'target selection: {target_selection}')
+        log.info(f'target selection: {target_selection}')
         if request.form.get('dropdown_update', False):
             if source_id == '#student-select':
                 if source_val == 'select':
                     return refresh_options_html(target_selection, active_scenarios)
                 student_username = source_val
-                logger.info(f'source selector value: {source_val}')
+                log.info(f'source selector value: {source_val}')
                 student_scenarios = db_ses.query(
                     Scenarios.name).filter(
                         student_username == User.username,
@@ -591,14 +591,14 @@ def progress_update_dev():
                         StudentGroups.id == ScenarioGroups.group_id,
                         ScenarioGroups.scenario_id == Scenarios.id).all()
                 student_scenarios = [s[0] for s in student_scenarios]
-                logger.info(f"scenarios for {student_username}: {student_scenarios}")
+                log.info(f"scenarios for {student_username}: {student_scenarios}")
                 return refresh_options_html(target_selection, student_scenarios)
 
             elif source_id == '#scenario-select':
                 if source_val == 'select':
                     return refresh_options_html(target_selection, students)
                 scenario_name = source_val
-                logger.info(source_val)
+                log.info(source_val)
                 scenario_students = db_ses.query(
                     User.username).filter(
                         scenario_name == Scenarios.name,
@@ -609,26 +609,28 @@ def progress_update_dev():
                         User.is_admin == False,
                         User.is_instructor == False).all()
                 scenario_students = [s[0] for s in scenario_students]
-                logger.info(f"students in {scenario_name}: {scenario_students}")
+                log.info(f"students in {scenario_name}: {scenario_students}")
                 return refresh_options_html(target_selection, scenario_students)
         else:
-            logger.info('dropdown update false')
-        # TODO 
-        # reset dropdowns so that the full list comes back when users chooses "select"
-        # fix flip flop; preserve selection
-    
 
-        # # replace this with query info
-        # log = custom_csv_utility.file_load("sample_data.csv")
+            # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+            # WILL BE REMOVED LATER
+            chart_data = gv.Graph(comment='simple test', format='svg')
+            chart_data.node('H', label='Hello')
+            chart_data.node('G', label='Graphviz')
+            chart_data.edge('H', 'G', label='morphism')
 
-        # log = custom_csv_utility.file_load("sample_data.csv")
+            # replace this with query info
+            # log = custom_csv_utility.file_load("sample_data.csv")
 
-        # test_report = graph_util.Report(log)
-        # graph_data = test_report.get_graph()
+            # log = custom_csv_utility.file_load("sample_data.csv")
 
-        # graph_output = graph_data.pipe(format='svg').decode('utf-8')
+            # test_report = graph_util.Report(log)
+            # graph_data = chart_data.get_graph()
 
-        # return render_template("dashboard/progress_dev.html", graph_output=graph_output)
+            # graph_output = graph_data.pipe(format='svg').decode('utf-8')
+
+            return render_template("dashboard/progress_dev.html", form=form, students=students, scenarios=active_scenarios, graph_output=chart_data)
 
     else:
         return render_template("dashboard/progress_dev.html", form=form, scenarios=active_scenarios, students=students, graph_output='')

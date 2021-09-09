@@ -13,6 +13,7 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 from jwt import JWT
 from jwt.exceptions import JWTDecodeError
+from wtforms.fields.core import SelectField
 
 from edurange_refactored.extensions import bcrypt, login_manager, db
 from edurange_refactored.public.forms import (
@@ -23,7 +24,7 @@ from edurange_refactored.public.forms import (
 from edurange_refactored.tasks import test_send_async_email
 from edurange_refactored.user.forms import RegisterForm
 from edurange_refactored.user.models import GroupUsers, StudentGroups, User, BashHistory
-from edurange_refactored.utils import TokenHelper, flash_errors
+from edurange_refactored.utils import TokenHelper, check_role_view, flash_errors
 
 import graphviz as gv
 from edurange_refactored.graphing import graph_util
@@ -195,36 +196,39 @@ def progress_update():
     return render_template("public/progress.html", graph_output=graph_output)
 
 
-#@blueprint.route("/progress_dev", methods=["GET", "POST"])
-#def progress_update():
-    #IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-    #db_ses = db.session
-    #data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+# @blueprint.route("/progress_dev", methods=["GET", "POST"])
+# def progress_update_dev():
+    
+#     # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
+#     db_ses = db.session
+#     # data = db_ses.query(BashHistory.input, BashHistory.tag).all()
 
-    # SIMPLE TEST CASE IF SOMETHING IS WRONG...
-    # WILL BE REMOVED LATER
-    #chart_data = gv.Graph(comment='simple test', format='svg')
-    #chart_data.node('H', label='Hello')
-    #chart_data.node('G', label='Graphviz')
-    #chart_data.edge('H', 'G', label='morphism')
+#     # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+#     # WILL BE REMOVED LATER
+#     # chart_data = gv.Graph(comment='simple test', format='svg')
+#     # chart_data.node('H', label='Hello')
+#     # chart_data.node('G', label='Graphviz')
+#     # chart_data.edge('H', 'G', label='morphism')
 
-    # get active scenarios and students from db
+#     # get active scenarios and students from db
 
-    # populate drop downs with above lists
+#     # populate drop downs with above lists
 
-#    if request.method == 'POST':
-        #replace this with query info
+#     if request.method == 'POST':
+#         # replace this with query info
 #        file_name = "sample_data.csv"
-#        log = csv_graph_utility.file_load("sample_data.csv")
+#        log = custom_csv_utility.file_load("sample_data.csv")
 
 #        file_name = "sample_data.csv"
-#        log = csv_graph_utility.file_load("sample_data.csv")
+#        log = custom_csv_utility.file_load("sample_data.csv")
 
 #        test_report = graph_util.Report(log)
 #        graph_data = test_report.get_graph()
         
 #        graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
-#        return render_template("public/progress.html", graph_output=graph_output)
+#        return render_template("public/progress_dev.html", graph_output=graph_output)
 
-#    return render_template("public/progress_dev.html", graph_output='')
+#     scenario_form = SelectField()
+#     student_form = SelectField()
+#     return render_template("public/progress_dev.html", scenario_form = scenario_form, student_form = student_form, graph_output='')
