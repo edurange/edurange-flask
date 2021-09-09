@@ -552,12 +552,13 @@ def progress_update_dev():
     db_ses = db.session
 
     # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-    data = db_ses.query(BashHistory.input, BashHistory.tag).all()
+    # data = db_ses.query(BashHistory.input, BashHistory.tag).filter(Scenarios.description == "FileWrangler").all()
 
     form = showProgressForm(request.form)
 
     students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
     students = [s[0] for s in students]
+    # active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description in ['FileWrangler', 'GettingStarted']).all()
     active_scenarios = db_ses.query(Scenarios.name).all()
     active_scenarios = [i[0] for i in active_scenarios]
 
@@ -612,7 +613,18 @@ def progress_update_dev():
                 log.info(f"students in {scenario_name}: {scenario_students}")
                 return refresh_options_html(target_selection, scenario_students)
         else:
+            # selected_student = request.form.keys()
+            # log.info(selected_student)
+            data = db_ses.query(BashHistory.prompt, BashHistory.tag, BashHistory.timestamp, BashHistory.input).all()
+            log.info(data)
+            # for entry in data:
+            #     log.info(entry)
+            # for obj in data:
+            #     obj_dict = obj.__dict__
+            #     for k in obj_dict.keys():
+            #         log.info(obj_dict[k])
 
+            # data = db_ses.query(BashHistory).filter()
             # SIMPLE TEST CASE IF SOMETHING IS WRONG...
             # WILL BE REMOVED LATER
             chart_data = gv.Graph(comment='simple test', format='svg')
