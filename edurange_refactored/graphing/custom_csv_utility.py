@@ -54,7 +54,7 @@ def file_load(file_name, scenario):
 
 def db_log_load(log_obj, scenario):
     """
-    Loads csv into data structure usable for graphviz.
+    Loads db query into data structure usable for graphviz.
 
     Parameters
     -------
@@ -114,13 +114,13 @@ def format_query(log_obj, cnt):
         count += 1
         #may need to revisit this to remove 'U' tagged items
         #do not insert nodes with 'U' tags
-        #if parts[2] != 'U':
-        user = 'None' #entry[4]
-        milestone = 'None' #entry[2]
-        timestamp = 'None' #entry[3]
-        command = 'None' #entry[6]#.split(':')[-1]
-        event = [count, user, milestone, timestamp, command]
-        log.append(event)
+        if 'U' not in entry[1]:
+            user = entry[0]
+            milestone = entry[1]
+            timestamp = entry[2]
+            command = entry[3] #.split(':')[-1]
+            event = [count, user, milestone, timestamp, command]
+            log.append(event)
 
     return log
 
