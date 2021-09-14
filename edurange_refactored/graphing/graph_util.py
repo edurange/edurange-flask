@@ -156,7 +156,7 @@ class Node:
                     data[3] += 'M'
             #end of the line
             self.left = Node(data)
-                    
+
                     
     def label_nodes(self, G):
         """

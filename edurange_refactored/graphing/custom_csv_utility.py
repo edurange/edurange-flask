@@ -22,12 +22,11 @@ def file_load(file_name, scenario):
     #this is where the milestone and report nodes are built
     #currently from a file but to be created from yaml info
     milestones = append_milestones(scenario + '_' + 'ms_nodes.csv')
+    count = len(milestones)
     reports = append_reports(scenario + '_' + 'report_nodes.csv')
 
     for item in milestones:
         log.append(item)
-
-    count = 16
 
     #for each entry in csv log
     for line in reader:
@@ -49,6 +48,76 @@ def file_load(file_name, scenario):
     csv_file.close()
     for item in log:
         print(item)
+    return log
+
+def db_log_load(log_obj, scenario):
+    """
+    Loads csv into data structure usable for graphviz.
+
+    Parameters
+    -------
+    log_obj : however it comes out of database query
+    scenario : plain text <scenario_name>
+
+    Returns
+    -------
+    log object todo...
+    """
+    #ignore linter error, csv_file is closed at end...
+
+    log = []
+    
+    #this is where the milestone and report nodes are built
+    #currently from a file but to be created from yaml info
+    milestones = append_milestones(scenario + '_' + 'ms_nodes.csv')
+    count = len(milestones)
+    #call function to format database query
+    log_entries = format_query(log_obj, count)
+    reports = append_reports(scenario + '_' + 'report_nodes.csv')
+    
+    for item in milestones:
+        log.append(item)
+
+    for item in log_entries:
+        log.append(item)
+                        
+    for item in reports:
+        log.append(item)
+
+    for item in log:
+        print(item)
+    return log
+
+def format_query(log_obj, cnt):
+    """
+    Loads csv into data structure usable for graphviz.
+
+    Note!!! This will be replaced by a yaml reader
+
+    Parameters
+    -------
+    file_name : <filename.csv>
+
+    Returns
+    -------
+    log object todo...
+    """
+    count = cnt
+    log = []
+
+    #for each entry in database query object
+    for entry in log_obj:
+        count += 1
+        #may need to revisit this to remove 'U' tagged items
+        #do not insert nodes with 'U' tags
+        #if parts[2] != 'U':
+        user = 'None' #entry[4]
+        milestone = 'None' #entry[2]
+        timestamp = 'None' #entry[3]
+        command = 'None' #entry[6]#.split(':')[-1]
+        event = [count, user, milestone, timestamp, command]
+        log.append(event)
+
     return log
 
 def append_milestones(file_name):
