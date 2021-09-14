@@ -1,0 +1,13 @@
+INPUT|null|A0 M0 T0|null|null|null|MS: Change Directory to Root \l Accepted Commands: \l cd \l Accepted Options: \l / /l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|null|MS: CD to /root \l Accepted Commands: \l cd \l Accepted Options: \l /root /l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|null|MS: Use Man \l Accepted Commands: \l man \l Accepted Options: \l <any_command> /l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|null|MS: List Hidden Files \l Accepted Commands: \l ls \l Accepted Options: \l -la /l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|null|MS: Use File Command \l Accepted Commands: \l file \l Accepted Options: \l (matches any .jpg file) /l|OUTPUT
+INPUT|null|A5 M5 T5|null|null|null|MS: Echo \l Accepted Commands: \l echo \l Accepted Options: \l "This is cool" \l > \l <any_file> \l|OUTPUT
+INPUT|null|A6 M6 T6|null|null|null|MS: Output Contents \l Accepted Commands: \l cat \l Accepted Options: \l None \l|OUTPUT
+INPUT|null|A7 M7 T7|null|null|null|MS: Append Contents \l Accepted Commands: \l cat \l Accepted Options: \l w* \l >> \l w* \l|OUTPUT
+INPUT|null|A8 M8 T8|null|null|null|MS: Verify Append \l Accepted Commands: \l cat \l Accepted Options: \l alltogether.txt \l|OUTPUT
+INPUT|null|A9 M9 T9|null|null|null|MS: Directory Maze \l Accepted Commands: \l cd \l Accepted Options: \l okYouAreHERE! \l|OUTPUT
+INPUT|null|A10 M10 T10|null|null|null|MS: Use Vim \l Accepted Commands: \l vim \l Accepted Options: \l .* (some config file) \l|OUTPUT
+INPUT|null|A11 M11 T11|null|null|null|MS: Find (case sensitive) \l Accepted Commands: \l find \l Accepted Options: \l / \l -iname \l *cowFJS* \l|OUTPUT
+INPUT|null|A12 M12 T12|null|null|null|MS: COWSAY  \l Accepted Commands: \l cowsay \l Accepted Options: \l|OUTPUT
