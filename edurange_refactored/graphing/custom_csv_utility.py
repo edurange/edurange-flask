@@ -23,8 +23,7 @@ def file_load(file_name, scenario):
     #currently from a file but to be created from yaml info
     milestones = append_milestones(scenario + '_' + 'ms_nodes.csv')
     count = len(milestones)
-    reports = append_reports(scenario + '_' + 'report_nodes.csv')
-
+    
     for item in milestones:
         log.append(item)
 
@@ -42,6 +41,9 @@ def file_load(file_name, scenario):
         event = [count, user, milestone, timestamp, command]
         log.append(event)
 
+    count = len(log)
+    reports = append_reports(scenario + '_' + 'report_nodes.csv', count)
+        
     for item in reports:
         log.append(item)
 
@@ -63,8 +65,7 @@ def db_log_load(log_obj, scenario):
     -------
     log object todo...
     """
-    #ignore linter error, csv_file is closed at end...
-
+    
     log = []
     
     #this is where the milestone and report nodes are built
@@ -73,14 +74,17 @@ def db_log_load(log_obj, scenario):
     count = len(milestones)
     #call function to format database query
     log_entries = format_query(log_obj, count)
-    reports = append_reports(scenario + '_' + 'report_nodes.csv')
     
     for item in milestones:
         log.append(item)
 
     for item in log_entries:
         log.append(item)
-                        
+
+    count = len(log)
+        
+    reports = append_reports(scenario + '_' + 'report_nodes.csv', count)
+        
     for item in reports:
         log.append(item)
 
@@ -157,7 +161,7 @@ def append_milestones(file_name):
     #    print(e):
     return log
 
-def append_reports(file_name):
+def append_reports(file_name, cnt):
     """
     Loads csv into data structure usable for graphviz.
 
@@ -174,7 +178,7 @@ def append_reports(file_name):
     csv_file = open('./edurange_refactored/graphing/cli_tool/csv_templates/' + file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
-    count = 89
+    count = cnt
     log = []
     #for each entry in csv log
     for line in reader:
