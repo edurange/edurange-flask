@@ -195,7 +195,6 @@ def progress_update():
 
     return render_template("public/progress.html", graph_output=graph_output)
 
-
 # @blueprint.route("/progress_dev", methods=["GET", "POST"])
 # def progress_update_dev():
     
