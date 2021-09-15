@@ -617,12 +617,20 @@ def progress_update_dev():
         else: 
             selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
             scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
+
+            student_uname = request.form.get('student')
             
             log.info('selected scenario: ' + str(selected_scenario))
             log.info(f'selected sc type: {scenario_type}')
             # selected_student = request.form.keys()
             # log.info(selected_student)
-            data = db_ses.query(BashHistory.prompt, BashHistory.tag, BashHistory.timestamp, BashHistory.input).all()
+            data = db_ses.query(
+                BashHistory.prompt, 
+                BashHistory.tag,
+                BashHistory.timestamp, 
+                BashHistory.input).filter(
+                    BashHistory.container_name == scenario_type,
+                    BashHistory.prompt.contains(student_uname)).all()
             # all_data = db_ses.query
 
             log.info(data)
