@@ -91,6 +91,7 @@ class Node:
             if 'T' in self.data[2]:
                 self.left.insert_left_report(data)                                    
             else:
+                #TODO Make this block a reusable function
                 if 'A' in self.data[2]:
                     if data[3] == 'None':
                         data[3] = 'A'
@@ -102,22 +103,21 @@ class Node:
                         data[3] = 'M'
                     else:
                         data[3] += 'M'
-                                
                 #advance one left node if not a report node
                 self.left.insert_left_report(data)                        
         else:
-            if 'A' in self.data[2]:
-                if data[3] == 'None':
-                    data[3] = 'A'
-                else:
-                    data[3] += 'A'
-
-            if 'M' in self.data[2]:
-                if data[3] == 'None':
-                    data[3] = 'M'
-                else:
-                    data[3] += 'M'
-            #end of the line
+            #TODO should make this reused block into a function
+            if 'T' not in self.data[2]:
+                if 'A' in self.data[2]:
+                    if data[3] == 'None':
+                        data[3] = 'A'
+                    else:
+                        data[3] += 'A'
+                if 'M' in self.data[2]:
+                    if data[3] == 'None':
+                        data[3] = 'M'
+                    else:
+                        data[3] += 'M'
             self.left = Node(data)
 
 
@@ -167,11 +167,9 @@ class Node:
                     + str(self.data[4]) + '\\lTTY Entry: ' + str(self.data[0]) + '\\l'
                 G.add_node(self.data[0], label=text, shape='rectangle', \
                            style='filled', fillcolor='gold2', fontcolor='black')
-
             else:
-                #could really use some work here. Then again maybe it's fine.
                 attempts = len(self.data[3])
-                if('A' not in self.data[3] and 'M' not in self.data[3]):
+                if 'None' in self.data[3]:
                     complete = 'no'
                     # old color red new color firebrick
                     #color = 'red'
@@ -185,9 +183,11 @@ class Node:
                     complete = 'maybe'
                     #color = 'orange'
                     color = 'orange1'
+
+                #can add + str(self.data[3]) + to node for debugging
                 text = 'Report: ' + str(self.data[2]) + '\\l# attempts: ' \
-                    + str(attempts) + '\\lCompleted: ' + complete + '\\l' + str(self.data[3]) + '\\l'
-                G.add_node(self.data[0], label=text, shape='oval', \
+                    + str(attempts) + '\\lCompleted: ' + complete + '\\l'
+                G.add_node(str(self.data[0]), label=text, shape='oval', \
                            style='filled', fillcolor=color, fontcolor='black')
         except IndexError:
             print('Exception located here:')
@@ -234,7 +234,7 @@ class Node:
 
 
 # outputs graphviz file
-def output_graph(output_dir):
+def output_graph(output_dir, svg_name):
     """
     Outputs a graphviz file (svg).
 
@@ -266,7 +266,7 @@ def output_graph(output_dir):
 
     #notes on use of this function:
     ###draw(path=None,format=None,prog=None,args='')
-    G.draw((output_dir + 'graph.svg'), prog='dot')
+    G.draw((output_dir + svg_name + '.svg'), prog='dot')
 
 
 
@@ -280,6 +280,7 @@ if __name__ == "__main__":
     file_label = sys.argv[1]
     scenario = sys.argv[2]
     out_dir = sys.argv[3]
+    out_file = file_label.split('.')[1]
 
     print(scenario)
     
@@ -305,4 +306,4 @@ if __name__ == "__main__":
         except IndexError:
             print('Exception located here:')
             print(log[i])
-    output_graph(out_dir)
+    output_graph(out_dir, out_file)
