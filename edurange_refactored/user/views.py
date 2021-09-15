@@ -561,6 +561,8 @@ def progress_update_dev():
     # active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description in ['FileWrangler', 'GettingStarted']).all()
     active_scenarios = db_ses.query(Scenarios.name).all()
     active_scenarios = [i[0] for i in active_scenarios]
+    # TODO only return Getting_started and file_wrangler to dropdown menu
+    # filter(Scenarios.description == 'Getting_Started',Scenarios.description == File_Wrangler')
 
     if request.method == 'POST':
         def refresh_options_html(target_selection, items):
@@ -612,10 +614,17 @@ def progress_update_dev():
                 scenario_students = [s[0] for s in scenario_students]
                 log.info(f"students in {scenario_name}: {scenario_students}")
                 return refresh_options_html(target_selection, scenario_students)
-        else:
+        else: 
+            selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
+            scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
+            
+            log.info('selected scenario: ' + str(selected_scenario))
+            log.info(f'selected sc type: {scenario_type}')
             # selected_student = request.form.keys()
             # log.info(selected_student)
             data = db_ses.query(BashHistory.prompt, BashHistory.tag, BashHistory.timestamp, BashHistory.input).all()
+            # all_data = db_ses.query
+
             log.info(data)
             # for entry in data:
             #     log.info(entry)
@@ -627,22 +636,24 @@ def progress_update_dev():
             # data = db_ses.query(BashHistory).filter()
             # SIMPLE TEST CASE IF SOMETHING IS WRONG...
             # WILL BE REMOVED LATER
-            chart_data = gv.Graph(comment='simple test', format='svg')
-            chart_data.node('H', label='Hello')
-            chart_data.node('G', label='Graphviz')
-            chart_data.edge('H', 'G', label='morphism')
+            # chart_data = gv.Graph(comment='simple test', format='svg')
+            # chart_data.node('H', label='Hello')
+            # chart_data.node('G', label='Graphviz')
+            # chart_data.edge('H', 'G', label='morphism')
 
             # replace this with query info
             # log = custom_csv_utility.file_load("sample_data.csv")
 
-            # log = custom_csv_utility.file_load("sample_data.csv")
+            student_log = custom_csv_utility.db_log_load(data, scenario_type)
 
-            # test_report = graph_util.Report(log)
-            # graph_data = chart_data.get_graph()
+            log.info(f'student log: ')
+            for item in student_log:
+                log.info(item)
+            test_report = graph_util.Report(student_log)
+            graph_data = test_report.get_graph()        
+            graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
-            # graph_output = graph_data.pipe(format='svg').decode('utf-8')
-
-            return render_template("dashboard/progress_dev.html", form=form, students=students, scenarios=active_scenarios, graph_output=chart_data)
+            return render_template("dashboard/progress_dev.html", form=form, students=students, scenarios=active_scenarios, graph_output=graph_output)
 
     else:
         return render_template("dashboard/progress_dev.html", form=form, scenarios=active_scenarios, students=students, graph_output='')

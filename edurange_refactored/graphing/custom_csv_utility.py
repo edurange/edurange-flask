@@ -1,5 +1,9 @@
 """ Module for handling csv imports and possibly yaml content on milestone information"""
 import csv
+from datetime import datetime
+import logging as flask_logging
+
+from flask.globals import current_app
 
 def file_load(file_name, scenario):
     """
@@ -82,7 +86,7 @@ def db_log_load(log_obj, scenario):
         log.append(item)
 
     count = len(log)
-        
+    current_app.logger.info(f'###COUNT: {count}')
     reports = append_reports(scenario + '_' + 'report_nodes.csv', count)
         
     for item in reports:
@@ -111,13 +115,14 @@ def format_query(log_obj, cnt):
 
     #for each entry in database query object
     for entry in log_obj:
-        count += 1
         #may need to revisit this to remove 'U' tagged items
         #do not insert nodes with 'U' tags
         if 'U' not in entry[1]:
-            user = entry[0]
-            milestone = entry[1]
-            timestamp = entry[2]
+            count += 1
+            user = entry[0].split('-')[0]
+            tmp = str(entry[1]).split()
+            milestone = sorted(tmp, reverse=True)[0]
+            timestamp = entry[2].ctime()
             command = entry[3] #.split(':')[-1]
             event = [count, user, milestone, timestamp, command]
             log.append(event)
