@@ -143,19 +143,21 @@ class Node:
         else:
             #have to have this again for the final case
             #where report is attached to end of tree
-            if 'A' in self.data[2]:
-                if data[3] == 'None':
-                    data[3] = 'A'
-                else:
-                    data[3] += 'A'
+            if 'T' not in self.data[2]:
+                if 'A' in self.data[2]:
+                    if data[3] == 'None':
+                        data[3] = 'A'
+                    else:
+                        data[3] += 'A'
 
-            if 'M' in self.data[2]:
-                if data[3] == 'None':
-                    data[3] = 'M'
-                else:
-                    data[3] += 'M'
-            #end of the line
+                if 'M' in self.data[2]:
+                    if data[3] == 'None':
+                        data[3] = 'M'
+                    else:
+                        data[3] += 'M'
+                    #end of the line
             self.left = Node(data)
+            
 
                     
     def label_nodes(self, G):

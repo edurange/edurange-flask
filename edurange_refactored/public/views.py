@@ -184,7 +184,7 @@ def progress_update():
     #replace this with query info
         
     file_name = "fw_sample_data.csv"
-    log = custom_csv_utility.file_load(file_name, "file_wrangler")
+    log = custom_csv_utility.file_load(file_name, "File_Wrangler")
 
     for l in log:
         print(l)
@@ -194,7 +194,6 @@ def progress_update():
     graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
     return render_template("public/progress.html", graph_output=graph_output)
-
 
 # @blueprint.route("/progress_dev", methods=["GET", "POST"])
 # def progress_update_dev():
