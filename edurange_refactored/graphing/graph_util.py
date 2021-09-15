@@ -141,21 +141,18 @@ class Node:
                 #advance one left node if not a report node
                 self.left.insert_left_report(data)                        
         else:
-            #have to have this again for the final case
-            #where report is attached to end of tree
+            # should make this reused block into a function
             if 'T' not in self.data[2]:
                 if 'A' in self.data[2]:
                     if data[3] == 'None':
                         data[3] = 'A'
                     else:
                         data[3] += 'A'
-
                 if 'M' in self.data[2]:
                     if data[3] == 'None':
                         data[3] = 'M'
                     else:
                         data[3] += 'M'
-                    #end of the line
             self.left = Node(data)
             
 
