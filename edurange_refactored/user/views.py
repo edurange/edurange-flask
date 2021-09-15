@@ -302,7 +302,7 @@ def scenariosInfo(i):
         return abort(403)
 
     status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(i, "ins")
-    addresses =  _state(s_name, status)
+    addresses = identify_state(s_name, status)
     db_ses = db.session
     query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.points,
                          Responses.question, Responses.student_response, Responses.scenario_id, User.username)\
