@@ -545,16 +545,19 @@ def admin():
 
 @blueprint.route("/progress_dev", methods=["GET", "POST"])
 def progress_update_dev():
-    check_instructor()
+    # catch error when user is not signed in
+    try:
+        check_instructor()
+    except:
+        pass
+
     logging.basicConfig(level=logging.DEBUG)
     log = current_app.logger
 
     db_ses = db.session
+    form = showProgressForm(request.form)
 
     # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-    # data = db_ses.query(BashHistory.input, BashHistory.tag).filter(Scenarios.description == "FileWrangler").all()
-
-    form = showProgressForm(request.form)
 
     students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
     students = [s[0] for s in students]
@@ -616,6 +619,8 @@ def progress_update_dev():
                 return refresh_options_html(target_selection, scenario_students)
         else: 
             selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
+            # TODO catch index error when instructor tries to generate without full selection
+
             scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
 
             student_uname = request.form.get('student')
