@@ -183,7 +183,7 @@ def progress_update():
 
     #replace this with query info
         
-    file_name = "fw_sample_data.csv"
+    file_name = "fw_sample_data_2.csv"
     log = custom_csv_utility.file_load(file_name, "File_Wrangler")
 
     for l in log:

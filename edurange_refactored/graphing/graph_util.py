@@ -127,6 +127,7 @@ class Node:
             if 'T' in self.data[2]:
                 self.left.insert_left_report(data)                                    
             else:
+                #TODO Make this block a reusable function
                 if 'A' in self.data[2]:
                     if data[3] == 'None':
                         data[3] = 'A'
@@ -141,7 +142,7 @@ class Node:
                 #advance one left node if not a report node
                 self.left.insert_left_report(data)                        
         else:
-            # should make this reused block into a function
+            #TODO should make this reused block into a function
             if 'T' not in self.data[2]:
                 if 'A' in self.data[2]:
                     if data[3] == 'None':
@@ -188,14 +189,13 @@ class Node:
 
                 #could really use some work here. Then again maybe it's fine.
                 attempts = len(self.data[3])
-                if('A' not in self.data[3] and 'M' not in self.data[3]):
+                if 'None' in self.data[3]:
                     complete = 'no'
                     # old color red new color firebrick
                     #color = 'red'
                     color = 'firebrick3'
                     attempts = 0
-
-                if 'M' in self.data[3]:
+                elif 'M' in self.data[3]:
                     complete = 'yes'
                     #color = 'chartreuse3'
                     color = 'green3'
