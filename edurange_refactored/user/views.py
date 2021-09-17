@@ -544,37 +544,34 @@ def admin():
 
 
 @blueprint.route("/progress_dev", methods=["GET", "POST"])
+@login_required
 def progress_update_dev():
-    # catch error when user is not signed in
-    try:
-        check_instructor()
-    except:
-        pass
+    check_instructor()
 
-    logging.basicConfig(level=logging.DEBUG)
+    ## DEBUG
     log = current_app.logger
 
     db_ses = db.session
     form = showProgressForm(request.form)
 
-    # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-
     students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
-    students = [s[0] for s in students]
-    # active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description in ['FileWrangler', 'GettingStarted']).all()
-    active_scenarios = db_ses.query(Scenarios.name).all()
+    students = [s[0] for s in students] 
+
+    ## force instructor to only use GettingStarted and FileWrangler (TODO)
+    active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description.in_(['File_Wrangler','Getting_Started'])).all()
+    # active_scenarios = db_ses.query(Scenarios.name).all() # future/general query
     active_scenarios = [i[0] for i in active_scenarios]
-    # TODO only return Getting_started and file_wrangler to dropdown menu
-    # filter(Scenarios.description == 'Getting_Started',Scenarios.description == File_Wrangler')
 
     if request.method == 'POST':
+
+        # helper that returns options as html with option values embedded
         def refresh_options_html(target_selection, items):
-            fresh_options = '<option>select</option>'
+            fresh_options = '<option>select</option>\n'
             for i in items:
                 if i == target_selection:
-                    fresh_options += f'<option selected>{i}</option>'
+                    fresh_options += f'<option selected>{i}</option>\n'
                 else:
-                    fresh_options += f'<option>{i}</option>'
+                    fresh_options += f'<option>{i}</option>\n'
             return fresh_options
 
         source_val = request.form.get('source_val', -1)
@@ -617,8 +614,9 @@ def progress_update_dev():
                 scenario_students = [s[0] for s in scenario_students]
                 log.info(f"students in {scenario_name}: {scenario_students}")
                 return refresh_options_html(target_selection, scenario_students)
+        # generate button case
         else: 
-            selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
+            selected_scenario = request.form.get('scenario')
             # TODO catch index error when instructor tries to generate without full selection
 
             scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
