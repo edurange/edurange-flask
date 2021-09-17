@@ -621,6 +621,13 @@ def progress_update_dev():
             selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
             # TODO catch index error when instructor tries to generate without full selection
 
+            # TODO maintain selection in form after generate
+
+            # TODO pretty-print log
+
+            # TODO all the students, 3 graphs (milestones, control flow, box and whisker, untracked log)
+
+            # TODO troubleshoot failed generate request when scenario name has hyphens
             scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
 
             student_uname = request.form.get('student')
