@@ -244,8 +244,8 @@ class deleteGroupForm(FlaskForm):
 
 
 class showProgressForm(FlaskForm):
-    scenario = SelectField("Select Scenario")
-    student = SelectField("Select Student")
+    student = SelectField(validators=[DataRequired("Please select a student")])
+    scenario = SelectField(validators=[DataRequired("Please select a scenario")])
         
     def __init__(self, *args, **kwargs):
         super(showProgressForm, self).__init__(*args, **kwargs)
