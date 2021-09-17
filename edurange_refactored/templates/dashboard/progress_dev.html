@@ -22,7 +22,7 @@
 
             <form id="form" action="/dashboard/progress_dev" method="post">
                 {{ form.csrf_token }}
-                <select id="student-select" name="student" title="students" onchange="updateDropdown('#student-select', '#scenario-select')">
+                <select id="student-select" name="student" title="Students" onchange="updateDropdown('#student-select', '#scenario-select')">
                     <option selected>select</option>
                     {% for st in students %}
                     <option>{{ st }}</option>
@@ -30,13 +30,13 @@
                 </select>
 
                 {{ form.csrf_token }}
-                <select id="scenario-select" name="scenario" title="scenarios" onchange="updateDropdown('#scenario-select', '#student-select')">
+                <select id="scenario-select" name="scenario" title="Scenarios" onchange="updateDropdown('#scenario-select', '#student-select')">
                     <option selected>select</option>
                     {% for sc in scenarios %}
                     <option>{{ sc }}</option>
                     {% endfor %}
                 </select>
-                <input id="generate-graph" class="btn btn-dark" type="submit" value="Generate"/>
+                <input id="generate-graph" name="generate" class="btn btn-dark" type="submit" value="Generate"/>
             </form>
             <br>
         </div>
@@ -48,49 +48,14 @@
 </body>
 
 <script>
-    // function updateDropdown(source_id, target_id) {
-    //     console.log('source ' + $(source_id).val());
-    //     $.ajax(
-    //         '/dashboard/progress_dev',
-    //         {
-    //         type: 'POST',
-    //         data: {   
-    //             csrf_token: $('#csrf_token').attr('value'),
-    //             source_val: $(source_id).val(),
-    //             source_id: source_id
-    //         },
-    //         success: function(response) {
-    //             console.log(response)
-    //             if (response.includes('<!DOCTYPE html>')) {
-    //                 // response is full page not dropdown update
-    //                 // reload form or whole page
-    //                 $('#form').load()
-    //             }
-
-    //             $(target_id).html(function(index, oldHtml) {
-    //                 var newHtml = '<option>select</option>';
-    //                 response_json = JSON.parse(response)
-    //                 for (let item in response_json) {
-    //                     console.log(response_json[item]);
-    //                     newHtml += '<option>' + response_json[item] + '</option>';
-    //                 }
-    //                 return newHtml;
-    //             });
-    //         }
-    //     });
-    // }
-
-    function updateDropdown(source_id, target_id) { 
-        console.log('source ' + $(source_id).val());
-        var target_selection = $(target_id).find(":selected").text();
-        console.log(target_selection);
+    const updateDropdown = (source_id, target_id) => { 
         $(target_id).load(
             '/dashboard/progress_dev', {
                 csrf_token: $('#csrf_token').attr('value'),
                 dropdown_update: true,
-                source_val: $(source_id).val(),
                 source_id: source_id,
-                target_selection: target_selection
+                source_selection: $(source_id).val(),
+                target_selection: $(target_id).val()
         });
     }
 </script>

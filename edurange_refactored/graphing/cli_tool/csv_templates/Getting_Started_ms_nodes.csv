@@ -1,8 +1,8 @@
-INPUT|null|A0 M0 T0|null|null|null|MS: Change Directory to Root \l Accepted Commands: \l cd \l Accepted Options: \l / /l|OUTPUT
-INPUT|null|A1 M1 T1|null|null|null|MS: CD to /root \l Accepted Commands: \l cd \l Accepted Options: \l /root /l|OUTPUT
-INPUT|null|A2 M2 T2|null|null|null|MS: Use Man \l Accepted Commands: \l man \l Accepted Options: \l <any_command> /l|OUTPUT
-INPUT|null|A3 M3 T3|null|null|null|MS: List Hidden Files \l Accepted Commands: \l ls \l Accepted Options: \l -la /l|OUTPUT
-INPUT|null|A4 M4 T4|null|null|null|MS: Use File Command \l Accepted Commands: \l file \l Accepted Options: \l (matches any .jpg file) /l|OUTPUT
+INPUT|null|A0 M0 T0|null|null|null|MS: Change Directory to Root \l Accepted Commands: \l cd \l Accepted Options: \l / \l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|null|MS: CD to /root \l Accepted Commands: \l cd \l Accepted Options: \l /root \l|OUTPUT
+INPUT|null|A2 M2 T2|null|null|null|MS: Use Man \l Accepted Commands: \l man \l Accepted Options: \l <any_command> \l|OUTPUT
+INPUT|null|A3 M3 T3|null|null|null|MS: List Hidden Files \l Accepted Commands: \l ls \l Accepted Options: \l -la \l|OUTPUT
+INPUT|null|A4 M4 T4|null|null|null|MS: Use File Command \l Accepted Commands: \l file \l Accepted Options: \l (matches any .jpg file) \l|OUTPUT
 INPUT|null|A5 M5 T5|null|null|null|MS: Echo \l Accepted Commands: \l echo \l Accepted Options: \l "This is cool" \l > \l <any_file> \l|OUTPUT
 INPUT|null|A6 M6 T6|null|null|null|MS: Output Contents \l Accepted Commands: \l cat \l Accepted Options: \l None \l|OUTPUT
 INPUT|null|A7 M7 T7|null|null|null|MS: Append Contents \l Accepted Commands: \l cat \l Accepted Options: \l w* \l >> \l w* \l|OUTPUT

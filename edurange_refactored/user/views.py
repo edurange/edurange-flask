@@ -544,51 +544,67 @@ def admin():
 
 
 @blueprint.route("/progress_dev", methods=["GET", "POST"])
+@login_required
 def progress_update_dev():
-    # catch error when user is not signed in
-    try:
-        check_instructor()
-    except:
-        pass
+    check_instructor()
 
-    logging.basicConfig(level=logging.DEBUG)
+    # TODO maintain selection in form after generate
+
+    # TODO pretty-print log
+
+    # TODO all the students, 3 graphs (milestones, control flow, box and whisker, untracked log)
+
+    # TODO troubleshoot failed generate request when scenario name has hyphens
+
+    ## DEBUG
     log = current_app.logger
 
     db_ses = db.session
     form = showProgressForm(request.form)
 
-    # IDEAL TO USE ONLY DB QUERY TO AQUIRE ALL DATA NO MORE CSV READING...
-
     students = db_ses.query(User.username).filter(User.is_instructor==False, User.is_admin==False)
-    students = [s[0] for s in students]
-    # active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description in ['FileWrangler', 'GettingStarted']).all()
-    active_scenarios = db_ses.query(Scenarios.name).all()
+    students = [s[0] for s in students] 
+
+    ## force instructor to only use GettingStarted and FileWrangler (TODO)
+    active_scenarios = db_ses.query(Scenarios.name).filter(Scenarios.description.in_(['File_Wrangler','Getting_Started'])).all()
+    # active_scenarios = db_ses.query(Scenarios.name).all() # future/general query
     active_scenarios = [i[0] for i in active_scenarios]
-    # TODO only return Getting_started and file_wrangler to dropdown menu
-    # filter(Scenarios.description == 'Getting_Started',Scenarios.description == File_Wrangler')
 
     if request.method == 'POST':
+        #1 if partial reload
+
+        #2 if generate
+            #2.1 form.validate
+
+        # helper that returns options as html with option values embedded
         def refresh_options_html(target_selection, items):
-            fresh_options = '<option>select</option>'
+            fresh_options = '<option>select</option>\n'
             for i in items:
                 if i == target_selection:
-                    fresh_options += f'<option selected>{i}</option>'
+                    fresh_options += f'<option selected>{i}</option>\n'
                 else:
-                    fresh_options += f'<option>{i}</option>'
+                    fresh_options += f'<option>{i}</option>\n'
             return fresh_options
 
-        source_val = request.form.get('source_val', -1)
-        source_id = request.form.get('source_id')
-        log.info(f'source selector: {source_id}')
+        # collect data from form
+        # request_dict = request.form.to_dict()
 
+        # log.info(f'THE WHOLE FORM: {request_dict}')
+
+        # log.info(f'source selector: {source_id}')
+        # log.info(f'target selection: {target_selection}')
+
+        source_id = request.form.get('source_id')
+        source_selection = request.form.get('source_selection')
         target_selection = request.form.get('target_selection')
-        log.info(f'target selection: {target_selection}')
-        if request.form.get('dropdown_update', False):
+        
+        is_dropdown_update = request.form.get('dropdown_update', False)
+        if is_dropdown_update:
             if source_id == '#student-select':
-                if source_val == 'select':
+                if source_selection == 'select':
                     return refresh_options_html(target_selection, active_scenarios)
-                student_username = source_val
-                log.info(f'source selector value: {source_val}')
+                student_username = source_selection
+                # log.info(f'source selector value: {source_selection}')
                 student_scenarios = db_ses.query(
                     Scenarios.name).filter(
                         student_username == User.username,
@@ -597,14 +613,14 @@ def progress_update_dev():
                         StudentGroups.id == ScenarioGroups.group_id,
                         ScenarioGroups.scenario_id == Scenarios.id).all()
                 student_scenarios = [s[0] for s in student_scenarios]
-                log.info(f"scenarios for {student_username}: {student_scenarios}")
+                # log.info(f"scenarios for {student_username}: {student_scenarios}")
                 return refresh_options_html(target_selection, student_scenarios)
 
             elif source_id == '#scenario-select':
-                if source_val == 'select':
+                if source_selection == 'select':
                     return refresh_options_html(target_selection, students)
-                scenario_name = source_val
-                log.info(source_val)
+                scenario_name = source_selection
+                # log.info(source_selection)
                 scenario_students = db_ses.query(
                     User.username).filter(
                         scenario_name == Scenarios.name,
@@ -615,65 +631,67 @@ def progress_update_dev():
                         User.is_admin == False,
                         User.is_instructor == False).all()
                 scenario_students = [s[0] for s in scenario_students]
-                log.info(f"students in {scenario_name}: {scenario_students}")
+                # log.info(f"students in {scenario_name}: {scenario_students}")
                 return refresh_options_html(target_selection, scenario_students)
         else: 
-            selected_scenario = request.form.get('scenario') #TODO rename to singular scenario
+            # generate button case
+
+            student_selection = request.form.get('student')
+            scenario_selection = request.form.get('scenario')
             # TODO catch index error when instructor tries to generate without full selection
+            # log.info([student_selection, scenario_selection])
+            if 'select' in [student_selection, scenario_selection]:
+                flash('Please select both a student and a scenario')
+                return render_template("dashboard/progress_dev.html", form=form, scenarios=active_scenarios, students=students, graph_output='')
 
-            # TODO maintain selection in form after generate
+            else:
+                selected_scenario = request.form.get('scenario')
+                scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
 
-            # TODO pretty-print log
+                student_uname = request.form.get('student')
+                
+                # log.info('selected scenario: ' + str(selected_scenario))
+                # log.info(f'selected sc type: {scenario_type}')
+                # selected_student = request.form.keys()
+                # log.info(selected_student)
+                data = db_ses.query(
+                    BashHistory.prompt, 
+                    BashHistory.tag,
+                    BashHistory.timestamp, 
+                    BashHistory.input).filter(
+                        BashHistory.container_name == scenario_type,
+                        BashHistory.prompt.contains(student_uname)).all()
+                # all_data = db_ses.query
 
-            # TODO all the students, 3 graphs (milestones, control flow, box and whisker, untracked log)
+                # log.info(data)
+                # for entry in data:
+                #     log.info(entry)
+                # for obj in data:
+                #     obj_dict = obj.__dict__
+                #     for k in obj_dict.keys():
+                #         log.info(obj_dict[k])
 
-            # TODO troubleshoot failed generate request when scenario name has hyphens
-            scenario_type = db_ses.query(Scenarios.description).filter(Scenarios.name == selected_scenario).all()[0][0]
+                # data = db_ses.query(BashHistory).filter()
+                # SIMPLE TEST CASE IF SOMETHING IS WRONG...
+                # WILL BE REMOVED LATER
+                # chart_data = gv.Graph(comment='simple test', format='svg')
+                # chart_data.node('H', label='Hello')
+                # chart_data.node('G', label='Graphviz')
+                # chart_data.edge('H', 'G', label='morphism')
 
-            student_uname = request.form.get('student')
-            
-            log.info('selected scenario: ' + str(selected_scenario))
-            log.info(f'selected sc type: {scenario_type}')
-            # selected_student = request.form.keys()
-            # log.info(selected_student)
-            data = db_ses.query(
-                BashHistory.prompt, 
-                BashHistory.tag,
-                BashHistory.timestamp, 
-                BashHistory.input).filter(
-                    BashHistory.container_name == scenario_type,
-                    BashHistory.prompt.contains(student_uname)).all()
-            # all_data = db_ses.query
+                # replace this with query info
+                # log = custom_csv_utility.file_load("sample_data.csv")
 
-            log.info(data)
-            # for entry in data:
-            #     log.info(entry)
-            # for obj in data:
-            #     obj_dict = obj.__dict__
-            #     for k in obj_dict.keys():
-            #         log.info(obj_dict[k])
+                student_log = custom_csv_utility.db_log_load(data, scenario_type)
 
-            # data = db_ses.query(BashHistory).filter()
-            # SIMPLE TEST CASE IF SOMETHING IS WRONG...
-            # WILL BE REMOVED LATER
-            # chart_data = gv.Graph(comment='simple test', format='svg')
-            # chart_data.node('H', label='Hello')
-            # chart_data.node('G', label='Graphviz')
-            # chart_data.edge('H', 'G', label='morphism')
+                # log.info(f'student log: ')
+                # for item in student_log:
+                #     log.info(item)
+                test_report = graph_util.Report(student_log)
+                graph_data = test_report.get_graph()        
+                graph_output = graph_data.pipe(format='svg').decode('utf-8')
 
-            # replace this with query info
-            # log = custom_csv_utility.file_load("sample_data.csv")
-
-            student_log = custom_csv_utility.db_log_load(data, scenario_type)
-
-            log.info(f'student log: ')
-            for item in student_log:
-                log.info(item)
-            test_report = graph_util.Report(student_log)
-            graph_data = test_report.get_graph()        
-            graph_output = graph_data.pipe(format='svg').decode('utf-8')
-
-            return render_template("dashboard/progress_dev.html", form=form, students=students, scenarios=active_scenarios, graph_output=graph_output)
+                return render_template("dashboard/progress_dev.html", form=form, students=students, scenarios=active_scenarios, graph_output=graph_output)
 
     else:
         return render_template("dashboard/progress_dev.html", form=form, scenarios=active_scenarios, students=students, graph_output='')

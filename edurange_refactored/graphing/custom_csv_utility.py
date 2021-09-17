@@ -1,7 +1,6 @@
 """ Module for handling csv imports and possibly yaml content on milestone information"""
 import csv
 from datetime import datetime
-import logging as flask_logging
 
 from flask.globals import current_app
 
@@ -52,8 +51,8 @@ def file_load(file_name, scenario):
         log.append(item)
 
     csv_file.close()
-    for item in log:
-        print(item)
+    # for item in log:
+    #     print(item)
     return log
 
 def db_log_load(log_obj, scenario):
@@ -86,14 +85,14 @@ def db_log_load(log_obj, scenario):
         log.append(item)
 
     count = len(log)
-    current_app.logger.info(f'###COUNT: {count}')
+    # current_app.logger.info(f'###COUNT: {count}')
     reports = append_reports(scenario + '_' + 'report_nodes.csv', count)
         
     for item in reports:
         log.append(item)
 
-    for item in log:
-        print(item)
+    # for item in log:
+    #     print(item)
     return log
 
 def format_query(log_obj, cnt):
