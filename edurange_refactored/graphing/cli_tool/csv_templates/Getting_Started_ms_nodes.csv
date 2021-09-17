@@ -1,5 +1,5 @@
 INPUT|null|A0 M0 T0|null|null|null|MS: Change Directory to Root \l Accepted Commands: \l cd \l Accepted Options: \l / \l|OUTPUT
-INPUT|null|A1 M1 T1|null|null|null|MS: CD to /root \l Accepted Commands: \l cd \l Accepted Options: \l /root /l|OUTPUT
+INPUT|null|A1 M1 T1|null|null|null|MS: CD to /root \l Accepted Commands: \l cd \l Accepted Options: \l /root \l|OUTPUT
 INPUT|null|A2 M2 T2|null|null|null|MS: Use Man \l Accepted Commands: \l man \l Accepted Options: \l <any_command> \l|OUTPUT
 INPUT|null|A3 M3 T3|null|null|null|MS: List Hidden Files \l Accepted Commands: \l ls \l Accepted Options: \l -la \l|OUTPUT
 INPUT|null|A4 M4 T4|null|null|null|MS: Use File Command \l Accepted Commands: \l file \l Accepted Options: \l (matches any .jpg file) \l|OUTPUT
