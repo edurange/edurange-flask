@@ -36,7 +36,7 @@
                     <option>{{ sc }}</option>
                     {% endfor %}
                 </select>
-                <input id="generate-graph" class="btn btn-dark" type="submit" value="Generate"/>
+                <input id="generate-graph" name="generate" class="btn btn-dark" type="submit" value="Generate"/>
             </form>
             <br>
         </div>
@@ -49,14 +49,13 @@
 
 <script>
     const updateDropdown = (source_id, target_id) => { 
-        var target_selection = $(target_id).find(":selected").text();
         $(target_id).load(
             '/dashboard/progress_dev', {
                 csrf_token: $('#csrf_token').attr('value'),
                 dropdown_update: true,
-                source_val: $(source_id).val(),
                 source_id: source_id,
-                target_selection: target_selection
+                source_selection: $(source_id).val(),
+                target_selection: $(target_id).val()
         });
     }
 </script>
