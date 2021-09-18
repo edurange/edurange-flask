@@ -15,7 +15,7 @@ class RegisterForm(FlaskForm):
     banned_names = ["root", "ubuntu", "user", "student", "guest", "ec2-user", "nobody", '']
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=3, max=25),
-                                Regexp('^\w+-?\w+-?\w+$', message="must be alphanumeric"),
+                                Regexp('^[a-zA-Z0-9]+-?[a-zA-Z0-9]+$', message="must be alphanumeric"),
                                 NoneOf(values=banned_names, message="not permitted, try a different one")]
     )
     email = StringField(
