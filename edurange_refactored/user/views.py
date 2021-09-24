@@ -546,10 +546,8 @@ def admin():
 @blueprint.route("/progress_dev", methods=["GET", "POST"])
 @login_required
 def progress_update_dev():
-    check_instructor()
-
-    # TODO maintain selection in form after generate
-
+    # check_instructor()
+    check_privs()
     # TODO pretty-print log
 
     # TODO all the students, 3 graphs (milestones, control flow, box and whisker, untracked log)
@@ -600,7 +598,7 @@ def progress_update_dev():
         
         is_dropdown_update = request.form.get('dropdown_update', False)
         if is_dropdown_update:
-            if source_id == '#student-select':
+            if source_id == '#student':
                 if source_selection == 'select':
                     return refresh_options_html(target_selection, active_scenarios)
                 student_username = source_selection
@@ -616,7 +614,7 @@ def progress_update_dev():
                 # log.info(f"scenarios for {student_username}: {student_scenarios}")
                 return refresh_options_html(target_selection, student_scenarios)
 
-            elif source_id == '#scenario-select':
+            elif source_id == '#scenario':
                 if source_selection == 'select':
                     return refresh_options_html(target_selection, students)
                 scenario_name = source_selection
@@ -635,6 +633,7 @@ def progress_update_dev():
                 return refresh_options_html(target_selection, scenario_students)
         else: 
             # generate button case
+            # TODO maintain selection in form after generate
 
             student_selection = request.form.get('student')
             scenario_selection = request.form.get('scenario')
