@@ -547,10 +547,10 @@ def admin():
 @login_required
 def progress_update_dev():
     # check_instructor()
-    check_privs()
+    check_instructor()
     # TODO pretty-print log
 
-    # TODO all the students, 3 graphs (milestones, control flow, box and whisker, untracked log)
+    # TODO all the students, 3 \graphs (milestones, control flow, box and whisker, untracked log)
 
     # TODO troubleshoot failed generate request when scenario name has hyphens
 
