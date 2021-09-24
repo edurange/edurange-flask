@@ -23,7 +23,7 @@
             <form id="form" action="/dashboard/progress_dev" method="POST" role="form">
                 {{ form.csrf_token }}
                 <label for="student">Students</label>
-                <select id="student" class="form-control" name="student" title="Students" onchange="updateDropdown('#student', '#scenario')">
+                <select id="student" name="student" title="Students" onchange="updateDropdown('#student', '#scenario')">
                     <option selected>select</option>
                     {% for st in students %}
                     <option>{{ st }}</option>
@@ -31,7 +31,7 @@
                 </select>
 
                 <label for="scenario">Scenarios</label>                
-                <select id="scenario" class="form-control" name="scenario" title="Scenarios" onchange="updateDropdown('#scenario', '#student')">
+                <select id="scenario" name="scenario" title="Scenarios" onchange="updateDropdown('#scenario', '#student')">
                     <option selected>select</option>
                     {% for sc in scenarios %}
                     <option>{{ sc }}</option>
