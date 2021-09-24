@@ -20,23 +20,24 @@
         <div id="graphSelector">
             <h5>Select a Student and Scenario to Graph:</h5>
 
-            <form id="form" action="/dashboard/progress_dev" method="post">
+            <form id="form" action="/dashboard/progress_dev" method="POST" role="form">
                 {{ form.csrf_token }}
-                <select id="student-select" name="student" title="Students" onchange="updateDropdown('#student-select', '#scenario-select')">
+                <label for="student">Students</label>
+                <select id="student" class="form-control" name="student" title="Students" onchange="updateDropdown('#student', '#scenario')">
                     <option selected>select</option>
                     {% for st in students %}
                     <option>{{ st }}</option>
                     {% endfor %}
                 </select>
 
-                {{ form.csrf_token }}
-                <select id="scenario-select" name="scenario" title="Scenarios" onchange="updateDropdown('#scenario-select', '#student-select')">
+                <label for="scenario">Scenarios</label>                
+                <select id="scenario" class="form-control" name="scenario" title="Scenarios" onchange="updateDropdown('#scenario', '#student')">
                     <option selected>select</option>
                     {% for sc in scenarios %}
                     <option>{{ sc }}</option>
                     {% endfor %}
                 </select>
-                <input id="generate-graph" name="generate" class="btn btn-dark" type="submit" value="Generate"/>
+                <input id="generate" name="generate" class="btn btn-dark" type="submit" value="Generate"/>
             </form>
             <br>
         </div>
