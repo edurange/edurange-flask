@@ -1,6 +1,5 @@
 rm /analyze.py
 rm /intervention.py
-rm /mergeLogs.sh
 rm /makeTsv.py
 rm /milestone-lbl.pl
 rm /milestones.txt
