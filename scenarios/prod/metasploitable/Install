@@ -3,10 +3,12 @@
 # /etc/init.d/<service_name> start
 /etc/init.d/apache2 start
 /etc/init.d/distcc start
+
 # starting mysql is only necessary for certain web exploits
 /etc/init.d/mysql start
 /etc/init.d/postgresql-8.3 start
 /etc/init.d/samba start
+
 # xinetd starts: rlogin, ingreslock, vsftpd
 /etc/init.d/xinetd start
 
