@@ -1,0 +1,13 @@
+*,ssh\sstudent@52\.0\.90\.27,*
+*,ssh\sinceptor@10\.0\.0\.5,*
+*,ssh\smal@10\.0\.0\.7\s-p\s123,*
+*,nmap\s10\.0\.0\.8/30,*
+*,ssh\schristopher@10\.0\.0\.10,*
+*,ssh\scobb@10\.0\.0\.15\s-i\sprivate_key\.pem,*
+*,grep\spassword\s\*/\*,*
+*,ssh\stoodeep@10\.0\.0\.16,*
+*,nmap\s10\.0\.0\.0\/27,*
+*,ftp\s10\.0\.0\.14,*
+*,rm\screds,*
+*,ssh\sneo@10\.0\.0\.17,*
+
