@@ -281,8 +281,7 @@ if __name__ == "__main__":
     scenario = sys.argv[2]
     out_dir = sys.argv[3]
     out_file = file_label.split('.')[1]
-
-    print(scenario)
+    out_file = out_file.split('/')[2]                                
     
     G = pgv.AGraph(strict=False, directed=True)
 
@@ -290,6 +289,7 @@ if __name__ == "__main__":
     log = custom_csv_utility.file_load(file_label, scenario)
 
     root = Node(log[0])
+
     for i in range(1, len(log)):
         try:
             if 'U' not in log[i][2]:

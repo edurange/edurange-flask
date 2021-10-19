@@ -22,12 +22,10 @@ def file_load(file_name, scenario):
     #this is where the milestone and report nodes are built
     #currently from a file but to be created from yaml info
     milestones = append_milestones(scenario + '_' + 'ms_nodes.csv')
-    reports = append_reports(scenario + '_' + 'report_nodes.csv')
-
+    count = len(milestones)
+    
     for item in milestones:
         log.append(item)
-
-    count = 16
 
     #for each entry in csv log
     for line in reader:
@@ -43,12 +41,15 @@ def file_load(file_name, scenario):
         event = [count, user, milestone, timestamp, command]
         log.append(event)
 
+    count = len(log)
+    reports = append_reports(scenario + '_' + 'report_nodes.csv', count)
+    
     for item in reports:
         log.append(item)
 
     csv_file.close()
-    for item in log:
-        print(item)
+    #for item in log:
+    #    print(item)
     return log
 
 def append_milestones(file_name):
@@ -88,7 +89,7 @@ def append_milestones(file_name):
     #    print(e):
     return log
 
-def append_reports(file_name):
+def append_reports(file_name, cnt):
     """
     Loads csv into data structure usable for graphviz.
 
@@ -105,7 +106,7 @@ def append_reports(file_name):
     csv_file = open('./csv_templates/' + file_name, 'r')
     reader = csv.reader(csv_file, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
     #f = open(file_name, 'r')
-    count = 89
+    count = cnt
     log = []
     #for each entry in csv log
     for line in reader:
