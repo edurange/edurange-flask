@@ -49,7 +49,7 @@ Metasploit is a framework for automating the process of exploiting vulnerabiliti
 
 The following is an example use of the metasploit framework that has been generalized to show how the given commands can be used.
 
-![Metasploit Command Line Example](/static/build/img/Metasploitable/m-h_example_cmd_line.png)
+![Metasploit Command Line Example](/assets/img/Metasploitable/m-h_example_cmd_line.png)
 <pre>
 msf > use windows/smb/ms08_067_netapi
 exploit(ms08_067_netapi) > show options
