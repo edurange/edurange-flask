@@ -92,3 +92,23 @@ The next step is to identify services with known vulnerabilites.
 When looking for exploits to use on a service, we highly recommend that you only try exploits that are ranked `excellent`.
 
 ---
+
+## Example Use of Metasploit
+
+Using a basic nmap scan, we can see that an http service is running on port 80. This service will be used as an example of how to use Metasploit. 
+
+Open the Metasploit shell using `msfconsole`
+
+Use the Metasploit search command to find a usable http exploit. Notice that if you just search for http (`search http`), you will be given a few over two thousand results. This is a few results too many, so instead we can search for `php_cgi` to find a single usable result. Note that in other cases the number of results will be more managable, so do not worry about trying to search for specific exploits with other services.
+
+Using `search php_cgi` will give us one result. We can now use the `use` command followed by the exploit name to tell Metasploit that we want to use this exploit.
+
+Once we are using the exploit we can now make sure that all of the exploits options are properly set. To do so, we will use the `options` command.
+
+The options command shows us that there are four required options, and that three of them are already set. We can use the `set` command to set the `RHOSTS` option. The `RHOSTS` option specifies the target address. `set RHOSTS target`
+
+Once all the required options are set, we can use the `exploit` command to run the exploit.
+
+Some exploits will result in a meterpreter shell, we can get to a normal shell by entering the command `shell`.
+
+---
