@@ -1,0 +1,166 @@
+		       _________________________
+
+			EDURANGE LOGGING ISSUES
+
+			    Aubrey Birdwell
+		       _________________________
+
+
+Table of Contents
+_________________
+
+Easy
+.. Create the milestone.txt / regex for rest of scenarios
+.. Create Scenario Template CSV data
+Medium
+.. Find the code in logging scripts which marks attempt tags
+.. Find the code that changes the name of students in the database
+.. Clean up the flask route for instructor views of graphs
+Difficult
+.. Create a message service
+.. Create a yaml architecure to describe scenarios
+
+
+
+
+
+Easy
+====
+
+Create the milestone.txt / regex for rest of scenarios
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Each scenario has a file called milestones.txt with a regex for each
+  scenario on a different line in the order the learning objective
+  appears in the scenario.
+
+  The scenarios are in:
+
+  edurange-flask/scenarios/prod/<mile_stone>/milestones.txt
+
+  Take a look at filewrangler, getting started, and ssh inception for
+  examples.
+
+
+Create Scenario Template CSV data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The graphing tool uses csv files which contain descriptions of the
+  learning objectives / milestones, and dummy nodes for reports. Those
+  files are in:
+
+  /edurange-flask/edurange_refactored/graphing/cli_tool/csv_templates/
+
+  We currently have ones for file wrangler, getting started, and ssh
+  inception. The rest of the scenarios need these. To create them, you
+  need to look at the regex in the milestones.txt for the scenario and
+  organize it like the existing files in the aforementioned
+  directory. If there is no milestones.txt, then start by creating that.
+
+
+Medium
+======
+
+Find the code in logging scripts which marks attempt tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The perl logging script processes the tty standard input and output,
+  scraping it and dumping it somewhere.
+
+  Most of these are in:
+
+  /edurange-flask/scenarios/global_scripts
+
+  There are several python scripts such as analyze.py ... which process
+  the data further. The end result is a csv file in
+
+  /edurange-flask/logs/
+
+  This csv has all data associated with a deployed instance of a
+  scenario. The data also gets put into the database. There is a
+  milestone tag field in the csv that indicated when a milestone was
+  complete, M1, M2, ... or unidentified, U, and is supposed to tag when
+  there is a partial match to the regex. Say the options are wrong but
+  command is correct. This should be tagged A1, A2,... and it is not
+  happening. Figure out why!
+
+
+Find the code that changes the name of students in the database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  When a student is created the naming conventions permit you to put
+  wierd symbols. Later when the container is created, some of these
+  characters get stripped out. In the end the database somehow ends up
+  mismatching the names of the students and the graph logging tool
+  doesn't display any of their graph information. This is because the
+  database query for the student / scenario mismatches its
+  representation in the database. There are several ways to fix this,
+  make it impossible for instructors to add non-alphanumeric characters
+  as names, or figure out where this gets stripped out and fix it there.
+
+
+Clean up the flask route for instructor views of graphs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  We need to advance the useability of the instructor view of the
+  student graphs. Currently, the flask route has two drop down menues
+  that let you select a student and a group. It then renders the
+  graph. This is accessible at
+
+  <http://localhost:5000/dashboard/progress_dev>
+
+  when the app is running. Note that you must be logged in as admin to
+  view it.
+
+  It would be nice to add some additional functionality to this
+  view. One thing I envision is a vertical side bar to the left of the
+  graph pane. The side bar should display all students available. We
+  should be able to query the students periodically to determine the
+  last activity they did, whether that was an attempt or a completion of
+  a learning objective, and display that information compactly next to
+  their name in the sidebar. This way, it will be even easier for
+  instructors to see when someone is struggling.
+
+
+Difficult
+=========
+
+Create a message service
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+  This is integral to adding automatic hints and suggestions. We need to
+  build a simple chat service that either runs in flask or over linux
+  command line. The idea is that a student could ping the instructor for
+  suggestions or hints about a particular learning objective.
+
+  My thought is that there would be a drop down to select the learning
+  objective, and a small text entry box where the inquiry can go. This
+  is forwarded to the instructor, and they can respond. It is important
+  that the milestone is tagged and that these messages get stored in the
+  database with a unix timestamp, the milestone, and natural language
+  conversation. The idea is that eventually, we can use the instructor
+  feed back again when ML identifies that a student is in a similar
+  state.
+
+  For now, lets make it a new flask route or two since the instructor
+  version should be secure from tampering. We can poach the drop downs
+  from
+
+  <http://localhost:5000/dashboard/progress_dev>
+
+  Use those drop downs to select a student. Then use your creativity to
+  make the chat or message system.
+
+
+Create a yaml architecure to describe scenarios
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  We need to design a yaml structure to hold the information about a
+  scenarios structure. This would include information about the names of
+  learning objectives, milestone tags, relevent command, options,
+  working directories, and other state changes relevent to identifying a
+  learning objective completion.
+
+  The yaml file template should also have accompanying python tools
+  which can build the milestones.txt, and csv templates used for the
+  graphing tool. This project is bigger than it seems.

@@ -1,12 +1,8 @@
 #+title: Edurange Logging Issues
 #+author: Aubrey Birdwell
-#+options: num:nil
-
-  --------------------------------------------------
+#+options: toc:nil
 
 * Easy
-
-  --------------------------------------------------
   
 ** Create the milestone.txt / regex for rest of scenarios
 
@@ -35,12 +31,8 @@
    scenario and organize it like the existing files in the
    aforementioned directory. If there is no milestones.txt, then start
    by creating that.
-
-   --------------------------------------------------
    
 * Medium
-
-  --------------------------------------------------
 
 ** Find the code in logging scripts which marks attempt tags
 
@@ -64,7 +56,6 @@
    wrong but command is correct. This should be tagged A1, A2,... and
    it is not happening. Figure out why!
 
-   --------------------------------------------------
    
 ** Find the code that changes the name of students in the database
 
@@ -79,7 +70,6 @@
    characters as names, or figure out where this gets stripped out and
    fix it there.
 
-   --------------------------------------------------
    
 ** Clean up the flask route for instructor views of graphs
 
@@ -102,13 +92,9 @@
    information compactly next to their name in the sidebar. This way,
    it will be even easier for instructors to see when someone is
    struggling.
-
-   --------------------------------------------------
    
 * Difficult
 
-  --------------------------------------------------
-  
 ** Create a message service
 
    This is integral to adding automatic hints and suggestions. We need
@@ -134,8 +120,6 @@
 
    Use those drop downs to select a student. Then use your creativity
    to make the chat or message system.
-
-   --------------------------------------------------
    
 ** Create a yaml architecure to describe scenarios
 
