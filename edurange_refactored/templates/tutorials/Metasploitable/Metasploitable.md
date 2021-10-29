@@ -1,8 +1,7 @@
 # Metasploitable
 
-Work in Process
-
 ---
+
 ## What is Metasploit
 Metasploit is a framework for automating the process of exploiting vulnerabilities in application software. It has tools to support the cyber kill chain. which consists of the steps: 
 - reconnaissance, identifying the target and software services running on the target
