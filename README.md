@@ -39,12 +39,12 @@ Or each service can be run separately
 flask run --host=0.0.0.0
 celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks
 ```
-After npm start has started flask, you can open a browser and connect
-For example, enter ```localhost:5000``` in the navigation box
+After npm start has started flask (it continues running), you can open a browser and connect
+For example, with URL ```localhost:5000``` 
 Login to the server using the administrator credentials set in the .env file
 ```
-flaskname = ...
-password = ...
+FLASK_USERNAME = ...
+PASSWORD = ...
 ```
 ### creating a student group
 As administrator, you can create a student group using the GUI.
