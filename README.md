@@ -39,6 +39,19 @@ Or each service can be run separately
 flask run --host=0.0.0.0
 celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks
 ```
+After npm start has started flask, you can open a browser and connect
+For example, enter ```localhost:5000``` in the navigation box
+Login to the server using the administrator credentials set in the .env file
+```
+flaskname = ...
+password = ...
+```
+### creating a student group
+As administrator, you can create a student group using the GUI.
+You can create default users in that group for testing purposes. You should save their credentials so that you can fully explore scenarios as a student.
+Those credentials are for the flask server, not for the Containers in the scanarios.
+
+
 #### WSGI Server
 
 To launch using best practice production settings, with SSL certificates and everything, you'll need to install and configure nginx and certbot
