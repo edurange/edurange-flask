@@ -14,11 +14,51 @@
     Points: '5'
   Order: 2
   Points: 5
+- Text: What user does the above exploit log you into?
+  Type: String
+  Options: []
+  Values:
+  - Value: root
+    Points: '5'
+  Order: 3
+  Points: 5
+- Text: What is the exploit you can use on port 80 that gets you a meterpreter shell?
+  Type: String
+  Options: []
+  Values:
+  - Value: exploit/multi/http/php_cgi_arg_injection
+    Points: '5'
+  Order: 4
+  Points: 5
+- Text: What is the full MySQL version running on the target?
+  Type: String
+  Options: []
+  Values:
+  - Value: 5.0.51a-3ubuntu5
+    Points: '5'
+  Order: 5
+  Points: 5
 - Text: What is the highest port open on the target host?
   Type: String
   Options: []
   Values:
   - Value: 6697
     Points: '5'
-  Order: 3
+  Order: 6
+  Points: 5
+- Text: What service is running on the above port?
+  Type: String
+  Options: []
+  Values:
+  - Value: IRC
+    Points: '5'
+  Order: 7
+  Points: 5
+- Text: What is the admin email of the above service?
+  Type: String
+  Options: []
+  Values:
+  - Value: admin@Metasploitable.LAN
+    Points: '5'
+  Order: 8
   Points: 5
