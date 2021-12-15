@@ -24,7 +24,7 @@ if [ $reactor_state = "ON" ]; then
 else
         if [ $countdown -lt 1 ]; then
                 if [ -e /home/$control_user/BOOM ]; then
-                        kill $(ps x|grep "$USER@pts"|head -n1|cut -d " " -f3)
+                        kill $(ps x | grep "$USER@pts" | head -n1 | awk '{print $1}')
                 else
                         write $control_user <<< $lose_message
                 fi
