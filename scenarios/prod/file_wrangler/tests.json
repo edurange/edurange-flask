@@ -1,0 +1,27 @@
+[
+    {
+        "name": "question 1",
+        "command": "pwd",
+        "success": "/home/$USERNAME$"
+    },
+    {
+        "name": "question 3",
+        "command": "ls -1 | wc -l",
+        "success": "12"
+    },
+    {
+        "name": "question 5",
+        "command": "ls -d1 */ | wc -l",
+        "success": "4"
+    },
+    {
+        "name": "question 6",
+        "command": "ls -1 view/ | wc -l",
+        "success": "8"
+    },
+    {
+        "name": "question 8",
+        "command": "find view/ -name \".*\" | wc -l",
+        "success": "1"
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "name": "question 1",
+        "command": "ls -1 | wc -l",
+        "success": "7"
+    },
+    {
+        "name": "question 2",
+        "command": "find followMe/ -type f -printf \"%f\n\"",
+        "success": "CCQLapJD"
+    },
+    {
+        "name": "question 4",
+        "command": "grep -o CKMpmaUo stuff/imatextfiletoo.txt",
+        "success": "CKMpmaUo"
+    },
+    {
+        "name": "question 6",
+        "command": "find / -name *edurange* -type f 2>/dev/null | grep -iE .\"(jp|gif|png)\"",
+        "success": [
+            "/home/$USERNAME$/i/d/f/kitty/k/n/t/edurange5meow.JPG",
+            "/home/$USERNAME$/i/z/g/j/l/o/w/edurange006weeeeeee.png",
+            "/home/$USERNAME$/i/a/e/kitty/4edurange.jpeg",
+            "/home/$USERNAME$/i/a/g/kitty/m/q/w/edurange001.gif",
+            "/home/$USERNAME$/i/b/e/j/l/s/v/002edurange.jpg",
+            "/home/$USERNAME$/i/c/e/h/k/edurange3.GIF"
+        ]
+    },
+    {
+        "name": "question 7",
+        "command": "find / -name \"*cowFJS*\" 2>/dev/null | cut -dU -f1",
+        "success": "/usr/special/secrets/"
+    }
+]
