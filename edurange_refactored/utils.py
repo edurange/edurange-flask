@@ -72,12 +72,10 @@ def check_role_view(mode):  # check if view mode compatible with role (admin/ins
             return None
 
 
-# --------
-
 def generateNavElements(role, view): # generate all navigational elements
     """Makes decisions and calls correct generators for navigational links based on role."""
-    views = None
-    links = None
+    views, links = None, None
+
     if role is None: # user not logged in
         return {'views': views, 'links': links}
 
@@ -107,30 +105,32 @@ def create_link(route, icon, text):
                 <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
               </a>'''
     html = html.format(url_for(route), icon, text)
+
     return Markup(html)
 
 
 def create_view(route, text):
     """Create html element for dropdown link items."""
     html = '<a class="dropdown-item" href="{0}{1}">{2}</a>'.format(url_for('dashboard.set_view'), route, text)
+
     return Markup(html)
 
 
 def genAdminViews():
     """Generate 'select view' elements for admin users."""
-    views = [create_view('?mode=adminView', 'Admin View'),
-             create_view('?mode=instructorView', 'Instructor View'),
-             create_view('?mode=studentView', 'Student View')]
-
-    return views
+    return [
+        create_view('?mode=adminView', 'Admin View'),
+        create_view('?mode=instructorView', 'Instructor View'),
+        create_view('?mode=studentView', 'Student View')
+    ]
 
 
 def genInstructorViews():
     """Generate 'select view' elements for instructors."""
-    views = [create_view('?mode=instructorView', 'Instructor View'),
-             create_view('?mode=studentView', 'Student View')]
-
-    return views
+    return [
+        create_view('?mode=instructorView', 'Instructor View'),
+        create_view('?mode=studentView', 'Student View')
+    ]
 
 
 def genAdminLinks(view):
@@ -139,14 +139,13 @@ def genAdminLinks(view):
         dashboard = create_link('dashboard.admin', 'fa-desktop', 'Admin Dashboard')
         scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
         notification = create_link('dashboard.notification', 'fa-bell', 'Notifications')
-        # return [dashboard, scenarios]
         return [dashboard, scenarios, notification]
     elif view == 'instructorView':
         return genInstructorLinks(None)
     elif view == 'studentView':
         return genStudentLinks()
-    else:
-        return None
+
+    return None
 
 
 def genInstructorLinks(view):
@@ -157,75 +156,47 @@ def genInstructorLinks(view):
         dashboard = create_link('dashboard.instructor', 'fa-desktop', 'Instructor Dashboard')
         scenarios = create_link('dashboard.scenarios', 'fa-align-justify', 'Scenarios')
         return [dashboard, scenarios]
-    else:
-        return None
+
+    return None
 
 
 def genStudentLinks(view=None): # needs common arg for switch statement
     """Generate links for students."""
     dashboard = create_link('dashboard.student', 'fa-desktop', 'Dashboard')
-    # testing = create_link('public.testing', *icon*, *name*)
+
     return [dashboard] # return array to avoid character print in template's for loop
 
 
 def checkAuth(d):
     number = current_user.id
     user = User.query.filter_by(id=number).first()
+
     if not user.is_instructor and not user.is_admin:
         return False
-    else:
-        return True
+
+    return True
 
 
-def format_datetime(value, format="%d %b %Y %I:%M %p"):
-    """Format a date time to (Default): d Mon YYYY HH:MM P"""
-    if value is None:
-        return ""
-    return value.strftime(format)
-
-
-def statReader(s):
-    statSwitch = {
-        0: "Stopped",
-        1: "Started",
-        2: "Something went very wrong",
-        3: "Starting",
-        4: "Stopping",
-        5: "ERROR",
-        7: "Building"
-    }
-    return statSwitch[s]
-
-
-def getDesc(t):
-    t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+def getDescription(scenario):
+    scenario = scenario.lower().replace(" ", "_")
+    with open(f"./scenarios/prod/{scenario}/{scenario}.yml", "r") as yml:
         document = yaml.full_load(yml)
         for item, doc in document.items():
             if item == "Description":
-                d = doc
-    return d
+                return doc
 
 
-def getGuide2(t):
-    # g = "No Codelab for this Scenario"
-    t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + t + ".yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+def getGuide2(scenario):
+    scenario = scenario.lower().replace(" ", "_")
+    with open(f"./scenarios/prod/{scenario}/{scenario}.yml", "r") as yml:
         document = yaml.full_load(yml)
         for item, doc in document.items():
             if item == "Codelab":
-                g = doc
-                # print(g)
-                # return g
-    # g = "No Codelab for this Scenario"
-    return g
+                return doc
+
+    return "No Codelab for this Scenario"
 
 
-#
 # host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
 # g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
 # f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".html"
@@ -245,7 +216,6 @@ def getGuide(t):
         lines = guideHelp3(lines)
         sections.append(lines)
     guide = guideHelp5(sections)
-    # test
     #test = guideHelp3(htL[9])
     #test = guideHelp4(test, 4)
     return guide
@@ -347,26 +317,22 @@ def guideHelp4(sec, num):
 """)
     card = card.replace('[SECTION_HEADER]', head).replace('[SECTION_CONTENT]', content)
     card = card.replace('[HEADER_ID]', h_id).replace('[BODY_ID]', b_id)
+
     return card
 
 
 def guideHelp5(sections):
-    #
-    guide = ''
-    accOpen = str("""
-<div class="container" id="acc">
-""")
-    accClose = str("""
-</div>
-""")
+    num, guide = 0, ''
+    accOpen = '<div class="container" id="acc">'
+    accClose = '</div>'
     titleSec = '' + sections[0][0] + sections[0][1] + "<hr>"
     guide += titleSec + accOpen
     sections = sections[1:]
-    num = 0
     for sec in sections:
         guide = guide + guideHelp4(sec, num)
         num += 1
     guide += accClose
+
     return guide
 
 
@@ -377,13 +343,9 @@ def guideHelp6(sec, num):
     b_id = 'B' + str(num) + '-'
     content = ''
     secAcc = 'acc' + str(num)
-    secAccOpen = str("""
-<div class="container" id="[SEC_ACC]">
-""")
-    secAccClose = str("""
-</div>
-""")
-    subCard = str("""
+    secAccOpen = '<div class="container" id="[SEC_ACC]">'
+    secAccClose = '</div>'
+    subCard = """
 <div class="card">
     <div class="card-header" id="[HEADER_ID]">
         <div class="row">
@@ -396,12 +358,13 @@ def guideHelp6(sec, num):
             [SUBSECTION_CONTENT]
         </div>
     </div>
-</div>
-""")
+</div>"""
+
     if h3 not in sec[0]:
         content += sec[0]
         sec = sec[1:]
     content += secAccOpen.replace('[SEC_ACC]', secAcc)
+
     for i in range(0, len(sec)):
         if h3 in sec[i]:
             tHd = sec[i].replace('<h3>', '').replace('</h3>', '')
@@ -411,29 +374,33 @@ def guideHelp6(sec, num):
             tmp = tmp.replace('[SEC_ACC]', secAcc)
             content += tmp
             count += 1
+
     content += secAccClose
+
     return content
 
 
-def getPass(sn, un):
-    sn = "".join(e for e in sn if e.isalnum())
-    with open('./data/tmp/' + sn + '/students.json', 'r') as f:
-        data = json.load(f)
-        d1 = data.get(un)[0]
-        p = d1.get('password')
-    return p
+def getPass(scenario, username):
+    scenario = "".join(e for e in scenario if e.isalnum())
+
+    with open(f'./data/tmp/{scenario}/students.json', 'r') as fd:
+        data = json.load(fd)
+
+    user = data.get(username)[0]
+
+    return user.get('password')
 
 
 def getQuestions(t):
     questions = {}
     t = t.lower().replace(" ", "_")
-    with open(
-            "./scenarios/prod/" + t + "/" + "questions.yml", "r"
-    ) as yml:  # edurange_refactored/scenarios/prod
+    # edurange_refactored/scenarios/prod
+    with open(f"./scenarios/prod/{t}/questions.yml", "r") as yml:
         document = yaml.full_load(yml)
         for item in document:
             #questions.append(item['Text'])
             questions[item['Order']] = item['Text']
+
     return questions
 
 
@@ -442,61 +409,49 @@ def getPort(n):
     return n
 
 
-def tempMaker(d, i):
+def tempMaker(sId, i):
     db_ses = db.session
-    # status
-    stat = db_ses.query(Scenarios.status).filter(Scenarios.id == d).first()
-    stat = statReader(stat[0])
-    # owner name
-    oName = (
-        db_ses.query(User.username).filter(Scenarios.id == d).filter(Scenarios.owner_id == User.id).first()
+    statusSwitch = {
+        0: "Stopped",
+        1: "Started",
+        2: "Something went very wrong",
+        3: "Starting",
+        4: "Stopping",
+        5: "ERROR",
+        7: "Building"
+    }
+    status = db_ses.query(Scenarios.status).filter(Scenarios.id == sId).first()
+    status = statusSwitch[status[0]]
+
+    ownerName = (
+        db_ses.query(User.username).filter(Scenarios.id == sId).filter(Scenarios.owner_id == User.id).first()
     )
-    oName = oName[0]
-    # description
-    ty = db_ses.query(Scenarios.description).filter(Scenarios.id == d).first()
+    ownerName = ownerName[0]
+
+    ty = db_ses.query(Scenarios.description).filter(Scenarios.id == sId).first()
     ty = ty[0]
-    desc = getDesc(ty)
+    description = getDescription(ty)
     guide = getGuide(ty)
     questions = getQuestions(ty)
-    # current_app.logger.info(questions) #--
-    # scenario name
-    sNom = db_ses.query(Scenarios.name).filter(Scenarios.id == d).first()
-    sNom = sNom[0]
+
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sId).first()
+    sName = sName[0]
+
     if i == "ins":
-        # creation time
-        bTime = db_ses.query(Scenarios.created_at).filter(Scenarios.id == d).first()
-        bTime = bTime[0]
-        return stat, oName, bTime, desc, ty, sNom, guide, questions
+        createdAt = db_ses.query(Scenarios.created_at).filter(Scenarios.id == sId).first()
+        createdAt = createdAt[0]
+
+        return status, ownerName, createdAt, description, ty, sName, guide, questions
     elif i == "stu":
-        # username
-        ud = current_user.id
-        usr = db_ses.query(User.username).filter(User.id == ud).first()[0]
-        usr = "".join(e for e in usr if e.isalnum())
-        # password
-        pw = getPass(sNom, usr)
-        return stat, oName, desc, ty, sNom, usr, pw, guide, questions
+        username = db_ses.query(User.username).filter(User.id == current_user.id).first()[0]
+        username = "".join(e for e in username if e.isalnum())
+        pw = getPass(sName, username)
 
-
-# --
-
-
-# def responseCheck(qnum, sid, resp):
-#    # read correct response from yaml file
-#    db_ses = db.session
-#    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-#    questions = questionReader(s_name[0])
-#    for text in questions:
-#        order = int(text['Order'])
-#        if order == qnum:
-#            ans = str(text['Values'][0]['Value'])
-#    if resp == ans:
-#        return True
-#    else:
-#        return False
+        return status, ownerName, description, ty, sName, username, pw, guide, questions
 
 
 def responseCheck(qnum, sid, resp, uid):
-    # read correct response from yaml file
+    """Read correct response from yaml file."""
     db_ses = db.session
     s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     questions = questionReader(s_name[0])
@@ -533,7 +488,7 @@ def bashAnswer(sid, uid, ans):
     uName = "".join(e for e in uName if e.isalnum())
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
     if "${player.login}" in ans:
-        students = open("./data/tmp/" + sName + "/students.json", "r")
+        students = open(f"./data/tmp/{sName}/students.json", "r")
         user = ast.literal_eval(students.read())
         username = user[uName][0]["username"]
         ansFormat = ans[0:6]
@@ -542,19 +497,17 @@ def bashAnswer(sid, uid, ans):
     elif "${scenario.instances" in ans:
         wordIndex = ans[21:-1].index(".")
         containerName = ans[21:21+wordIndex]
-        containerFile = open("./data/tmp/" + sName + "/" + containerName + ".tf.json", "r")
+        containerFile = open(f"./data/tmp/{sName}/{containerName}.tf.json", "r")
         content = ast.literal_eval(containerFile.read())
         index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
         ans = ""
         for d in index:
             if d["name"] == (sName + "_PLAYER"):
                 ans = d["ipv4_address"]
-        return ans
-    else:
+
         return ans
 
-
-# --
+    return ans
 
 
 def responseQuery(uid, att, query, questions):
@@ -576,6 +529,7 @@ def responseQuery(uid, att, query, questions):
                 sR = response.student_response
                 dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'earned': pts}
                 tableList.append(dictionary)
+
     return tableList
 
 
@@ -589,8 +543,6 @@ def responseSelector(resp):
             break
     return data
 
-
-# -----
 
 # scoring functions used in functions such as queryPolish()
 # used as:
@@ -652,7 +604,7 @@ def scoreSetup(questions):
             checkList[k] = tmp
         else:
             checkList[str(text['Order'])] = False
-    # bloop()
+
     return checkList
 
 
@@ -660,7 +612,6 @@ def scoreSetup(questions):
 #                                       0    1      2     ...
 
 # if multi string, take student response into account to find the index within '6': [...] and mark true or false as normal
-
 
 def scoreCheck(qnum, checkList):
     keys = list(checkList.keys())
@@ -704,8 +655,6 @@ def scoreCheck2(qnum, checkList, resp, quest):
 
 # query(Responses.user_id, Responses.attempt, Responses.question, Responses.points, Responses.student_response)
 # .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
-#     |
-#     V
 
 
 def score(uid, att, query, questions):
@@ -718,55 +667,54 @@ def score(uid, att, query, questions):
                 check, checkList = scoreCheck(qNum, checkList)      # check against checkList with question number
                 if not check:
                     stuScore += resp.points
-    scr = '' + str(stuScore) + ' / ' + str(totalScore(questions))
-    return scr
-# -----
+
+    return f'{stuScore}/{totalScore(questions)}'
 
 
 def questionReader(name):
     name = "".join(e for e in name if e.isalnum())
-    with open(
-            "./data/tmp/" + name + "/questions.yml", "r"
-    ) as yml:
+    with open(f"./data/tmp/{name}/questions.yml", "r") as yml:
         document = yaml.full_load(yml)
+
     return document
 
 
 def queryPolish(query, sName):
-    qList = []
+    questions = []
     for entry in query:
         i = entry.id
         uid = entry.user_id
         att = entry.attempt
         usr = entry.username
-        if qList is None:
+        if questions is None:
             scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
-            qList.append(d)
+            questions.append(d)
         else:
             error = 0
-            for lst in qList:
+            for lst in questions:
                 if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
                 scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
-                qList.append(d)
-    return qList
+                questions.append(d)
+
+    return questions
 
 
 def responseProcessing(data):
     # response info getter
     db_ses = db.session
-    # user info
+
     uid = data.user_id
     uname = db_ses.query(User.username).filter(User.id == uid).first()
     uname = uname[0]
-    # scenario info
+
     sid = data.scenario_id
     sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
     sname = sname[0]
-    # response info
+
     att = data.attempt
     return uid, uname, sid, sname, att
 
@@ -787,18 +735,17 @@ def getAttempt(sid):
     return query
 
 
-# returns dictionary of lines with common keyIndex values
-
-
 def readScenario():
+    desc = []
     scenarios = [
         dI
         for dI in os.listdir("./scenarios/prod/")
         if os.path.isdir(os.path.join("./scenarios/prod/", dI))
     ]
-    desc = []
-    for s in scenarios:
-        desc.append(getDesc(s))
+
+    for scenario in scenarios:
+        desc.append(getDescription(scenario))
+
     return 0
 
 
@@ -832,9 +779,14 @@ def displayProgress(sid, uid):
         .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).all()
     questions = questionReader(sName.name)
     answered, tQuest = getProgress(query, questions)
-    scr, tScr = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
-    progress = {'questions': answered, 'total_questions': tQuest, 'score': scr, 'total_score': tScr}
-    return progress
+    score, totalScore = calcScr(uid, sid, att)  # score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
+
+    return {
+        'questions': answered,
+        'total_questions': tQuest,
+        'score': score,
+        'total_score': totalScore
+    }
 
 
 def calcScr(uid, sid, att):
@@ -850,6 +802,7 @@ def calcScr(uid, sid, att):
             score += int(r.points)
     # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))
     tScore = totalScore(questionReader(sName.name))
+
     return score, tScore
 
 
@@ -863,6 +816,5 @@ def getProgress(query, questions):
             check, checkList = scoreCheck(q, checkList)
             if not check:
                 corr += 1
-    # progress = "" + str(corr) + " / " + str(total)
-    return corr, total
 
+    return corr, total
