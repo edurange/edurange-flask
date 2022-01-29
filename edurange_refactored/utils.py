@@ -185,18 +185,6 @@ def getDescription(scenario):
             if item == "Description":
                 return doc
 
-
-def getGuide2(scenario):
-    scenario = scenario.lower().replace(" ", "_")
-    with open(f"./scenarios/prod/{scenario}/{scenario}.yml", "r") as yml:
-        document = yaml.full_load(yml)
-        for item, doc in document.items():
-            if item == "Codelab":
-                return doc
-
-    return "No Codelab for this Scenario"
-
-
 # host = os.getenv('HOST_EXTERN_ADDRESS', '127.0.0.1')
 # g = host + "/tutorials/" + t + "/" + t + ".md"  # "#0"
 # f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".html"
@@ -206,9 +194,9 @@ def getGuide2(scenario):
 # ht = md.markdown(m)
 
 
-def getGuide(t):
-    t = t.title().replace(" ", "_")
-    f = "./edurange_refactored/templates/tutorials/" + t + "/" + t + ".md"
+def getGuide(scenario):
+    scenario = scenario.title().replace(" ", "_")
+    f = f"./edurange_refactored/templates/tutorials/{scenario}/{scenario}.md"
     lines = guideHelp1(f)
     htL = guideHelp2(lines)
     sections = []
@@ -222,47 +210,44 @@ def getGuide(t):
 
 
 def guideHelp1(f):
-    # reads a md file into a list of lists divided by ---
-    lines = []
-    with open(f, mode="r", encoding="utf-8") as file:
+    """Reads a md file into a list of lists divided by ---."""
+    lines, lines2, tmp = [], [], []
+    with open(f, encoding="utf-8") as file:
         for line in file:
             lines.append(line)
-    tmp = []
-    lines2 = []
+
     for line in lines:
         if line == '---\n':
-            # tmp.append(line)
             lines2.append(tmp)
             tmp = []
         else:
             tmp.append(line)
+
     return lines2
 
 
 def guideHelp2(ls):
-    # reads a list of lists of md and converts it to a list of lists of html
-    new = []
-    tmp = []
+    """Reads a list of lists of md and converts it to a list of lists of html."""
+    new, tmp = [], []
+
     for section in ls:
         for line in section:
             line = md.markdown(line)
             tmp.append(line)
         new.append(tmp)
         tmp = []
+
     return new
 
 
 def guideHelp3(ls):
-    # reads a list of html and separates it into a list of a head string and a content string
-    h1 = '<h1>'
-    h2 = '<h2>'
-    h3 = '<h3>'
+    """Reads a list of html and separates it into a list of a head string and a content string."""
+    h1, h2, h3 = '<h1>', '<h2>', '<h3>'
     col3 = 'class="colH3"'
     colSec = []
-    section_head = ''
-    hd = False
-    c3 = False
-    content = ''
+    content, section_head = '', ''
+    hd, c3 = False, False
+
     for line in ls:
         if not hd:
             if col3 in line:
@@ -279,14 +264,15 @@ def guideHelp3(ls):
                 colSec.append(line)
                 content = ''
             else:
-                content = content + line
+                content += line
         else:
-            content = content + line
+            content += line
     if c3:
         colSec.append(content)
         return colSec
-    # section_head = section_head.replace('<h1>', '').replace('</h1>', '')
+
     section_head = section_head.replace('<h2>', '').replace('</h2>', '')
+
     return [section_head, content]
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """User views."""
 import os
-import shutil
+
 from flask import (
     Blueprint,
     abort,
@@ -10,50 +10,49 @@ from flask import (
     render_template,
     request,
     session,
+    send_from_directory,
     url_for,
-    current_app,
-    send_from_directory
 )
 from flask_login import login_required
 
 from edurange_refactored.extensions import db
+from edurange_refactored.notification_utils import NotifyCapture
 from edurange_refactored.user.forms import (
     GroupForm,
     addUsersForm,
+    changeEmailForm,
+    deleteGroupForm,
     makeScenarioForm,
     manageInstructorForm,
     modScenarioForm,
-    changeEmailForm,
-    deleteGroupForm,
+    notifyDeleteForm,
     scenarioResponseForm,
-    notifyDeleteForm
 )
 
+from ..csv_utils import readCSV, groupCSV
 from ..form_utils import process_request
+from ..graph_utils import getGraph
+from ..role_utils import check_admin, check_instructor, check_privs, scenario_exists, student_has_access, return_roles
 from ..scenario_utils import identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
     check_role_view,
     checkAuth,
+    displayCorrect,
+    displayProgress,
     flash_errors,
-    tempMaker,
     responseProcessing,
     responseQuery,
     responseSelector,
+    tempMaker,
     queryPolish,
     questionReader,
-    # getScore,
     score,
-    displayCorrect,
-    displayProgress
+    # getScore,
 )
-from ..role_utils import check_admin, check_instructor, check_privs, checkEx, return_roles, checkEnr
-from ..graph_utils import getGraph
-from ..csv_utils import readCSV, groupCSV
 
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses, Notification
 
-from edurange_refactored.notification_utils import NotifyCapture, NotifyClear
 
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
@@ -65,10 +64,10 @@ blueprint = Blueprint(
 def set_view():
     if check_role_view(request.args["mode"]):
         session["viewMode"] = request.args["mode"]
-        return redirect(url_for("public.home"))
     else:
         session.pop("viewMode", None)
-        return redirect(url_for("public.home"))
+
+    return redirect(url_for("public.home"))
 
 
 @blueprint.route("/account_management", methods=['GET', 'POST'])
@@ -113,13 +112,13 @@ def student():
     """List members."""
     # Queries for the user dashboard
     db_ses = db.session
-    curId = session.get("_user_id")
+    currentUserId = session.get("_user_id")
 
-    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == curId)
+    userInfo = db_ses.query(User.id, User.username, User.email).filter(User.id == currentUserId)
 
     groups = (
         db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers)
-        .filter(GroupUsers.user_id == curId)
+        .filter(GroupUsers.user_id == currentUserId)
         .filter(GroupUsers.group_id == StudentGroups.id)
     )
 
@@ -131,7 +130,7 @@ def student():
             StudentGroups.name.label("gname"),
             User.username.label("iname"),
         )
-        .filter(GroupUsers.user_id == curId)
+        .filter(GroupUsers.user_id == currentUserId)
         .filter(StudentGroups.id == GroupUsers.group_id)
         .filter(User.id == StudentGroups.owner_id)
         .filter(ScenarioGroups.group_id == StudentGroups.id)
@@ -149,18 +148,14 @@ def student():
 @blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required
 def student_scenario(i):
-    # i = scenario_id
-    # db_ses = db.session
-    if checkEnr(i):
-        if checkEx(i):
+    if student_has_access(i):
+        if scenario_exists(i):
             status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
-            # db_ses = db.session
             # query = db_ses.query(User.id)\
             #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             uid = session.get("_user_id")
             # att = db_ses.query(Scenarios.attempt).filter(Scenarios.id == i).first()
             addresses = identify_state(s_name, status)
-            example = None
             # query = db_ses.query(Responses.user_id, Responses.attempt, Responses.question, Responses.points,
             #                     Responses.student_response).filter(Responses.scenario_id == i)\
             #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
@@ -168,38 +163,43 @@ def student_scenario(i):
                 scenarioResponder = scenarioResponseForm()
                 aList = displayCorrect(s_name, u_name)
                 progress = displayProgress(i, uid)
-                return render_template("dashboard/student_scenario.html",
-                                       id=i,
-                                       status=status,
-                                       owner=owner,
-                                       desc=desc,
-                                       s_type=s_type,
-                                       s_name=s_name,
-                                       u_name=u_name,
-                                       pw=pw,
-                                       add=addresses,
-                                       guide=guide,
-                                       questions=questions,
-                                       srF=scenarioResponder,
-                                       aList=aList,
-                                       example=example,
-                                       progress=progress)
+
+                return render_template(
+                    "dashboard/student_scenario.html",
+                    id=i,
+                    status=status,
+                    owner=owner,
+                    desc=desc,
+                    s_type=s_type,
+                    s_name=s_name,
+                    u_name=u_name,
+                    pw=pw,
+                    add=addresses,
+                    guide=guide,
+                    questions=questions,
+                    srF=scenarioResponder,
+                    aList=aList,
+                    progress=progress
+                )
 
             elif request.method == "POST":
                 ajax = process_request(request.form)  # scenarioResponseForm(request.form) # this validates it
-                progress = displayProgress(i, uid)
-                if ajax:
-                    return render_template("utils/student_answer_response.html", score=ajax[1], progress=progress)
 
+                if ajax:
+                    return render_template(
+                        "utils/student_answer_response.html",
+                        progress=displayProgress(i, uid),
+                        score=ajax[1]
+                    )
                 else:
                     return redirect(url_for("dashboard.student_scenario", i=i))
         else:
             return abort(404)
-    else:
-        return abort(403)
+
+    return abort(403)
+
 
 # ---- scenario routes
-
 
 @blueprint.route("/catalog", methods=["GET"])
 @login_required
@@ -207,7 +207,7 @@ def catalog():
     check_privs()
     scenarios = populate_catalog()
     groups = StudentGroups.query.all()
-    scenarioModder = modScenarioForm(request.form)  # type2Form()  #
+    scenarioModder = modScenarioForm(request.form)  # type2Form()
 
     return render_template(
         "dashboard/catalog.html", scenarios=scenarios, groups=groups, form=scenarioModder
@@ -341,7 +341,7 @@ def scenariosInfo(i):
 def scenarioResponse(i, r):
     # i = scenario_id, r = responses id
     if checkAuth(i):
-        if checkEx(i):
+        if scenario_exists(i):
             db_ses = db.session
             d = responseSelector(r)
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
@@ -371,7 +371,7 @@ def scenarioResponse(i, r):
 def scenarioGraph(i, u):
     # i = scenario_id, u = username
     if checkAuth(i):
-        if checkEx(i):
+        if scenario_exists(i):
             db_ses = db.session
             scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
             graph = getGraph(scenario, u)
