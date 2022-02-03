@@ -32,7 +32,14 @@ from edurange_refactored.user.forms import (
 from ..csv_utils import readCSV, groupCSV
 from ..form_utils import process_request
 from ..graph_utils import getGraph
-from ..role_utils import check_admin, check_instructor, check_privs, scenario_exists, student_has_access, return_roles
+from ..role_utils import (
+    get_roles,
+    check_privs,
+    scenario_exists,
+    student_has_access,
+    user_is_admin,
+    user_is_instructor
+)
 from ..scenario_utils import identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
@@ -48,7 +55,6 @@ from ..utils import (
     queryPolish,
     questionReader,
     score,
-    # getScore,
 )
 
 from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses, Notification
@@ -297,7 +303,7 @@ def scenarios():
 @blueprint.route("/scenarios/<i>")
 def scenariosInfo(i):
     # i = scenario_id
-    admin, instructor = return_roles()
+    admin, instructor = get_roles()
     if not admin and not instructor:
         return abort(403)
 
@@ -320,21 +326,23 @@ def scenariosInfo(i):
     u_logs = groupCSV(rc, 4) # make dictionary using 6th value as key (player name)
 
 
-    return render_template("dashboard/scenarios_info.html",
-                           i=i,
-                           s_type=s_type,
-                           desc=desc,
-                           status=status,
-                           owner=owner,
-                           dt=bTime,
-                           s_name=s_name,
-                           add=addresses,
-                           guide=guide,
-                           questions=questions,
-                           resp=resp,
-                           rc=rc, # rc may not be needed with individual user logs in place
-                           players=players,
-                           u_logs=u_logs)
+    return render_template(
+        "dashboard/scenarios_info.html",
+        i=i,
+        s_type=s_type,
+        desc=desc,
+        status=status,
+        owner=owner,
+        dt=bTime,
+        s_name=s_name,
+        add=addresses,
+        guide=guide,
+        questions=questions,
+        resp=resp,
+        rc=rc, # rc may not be needed with individual user logs in place
+        players=players,
+        u_logs=u_logs
+    )
 
 
 @blueprint.route("/scenarios/<i>/<r>")
@@ -342,29 +350,30 @@ def scenarioResponse(i, r):
     # i = scenario_id, r = responses id
     if checkAuth(i):
         if scenario_exists(i):
-            db_ses = db.session
             d = responseSelector(r)
             u_id, uName, s_id, sName, aNum = responseProcessing(d)
             # s_type = db_ses.query(Scenarios.description).filter(Scenarios.id == s_id).first()
-            query = db_ses.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
+            query = db.session.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
                                  Responses.points, Responses.student_response, User.username)\
                 .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).filter(Responses.attempt == aNum).all()
             table = responseQuery(u_id, aNum, query, questionReader(sName))
             scr = score(u_id, aNum, query, questionReader(sName))  # score(getScore(u_id, aNum, query), questionReader(sName))
 
-            return render_template("dashboard/scenario_response.html",
-                                   i=i,
-                                   u_id=u_id,
-                                   uName=uName,
-                                   s_id=s_id,
-                                   sName=sName,
-                                   aNum=aNum,
-                                   table=table,
-                                   scr=scr)
-        else:
-            return abort(404)
-    else:
-        return abort(403)
+            return render_template(
+                "dashboard/scenario_response.html",
+                i=i,
+                u_id=u_id,
+                uName=uName,
+                s_id=s_id,
+                sName=sName,
+                aNum=aNum,
+                table=table,
+                scr=scr
+            )
+
+        return abort(404)
+
+    return abort(403)
 
 
 @blueprint.route("/scenarios/<i>/graphs/<u>")
@@ -377,53 +386,48 @@ def scenarioGraph(i, u):
             graph = getGraph(scenario, u)
             if graph:
                 return render_template("dashboard/graphs.html", graph=graph)
-            else:
-                flash("Graph for {0} in scenario {1} could not be opened.".format(u, scenario))
-                return redirect(url_for('dashboard.scenariosInfo', i=i))
 
-        else:
-            return abort(404)
-    else:
-        return abort(403)
+            flash("Graph for {0} in scenario {1} could not be opened.".format(u, scenario))
+            return redirect(url_for('dashboard.scenariosInfo', i=i))
+
+        return abort(404)
+
+    return abort(403)
 
 
-@blueprint.route("/scenarios/<i>/getLogs")
-def getLogs(i):
-    # i = scenario_id
-    admin, instructor = return_roles(i)
+@blueprint.route("/scenarios/<scenarioId>/getLogs")
+def getLogs(scenarioId):
+    admin, instructor = get_roles()
 
     if not admin or not instructor:
         return abort(403)
 
     db_ses = db.session
-    id_test = db_ses.query(Scenarios).get(id)
+    scenario_exists = db_ses.query(Scenarios).get(scenarioId)
 
-    if id_test is None:
-        flash("Scenario with ID # {0} could not be found".format(i))
-        redirect(url_for('dashboard.scenarios'))
+    if scenario_exists is None:
+        flash(f"Scenario with ID {scenarioId} could not be found")
+        return redirect(url_for('dashboard.scenarios'))
 
-    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == i).first()[0]
+    scenario = db_ses.query(Scenarios.name).filter(Scenarios.id == scenarioId).first()[0]
 
-    logs = "./data/tmp/" + scenario + "/" + scenario + "-history.csv"
+    logs = f"./data/tmp/{scenario}/{scenario}-history.csv"
+
     if os.path.isfile(logs):
-        logs = "." + logs
-        fname = logs.rsplit('/', 1)[-1] # 'ScenarioName-history.csv'
-        logs = logs.rsplit('/', 1)[0] # '../data/tmp/ScenarioName/'
-        return send_from_directory(logs, fname, as_attachment=True)
+        logs, fname = logs.rsplit('/', 1)    # ./data/tmp/ScenarioName/, ScenarioName-history.csv
 
-    else:
-        flash("Log file for scenario {0} could not be found.".format(scenario))
-        return redirect(url_for('dashboard.scenariosInfo', i=i))
+        return send_from_directory(f".{logs}", fname, as_attachment=True)
 
-
-# -----
+    flash(f"Log file for scenario {scenario} could not be found")
+    return redirect(url_for('dashboard.scenariosInfo', i=scenarioId))
 
 
 @blueprint.route("/instructor", methods=["GET", "POST"])
 @login_required
 def instructor():
     """List of an instructors groups"""
-    check_instructor()
+    user_is_instructor()
+
     # Queries for the owned groups table
     curId = session.get("_user_id")
     db_ses = db.session
@@ -467,17 +471,17 @@ def instructor():
             elif temp == 'utils/manage_student_response.html':
                 if len(ajax) == 1:
                     return render_template(temp)
-                else:
-                    return render_template(temp, group=ajax[1], users=ajax[2])
-        else:
-            return redirect(url_for("dashboard.instructor"))
+
+                return render_template(temp, group=ajax[1], users=ajax[2])
+
+        return redirect(url_for("dashboard.instructor"))
 
 
 @blueprint.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
     """List of all students and groups. Group, student, and instructor management forms"""
-    check_admin()
+    user_is_admin()
     db_ses = db.session
     # Queries for the tables of students and groups
     students = db_ses.query(User.id, User.username, User.email, User.is_static).filter(User.is_instructor == False)
@@ -486,8 +490,8 @@ def admin():
     groupNames = []
     users_per_group = {}
 
-    for g in groups:
-        groupNames.append(g.name)
+    for group in groups:
+        groupNames.append(group.name)
 
     for name in groupNames:
         users_per_group[name] = db_ses.query(User.id, User.username, User.email, User.is_static).filter(
@@ -530,15 +534,13 @@ def admin():
                     return render_template(temp)
                 else:
                     return render_template(temp, group=ajax[1], users=ajax[2])
-        else:
-            return redirect(url_for("dashboard.admin"))
+
+        return redirect(url_for("dashboard.admin"))
 
 
-# routing for notification page
 @blueprint.route("/notification", methods=["GET", "POST"])
 @login_required
 def notification():
-    """Notification"""
     if request.method == "POST":
         process_request(request.form)
 
@@ -550,4 +552,3 @@ def notification():
         notifications=notificationList,
         deleteNotify=deleteNotify
     )
-

@@ -5,24 +5,30 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, User
 
 
-def check_admin():
+def get_roles():
     user = User.query.filter_by(id=current_user.id).first()
 
-    if not user.is_admin:
-        abort(403)
-
-
-def check_instructor():
-    user = User.query.filter_by(id=current_user.id).first()
-
-    if not user.is_instructor:
-        abort(403)
+    return user.is_admin, user.is_instructor
 
 
 def check_privs():
     user = User.query.filter_by(id=current_user.id).first()
 
     if not user.is_instructor and not user.is_admin:
+        abort(403)
+
+
+def user_is_admin():
+    user = User.query.filter_by(id=current_user.id).first()
+
+    if not user.is_admin:
+        abort(403)
+
+
+def user_is_instructor():
+    user = User.query.filter_by(id=current_user.id).first()
+
+    if not user.is_instructor:
         abort(403)
 
 
@@ -40,9 +46,3 @@ def student_has_access(scenarioId):
                 .first()
 
     return bool(access)
-
-
-def return_roles():
-    user = User.query.filter_by(id=current_user.id).first()
-
-    return user.is_admin, user.is_instructor
