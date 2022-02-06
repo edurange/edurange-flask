@@ -11,7 +11,7 @@ def get_roles():
     return user.is_admin, user.is_instructor
 
 
-def check_privs():
+def user_is_admin_and_instructor():
     user = User.query.filter_by(id=current_user.id).first()
 
     if not user.is_instructor and not user.is_admin:

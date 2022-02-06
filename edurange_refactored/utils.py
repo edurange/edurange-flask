@@ -167,16 +167,6 @@ def genStudentLinks(view=None): # needs common arg for switch statement
     return [dashboard] # return array to avoid character print in template's for loop
 
 
-def checkAuth(d):
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-
-    if not user.is_instructor and not user.is_admin:
-        return False
-
-    return True
-
-
 def getDescription(scenario):
     scenario = scenario.lower().replace(" ", "_")
     with open(f"./scenarios/prod/{scenario}/{scenario}.yml", "r") as yml:
@@ -643,7 +633,7 @@ def scoreCheck2(qnum, checkList, resp, quest):
 # .filter(Responses.scenario_id == sid).filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
 
 
-def score(uid, att, query, questions):
+def getScore(uid, att, query, questions):
     stuScore = 0
     checkList = scoreSetup(questions)
     for resp in query:
@@ -673,7 +663,7 @@ def queryPolish(query, sName):
         att = entry.attempt
         usr = entry.username
         if questions is None:
-            scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
+            scr = getScore(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
             d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
             questions.append(d)
         else:
@@ -682,7 +672,7 @@ def queryPolish(query, sName):
                 if uid == lst['user_id'] and att == lst['attempt']:
                     error += 1
             if error == 0:
-                scr = score(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
+                scr = getScore(uid, att, query, questionReader(sName))  # score(getScore(uid, att, query), questionReader(sName))
                 d = {'id': i, 'user_id': uid, 'username': usr, 'score': scr, 'attempt': att}
                 questions.append(d)
 
