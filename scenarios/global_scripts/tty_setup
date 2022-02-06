@@ -1,9 +1,9 @@
 #!/bin/bash
 set -eoux pipefail
 
-mkdir /usr/local/src/logs
-mkdir /usr/local/src/ttylog
-mkdir /usr/local/src/logs/root
+mkdir -p /usr/local/src/logs
+mkdir -p /usr/local/src/ttylog
+mkdir -p /usr/local/src/logs/root
 mkdir -p /var/log/annotator
 
 touch /usr/local/src/logs/root/.cli.csv
@@ -66,6 +66,8 @@ if grep -q "ForceCommand /usr/local/src/ttylog/start_ttylog.sh" /etc/ssh/sshd_co
 else
 	echo "ForceCommand /usr/local/src/ttylog/start_ttylog.sh" >> /etc/ssh/sshd_config
 fi
+
+echo "cat /var/log/annotator/* > /usr/local/src/mergeLogs.csv" > /usr/local/src/mergeLogs.sh
 
 service ssh reload
 service cron start
