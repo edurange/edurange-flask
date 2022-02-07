@@ -438,15 +438,16 @@ def scenariosInfo(sId):
         .filter(Responses.scenario_id == sId).filter(Responses.user_id == User.id).all()
     resp = queryPolish(query, s_name)
     try:
-        rc = readCSV(sId)
+        logData = readCSV(sId, 'id')
+        print(logData)
     except FileNotFoundError:
         flash(f"Log file '{s_name}.csv' was not found, has anyone played yet?")
-        rc = []
+        logData = []
 
     gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == sId, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
     players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
-    u_logs = groupCSV(rc, 4)  # Make dictionary using 6th value as key (player name)
+    u_logs = groupCSV(logData, 4)  # Make dictionary using 6th value as key (player name)
 
     return render_template(
         "dashboard/scenarios_info.html",
@@ -461,7 +462,7 @@ def scenariosInfo(sId):
         guide=guide,
         questions=questions,
         resp=resp,
-        rc=rc, # rc may not be needed with individual user logs in place
+        rc=logData, # rc may not be needed with individual user logs in place
         players=players,
         u_logs=u_logs
     )

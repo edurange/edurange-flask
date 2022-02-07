@@ -7,19 +7,13 @@ import subprocess
 from datetime import datetime
 from os import environ
 
-import yaml
 from celery import Celery
 from celery.utils.log import get_task_logger
 from flask import current_app, flash, render_template
 from flask_mail import Mail, Message
-import time
-from datetime import datetime
 
-from edurange_refactored.scenario_json import find_and_copy_template, write_resource, \
-    adjust_network
-from edurange_refactored.scenario_utils import (
-    gather_files,
-)
+from edurange_refactored.scenario_json import adjust_network, find_and_copy_template, write_resource
+from edurange_refactored.scenario_utils import gather_files
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
 
 logger = get_task_logger(__name__)
@@ -31,6 +25,7 @@ def get_path(file_name):
     mail_path = os.path.normpath(
         os.path.join(path_to_directory, "templates/utils", file_name)
     )
+
     return mail_path
 
 
@@ -336,7 +331,7 @@ def scenarioTimeoutWarningEmail(self, arg):
 
 @celery.task(bind=True)
 def scenarioCollectLogs(self, arg):
-    from edurange_refactored.csv_utils import readCSV_by_name
+    from edurange_refactored.csv_utils import readCSV
     from edurange_refactored.extensions import db
     from edurange_refactored.user.models import BashHistory
 
@@ -361,59 +356,54 @@ def scenarioCollectLogs(self, arg):
         if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
-        try:
-            os.system('docker cp ' + c_name + ':/usr/local/src/merged_logs.csv logs/' + c_name + '.csv')
+        try:  # This is dangerous, may want to substitute for subprocess.call
+            os.system(f'docker cp {c_name}:/usr/local/src/merged_logs.csv logs/{c_name}.csv')
         except FileNotFoundError as e:
-            print("{}".format(e))
+            print(f'{e}')
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        if os.path.isdir('data/tmp/' + s):
+        if os.path.isdir('data/tmp/{s}'):
             try:
-                os.system('cat /dev/null > data/tmp/' + s + '/' + s + '-history.csv')
+                os.system(f'cat /dev/null > data/tmp/{s}/{s}-history.csv')
             except Exception as e:
-                print("Not a scenario: {} - Skipping".format(e))
+                print(f'Not a scenario: {e} - Skipping')
 
     for f in files:
-            for s in scenarios:
-                if f.find(s) == 0:
-                    if os.path.isdir('data/tmp/' + s):
-                        try:
-                            os.system('cat logs/' + f + ' >> data/tmp/' + s + '/' + s + '-history.csv')
-                        except Exception as e:
-                            print("Not a scenario: {} - Skipping".format(e))
+        for s in scenarios:
+            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}'):
+                try:
+                    os.system(f'cat logs/{f} >> data/tmp/{s}/{s}-history.csv')
+                except Exception as e:
+                    print(f'Not a scenario: {e} - Skipping')
 
-    session = db.session
     for s in scenarios:
         try:
-            data = readCSV_by_name(s)
+            data = readCSV(s, 'name')
             for i, line in enumerate(data):
                 if i == 0:
                     continue
+
             line[3] = datetime.fromtimestamp(int(line[3]))
 
-            get_or_create(session=session,
-                          model=BashHistory,
-                          scenario_name=s,
-                          container_name=line[6].split(':')[0],
-                          timestamp=line[3],
-                          current_directory=line[5],
-                          input=line[6].split(':')[-1],
-                          output=line[6],
-                          prompt=line[1]
-                          )
-
+            get_or_create(
+                session=db.session,
+                model=BashHistory,
+                scenario_name=s,
+                container_name=line[6].split(':')[0],
+                timestamp=line[3],
+                current_directory=line[5],
+                input=line[6].split(':')[-1],
+                output=line[6],
+                prompt=line[1]
+            )
         except FileNotFoundError as e:
-            print("Container not found: {} - Skipping".format(e))
-
-
-
-
+            print(f"Container not found: {e} - Skipping")
 
 
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    #21600 is 6 hrs in seconds
+    # 21600 is 6 hrs in seconds
     sender.add_periodic_task(21600.0, scenarioTimeoutWarningEmail.s(''))
     sender.add_periodic_task(60.0, scenarioCollectLogs.s(''))

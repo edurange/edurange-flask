@@ -4,28 +4,17 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.models import Scenarios
 
 
-def readCSV(id):
-    db_ses = db.session
-    sName = str(db_ses.query(Scenarios.name).filter(Scenarios.id == id).first()[0])
-    sName = "".join(e for e in sName if e.isalnum())
-    csvFile = open("./data/tmp/" + sName + "/" + sName + "-history.csv", "r")
-    arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
-    for row in reader:
-        if len(row) == 8:
-            arr.append(row)
-    return arr
+def readCSV(attribute, value):
+    if attribute == 'id':
+        sName = db.session.query(Scenarios.name).filter(Scenarios.id == value).first()[0]
+        sName = "".join(e for e in sName if e.isalnum())
+    else:
+        sName = value
 
+    fd = open(f"./data/tmp/{sName}/{sName}-history.csv")
+    reader = csv.reader(fd, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
 
-def readCSV_by_name(name):
-    csvFile = open("./data/tmp/" + name + "/" + name + "-history.csv", "r")
-    arr = []
-    reader = csv.reader(csvFile, delimiter="|", quotechar="%", quoting=csv.QUOTE_MINIMAL)
-    for row in reader:
-        if len(row) == 8:
-            arr.append(row)
-
-    return arr
+    return [row for row in reader if len(row) == 8]
 
 
 def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
@@ -36,4 +25,5 @@ def groupCSV(arr, keyIndex): # keyIndex - value in csv line to group by
             dict[key].append(entry)
         else:
             dict[key] = [entry]
+
     return dict

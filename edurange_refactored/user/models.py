@@ -16,18 +16,16 @@ from edurange_refactored.database import (
 )
 from edurange_refactored.extensions import bcrypt
 
-# import string
-# import random
-
 
 def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
     return "".join(random.choice(chars) for _ in range(size))
 
 
 class StudentGroups(UserMixin, SurrogatePK, Model):
-    """"Groupts of Users"""
+    """"Groups of Users"""
 
     __tablename__ = "groups"
+
     name = Column(db.String(40), unique=True, nullable=False)
     owner_id = reference_col("users", nullable=False)
     owner = relationship("User", backref="groups")
@@ -42,6 +40,7 @@ class GroupUsers(UserMixin, SurrogatePK, Model):
     """Users belong to groups"""
 
     ___tablename___ = "group_users"
+
     user_id = reference_col("users", nullable=False)
     user = relationship("User", backref="group_users")
     group_id = reference_col("groups", nullable=False)
@@ -52,10 +51,10 @@ class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = "users"
+
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
-    #: The hashed password
-    password = Column(db.LargeBinary(128), nullable=True)
+    password = Column(db.LargeBinary(128), nullable=True)   # hashed
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
@@ -145,4 +144,3 @@ class BashHistory(UserMixin, SurrogatePK, Model):
     input = Column(db.String(250), nullable=False, unique=False)
     output = Column(db.String(10000), nullable=False, unique=False)
     prompt = Column(db.String(80), nullable=False, unique=False)
-

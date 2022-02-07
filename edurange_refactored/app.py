@@ -4,9 +4,9 @@ import logging
 import sys
 from datetime import datetime
 
-from celery import Celery
 from flask import Flask, render_template
 from flask_login import current_user
+from flask_socketio import SocketIO
 
 from edurange_refactored import commands, public, user, tutorials
 from edurange_refactored.extensions import (
@@ -19,10 +19,10 @@ from edurange_refactored.extensions import (
     login_manager,
     migrate,
 )
-from edurange_refactored.settings import CELERY_BROKER_URL
-from flask_socketio import SocketIO
 from edurange_refactored.user.models import User
+
 socketapp = SocketIO()
+
 
 def create_app(config_object="edurange_refactored.settings"):
     """Create application factory, as explained here: http://flask.pocoo.org/docs/patterns/appfactories/.
@@ -39,7 +39,9 @@ def create_app(config_object="edurange_refactored.settings"):
     configure_logger(app)
     register_jinja_filters(app)
     socketapp.init_app(app)
+
     return app
+
 
 def register_jinja_filters(app):
     app.jinja_env.filters["formatdatetime"] = format_datetime
@@ -47,6 +49,7 @@ def register_jinja_filters(app):
     app.jinja_env.globals.update(Aid=Aid)
     app.jinja_env.globals.update(Iid=Iid)
     app.jinja_env.globals.update(get_role=get_role)
+
 
 def register_extensions(app):
     """Register Flask extensions."""
@@ -58,6 +61,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     flask_static_digest.init_app(app)
+
     return None
 
 
@@ -66,6 +70,7 @@ def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(tutorials.views.blueprint)
+
     return None
 
 
@@ -83,6 +88,7 @@ def register_errorhandlers(app):
 
     for errcode in [401, 403, 404, 500]:
         app.errorhandler(errcode)(render_error)
+
     return None
 
 
@@ -122,26 +128,21 @@ def timectime(s):
 
 
 def Aid():
-    # number = session.get('_user_id')
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if user.is_admin:
-        return True
-    return False
+    user = User.query.filter_by(id=current_user.id).first()
+
+    return user.is_admin
 
 
 def Iid():
-    number = current_user.id
-    user = User.query.filter_by(id=number).first()
-    if user.is_instructor:
-        return True
-    return False
+    user = User.query.filter_by(id=current_user.id).first()
+
+    return user.is_instructor
 
 
 def get_role():
     if current_user and current_user.is_authenticated:
-        number = current_user.id
-        user = User.query.filter_by(id=number).first()
+        user = User.query.filter_by(id=current_user.id).first()
+
         if user.is_admin and user.is_instructor:
             return "a/i"  # this option may not be needed
         elif user.is_admin:
@@ -149,6 +150,6 @@ def get_role():
         elif user.is_instructor:
             return "i"
         else:
-            return 's'
-    else:
-        return None  # no role --> not logged in
+            return "s"
+
+    return None  # no role --> not logged in

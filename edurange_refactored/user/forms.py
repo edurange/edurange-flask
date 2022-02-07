@@ -3,7 +3,6 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, AnyOf, Regexp, NoneOf
-from .models import User, StudentGroups
 
 from .models import StudentGroups, User
 
@@ -12,11 +11,11 @@ class RegisterForm(FlaskForm):
     """Register form."""
 
     banned_names = ["root", "ubuntu", "user", "student", "guest", "ec2-user", "nobody", '']
-    username = StringField(
-        "Username", validators=[DataRequired(), Length(min=3, max=25),
-                                Regexp('^\w+-?\w+-?\w+$', message="must be alphanumeric"),
-                                NoneOf(values=banned_names, message="not permitted, try a different one")]
-    )
+    username = StringField("Username", validators=[
+        DataRequired(), Length(min=3, max=25),
+        Regexp('^\w+-?\w+-?\w+$', message="must be alphanumeric"),
+        NoneOf(values=banned_names, message="not permitted, try a different one")
+    ])
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
@@ -41,19 +40,23 @@ class RegisterForm(FlaskForm):
         initial_validation = super(RegisterForm, self).validate()
         if not initial_validation:
             return False
+
         user = User.query.filter_by(username=self.username.data).first()
         if user:
             self.username.errors.append("Username already registered")
             return False
+
         user = User.query.filter_by(email=self.email.data).first()
         if user:
             self.email.errors.append("Email already registered")
             return False
+
         if self.code.data:
             group = StudentGroups.query.filter_by(code=self.code.data).first()
             if not group:
                 self.code.errors.append("Invalid registration code")
                 return False
+
         return True
 
 
@@ -170,6 +173,7 @@ class manageInstructorForm(FlaskForm):  # type1
         initial_validation = super(manageInstructorForm, self).validate()
         if not initial_validation:
             return False
+
         return True
 
 
@@ -177,7 +181,6 @@ class makeScenarioForm(FlaskForm):
     """Creates a Scenario"""
 
     scenario_name = StringField("Scenario", validators=[DataRequired()])
-
     scenario_group = StringField("Group", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -187,6 +190,7 @@ class makeScenarioForm(FlaskForm):
         initial_validation = super(makeScenarioForm, self).validate()
         if not initial_validation:
             return False
+
         return True
 
 
@@ -194,7 +198,6 @@ class modScenarioForm(FlaskForm):
     """Creates a Scenario"""
 
     sid = StringField("Scenario ID", validators=[DataRequired()])
-
     mod_scenario = StringField("Action", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -204,6 +207,7 @@ class modScenarioForm(FlaskForm):
         initial_validation = super(modScenarioForm, self).validate()
         if not initial_validation:
             return False
+
         return True
 
 
@@ -211,9 +215,7 @@ class scenarioResponseForm(FlaskForm):
     """records a students response to a scenario question"""
 
     scenario = StringField("Scenario", validators=[DataRequired()])
-
     question = StringField("Question", validators=[DataRequired()])
-
     response = StringField("Response", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -223,10 +225,10 @@ class scenarioResponseForm(FlaskForm):
         initial_validation = super(scenarioResponseForm, self).validate()
         if not initial_validation:
             return False
+
         return True
 
 
-# -
 class deleteGroupForm(FlaskForm):
     """designates a student group to be deleted"""
 
@@ -239,17 +241,15 @@ class deleteGroupForm(FlaskForm):
         initial_validation = super(deleteGroupForm, self).validate()
         if not initial_validation:
             return False
+
         return True
 
 
-# -
 
-
-class type1Form(FlaskForm):                 # GroupForm,    manageInstructorForm,   deleteStudentForm
+class type1Form(FlaskForm):  # GroupForm, manageInstructorForm, deleteStudentForm
     """Type 1 form, one string field"""
-    string1 = StringField(
-        "string1", validators=[DataRequired()]
-    )                                       # name,         uName,                  stuName
+    # name, uName, stuName
+    string1 = StringField("string1", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(type1Form, self).__init__(*args, **kwargs)
@@ -261,15 +261,13 @@ class type1Form(FlaskForm):                 # GroupForm,    manageInstructorForm
         return True
 
 
-class type2Form(FlaskForm):                 # addUsersForm, makeScenarioForm,   modScenarioForm
+class type2Form(FlaskForm):  # addUsersForm, makeScenarioForm, modScenarioForm
     """Type 2 form, two string fields"""
-    string1 = StringField(
-        "string1", validators=[DataRequired()]
-    )                                       # uids,         scenario_name,      sid
+    # uids, scenario_name, sid
+    string1 = StringField("string1", validators=[DataRequired()])
 
-    string2 = StringField(
-        "string2", validators=[DataRequired()]
-    )                                       # groups,       scenario_group,     mod_scenario
+    # groups, scenario_group, mod_scenario
+    string2 = StringField("string2", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(type2Form, self).__init__(*args, **kwargs)
@@ -278,10 +276,9 @@ class type2Form(FlaskForm):                 # addUsersForm, makeScenarioForm,   
         initial_validation = super(type2Form, self).validate()
         if not initial_validation:
             return False
+
         return True
 
-
-# -
 
 class notifyDeleteForm(FlaskForm):
     notification = StringField("notification", validators=[DataRequired()])
@@ -293,4 +290,5 @@ class notifyDeleteForm(FlaskForm):
         initial_validation = super(notifyDeleteForm, self).validate()
         if not initial_validation:
             return False
+
         return True
