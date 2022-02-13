@@ -48,16 +48,55 @@ Metasploit is a framework for automating the process of exploiting vulnerabiliti
 
 The following is an example use of the metasploit framework that has been generalized to show how the given commands can be used.
 
-![Metasploit Command Line Example](/assets/img/Metasploitable/m-h_example_cmd_line.png)
+<!--![Metasploit Command Line Example](/assets/img/Metasploitable/m-h_example_cmd_line.png)-->
+
+<pre>
+msf5 > search exploit
+
+ Matching Modules
+ ================
+
+    #  Name                                 Disclosure Date  Rank       Check  Description
+    -  ----                                 ---------------  ----       -----  -----------
+    0  type/os/directory/exploit_name  xxxx-xx-xx       excellent  Yes    Short description of the exploit
+
+
+ msf5 > use type/os/directory/exploit_name
+ msf5 exploit(os/directory/exploit_name) > options
+
+ Module options (type/os/directory/exploit_name):
+
+    Name    Current Setting  Required  Description
+    ----    ---------------  --------  -----------
+    RHOSTS                   yes       The target address range or CIDR identifier
+    RPORT   xxxx             yes       The target port (TCP)
+
+
+ Exploit target:
+
+    Id  Name
+    --  ----
+    0   Automatic Target
+
+
+ msf5 exploit(os/directory/exploit_name) > set RHOSTS target
+ RHOSTS => target
+ msf5 exploit(os/directory/exploit_name) > exploit
+ msf5 >
+ msf5 >
+ msf5 exploit(os/directory/exploit_name) > back
+ msf5 >
+</pre>
+
+<!--
 <pre>
 msf > use windows/smb/ms08_067_netapi
 exploit(ms08_067_netapi) > show options
 exploit(ms08_067_netapi) > set RHOST 10.0.0.1
 exploit(ms08_067_netapi) > show targets
 exploit(ms08_067_netapi) > set target 0
-
-
 </pre>
+-->
 
 ---
 
@@ -109,5 +148,11 @@ The options command shows us that there are four required options, and that thre
 Once all the required options are set, we can use the `exploit` command to run the exploit.
 
 Some exploits will result in a meterpreter shell, we can get to a normal shell by entering the command `shell`.
+
+---
+
+## Instructions
+
+Now that you have had some practice with the http php exploit, use the information given above to find and exploit the five remaining services.
 
 ---
