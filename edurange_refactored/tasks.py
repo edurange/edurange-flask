@@ -97,8 +97,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
     app = current_app
     s_type = s_type.lower()
-    s_id = s_id["id"]
-    g_id = g_id["id"]
+    s_id, g_id = s_id["id"], g_id["id"]
 
     c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(s_type, logger)
 
@@ -107,9 +106,9 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
             self.request
         )
     )
+
     students = {}
-    usernames = []
-    passwords = []
+    usernames, passwords = [], []
 
     for i in range(len(group)):
         username = "".join(e for e in group[i]["username"] if e.isalnum())
@@ -120,7 +119,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         usernames.append(username)
         passwords.append(password)
 
-        logger.info("User: {}".format(group[i]["username"]))
+        logger.info(f'User: {group[i]["username"]}')
         students[username] = []
         students[username].append({"username": username, "password": password})
 
@@ -129,7 +128,6 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
     with app.test_request_context():
         scenario = Scenarios.query.filter_by(id=s_id).first()
         name = "".join(e for e in name if e.isalnum())
-        own_id = owner
 
         os.makedirs("./data/tmp/" + name)
         os.chdir("./data/tmp/" + name)
@@ -137,9 +135,9 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
-        questions = open("../../../scenarios/prod/" + s_type + "/questions.yml", "r+")
+        questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
 
-        logger.info("Questions Type: {}".format(type(questions)))
+        logger.info(f"Questions Type: {type(questions)}")
 
         flags = []
         if s_type == "getting_started" or s_type == "file_wrangler":
@@ -160,7 +158,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         # Local addresses begin at the subnet 10.0.0.0/24
         address = str(starting_octet + active_scenarios)
 
-        #write provider and networks
+        # Write provider and networks
         find_and_copy_template(s_type, "network")
         adjust_network(address, name)
         os.system("terraform init")
@@ -171,11 +169,15 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         # Each container and their names are pulled from the 's_type'.json file
         for i, c in enumerate(c_names):
             find_and_copy_template(s_type, c)
-            write_resource(address, name, s_type,
-                               c_names[i], usernames, passwords,
-                               s_files[i], g_files[i], u_files[i], flags)
+            write_resource(
+                address, name, s_type, c_names[i], usernames, passwords,
+                s_files[i], g_files[i], u_files[i], flags
+            )
 
-        scenario.update(status=0)
+        scenario.update(
+            status=0,
+            subnet=f"{address}.0.0.0/27"
+        )
         os.chdir("../../..")
 
         ScenarioGroups.create(group_id=g_id, scenario_id=s_id)

@@ -83,17 +83,19 @@ class User(UserMixin, SurrogatePK, Model):
 
 
 class Scenarios(UserMixin, SurrogatePK, Model):
-    """An exercise  """
+    """A scenario."""
 
     __tablename__ = "scenarios"
 
     name = Column(db.String(40), unique=False, nullable=False)
     description = Column(db.String(80), unique=False, nullable=True)
+    subnet = Column(db.String(18), unique=True, nullable=True)
     owner_id = reference_col("users", nullable=False)
     owner = relationship("User", backref="scenarios", lazy="subquery")
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     status = Column(db.Integer, default=0, nullable=False)
     attempt = Column(db.Integer, default=0, nullable=False, server_default="0")
+    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+
     resps = relationship("Responses", backref="scenarios", cascade="all, delete-orphan")
 
     def __repr__(self):
