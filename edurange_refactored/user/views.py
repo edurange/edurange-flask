@@ -44,12 +44,12 @@ from ..scenario_utils import identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
     check_role_view,
-    displayCorrect,
+    displayCorrectAnswers,
     displayProgress,
     flash_errors,
     getScore,
     responseProcessing,
-    responseQuery,
+    getResponses,
     responseSelector,
     tempMaker,
     queryPolish,
@@ -294,7 +294,7 @@ def student_scenario(i):
             #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
             if request.method == "GET":
                 scenarioResponder = scenarioResponseForm()
-                aList = displayCorrect(s_name, u_name)
+                aList = displayCorrectAnswers(s_name, u_name)
                 progress = displayProgress(i, uid)
 
                 return render_template(
@@ -480,7 +480,7 @@ def scenarioResponse(sId, rId):
         query = db.session.query(Responses.id, Responses.user_id, Responses.attempt, Responses.question,
                                 Responses.points, Responses.student_response, User.username)\
             .filter(Responses.scenario_id == sId).filter(Responses.user_id == User.id).filter(Responses.attempt == aNum).all()
-        table = responseQuery(u_id, aNum, query, questionReader(sName))
+        table = getResponses(u_id, aNum, query, questionReader(sName))
         score = getScore(u_id, aNum, query, questionReader(sName))
 
         return render_template(

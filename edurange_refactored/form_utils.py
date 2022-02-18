@@ -17,7 +17,7 @@ from edurange_refactored.user.forms import (
 from . import tasks
 from .user.models import GroupUsers, StudentGroups, User, Responses, ScenarioGroups
 from .user.models import generate_registration_code as grc
-from .utils import flash_errors, responseCheck, getAttempt
+from .utils import flash_errors, checkAnswer, getAttempt
 from edurange_refactored.notification_utils import NotifyClear
 
 
@@ -211,7 +211,7 @@ def process_scenarioResponse():
         resp = sR.response.data
         uid = current_user.id
         # answer checking function in utils
-        score = responseCheck(qnum, sid, resp, uid)
+        score = checkAnswer(qnum, sid, resp, uid)
         # get attempt number
         att = getAttempt(sid)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)

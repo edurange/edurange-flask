@@ -359,7 +359,7 @@ def guideHelp6(sec, num):
 def getPass(scenario, username):
     scenario = "".join(e for e in scenario if e.isalnum())
 
-    with open(f'./data/tmp/{scenario}/students.json', 'r') as fd:
+    with open(f'./data/tmp/{scenario}/students.json') as fd:
         data = json.load(fd)
 
     user = data.get(username)[0]
@@ -367,22 +367,14 @@ def getPass(scenario, username):
     return user.get('password')
 
 
-def getQuestions(t):
-    questions = {}
-    t = t.lower().replace(" ", "_")
-    # edurange_refactored/scenarios/prod
-    with open(f"./scenarios/prod/{t}/questions.yml", "r") as yml:
+def getQuestions(scenario):
+    scenario = scenario.lower().replace(" ", "_")
+
+    with open(f"./scenarios/prod/{scenario}/questions.yml") as yml:
         document = yaml.full_load(yml)
-        for item in document:
-            #questions.append(item['Text'])
-            questions[item['Order']] = item['Text']
+        questions = {index+1: item['Text'] for index, item in enumerate(document)}
 
     return questions
-
-
-def getPort(n):
-    n = 0  # [WIP]
-    return n
 
 
 def tempMaker(sId, i):
@@ -426,36 +418,35 @@ def tempMaker(sId, i):
         return status, ownerName, description, ty, sName, username, pw, guide, questions
 
 
-def responseCheck(qnum, sid, resp, uid):
-    """Read correct response from yaml file."""
-    db_ses = db.session
-    s_name = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-    questions = questionReader(s_name[0])
-    for text in questions:
-        order = int(text['Order'])  # get question number from yml file
-        if order == qnum:
-            if len(text['Values']) == 1:  # if there's only one correct answer in the yml file
-                ans = str(text['Values'][0]['Value'])
-                if "${" in ans:
-                    ans = bashAnswer(sid, uid, ans)
-                if resp == ans:
-                    return int(text['Points'])
-                elif ans == 'ESSAY':
-                    return int(text['Points'])
-                else:
-                    return 0
-            elif len(text['Values']) > 1:  # if there's multiple correct answers in the yml file
-                yes = False
-                for i in text['Values']:
-                    ans = i['Value']
-                    if "${" in ans:
-                        ans = bashAnswer(sid, uid, ans)
-                    if resp == ans:
-                        yes = True
-                if yes:
-                    return int(i['Points'])
-                else:
-                    return 0
+def checkAnswer(qnum, sid, student_answer, uid):
+    """Check student answer matches correct one from YAML file."""
+    scenario = db.session.query(Scenarios.name).filter(Scenarios.id == sid).first()
+    questions = questionReader(scenario[0])
+
+    question = questions[qnum-1]
+    answer_count = len(question['Values'])
+
+    if answer_count == 1:
+        # TODO: check if str() casting is really needed.
+        answer = str(question['Values'][0]['Value'])
+        if "${" in answer:
+            answer = bashAnswer(sid, uid, answer)
+        if student_answer == answer:
+            return int(question['Points'])
+        elif answer == 'ESSAY':
+            return int(question['Points'])
+    elif answer_count > 1:
+        correct = False
+        for i in question['Values']:
+            answer = i['Value']
+            if "${" in answer:
+                answer = bashAnswer(sid, uid, answer)
+            if student_answer == answer:
+                correct = True
+        if correct:
+            return int(i['Points'])
+
+    return 0
 
 
 def bashAnswer(sid, uid, ans):
@@ -486,27 +477,24 @@ def bashAnswer(sid, uid, ans):
     return ans
 
 
-def responseQuery(uid, att, query, questions):
-    tableList = []
-    tmpList = []
-    for entry in query:
-        if entry.user_id == uid and entry.attempt == att:
-            tmpList.append(entry)
+def getResponses(uid, att, query, questions):
+    responses = []
+    entries = [entry for entry in query if entry.user_id == uid and entry.attempt == att]
 
-    for response in tmpList:
+    for response in entries:
         qNum = response.question
-        pts = response.points
-        for text in questions:
-            order = int(text['Order'])
-            if order == qNum:
-                quest = text['Text']
-                poi = text['Points']
-                val = text['Values'][0]['Value']
-                sR = response.student_response
-                dictionary = {'number': qNum, 'question': quest, 'answer': val, 'points': poi, 'student_response': sR, 'earned': pts}
-                tableList.append(dictionary)
+        question = questions[qNum-1]
 
-    return tableList
+        responses.append({
+            'number': qNum,
+            'question': question['Text'],
+            'answer': question['Values'][0]['Value'],
+            'points': question['Points'],
+            'student_response': response.student_response,
+            'earned': response.points
+        })
+
+    return responses
 
 
 def responseSelector(resp):
@@ -527,67 +515,25 @@ def responseSelector(resp):
 # required query entries:
 # user_id, attempt, question, correct, student_response
 
-'''
-def getScore(usr, att, query):
-    sL = []  # student response list
-    for resp in query:
-        if usr == resp.user_id and att == resp.attempt:
-            sL.append({'question': resp.question, 'correct': resp.correct, 'response': resp.student_response})  # qnum, correct, student response
-    return sL
-'''
-
-
 def totalScore(questions):
     tS = 0  # total number of possible points
     for text in questions:
         tS += int(text['Points'])
     return tS
 
-'''
-def score(scrLst, questions):
-    sS = 0  # student score
-    checkList = scoreSetup(questions)  # questions scored checklist
-    for sR in scrLst:  # response in list of student responses
-        if sR['correct']:
-            num = int(sR['question'])  # question number
-            for text in questions:
-                if int(text['Order']) == num:
-                    check, checkList = scoreCheck(num, checkList)
-                    if not check:
-                        if str(text['Type']) == "Multi String":
-                            for i in text['Values']:
-                                if i['Value'] == sR['response']:
-                                    sS += int(text['Values'][i]['Points'])
-                        else:
-                            sS += int(text['Points'])
-    scr = '' + str(sS) + ' / ' + str(totalScore(questions))
-    return scr
-'''
-
 
 def scoreSetup(questions):
-    checkList = {}  # list of question to be answered so duplicates are not scored
-    for text in questions:
-        if str(text['Type']) == "Multi String":
-            # count = 1
-            tmp = []
-            for d in text['Values']:  # d is not used  # it's probably fine (possibly bad practice though)
-                tmp.append(False)
-                # k = str(text['Order']) + '.' + str(count)
-                # checkList[k] = False
-                # count += 1
-            k = str(text['Order'])
-            checkList[k] = tmp
+    checkList = {}  # List of question to be answered so duplicates are not scored.
+
+    for index, question in enumerate(questions):
+        qNum = str(index + 1)
+        if question['Type'] == "Multi String":
+            checkList[qNum] = [False for _ in question['Values']]
         else:
-            checkList[str(text['Order'])] = False
+            checkList[qNum] = False
 
     return checkList
 
-
-# {'1': True, '2': False, ... , '6': [True, False, False, ...], '7': False}
-#                                       0    1      2     ...
-
-# if multi string, take student response into account to find the index within '6': [...] and mark true or false as normal
 
 def scoreCheck(qnum, checkList):
     keys = list(checkList.keys())
@@ -647,12 +593,11 @@ def getScore(uid, att, query, questions):
     return f'{stuScore}/{totalScore(questions)}'
 
 
-def questionReader(name):
-    name = "".join(e for e in name if e.isalnum())
-    with open(f"./data/tmp/{name}/questions.yml", "r") as yml:
-        document = yaml.full_load(yml)
+def questionReader(scenario):
+    scenario = "".join(e for e in scenario if e.isalnum())
 
-    return document
+    with open(f"./data/tmp/{scenario}/questions.yml") as yml:
+        return yaml.full_load(yml)
 
 
 def queryPolish(query, sName):
@@ -732,18 +677,21 @@ def recentCorrect(uid, qnum, sid):
     return recent
 
 
-def displayCorrect(sName, uName):
+def displayCorrectAnswers(sName, uName):
     db_ses = db.session
     uid = db_ses.query(User.id).filter(User.username == uName).first()
     sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()
     questions = questionReader(sName)
     ques = {}
-    for text in questions:
-        order = int(text['Order'])
-        rec = recentCorrect(uid, order, sid)
-        if rec is not None:
-            rec = rec[0]
-        ques[order] = rec
+
+    for index in range(len(questions)):
+        order = index+1
+        recent = recentCorrect(uid, order, sid)
+        if recent is not None:
+            recent = recent[0]
+
+        ques[order] = recent
+
     return ques
 
 
