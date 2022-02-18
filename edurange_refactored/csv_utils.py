@@ -4,7 +4,7 @@ from edurange_refactored.extensions import db
 from edurange_refactored.user.models import Scenarios
 
 
-def readCSV(attribute, value):
+def readCSV(value, attribute):
     if attribute == 'id':
         sName = db.session.query(Scenarios.name).filter(Scenarios.id == value).first()[0]
         sName = "".join(e for e in sName if e.isalnum())
