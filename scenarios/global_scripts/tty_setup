@@ -67,8 +67,8 @@ else
 	echo "ForceCommand /usr/local/src/ttylog/start_ttylog.sh" >> /etc/ssh/sshd_config
 fi
 
-echo "cat /var/log/annotator/* > /usr/local/src/mergedLogs.csv" > /usr/local/src/mergeLogs.sh
-echo "zip /usr/local/src/raw_logs /usr/local/src/logs /var/log/annotator" > /usr/local/src/zipRawLogs.sh
+echo "cat /var/log/annotator/* > /usr/local/src/merged_logs.csv" > /usr/local/src/mergeLogs.sh
+echo "zip -r /usr/local/src/raw_logs /usr/local/src/logs /var/log/annotator" > /usr/local/src/zipRawLogs.sh
 
 chmod +x /usr/local/src/mergeLogs.sh
 chmod +x /usr/local/src/zipRawLogs.sh
