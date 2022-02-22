@@ -375,12 +375,12 @@ def scenarioCollectLogs(self, arg):
 
     for f in files:
         for s in scenarios:
-            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.find('.csv'):
+            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.endswith('.csv'):
                 try:
                     os.system(f'cat logs/{f} >> data/tmp/{s}/{s}-history.csv')
                 except Exception as e:
                     print(f'Not a scenario: {e} - Skipping')
-            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.find('.zip'):
+            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.endswith('.zip'):
                 try:
                     os.system(f'cp logs/{f} data/tmp/{s}/{s}-raw.zip')
                 except Exception as e:
