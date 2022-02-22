@@ -68,6 +68,7 @@ else
 fi
 
 echo "cat /var/log/annotator/* > /usr/local/src/mergeLogs.csv" > /usr/local/src/mergeLogs.sh
+echo "zip /usr/local/src/raw_logs /usr/local/src/logs /var/log/annotator" > /usr/local/src/zipRawLogs.sh
 
 service ssh reload
 service cron start
