@@ -360,13 +360,14 @@ def scenarioCollectLogs(self, arg):
                 scenarios.append(c_name.split('_')[0])
         try:  # This is dangerous, may want to substitute for subprocess.call
             os.system(f'docker cp {c_name}:/usr/local/src/merged_logs.csv logs/{c_name}.csv')
+            os.system(f'docker cp {c_name}:/usr/local/src/raw_logs.zip logs/{c_name}.zip')
         except FileNotFoundError as e:
             print(f'{e}')
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        if os.path.isdir('data/tmp/{s}'):
+        if os.path.isdir(f'data/tmp/{s}'):
             try:
                 os.system(f'cat /dev/null > data/tmp/{s}/{s}-history.csv')
             except Exception as e:
@@ -374,9 +375,14 @@ def scenarioCollectLogs(self, arg):
 
     for f in files:
         for s in scenarios:
-            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}'):
+            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.find('.csv'):
                 try:
                     os.system(f'cat logs/{f} >> data/tmp/{s}/{s}-history.csv')
+                except Exception as e:
+                    print(f'Not a scenario: {e} - Skipping')
+            if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.find('.zip'):
+                try:
+                    os.system(f'cp logs/{f} data/tmp/{s}/{f}-raw.zip')
                 except Exception as e:
                     print(f'Not a scenario: {e} - Skipping')
 
