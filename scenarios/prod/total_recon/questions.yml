@@ -4,36 +4,32 @@
   - accept-integer
   - accept-decimal
   - accept-hex
-  Values:
-  - Value: '444'
-    Points: '10'
-  Order: 1
+  Answers:
+  - Value: 444
+    Points: 10
   Points: 10
 - Text: What standard port does an HTTP server use?
   Type: Number
   Options:
   - accept-integer
-  Values:
-  - Value: '80'
-    Points: '10'
-  Order: 2
+  Answers:
+  - Value: 80
+    Points: 10
   Points: 10
 - Text: What is the last octet of the IP address for Subway?
   Type: String
   Options: []
-  Values:
-  - Value: "101"
-    Points: '10'
-  Order: 3
+  Answers:
+  - Value: 101
+    Points: 10
   Points: 10
 - Text: What is the state of ports 80 and 443 on the earth-spaceport host?
   Type: String
   Options:
   - ignore-case
-  Values:
+  Answers:
   - Value: filtered
-    Points: '10'
-  Order: 4
+    Points: 10
   Points: 10
 - Text: In the nmap man page, under "--min-rate", what --min-rate example do they
     give? (Hint, it's an integer greater than 100 and less than 500)
@@ -42,116 +38,104 @@
   - accept-integer
   - accept-decimal
   - accept-hex
-  Values:
-  - Value: '300'
-    Points: '10'
-  Order: 5
+  Answers:
+  - Value: 300
+    Points: 10
   Points: 10
 - Text: What is the nmap option for a Ping scan (disable port scan)? It should take
     the form -Xx. For example, -sL is the option for List scan.
   Type: String
   Options: []
-  Values:
+  Answers:
   - Value: -sn
-    Points: '10'
+    Points: 10
   - Value: -sP
-    Points: '10'
-  Order: 6
+    Points: 10
   Points: 20
 - Text: What is the 3rd octet of the Mars spaceport IP address? (The last octet is 33)
   Type: String
   Options: []
-  Values:
-  - Value: "217"
-    Points: '10'
-  Order: 7
+  Answers:
+  - Value: 217
+    Points: 10
   Points: 10
 - Text: What has the ssh port on Venusville been changed to?
   Type: Number
   Options:
   - accept-integer
   - accept-decimal
-  Values:
-  - Value: '123'
-    Points: '10'
-  Order: 8
+  Answers:
+  - Value: 123
+    Points: 10
   Points: 10
 - Text: What has the SSH port on Last Resort been changed to?
   Type: Number
   Options:
   - accept-integer
   - accept-decimal
-  Values:
-  - Value: '2345'
-    Points: '10'
-  Order: 9
+  Answers:
+  - Value: 2345
+    Points: 10
   Points: 10
 - Text: What port was open on the Resistance Base?
   Type: Number
   Options:
   - accept-integer
   - accept-decimal
-  Values:
-  - Value: '632'
-    Points: '20'
-  Order: 10
+  Answers:
+  - Value: 632
+    Points: 20
   Points: 20
 - Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.34?
     (Do not include scan in your answer)
   Type: String
   Options:
   - ignore-case
-  Values:
+  Answers:
   - Value: xmas
-    Points: '10'
-  Order: 11
+    Points: 10
   Points: 10
 - Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.36?
     (Do not include scan in your answer)
   Type: String
   Options:
   - ignore-case
-  Values:
+  Answers:
   - Value: 'null'
-    Points: '10'
-  Order: 12
+    Points: 10
   Points: 10
 - Text: What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.38?
     (Do not include scan in your answer)
   Type: String
   Options:
   - ignore-case
-  Values:
+  Answers:
   - Value: fin
-    Points: '10'
-  Order: 13
+    Points: 10
   Points: 10
 - Text: How many possible hosts does the subnet 10.0.192.0/18 cover?
   Type: Number
   Options:
   - accept-integer
   - accept-decimal
-  Values:
-  - Value: '16382'
-    Points: '15'
-  Order: 14
+  Answers:
+  - Value: 16382
+    Points: 15
   Points: 15
 - Text: How many ports are open on the control room host? (The IP ends in 5)
   Type: Number
   Options:
   - accept-integer
   - accept-decimal
-  Values:
-  - Value: '9'
-    Points: '10'
-  Order: 15
+  Answers:
+  - Value: 9
+    Points: 10
   Points: 10
 - Text: On the control_room box, what is the name of the directory where chmod was moved to?
   Type: String
   Options:
   - ignore-case
-  Values:
+  Answers:
   - Value: look-in-here
-    Points: '10'
-  Order: 16
+    Points: 10
   Points: 10

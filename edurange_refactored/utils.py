@@ -424,38 +424,38 @@ def checkAnswer(qnum, sid, student_answer, uid):
     questions = questionReader(scenario[0])
 
     question = questions[qnum-1]
-    answer_count = len(question['Values'])
 
-    if answer_count == 1:
-        # TODO: check if str() casting is really needed.
-        answer = str(question['Values'][0]['Value'])
+    if len(question['Answers']) == 1:  # Check if there are multiple answers.
+        answer = str(question['Answers'][0]['Value'])
         if "${" in answer:
             answer = bashAnswer(sid, uid, answer)
-        if student_answer == answer:
-            return int(question['Points'])
-        elif answer == 'ESSAY':
-            return int(question['Points'])
-    elif answer_count > 1:
+        if student_answer == answer or answer == 'ESSAY':
+            return question['Points']
+    else:
         correct = False
-        for i in question['Values']:
+        for i in question['Answers']:
             answer = i['Value']
             if "${" in answer:
                 answer = bashAnswer(sid, uid, answer)
             if student_answer == answer:
                 correct = True
         if correct:
-            return int(i['Points'])
+            return i['Points']
 
     return 0
 
 
 def bashAnswer(sid, uid, ans):
     db_ses = db.session
+
     uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
     uName = "".join(e for e in uName if e.isalnum())
+
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+    sName = "".join(e for e in sName if e.isalnum())
+
     if "${player.login}" in ans:
-        students = open(f"./data/tmp/{sName}/students.json", "r")
+        students = open(f"./data/tmp/{sName}/students.json")
         user = ast.literal_eval(students.read())
         username = user[uName][0]["username"]
         ansFormat = ans[0:6]
@@ -464,7 +464,7 @@ def bashAnswer(sid, uid, ans):
     elif "${scenario.instances" in ans:
         wordIndex = ans[21:-1].index(".")
         containerName = ans[21:21+wordIndex]
-        containerFile = open(f"./data/tmp/{sName}/{containerName}.tf.json", "r")
+        containerFile = open(f"./data/tmp/{sName}/{containerName}.tf.json")
         content = ast.literal_eval(containerFile.read())
         index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
         ans = ""
@@ -488,7 +488,7 @@ def getResponses(uid, att, query, questions):
         responses.append({
             'number': qNum,
             'question': question['Text'],
-            'answer': question['Values'][0]['Value'],
+            'answer': question['Answers'][0]['Value'],
             'points': question['Points'],
             'student_response': response.student_response,
             'earned': response.points
@@ -498,28 +498,19 @@ def getResponses(uid, att, query, questions):
 
 
 def responseSelector(resp):
-    # response selector
-    db_ses = db.session
-    query = db_ses.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
-    for entry in query:
-        if entry.id == int(resp):
-            data = entry
-            break
-    return data
+    responses = db.session.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
 
+    for entry in responses:
+        if entry.id == int(resp):
+            return entry
 
 # scoring functions used in functions such as queryPolish()
-# used as:
-# scr = score(getScore(uid, att, query), questionReader(sName))
+# used as: scr = score(getScore(uid, att, query), questionReader(sName))
 
-# required query entries:
-# user_id, attempt, question, correct, student_response
+# required query entries: user_id, attempt, question, correct, student_response
 
-def totalScore(questions):
-    tS = 0  # total number of possible points
-    for text in questions:
-        tS += int(text['Points'])
-    return tS
+def getTotalScore(questions):
+    return sum([question['Points'] for question in questions])
 
 
 def scoreSetup(questions):
@@ -528,7 +519,7 @@ def scoreSetup(questions):
     for index, question in enumerate(questions):
         qNum = str(index + 1)
         if question['Type'] == "Multi String":
-            checkList[qNum] = [False for _ in question['Values']]
+            checkList[qNum] = [False for _ in question['Answers']]
         else:
             checkList[qNum] = False
 
@@ -590,7 +581,7 @@ def getScore(uid, att, query, questions):
                 if not check:
                     stuScore += resp.points
 
-    return f'{stuScore}/{totalScore(questions)}'
+    return f'{stuScore}/{getTotalScore(questions)}'
 
 
 def questionReader(scenario):
@@ -725,7 +716,7 @@ def calcScr(uid, sid, att):
         if not check:
             score += int(r.points)
     # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))
-    tScore = totalScore(questionReader(sName.name))
+    tScore = getTotalScore(questionReader(sName.name))
 
     return score, tScore
 

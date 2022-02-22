@@ -1,7 +1,6 @@
 - Text: There are no questions here yet. This is not a questions
   Type: String
   Values:
-    - Value: "000"
-      Points: '0'
-  Order: 1
+    - Value: 000
+      Points: 0
   Points: 0
