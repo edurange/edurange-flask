@@ -616,35 +616,27 @@ def queryPolish(query, sName):
 
 
 def responseProcessing(data):
-    # response info getter
+    '''Response info getter.'''
     db_ses = db.session
 
-    uid = data.user_id
-    uname = db_ses.query(User.username).filter(User.id == uid).first()
-    uname = uname[0]
+    uid, sid = data.user_id, data.scenario_id
 
-    sid = data.scenario_id
-    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()
-    sname = sname[0]
+    uname = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    sname = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
 
-    att = data.attempt
-    return uid, uname, sid, sname, att
+    return uid, uname, sid, sname, data.attempt
 
 
 def setAttempt(sid):
-    db_ses = db.session
-    currAtt = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid).first()
-    if currAtt[0] == 0:
-        att = 1
-    else:
-        att = int(currAtt[0]) + 1
-    return att
+    currentAttempt = db.session.query(Scenarios.attempt).filter(Scenarios.id == sid).first()[0]
+    if currentAttempt == 0:
+        return 1
+
+    return int(currentAttempt) + 1
 
 
 def getAttempt(sid):
-    db_ses = db.session
-    query = db_ses.query(Scenarios.attempt).filter(Scenarios.id == sid)
-    return query
+    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid)
 
 
 def readScenario():
@@ -662,10 +654,9 @@ def readScenario():
 
 
 def recentCorrect(uid, qnum, sid):
-    db_ses = db.session
-    recent = db_ses.query(Responses.points).filter(Responses.user_id == uid).filter(Responses.scenario_id == sid)\
-        .filter(Responses.question == qnum).order_by(Responses.response_time.desc()).first()
-    return recent
+    return db.session.query(Responses.points).filter(Responses.user_id == uid) \
+        .filter(Responses.scenario_id == sid).filter(Responses.question == qnum) \
+        .order_by(Responses.response_time.desc()).first()
 
 
 def displayCorrectAnswers(sName, uName):
