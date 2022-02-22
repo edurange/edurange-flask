@@ -382,7 +382,7 @@ def scenarioCollectLogs(self, arg):
                     print(f'Not a scenario: {e} - Skipping')
             if f.find(s) == 0 and os.path.isdir(f'data/tmp/{s}') and f.find('.zip'):
                 try:
-                    os.system(f'cp logs/{f} data/tmp/{s}/{f}-raw.zip')
+                    os.system(f'cp logs/{f} data/tmp/{s}/{s}-raw.zip')
                 except Exception as e:
                     print(f'Not a scenario: {e} - Skipping')
 
