@@ -8,18 +8,18 @@
   Type: Multi String
   Options: []
   Answers:
-  - Value: --
+  - Value: '--'
     Points: 5
   - Value: '#'
     Points: 5
-  - Value: /**/
+  - Value: '/**/'
     Points: 5
   Points: 15
 - Text: What symbol is used to mark the end of a query?
   Type: String
   Options: []
   Answers:
-  - Value: ;
+  - Value: ';'
     Points: 5
   - Value: semicolon
     Points: 5
@@ -54,7 +54,7 @@
 - Text: What special character is the LIKE query using in level 2?
   Type: String
   Answers:
-  - Value: %
+  - Value: '%'
     Points: 15
   Points: 15
 - Text: What is the flag for level 2?
