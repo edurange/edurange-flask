@@ -7,7 +7,7 @@ fputcsv($fp, array(
     $_COOKIE['session'],
     $level,
     addslashes($input),
-    addslashes(json_encode($results)),
+    addslashes(json_encode(isset($results) ? $results : 'NA')),
     str_replace("\n", "\\n", isset($error) ? $error : 'NULL'),
     date('c'),
 ));
