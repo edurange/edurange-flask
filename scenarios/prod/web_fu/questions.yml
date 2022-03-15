@@ -75,6 +75,12 @@
   - Value: FLAG{1M_N0T_4_H4SH3D_H4X0R}
     Points: 25
   Points: 25
+- Text: What is the password for user "backdoor"?
+  Type: String
+  Answers:
+  - Value: supersecreto
+    Points: 30
+  Points: 30
 - Text: What is the flag for level 4?
   Type: String
   Answers:
@@ -87,9 +93,9 @@
   - Value: FLAG{P4YL04D_1NJ3CT3D}
     Points: 15
   Points: 15
-- Text: What is the password for user "backdoor"?
+- Text: What is the flag for level 6?
   Type: String
   Answers:
-  - Value: supersecreto
-    Points: 30
-  Points: 30
+  - Value: FLAG{0NSUCC3SS_4L3R7(PWN)}
+    Points: 20
+  Points: 20
