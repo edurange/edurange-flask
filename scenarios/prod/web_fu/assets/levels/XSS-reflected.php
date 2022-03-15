@@ -1,10 +1,6 @@
 <?php
 
-// The session cookie is set by EDURange; since it's under the same domain we leverage it
-if (!isset($_COOKIE['session']) || $_COOKIE['session'] == '') {
-    http_response_code(403);
-    die('Please login to EDURange to access WebFu.');
-}
+require('../auth.php');
 
 session_start();
 
@@ -14,9 +10,8 @@ $input = isset($_GET['name']) ? $_GET['name'] : 'stranger';  // pwned
 
 // TODO: improve injection detection by using regexp
 $exploited = false;
-if(strpos($input, '<script>') !== false and strpos($input, '</script>') !== false) {
+if (strpos($input, '<script>') !== false and strpos($input, '</script>') !== false)
   $exploited = true;
-}
 
 require('../logging.php');
 

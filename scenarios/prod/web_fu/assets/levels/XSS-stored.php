@@ -1,11 +1,6 @@
 <?php
 
-// The session cookie is set by EDURange; since it's under the same domain we leverage it
-if (!isset($_COOKIE['session']) || $_COOKIE['session'] == '') {
-    http_response_code(403);
-    die('Please login to EDURange to access WebFu.');
-}
-
+require('../auth.php');
 require('../db.php');
 
 $level = 5;
@@ -21,10 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $_POST[
     echo $e;
   }
 
+  // Convert $input to lowercase before checking for tag
+  $input = strtolower($input);
+
   // TODO: improve injection detection by using regexp
-  if(strpos($input, '<script>') !== false and strpos($input, '</script>') !== false) {
+  if (strpos($input, '<script>') !== false and strpos($input, '</script>') !== false)
     $exploited = true;
-  }
 
   require('../logging.php');  // Only log if there is user input.
 }
