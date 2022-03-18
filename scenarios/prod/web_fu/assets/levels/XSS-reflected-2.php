@@ -19,7 +19,7 @@ require('../logging.php');
 
 <!DOCTYPE html>
 <html>
-<?php require('../views/header.php'); ?>a
+<?php require('../views/header.php'); ?>
 
 <body class="bg-dark">
   <div class="container pt-4 text-white">
