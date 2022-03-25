@@ -2,7 +2,7 @@
 
 EDURange
 
-Documentation can be found [here](https://github.com/edurange/edurange-flask-docs "EDURange Refactored Documentation")
+Additional documentation can be found in the wiki
 
 ## Installation
 We recommend running on a clean ubuntu or debian instance.
