@@ -2,7 +2,7 @@
 
 require('../auth.php');
 
-$level = 6;
+$level = 5;
 $input = isset($_GET['image_url'])
   ? $_GET['image_url']
   : 'https://edurange.watzek.cloud:8443/res/profile.png';
