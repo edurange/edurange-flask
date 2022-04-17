@@ -45,7 +45,7 @@
   - Value: OR
     Points: 15
   Points: 15
-- Text: What is the flag for level 1?
+- Text: What is the flag for level 1 (SQL-1.php)?
   Type: String
   Answers:
   - Value: FLAG{1NJ3CT10NS_4R3_N1C3!}
@@ -57,7 +57,7 @@
   - Value: '%'
     Points: 15
   Points: 15
-- Text: What is the flag for level 2?
+- Text: What is the flag for level 2 (SQL-2.php)?
   Type: String
   Answers:
   - Value: FLAG{Y0U_D0_L1K3_QU3R13S}
@@ -69,7 +69,7 @@
   - Value: UNION
     Points: 10
   Points: 10
-- Text: What is the flag for level 3?
+- Text: What is the flag for level 3 (SQL-3.php)?
   Type: String
   Answers:
   - Value: FLAG{1M_N0T_4_H4SH3D_H4X0R}
@@ -81,21 +81,21 @@
   - Value: supersecreto
     Points: 30
   Points: 30
-- Text: What is the flag for level 4?
+- Text: What is the flag for level 4 (XSS-reflected-1.php)?
   Type: String
   Answers:
   - Value: FLAG{4LW4Y5_54N71Z3_1NPU7}
     Points: 15
   Points: 15
-- Text: What is the flag for level 5?
-  Type: String
-  Answers:
-  - Value: FLAG{P4YL04D_1NJ3CT3D}
-    Points: 15
-  Points: 15
-- Text: What is the flag for level 6?
+- Text: What is the flag for level 5 (XSS-reflected-2.php)?
   Type: String
   Answers:
   - Value: FLAG{0NSUCC3SS_4L3R7(PWN)}
+    Points: 20
+  Points: 20
+- Text: What is the flag for level 6 (XSS-stored-1.php)?
+  Type: String
+  Answers:
+  - Value: FLAG{P4YL04D_1NJ3CT3D}
     Points: 20
   Points: 20
