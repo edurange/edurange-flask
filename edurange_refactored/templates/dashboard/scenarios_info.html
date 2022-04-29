@@ -4,14 +4,14 @@
 {% block content %}
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h5> ID : {{ i }} </h5>
-            <h5> Name : {{ s_name }} </h5>
-            <h5> Type : {{ s_type }} </h5>
+            <h5>ID: {{ i }}</h5>
+            <h5>Name: {{ s_name }}</h5>
+            <h5>Type: {{ s_type }}</h5>
         </div>
 
         <ul class="nav nav-tabs mt-3 ml-3">
             <li class="nav-item active">
-                <a href="#home" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab"  aria-selected="true">Home</a>
+                <a href="#home" class="nav-link tab-pane fade show active" aria-controls="home" data-toggle="tab" aria-selected="true">Home</a>
             </li>
             <li class="nav-item">
                 <a href="#Guide" class="nav-link tab-pane fade show" data-toggle="tab" aria-selected="false">Guide</a>
@@ -27,31 +27,35 @@
             <div id="home" class="tab-pane fade show active">
                 <div class="card-body">
                     <div class="container">
-                        <p> Description : {{ desc }} </p>
-                        <p> Status : {{ status }} </p>
-                        <p> Created by : {{ owner }} </p>
-                        <p> Created at : {{ dt }} </p>
+                        <p>Description: {{ desc }}</p>
+                        <p>Status: {{ status }}</p>
+                        <p>Created by: {{ owner }}</p>
+                        <p>Created at: {{ dt }}</p>
                         <!--<b> Connection Information: </b>-->
                         {% for container in add %}
                             {% if not add[container] %}
-                        <p><b> Connection Information: </b></p>
+                        <p><b>Connection Information: </b></p>
                                 <p>Container not found, something went wrong</p>
                             {% elif ':' not in add[container] %}
-                        <p><b> Connection Information: </b></p>
+                        <p><b>Connection Information: </b></p>
                                 <p>Container address not found, is it running?</p>
                             {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                                {% if s_type == "Web_Fu" %}
+                        <p><b>Connection: </b> <a target="_blank" href="https://{{add[container][:add[container].index(':')]}}:8443">WebFu</a></p>
+                                {% else %}
                                 <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
                         <p style="margin-top: -10px;"><b>SSH Command: </b>
-                            <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh root@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
-                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                            <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh root@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
+                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i>Copy</button>
                         </p>
                                 <p><b>Password:</b> Check the .env file for your root password.</p>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                         <b>Questions:</b>
                         <p></p>
                         {% for i in questions %}
-                            <label id="question_ID{{ i }}"><b>{{ i }})</b> {{ questions[i] }} </label>
+                            <label id="question_ID{{ i }}"><b>{{ i }})</b>{{ questions[i] }}</label>
                             <input type="text" class="form-control mb-3" readonly>
                         {% endfor %}
                     </div>

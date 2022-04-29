@@ -3,25 +3,28 @@
 {% block content %}
     <div class="card bg-light">
         <div class="card-header">
-            <h3> Name : {{ s_name }} </h3>
-            <h3> Type : {{ s_type }} </h3>
+            <h3>Name: {{ s_name }} </h3>
+            <h3>Type: {{ s_type }} </h3>
         </div>
         <div class="card-body">
-            <p><b>  Description: </b>{{ desc }}</p>
-            <p><b>  ID: </b><span id="scenario_id">{{ id }}</span></p>
-            <p><b>  Status : </b> {{ status }} </p>
-            <p><b>  Instructor : </b> {{ owner }} </p>
-            <p><b> Username : </b><span id="user">{{ u_name }}</span></p>
-            <p><b> Password : </b> {{ pw }}</p>
+            <p><b>Description: </b>{{ desc }}</p>
+            <p><b>ID: </b><span id="scenario_id">{{ id }}</span></p>
+            <p><b>Status: </b> {{ status }} </p>
+            <p><b>Instructor: </b> {{ owner }} </p>
+            <p><b>Username: </b><span id="user">{{ u_name }}</span></p>
+            <p><b>Password: </b> {{ pw }}</p>
             <!--<p><b> Connection Information: </b></p>-->
             {% for container in add %}
                 {% if not add[container] %}
             <p><b> Connection Information: </b></p>
-                    <p>Container not found, something went wrong</p>
+            <p>Container not found, something went wrong</p>
                 {% elif ':' not in add[container] %}
             <p><b> Connection Information: </b></p>
-                    <p>Container address not found, is it running?</p>
+            <p>Container address not found, is it running?</p>
                 {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                    {% if s_type == "Web_Fu" %}
+            <p><b> Connection: </b> <a target="_blank" href="https://{{add[container][:add[container].index(':')]}}:8443">WebFu</a></p>
+                    {% else %}
                     <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
             <p style="margin-top: -10px;"><b>SSH Command: </b>
                 <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
@@ -35,6 +38,7 @@
                     <iframe style="position:absolute;height:100%;width:100%;border:none" src= "http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}/{{ u_name }}/{{ pw }}" ></iframe>
                 </div> -->
             </p>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
