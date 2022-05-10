@@ -371,7 +371,9 @@ def make_scenario():
         NotifyCapture(f"Scenario {name} has been created.")
         #Notification.create(details=something, date=something)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
-        scenario = Scenarios.query.filter_by(id=s_id).first()
+        s_id_list = list(s_id._asdict().values())[0]
+
+        scenario = Scenarios.query.filter_by(id=s_id_list).first()
         scenario.update(status=7)
         g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
 
