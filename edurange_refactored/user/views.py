@@ -371,11 +371,13 @@ def make_scenario():
         NotifyCapture(f"Scenario {name} has been created.")
         #Notification.create(details=something, date=something)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
+
         s_id_list = list(s_id._asdict().values())[0]
 
         scenario = Scenarios.query.filter_by(id=s_id_list).first()
         scenario.update(status=7)
         g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+        g_id = g_id._asdict()
 
         # JUSTIFICATION:
         # Above queries return sqlalchemy collections.result objects
@@ -385,7 +387,7 @@ def make_scenario():
         for i, s in enumerate(students):
             students[i] = s._asdict()
 
-        s_id, g_id = s_id._asdict(), g_id._asdict()
+        # s_id, g_id = s_id._asdict(), g_id._asdict()
 
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
         flash(
@@ -446,7 +448,8 @@ def scenariosInfo(sId):
         flash(f"Log file '{s_name}.csv' was not found, has anyone played yet?")
         logData = []
 
-    gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == sId, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()
+    gid = db_ses.query(StudentGroups.id).filter(Scenarios.id == sId, ScenarioGroups.scenario_id == Scenarios.id, ScenarioGroups.group_id == StudentGroups.id).first()[0]
+
     players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
     u_logs = groupCSV(logData, 4)  # Make dictionary using 6th value as key (player name)

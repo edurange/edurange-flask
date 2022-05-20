@@ -44,7 +44,7 @@ class GroupUsers(UserMixin, SurrogatePK, Model):
     user_id = reference_col("users", nullable=False)
     user = relationship("User", backref="group_users")
     group_id = reference_col("groups", nullable=False)
-    group = relationship("StudentGroups", backref="group_users")
+    group = relationship("StudentGroups", backref="group_users", viewonly=True)
 
 
 class User(UserMixin, SurrogatePK, Model):
@@ -124,7 +124,7 @@ class Responses(UserMixin, SurrogatePK, Model):
     user_id = reference_col("users", nullable=False)
     user = relationship("User", backref="responses")
     scenario_id = reference_col("scenarios", nullable=False)
-    scenario = relationship("Scenarios", backref="responses")
+    scenario = relationship("Scenarios", backref="responses", viewonly=True)
     question = Column(db.Integer, default=0, nullable=False)
     student_response = Column(db.String(40), unique=False, nullable=True)
     #correct = Column(db.Boolean(), default=False)
