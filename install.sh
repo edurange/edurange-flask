@@ -24,6 +24,9 @@ mkdir data
 mkdir data/tmp
 mkdir logs
 
+# Install the requirements for webssh
+./webssh-install.sh
+
 echo -e "${YLW}Please enter your database password, as written in the '.env' file in the DATABASE_URL field:${NC}"
 read dbpass
 echo -e "${YLW}Please enter your database name, as written at the end of that same DATABASE_URL:${NC}"

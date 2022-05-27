@@ -661,8 +661,8 @@ def recentCorrect(uid, qnum, sid):
 
 def displayCorrectAnswers(sName, uName):
     db_ses = db.session
-    uid = db_ses.query(User.id).filter(User.username == uName).first()
-    sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()
+    uid = db_ses.query(User.id).filter(User.username == uName).first()[0]
+    sid = db_ses.query(Scenarios.id).filter(Scenarios.name == sName).first()[0]
     questions = questionReader(sName)
     ques = {}
 
