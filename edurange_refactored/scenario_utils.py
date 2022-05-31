@@ -4,18 +4,23 @@ import os
 import yaml
 from flask import flash
 
-known_types = [
-    "Elf_Infection",
-    "File_Wrangler",
-    "Getting_Started",
-    "Metasploitable",
-    "Ransomware",
-    "Ssh_Inception",
-    "Strace",
-    "Total_Recon",
-    "Treasure_Hunt",
-    "Web_Fu"
-]
+# Import the scenario string, and set to 'known_types' as a list
+known_types = os.environ.get("SCENARIO_LIST_ENV").split(",")
+
+# Old methodology for declaring 'known' scenarios
+
+# known_types = [
+#     "Elf_Infection",
+#     "File_Wrangler",
+#     "Getting_Started",
+#     "Metasploitable",
+#     "Ransomware",
+#     "Ssh_Inception",
+#     "Strace",
+#     "Total_Recon",
+#     "Treasure_Hunt",
+#     "Web_Fu"
+# ]
 
 
 class CatalogEntry:
