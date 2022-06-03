@@ -671,6 +671,8 @@ def displayCorrectAnswers(sName, uName):
         recent = recentCorrect(uid, order, sid)
         if recent is not None:
             recent = recent[0]
+        else:
+            recent = -1
 
         ques[order] = recent
 

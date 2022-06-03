@@ -3,9 +3,10 @@ import os
 
 import yaml
 from flask import flash
+from edurange_refactored.settings import KNOWN_SCENARIOS
 
 # Import the scenario string, and set to 'known_types' as a list
-known_types = os.environ.get("SCENARIO_LIST_ENV").split(",")
+known_types = KNOWN_SCENARIOS
 
 # Old methodology for declaring 'known' scenarios
 

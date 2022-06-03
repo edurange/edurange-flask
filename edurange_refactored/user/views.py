@@ -296,6 +296,7 @@ def student_scenario(i):
                 scenarioResponder = scenarioResponseForm()
                 aList = displayCorrectAnswers(s_name, u_name)
                 progress = displayProgress(i, uid)
+                example = -1
 
                 return render_template(
                     "dashboard/student_scenario.html",
@@ -312,7 +313,8 @@ def student_scenario(i):
                     questions=questions,
                     srF=scenarioResponder,
                     aList=aList,
-                    progress=progress
+                    progress=progress,
+                    example=example
                 )
 
             # POST request
