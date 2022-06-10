@@ -296,6 +296,7 @@ def student_scenario(i):
                 scenarioResponder = scenarioResponseForm()
                 aList = displayCorrectAnswers(s_name, u_name)
                 progress = displayProgress(i, uid)
+                example = -1
 
                 return render_template(
                     "dashboard/student_scenario.html",
@@ -312,7 +313,8 @@ def student_scenario(i):
                     questions=questions,
                     srF=scenarioResponder,
                     aList=aList,
-                    progress=progress
+                    progress=progress,
+                    example=example
                 )
 
             # POST request
@@ -389,7 +391,7 @@ def make_scenario():
 
         # s_id, g_id = s_id._asdict(), g_id._asdict()
 
-        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id)
+        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list)
         flash(
             "Success! Your scenario will appear shortly. This page will automatically update. " \
             f"Students found: {students}",
