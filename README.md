@@ -12,7 +12,8 @@ First, clone this repository
 git clone https://github.com/edurange/edurange-flask.git --recurse-submodules
 ```
 
-Next, change directory, copy the '.env.example' file to '.env' and edit it where marked
+Next, change directory, copy the '.env.example' file to '.env' and edit it where marked. [note: this is being improved so that you won't need to edit the env file
+manually]
 ```bash
 cd edurange-flask
 cp .env.example .env
