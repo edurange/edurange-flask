@@ -7,14 +7,14 @@ username=$(whoami)
 current_directory=$(pwd)
 dbpass="passwordfoo"
 dbname="namefoo"
+flaskUser="Administrator"
+flaskPass="flaskpass"
+secretKey="not-so-secret"
+hostAddress="localhost"
+rootPass="change-me"
+
 # Add pip-executables to the path if they aren't already
-if [ grep -q "export PATH=/home/$(whoami)/.local/bin:$PATH" ~/.bashrc ]; 
-then
-	:
-else
-	echo "export PATH=/home/$(whoami)/.local/bin:$PATH" >> ~/.bashrc &&
-	source ~/.bashrc
-fi
+grep -qxF 'export PATH=$PATH:/home/$(whoami)/.local/bin' ~/.bashrc || echo 'export PATH=$PATH:/home/$(whoami)/.local/bin' >> ~/.bashrc
 
 echo -e "${GRN}Installing python3-pip, npm, redis-server,  unzip, postgresql, lib-pq-dev, and wget${NC}"
 
@@ -29,21 +29,34 @@ mkdir logs
 
 # Add option for automatic install for testing. Do not use this in a production environment.
 
-echo "-------------------------------------"
-echo $#
 if [ $# -eq 0 ];
 then
-	echo -e "${YLW}Please enter your database password, as written in the '.env' file in the DATABASE_URL field:${NC}"
+	echo -e "${YLW}Please enter your database password:${NC}"
 	read dbpass
-	echo -e "${YLW}Please enter your database name, as written at the end of that same DATABASE_URL:${NC}"
+	echo -e "${YLW}Please enter your database name:${NC}"
 	read dbname
+	echo -e "${YLW}Please enter your Flask (web interface) username:${NC}"
+	read flaskUser
+	echo -e "${YLW}Please enter your Flask (web interface) password:${NC}"
+	read flaskPass
+	echo -e "${YLW}Please enter your external address (Like example.com):${NC}"
+	read hostAddress
+	echo -e "${YLW}Please enter your root password for all containers:${NC}"
+	read rootPass
+	# Generate secret string for cookie encryption
+	secretKey=${"cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-20} | head -n 1"}
+	cp ./.env.example ./.env
+	sed -i "s/namefoo/${dbname}/" .env
+	sed -i "s/passwordfoo/${dbpass}/" .env
+	sed -i "s/Administrator/${flaskUser}/" .env
+	sed -i "s/flaskpass/${flaskPass}/" .env
+	sed -i "s/not-so-secret/${secretKey}/" .env
+	sed -i "s/localhost/${hostAddress}/" .env
+	sed -i "s/change-me/${rootPass}/" .env
 elif [ $1 = "auto" ];
 then
 	cp ./.env.example ./.env
 fi
-echo "-------------------------------------"
-echo "Pass: $dbpass , Name: $dbname"
-
 
 echo -e "${GRN}Downloading and setting up terraform${NC}"
 
@@ -54,8 +67,7 @@ sudo mv terraform /usr/bin/terraform
 
 # Check to see if docker is already installed. If it is, skip this.
 dinstall=$(docker -v)
-echo "-------------------------------------"
-echo "Docker install value: $dinstall"
+
 if [[ -z $dinstall ]];
 then
 	echo -e "${GRN}Downloading and setting up docker${NC}"
@@ -71,10 +83,11 @@ then
 else
 	echo "Docker already installed. Skipping Docker installation."
 fi
+
+# Initialize psql 
 sudo -Hiu postgres psql -U postgres -c "alter user postgres with password '"$dbpass"';"
-#sudo -H -u postgres bash -c "echo -e ALTER USER postgres WITH PASSWORD \'$dbpass\'\; | psql"
 sudo -Hiu postgres psql -U postgres -c "CREATE DATABASE $dbname ;"
-#sudo -H -u postgres bash -c "echo -e CREATE DATABASE $dbname\; | psql"
+
 
 # Install the requirements for webssh
 ./webssh-install.sh
@@ -83,14 +96,11 @@ sudo -Hiu postgres psql -U postgres -c "CREATE DATABASE $dbname ;"
 cd $current_directory
 npm run build
 
+# Clean up
+rm ./terraform_1.2.2_linux_amd64.zip
+rm ./docker.sh
 
-#echo -e "${GRN}Done! Next run the first-run setup: ${NC} npm run build"
 echo -e "${GRN}To run the app any time, use: ${NC} npm start"
 echo -e "${GRN}You may need to make sure that pip-executables are accessible${NC}"
 echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not recognized, try:"
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
-
-if [ $1 == "auto" ];
-then
-	npm start
-fi
