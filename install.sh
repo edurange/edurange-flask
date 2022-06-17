@@ -44,7 +44,7 @@ then
 	echo -e "${YLW}Please enter your root password for all containers:${NC}"
 	read rootPass
 	# Generate secret string for cookie encryption
-	secretKey=${"cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-20} | head -n 1"}
+	secretKey=$(cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-20} | head -n 1)
 	cp ./.env.example ./.env
 	sed -i "s/namefoo/${dbname}/" .env
 	sed -i "s/passwordfoo/${dbpass}/" .env
