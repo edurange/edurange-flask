@@ -5,26 +5,18 @@ EDURange
 Additional documentation can be found in the wiki
 
 ## Installation
-We recommend running on a clean ubuntu or debian instance.
+We recommend using a new Ubuntu 22.04 LTS installation, using Python 3.10
+Support for other Operating Systems and Python versions is pending.
 First, clone this repository
 
 ```bash
 git clone https://github.com/edurange/edurange-flask.git --recurse-submodules
 ```
 
-Next, change directory, copy the '.env.example' file to '.env' and edit it where marked. [note: this is being improved so that you won't need to edit the env file
-manually]
+Then, run the installation script, and input credentials when prompted.
+Please use unique responses for each prompt.
 ```bash
-cd edurange-flask
-cp .env.example .env
-vim .env
-```
-
-Then, run the installation script, and first time npm-build
-```bash
-chmod +x install.sh
 ./install.sh
-npm run build
 ```
 To verify that you're ready to launch the app, check that "flask" and "celery" are recognized bash commands, and whether "docker run hello-world" works.
 If any of these fail, simply log out and back in, and they should work then. 

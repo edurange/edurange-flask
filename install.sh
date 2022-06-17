@@ -66,9 +66,7 @@ unzip terraform_1.2.2_linux_amd64.zip
 sudo mv terraform /usr/bin/terraform
 
 # Check to see if docker is already installed. If it is, skip this.
-dinstall=$(docker -v)
-
-if [[ -z $dinstall ]];
+if ! [ -x "$(command -v docker)" ];
 then
 	echo -e "${GRN}Downloading and setting up docker${NC}"
 	wget -O docker.sh get.docker.com
