@@ -97,7 +97,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
     app = current_app
     s_type = s_type.lower()
-    s_id, g_id = s_id["id"], g_id["id"]
+    g_id = g_id["id"]
 
     c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(s_type, logger)
 
