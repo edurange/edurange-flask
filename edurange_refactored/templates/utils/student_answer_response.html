@@ -3,7 +3,7 @@
 <h5 id="progress_q"> Questions Completed: {{ progress['questions'] }} / {{ progress['total_questions'] }} </h5>
 <h5 id="progress_s"> Points Earned: {{ progress['score'] }} / {{ progress['total_score'] }} </h5>
 
-{% if score > 0 %}
+{% if score >= 1 %}
 <i class="fa fa-check">Correct</i>
 {% else %}
 <i class="fa fa-ban">Incorrect</i>

@@ -3,19 +3,25 @@ import os
 
 import yaml
 from flask import flash
+from edurange_refactored.settings import KNOWN_SCENARIOS
 
-known_types = [
-    "Elf_Infection",
-    "File_Wrangler",
-    "Getting_Started",
-    "Metasploitable",
-    "Ransomware",
-    "Ssh_Inception",
-    "Strace",
-    "Total_Recon",
-    "Treasure_Hunt",
-    "Web_Fu"
-]
+# Import the scenario string, and set to 'known_types' as a list
+known_types = KNOWN_SCENARIOS
+
+# Old methodology for declaring 'known' scenarios
+
+# known_types = [
+#     "Elf_Infection",
+#     "File_Wrangler",
+#     "Getting_Started",
+#     "Metasploitable",
+#     "Ransomware",
+#     "Ssh_Inception",
+#     "Strace",
+#     "Total_Recon",
+#     "Treasure_Hunt",
+#     "Web_Fu"
+# ]
 
 
 class CatalogEntry:

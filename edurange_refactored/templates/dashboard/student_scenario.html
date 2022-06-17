@@ -77,8 +77,9 @@
                                         {% endif %}
                                         <input class="form-control" type="hidden" name="scenario" value="{{ id }}" readonly>
                                         {#<input class="form-control" type="hidden" name="question" value="{{ i }}" readonly>#}
-                                        <input type="text" name="response" id="input_ID{{i}}" class="form-control mb-5">
+                                        <input type="text" name="response" id="input_ID{{i}}" class="form-control mb-2">
                                         <button class="btn btn-dark" value="{{ i }}" type="submit" name="question"> Submit </button>
+					<br></br>
                                     </div>
                                 </form>
                             {% endfor %}

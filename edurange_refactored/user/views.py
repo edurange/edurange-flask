@@ -294,7 +294,7 @@ def student_scenario(i):
             #    .filter(Responses.user_id == uid).filter(Responses.attempt == att).all()
             if request.method == "GET":
                 scenarioResponder = scenarioResponseForm()
-                aList = displayCorrectAnswers(s_name, u_name)
+                aList = displayCorrectAnswers(s_name, uid)
                 progress = displayProgress(i, uid)
                 example = -1
 
