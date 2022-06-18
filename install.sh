@@ -15,6 +15,7 @@ rootPass="change-me"
 
 # Add pip-executables to the path if they aren't already
 grep -qxF 'export PATH=$PATH:/home/$(whoami)/.local/bin' ~/.bashrc || echo 'export PATH=$PATH:/home/$(whoami)/.local/bin' >> ~/.bashrc
+source ~/.bashrc
 
 echo -e "${GRN}Installing python3-pip, npm, redis-server,  unzip, postgresql, lib-pq-dev, and wget${NC}"
 
@@ -75,7 +76,6 @@ then
 	echo -e "${GRN}Creating a user group for docker, and adding your account...${NC}"
 	sudo groupadd docker
 	sudo usermod -aG docker $username
-	sudo su $USER --login
 
 	./docker.sh
 else
@@ -102,3 +102,5 @@ echo -e "${GRN}To run the app any time, use: ${NC} npm start"
 echo -e "${GRN}You may need to make sure that pip-executables are accessible${NC}"
 echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not recognized, try:"
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
+
+sudo su $USER --login
