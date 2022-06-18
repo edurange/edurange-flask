@@ -6,7 +6,9 @@ Additional documentation can be found in the wiki
 
 ## Installation
 We recommend using a new Ubuntu 22.04 LTS installation, using Python 3.10
+
 Support for other Operating Systems and Python versions is pending.
+
 First, clone this repository
 
 ```bash
@@ -14,8 +16,10 @@ git clone https://github.com/edurange/edurange-flask.git --recurse-submodules
 ```
 
 Then, run the installation script, and input credentials when prompted.
+
 Please use unique responses for each prompt.
 ```bash
+cd edurange-flask
 ./install.sh
 ```
 To verify that you're ready to launch the app, check that "flask" and "celery" are recognized bash commands, and whether "docker run hello-world" works.
@@ -25,6 +29,7 @@ If any of these fail, simply log out and back in, and they should work then.
 
 Once installed, start the app using
 ```bash
+cd edurange-flask
 npm start
 ```
 Or each service can be run separately 
