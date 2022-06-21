@@ -1,0 +1,178 @@
+/* html * {
+    box-sizing: border-box;
+    outline: 1px orange dashed; 
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #ccc;
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+.username {
+    margin-left: auto;
+    padding-right: 1rem;
+} */
+
+main {
+    padding-right: 1rem;
+    display: flex;
+    height: 85vh;
+    flex: 0 0 100%;
+    justify-content: space-between;
+}
+
+.navigation {
+    margin-right: .5rem;
+    border-right: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    width: 10rem;
+    overflow: hidden;
+}
+
+.navigation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navigation ul li {
+    padding: .5rem 0;
+}
+
+.navigation ul li a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 10rem;
+    border: 1px solid grey;
+    color: black;
+    transition-duration: .3s;
+}
+
+.navigation ul li a:hover, .navbar ul li a:focus {
+    background-color: black;
+    color: white;
+}
+
+.question {
+    height: 100%;
+}
+
+.question {
+    display: flex;
+    padding: 1rem;
+    margin: 1rem;
+    box-shadow: 1px 2px 5px 1px lightgray;
+}
+
+.submission-traits{
+    font-size:75%;
+    width:100%;
+    display:flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    display:inline-flex;
+}
+
+.submission-points {
+    background-color: lightgray;
+    padding: 2px 2px 2px 2px;
+    border-radius: 5px;
+
+}
+
+.submission-state{
+    margin-left: auto;
+    background-color: lightgray;
+    padding: 2px 2px 2px 2px;
+    border-radius: 5px;
+}
+
+
+.question-text {
+    font-size: 90%;
+    background-color: lightgray;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+textarea {
+    box-sizing: border-box;
+    resize: none; /* prevents corner "grabber" */
+    border-radius: 4px;
+    border: 1px solid lightgray;
+    width: 100%;
+    padding: 1rem;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+
+}
+
+textarea:focus {
+  border: 3px solid lightgray;
+}
+
+textarea:hover {
+    background: lightgray;
+}
+
+.submit{
+    color: #555;
+
+    /*property: border-box. This makes sure that the padding and eventually borders are included in the total width and height of the elements. */
+    border-radius: 5px;
+    border-width: 0px;
+    background-color: white;
+    padding: 15px 1em;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: .1s;
+    /*
+    transition-timing-function: linear;
+    */
+    box-shadow: 1px 2px 5px 1px lightgray;
+}
+
+
+.submit:hover {
+    /*border-color: lightgray;
+    border-width: 0 2px 2px 0;
+
+    background-color: gray;
+    box-shadow: 5px 5px blue, 10px 10px red, 15px 15px green;
+    padding: 20px 24px;
+    font-size: 120%;*/
+
+    color: lightgrey;
+
+
+}
+
+
+.submit:active {
+  box-shadow: 0 0 lightgray;
+  transform: translate(1px, 2px);
+
+}
+
+.chatbox {
+    padding-left: .5rem;
+    border-left: 2px solid #ccc;
+}
