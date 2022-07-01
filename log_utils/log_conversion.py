@@ -4,6 +4,7 @@ from pandas import DataFrame
 from datetime import datetime
 import time
 import sys
+import os
 #The following does not work due to the way the CSV file handles newlines within quoted text.
 #log = pd.read_csv("test.csv", quoting=0, sep = '|', quotechar = '"')
 
@@ -70,8 +71,15 @@ if len(sys.argv)>1:
 	log.insert(loc = 2, column = 'username', value = log['uid'])
 	log.insert(loc = 3, column = 'hostname', value = host)
 	log.insert(loc = 4, column = 'wd', value = log['cwd'])
-	fileName = fileName.rsplit('.', 1)
-	fileName[1] = 'json'
+	
+	del log['time'] #Remove duplicate data
+	del log['Command']
+	del log['uid']
+	del log['cwd']
+	
+	if fileName[0] != '/': #is the given filepath absolute
+		fileName = os.getcwd()+'/'+fileName #Convert it to absolute file path
+	fileName = fileName.rsplit('.', 1)#Remove the .csv
 	log.to_json(fileName[0]+'.json')#Oupt to the JSON file
 else:
 	print('No input file specified.')
