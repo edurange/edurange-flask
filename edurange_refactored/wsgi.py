@@ -23,7 +23,9 @@ db.create_all()
 def utility_processor():
     def navigation(role, view=session.get('viewMode')):
         return generateNavElements(role, view)
-    return dict(navigation=navigation)
+    def print_in_console(message): # print a message to console in jinja
+        print(str(message))
+    return dict(navigation=navigation, mdebug=print_in_console)
 
 
 def create_admin():

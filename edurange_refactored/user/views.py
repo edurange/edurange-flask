@@ -560,3 +560,4 @@ def set_view():
         session.pop("viewMode", None)
 
     return redirect(url_for("public.home"))
+
