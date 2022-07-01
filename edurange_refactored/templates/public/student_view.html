@@ -1,0 +1,65 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<main class="student">
+<nav class='navigation'>
+  <ul>
+    <li><a href=index.html>Topic A</a></li>
+    <li><a href=index.html>Topic B</a></li>
+    <li><a href=index.html>Topic C</a></li>
+    <li><a href=index.html>Topic D</a></li>
+  </ul>
+</nav>
+<div class="question">
+  <form class="question--form">
+            <div class="submission-traits">
+                <p class="submission-points">8 points</p>
+                <p class="submission-state">unsubmitted</p>
+            </div>
+    <p class="question-text">There is one chopstick between each philosopher, to their immediate right and left. <br>
+    In order to eat, a given philosopher needs to use both chopsticks. <br>
+    How can you ensure all the philosophers can eat reliably without starving to death?<p>
+
+
+    <textarea class="answer" rows="1" cols="50"></textarea><br>
+    <input class=submit type="submit" value="Submit">
+  </form>
+</div>
+<div class='chatbox'>
+  <p>Insert Chatbox Item Here</p>
+</div>
+</main>
+
+{% endblock %}
+
+{% block  js %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script>
+$(document).ready(function(){
+//connect to the socket server.
+  console.log("Starting")
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket_test');
+  console.log("Connected")
+var numbers_received = [];
+
+//receive details from server
+socket.on('database_changed', function(msg) {
+  console.log("Here1")
+console.log("Received number" + msg.number);
+//maintain a list of ten numbers
+if (numbers_received.length >= 10){
+numbers_received.shift()
+}
+numbers_received.push(msg.number);
+numbers_string = '';
+for (var i = 0; i < numbers_received.length; i++){
+numbers_string = numbers_string + '<p>' + numbers_received[i].toString() + '</p>';
+}
+$('#log').html(numbers_string);
+});
+
+});
+</script>
+{% endblock %}
+
+

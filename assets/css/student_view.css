@@ -27,7 +27,7 @@ header {
     padding-right: 1rem;
 } */
 
-main {
+.student {
     padding-right: 1rem;
     display: flex;
     height: 85vh;
@@ -112,7 +112,7 @@ main {
     border-radius: 5px;
 }
 
-textarea {
+.answer {
     box-sizing: border-box;
     resize: none; /* prevents corner "grabber" */
     border-radius: 4px;
@@ -124,12 +124,9 @@ textarea {
 
 }
 
-textarea:focus {
+.answer:focus, .answer:hover {
   border: 3px solid lightgray;
-}
-
-textarea:hover {
-    background: lightgray;
+  background: lightgray;
 }
 
 .submit{

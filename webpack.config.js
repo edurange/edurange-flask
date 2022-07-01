@@ -26,8 +26,7 @@ module.exports = {
     main_css: [
       path.join(__dirname, 'node_modules', 'font-awesome', 'css', 'font-awesome.css'),
       path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
-      path.join(__dirname, 'assets', 'css', 'style.css'),
-      path.join(__dirname, 'assets', 'css', 'student_view.css')
+      path.join(__dirname, 'assets', 'css', 'style.css')
     ],
   },
   mode: debug,

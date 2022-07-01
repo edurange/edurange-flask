@@ -153,3 +153,8 @@ def about():
 def socket_test():
 
     return render_template("public/socket.html")
+
+@blueprint.route("/student_view")
+def student_view():
+
+    return render_template("public/student_view.html")

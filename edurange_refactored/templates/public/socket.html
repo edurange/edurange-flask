@@ -1,35 +1,22 @@
-
 {% extends "layout.html" %}
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<main>
-<nav class='navigation'>
-  <ul>
-    <li><a href=index.html>Topic A</a></li>
-    <li><a href=index.html>Topic B</a></li>
-    <li><a href=index.html>Topic C</a></li>
-    <li><a href=index.html>Topic D</a></li>
-  </ul>
-</nav>
-<div class="question">
-  <form class="question--form">
-            <div class="submission-traits">
-                <p class="submission-points">8 points</p>
-                <p class="submission-state">unsubmitted</p>
-            </div>
-    <p class="question-text">There is one chopstick between each philosopher, to their immediate right and left. <br>
-    In order to eat, a given philosopher needs to use both chopsticks. <br>
-    How can you ensure all the philosophers can eat reliably without starving to death?<p>
+<div class="jumbotron">
+    <div class="container">
 
+      <h1 class="display-3">Socket Test Page</h1>
 
-    <textarea id="answer" rows="1" cols="50"></textarea><br>
-    <input class=submit type="submit" value="Submit">
-  </form>
+      </div>
+</div><!-- /.jumbotron -->
+
+<div class="container" id="content">
+    <div class="row">
+        <p>Asynchronous page updates will appear here:</p>
+        <h3>Number list:</h3>
+        <div id="log">
+        </div> <!-- /#log -->
+    </div>
 </div>
-<div class='chatbox'>
-  <p>Insert Chatbox Item Here</p>
-</div>
-</main>
 
 {% endblock %}
 
@@ -62,5 +49,4 @@ $('#log').html(numbers_string);
 });
 </script>
 {% endblock %}
-
 
