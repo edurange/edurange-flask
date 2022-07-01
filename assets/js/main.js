@@ -10,7 +10,6 @@ require('@fortawesome/fontawesome-free');
 window.$ = window.jQuery = require("jquery");
 require('popper.js');
 require('bootstrap');
-//require('malihu-custom-scrollbar-plugin')
 
 require.context(
   '../img', // context folder
