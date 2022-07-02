@@ -142,6 +142,23 @@ def register():
         flash_errors(form)
     return render_template("public/register.html", form=form)
 
+@blueprint.route("/login/", methods=["GET", "POST"])
+def login():
+    """Login the user."""
+    if current_user.is_authenticated:
+        return redirect(url_for("public.home"))
+    form = LoginForm(request.form)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            login_user(form.user)
+            flash("You are logged in.", "success")
+            redirect_url = url_for("public.home")
+            return redirect(redirect_url)
+        else:
+            flash_errors(form)
+    return render_template("public/login.html", form=form)
+
+
 
 @blueprint.route("/about/")
 def about():
