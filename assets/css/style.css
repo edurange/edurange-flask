@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  padding-top: 50px;
 }
 
 section {
@@ -182,12 +182,12 @@ header {
     position: sticky;
     top: 0;
     background-color: white;
-}
+} */
 
 .username {
     margin-left: auto;
     padding-right: 1rem;
-} */
+}
 
 .student {
   padding-right: 1rem;
@@ -233,6 +233,8 @@ header {
 }
 
 .question {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -241,6 +243,13 @@ header {
   padding: 1rem;
   margin: 1rem;
   box-shadow: 1px 2px 5px 1px lightgray;
+}
+
+.guide {
+  border: 1px gray solid;
+  border-radius: 3px;
+  align-self: center;
+  padding: 0 1rem;
 }
 
 .submission-traits{
@@ -335,3 +344,373 @@ transform: translate(1px, 2px);
   padding-left: .5rem;
   border-left: 2px solid #ccc;
 }
+
+/* Navbar related style */
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+#edu-navbar {
+  padding: 5px 5px;
+}
+
+.edu-navbar-left-elt {
+  /*padding-left: 15px;*/
+}
+
+#edu-navbar-right-elt {
+  padding-right: 5px;
+  align-items: center;
+}
+
+/* align login form with the navbar */
+#edu-navbar-right-elt li form .form-group {
+  margin-bottom: 0rem !important;
+  margin-right: 0rem !important;
+}
+
+/* space between login and register */
+#edu-navbar-right-elt .nav-item {
+  padding-left: 10px;
+}
+
+#edu-navbar-login-small {
+  display: none;
+}
+
+@media (max-width: 614px) {
+  #edu-navbar-login-big {
+    display: none;
+  }
+
+  #edu-navbar-login-small {
+    display: flex;
+  }
+}
+
+
+
+a,
+a:hover,
+a:focus {
+    /*color: inherit;*/
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.sub-navbar {
+    margin-top: -10px;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+
+.wrapper {
+	padding-top: 70px;
+    display: flex;
+    width: 100%;
+}
+
+
+#edu-sidebar {
+	  /*padding-top: 175px;*/
+    width: 250px;
+    position: fixed;
+    top: 47px;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    /*background: #7386D5;*/
+	  background: #509b79;
+    color: #fff;
+    transition: all 0.3s;
+	  margin-left: -250px;
+    display: none;
+}
+#edu-sidebar.active {
+	  margin-left: 0px;
+}
+
+#edu-sidebar .sidebar-header {
+    padding: 20px;
+    padding-top: 75px; /* how thick is the navbar? */
+    /*background: #6d7fcc;*/
+	 background: #2e9566;
+}
+
+#edu-sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#edu-sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#edu-sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+	display: block;
+}
+
+#edu-sidebar ul li a:hover {
+    /*color: #7386D5;*/
+	color: #509b79;
+    background: #fff;
+}
+
+#edu-sidebar ul li.active>a,
+a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example the account dropdown */
+    color: #fff;
+    /*background: #6d7fcc;*/
+	background: #2e9566;
+}
+
+/* make sidebar links have white text */
+#edu-sidebar a,
+         a:hover,
+         a:focus {
+          color: inherit;
+         }
+
+
+
+
+#sidebar {
+	  /*padding-top: 175px;*/
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    /*background: #7386D5;*/
+	  background: #509b79;
+    color: #fff;
+    transition: all 0.3s;
+	  margin-left: -250px;
+}
+#sidebar.active {
+	  margin-left: 0px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    padding-top: 75px; /* how thick is the navbar? */
+    /*background: #6d7fcc;*/
+	 background: #2e9566;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+	display: block;
+}
+
+#sidebar ul li a:hover {
+    /*color: #7386D5;*/
+	color: #509b79;
+    background: #fff;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example the account dropdown */
+    color: #fff;
+    /*background: #6d7fcc;*/
+	background: #2e9566;
+}
+
+/* make sidebar links have white text */
+#sidebar a,
+         a:hover,
+         a:focus {
+          color: inherit;
+         }
+
+.mCSB_container {
+  /*top: 75px;*/
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    /*background: #6d7fcc;*/
+	background: #2e9566;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+ul.sidebar-bottom-button {
+	min-height: 100%;
+    padding: 20px;
+}
+
+ul.sidebar-bottom-button a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+
+
+a.download {
+    background: #fff;
+    /*color: #7386D5;*/
+	color: #509b79;
+}
+
+a.article,
+a.article:hover {
+    /*background: #6d7fcc !important;*/
+	background: #2e9566 !important;
+    color: #fff !important;
+}
+
+.dropdown span {
+	padding-right: 30px;
+}
+
+#right-aligned-dropdown-menu {
+	left: auto;
+	right: 0;
+	min-width: 100%;
+}
+
+#center-aligned-dropdown-menu {
+	left: 50% !important;
+	right: auto !important;
+	min-width: 100%;
+	transform: translate(-50%, 0) !important;
+}
+
+
+
+#right-aligned-dropdown-menu {
+	left: auto;
+	right: 0;
+	min-width: 100%;
+}
+
+#center-aligned-dropdown-menu {
+	left: 50% !important;
+	right: auto !important;
+	min-width: 100%;
+	transform: translate(-50%, 0) !important;
+}
+
+
+.connection-details {
+	padding-left: 10px;
+	margin: auto;	/* center on page */
+}
+
+#right-aligned-dropdown-menu {
+	left: auto;
+	right: 0;
+	min-width: 100%;
+}
+
+#center-aligned-dropdown-menu {
+	left: 50% !important;
+	right: auto !important;
+	min-width: 100%;
+	transform: translate(-50%, 0) !important;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #sidebar {
+      margin-left: -250px;
+  }
+  #sidebar.active {
+  margin-left: 0;
+  }
+  #content {
+      /*width: calc(100% - 250px);*/
+      width: 100%;
+  }
+  #content.active {
+      /*width: calc(100% - 250px);*/
+      width: 100%;
+  }
+  #sidebarCollapse span {
+      display: none;
+  }
+  #dropdownMenuButton span {
+    display: none;
+  }
+
+  .dropdown-toggle span {
+    display: none;
+  }
+  
+  #dropdownMenuButton i {
+    padding-right: 30px;
+  }
+  
+  .dropdown-toggle i {
+    padding-right: 30px;
+
+  }
+}
+
+/* End Navbar related style */

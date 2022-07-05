@@ -1,36 +1,38 @@
-
 {% extends "layout.html" %}
 {% block content %}
-<div class="container-narrow">
-  <h1 class="mt-5">Register</h1>
-    <br/>
-    <form id="registerForm" class="form form-register" method="POST" action="" role="form">
-           {{ form.csrf_token }}
-            <div class="form-group">
-                {{form.code.label}}
-                {{form.code(placeholder="Registration Code", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.username.label}}
-                {{form.username(placeholder="Username", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.email.label}}
-                {{form.email(placeholder="Email", class_="form-control")}}
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
 
-            <div class="form-group">
-                {{form.password.label}}
-                {{form.password(placeholder="Password", class_="form-control")}}
+                    <h3 class="mb-5">Register</h3>
+                    <form class="form" method="POST" role="form">
+                        {{ form.csrf_token }}
+                            <div class="form-outline mb-4">
+                                {{form.code(placeholder="Registration Code", class_="form-control")}}
+                            </div>
+                            <div class="form-outline mb-4">
+                                {{form.username(placeholder="Username", class_="form-control")}}
+                            </div>
+                            <div class="form-outline mb-4">
+                                {{form.email(placeholder="Email", class_="form-control")}}
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-outline mb-4">
+                                {{form.password(placeholder="Password", class_="form-control")}}
+                            </div>
+                            <div class="form-outline mb-4">
+                                {{form.confirm(placeholder="Password (again)", class_="form-control")}}
+                            </div>
+                            <p><input class="btn btn-primary btn-lg btn-block" type="submit" value="Register"></p>
+                    </form>
+                    <p><em>Already registered?</em> Click <a href="{{ url_for('public.login') }}">here</a> to login.</p>
+
+                </div>
             </div>
-            <div class="form-group">
-                {{form.confirm.label}}
-                {{form.confirm(placeholder="Password (again)", class_="form-control")}}
-            </div>
-            <p><input class="btn btn-primary" type="submit" value="Register"></p>
-    </form>
-    <p><em>Already registered?</em> Click <a href="/">here</a> to login.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

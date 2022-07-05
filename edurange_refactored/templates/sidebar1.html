@@ -1,0 +1,100 @@
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3><a href="{{ url_for('public.home') }}">EDURange<i class="fa fa-tree"></i></a></h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a class href="{{ url_for('public.home') }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home
+                    </a>
+                </li>
+
+                {% if nav['links'] is not none %}
+                {% for link in nav['links'] %}
+                <li>{{ link }}</li>
+                {% endfor %}
+                {% endif %}
+
+                <li>
+                    <a class href="{{ url_for('public.about') }}">
+                        <i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;About
+                    </a>
+                </li>
+                
+                {#
+                <li class>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <a href="#">Home 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Home 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Home 3</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="#">Page 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 3</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+                #}
+            </ul>
+
+            <!-- <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+                </li>
+                <li>
+                    <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+                </li>
+            </ul> TODO delete this -->
+
+			<ul class="list-unstyled sidebar-bottom-button">
+				<li>
+                    <a href="/bug/" class="article">
+                        <i class="fa fa-bug"></i>&nbsp;&nbsp;
+                        Report a Bug
+                    </a> <!-- TODO: bug report button -->
+				</li>
+			</ul>
+        </nav>
+        {#
+        <script type="text/javascript">
+        /* Update sidebar css if sidebar is true (for visible) in session storage */
+        if (sessionStorage.getItem("sidebar") === "true") {
+            document.getElementById("sidebar").style.display = "block";
+        }
+        else {
+            document.getElementById("sidebar").style.display = "none";
+        }
+
+        /* Change bg color of link to the currently loaded page */
+        let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
+        if (currLink !== null) {
+            currLink.classList.replace('bg-secondary', 'bg-dark');
+        }
+        </script>
+        #}
