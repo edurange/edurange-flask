@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="edu-navbar">
 
-    <!-- <div class="container-fluid" id="edu-navbar-left-elt"> -->
+    {# <div class="container-fluid" id="edu-navbar-left-elt"> #}
         {#<button type="button" id="sidenav-toggler" 
             class="btn btn-light"
             data-toggle="sidenav"
@@ -8,15 +8,16 @@
             <i class="fa fa-bars"></i>
         </button>
         #}
-        <button id="edu-sidenav-toggler" 
-            data-toggle="sidenav" 
-            data-target="#edu-sidenav" 
-            type="button" class="btn shadow-0 me-3 edu-navbar-left-elt" 
-            aria-haspopup="true"
-            aria-expanded="false" 
-        >
-        <i class="fa fa-bars fa-lg"></i>
-        </button>
+            <button id="edu-sidenav-toggler" 
+                data-toggle="sidenav" 
+                data-target="#edu-sidenav" 
+                type="button" 
+                class="btn shadow-0 me-3 edu-navbar-left-elt mr-auto" 
+                aria-haspopup="true"
+                aria-expanded="false" 
+            >
+            <i class="fa fa-bars fa-lg"></i>
+            </button>
     <!-- </div> -->
 
     {# old sidebar button
@@ -41,7 +42,7 @@
     #}
     
     {% if status %}
-    <div class="connection-details">
+    <div class="connection-details mx-auto order-0">
         <div class="dropdown" style="margin-left: 10px;">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-terminal"></i>
@@ -67,7 +68,7 @@
     <!--<div class="container-fluid flex-row-reverse" id="edu-navbar-right-elt">-->
         {% if form %}
 
-        <ul class="navbar-nav flex-row ml-md-auto d-md-flex" id="edu-navbar-right-elt">
+        <ul class="navbar-nav flex-row ml-md-auto d-md-flex ml-auto" id="edu-navbar-right-elt">
 
             <li class="nav-item">
                 <div id="edu-navbar-login-big">
@@ -101,8 +102,7 @@
             </li>
             #}
 
-        </ul>
-
+        </ul> 
         {% else %}
 
         <ul class="navbar-nav ml-auto">
