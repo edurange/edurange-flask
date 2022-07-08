@@ -41,26 +41,53 @@
     </button>
     #}
     
-    {% if status %}
+    {% if status %} {# There is a scenario. #}
     <div class="connection-details mx-auto order-0">
         <div class="dropdown" style="margin-left: 10px;">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-terminal"></i>
-            <span>Connection Details</span>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="center-aligned-dropdown-menu">
-            <span class="dropdown-item">Username: {{ u_name }}</span>
-            <span class="dropdown-item" href="#">Password: {{ pw }}</span>
-            <span class="dropdown-item" href="#">Port:     TODO</span>
-            <div class="dropdown-divider"></div>
-            <button class="btn dropdown-item" id="copySSH">
-                Copy SSH Command      <i class="fa fa-clipboard"></i>
-            </button> <!-- TODO clipboard logo -->
-            <div class="dropdown-divider"></div>
-            <button class="btn dropdown-item" id="openWebSSH" onClick="showSSHConsole()">
-                Launch SSH in Browser <i class="fa fa-terminal"></i>
-            </button> <!-- TODO new tab logo -->
-        </div>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-terminal"></i>
+                <span>Connection Details</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="center-aligned-dropdown-menu">
+                {% if status == "Starting" %}
+                <span class="dropdown-item">
+                    <b>Connection Information:</b> Scenario is starting. Please refresh.
+                </span>
+                {% endif %}
+                {% for container in add %}
+                    {% if not add[container] %} {# If some container not initialized. #}
+                        <span class="dropdown-item">
+                            <b>Connection Information:</b> Container not found, something went wrong
+                        </span>
+                    {% elif ':' not in add[container] %} {#  #}
+                        <span class="dropdown-item">
+                            <b>Connection Information:</b> Container address not found, is it running?
+                        </span> 
+                    {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+                        {% if s_type == "Web_Fu" %}
+                            <button class="btn dropdown-item">
+                                <a target="_blank" href="https://{{add[container][:add[container].index(':')]}}:8443">
+                                    <b>Connection:</b> WebFu
+                                </a>
+                            </button>
+                        {% else %}
+
+
+                            <span class="dropdown-item"><b>Username:</b> {{ u_name }}</span>
+                            <span class="dropdown-item" href="#"><b>Password:</b> {{ pw }}</span>
+                            <span class="dropdown-item" href="#"><b>Port:</b>     {{ add[container][add[container].index(':') + 1:] }}</span>
+                            <div class="dropdown-divider"></div>
+                            <button class="btn dropdown-item" id="copySSH">
+                                Copy SSH Command      <i class="fa fa-clipboard"></i>
+                            </button> <!-- TODO clipboard logo -->
+                            <div class="dropdown-divider"></div>
+                            <button class="btn dropdown-item" id="openWebSSH" onClick="showSSHConsole()">
+                                Launch SSH in Browser <i class="fa fa-terminal"></i>
+                            </button> <!-- TODO new tab logo -->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     {% endif %}
@@ -105,7 +132,7 @@
         </ul> 
         {% else %}
 
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto" style="flex-direction: row;">
             {% if session.get('viewMode') %}
             <li class="nav-item navbar-text text-center">
                 <i class="font-italic">{{ session.get('viewMode') }}</i>
