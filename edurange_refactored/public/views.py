@@ -175,3 +175,8 @@ def socket_test():
 def student_view():
 
     return render_template("public/student_view.html")
+
+@blueprint.route("/bug/")
+def bug_report():
+    """Bug report. Redirect to Github issues."""
+    return redirect("https://github.com/edurange/edurange-flask/issues/new") # TODO replace this with a parameter
