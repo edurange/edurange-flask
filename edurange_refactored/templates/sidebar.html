@@ -1,31 +1,42 @@
-<!-- Seperate sidebar -->
-<div id="sidebar" class="sidebar bg-secondary">
-    <div id="links" class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.home') }}">
-            <i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home
-        </a>
+<nav id="edu-sidebar">
+    {#<nav id="sidenav-2" class="sidenav sidenav-primary "  style="width: 240px; height: 100%; position: absolute; transition: all 0.3s linear; transform: translateX(0%);">#}
+    <a class="ripple d-flex justify-content-center py-4 ripple-surface-primary sidebar-header" 
+        href="{{ url_for('public.home') }}">
+        <h3>
+            Edurange
+        </h3>
+    </a>
+    <ul class="list-unstyled sidenav-menu">
+        <li class="sidenav-item">
+            <a class href="{{ url_for('public.home') }}">
+                <i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home
+            </a>
+        </li>
+
+        {# View specific links #}
         {% if nav['links'] is not none %}
         {% for link in nav['links'] %}
-        {{ link }}
+        <li class="sidenav-item">
+            {{ link }}
+        </li>
         {% endfor %}
         {% endif %}
-        <a class="list-group-item list-group-item-action bg-secondary text-white" href="{{ url_for('public.about') }}">
-            <i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;About
-        </a>
-    </div>
-</div>
-<script type="text/javascript">
-  /* Update sidebar css if sidebar is true (for visible) in session storage */
-  if (sessionStorage.getItem("sidebar") === "true") {
-    document.getElementById("sidebar").style.display = "block";
-  }
-  else {
-    document.getElementById("sidebar").style.display = "none";
-  }
 
-  /* Change bg color of link to the currently loaded page */
-  let currLink = document.querySelector('#links > a[href="' + window.location.pathname + '"]');
-  if (currLink !== null) {
-      currLink.classList.replace('bg-secondary', 'bg-dark');
-  }
-</script>
+        <li class="sidenav-item">
+            <a class href="{{ url_for('public.about') }}">
+                <i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;About
+            </a>
+        </li>
+    </ul>
+
+    <hr>
+
+    <ul class="list-unstyled sidebar-bottom-button">
+        <li>
+            <a href="{{ url_for('public.bug_report') }}" class="article">
+                <i class="fa fa-bug"></i>&nbsp;&nbsp;
+                Report a Bug
+            </a> 
+        </li>
+    </ul>
+</nav>
