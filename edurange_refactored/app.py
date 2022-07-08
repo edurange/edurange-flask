@@ -8,7 +8,7 @@ from flask import Flask, render_template
 from flask_login import current_user
 from flask_socketio import SocketIO
 
-from edurange_refactored import commands, public, user, tutorials
+from edurange_refactored import commands, public, user, tutorials, api
 from edurange_refactored.extensions import (
     bcrypt,
     cache,
@@ -70,6 +70,9 @@ def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(tutorials.views.blueprint)
+
+    # test
+    app.register_blueprint(api.contents.blueprint)
 
     return None
 
