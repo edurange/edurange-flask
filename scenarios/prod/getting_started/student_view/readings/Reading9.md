@@ -1,4 +1,3 @@
-
 ### mv
 
 `mv` is used to move a file from one location to another, or to rename a file. type `man mv`
@@ -44,5 +43,5 @@ Or you can open up another file or create a new file while you are still in vim 
 
 And you can jump from file to file with the `:b` keystrokes and using tab to go through which file you would like to edit next.
 
----
+
 

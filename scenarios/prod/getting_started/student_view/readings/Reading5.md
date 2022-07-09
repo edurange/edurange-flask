@@ -1,6 +1,3 @@
-
-
-
 ### pwd
 
 `pwd` stands for "Print working directory" - it will tell you where you are within the filesystem.
@@ -16,7 +13,7 @@ TASK: `cd` into your home directory and then type `ls` and you will see a direct
 
 Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. The use of sudo in EDURange is restricted, however.
 
----
+
 
 
 

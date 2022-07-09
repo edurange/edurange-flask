@@ -1,4 +1,3 @@
-
 ### vim
 
 vim is a program that is used to edit files, and will hopefully be your new best friend! There are different editors out there for example, nano and emacs. To create a file just type

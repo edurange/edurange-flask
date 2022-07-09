@@ -1,4 +1,3 @@
-
 ### Case Sensitivity
 
 Case sensitivity means that HoW yoU labEL yoUR files matters. If you search for a file called hiya.docx, it would not be the same as finding a file, hiyA.docX.

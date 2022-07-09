@@ -1,4 +1,3 @@
-
 Not all files appear as they really are. Just because you see a file that says, `imanimage.png` does not mean that it is an image. It could be a text file or a harmful file if executed! So... how do you protect yourself? One way is with the file command!
 
 ### file
@@ -35,5 +34,5 @@ You should see something like:
 
 TASK: In your home directory there is a folder called `stuff`. Open that up and find out what file types are in there. One is a text file (ASCII). `cat` that and find the secret code inside.
 
----
+
 

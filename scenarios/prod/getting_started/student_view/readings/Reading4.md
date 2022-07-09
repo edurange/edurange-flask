@@ -1,4 +1,3 @@
-
 There are parameters and options you can give a command. What if you wanted to list the permissions of a file and find hidden files? (Yes there are hidden files!)
 
 Now type
