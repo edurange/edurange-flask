@@ -3,128 +3,127 @@
     "type":"object",
     "description":"JSON format for the student scenario API.",
     "properties":{
-        "scenario_title":{
+        "ScenarioTitle":{
             "type":"string"
         },
-        "student_guide":{
-            "section_order":{
-                "type":"array",
-                "description":"The order in which to render the sections.",
-                "items":{
-                    "type":"integer"
-                }
-            },
-            "sections":{
-                "type":"array",
-                "items":{
-                    "type":"object",
-                    "properties":{
-                        "count":{
-                            "type":"integer",
-                            "description":"Section number."
-                        },
-                        "title":{
-                            "type":"string",
-                            "description":"Section title."
-                        },
-                        "order":{
-                            "type":"array",
-                            "description":"The order in which to render the questions and readings in each section.",
-                            "items":{
-                                "type":"string",
-                                "description":"The key of a question or reading, for example: reading1."
-                            }
-                        },
-                        "alt_order":{
-                            "type":"array",
-                            "description":"Alternative section-internal ordering, mainly for AB testing.",
-                            "items":{
-                                "type":"string"
-                            }
-                        },
-                        "questions":{
-                            "type":"object",
-                            "description":"The questions from the YAML file.",
-                            "additionalProperties":{
-                                "type":"object",
-                                "properties":{
-                                    "text":{
-                                        "type":"string"
-                                    },
-                                    "type":{
-                                        "type":"string"
-                                    },
-                                    "answers":{
-                                        "type":"array",
-                                        "items":{
-                                            "type":"object",
-                                            "properties":{
-                                                "value":{
-                                                    "type":"string",
-                                                    "description":"The  desired answer."
-                                                },
-                                                "points":{
-                                                    "type":"integer"
-                                                }
-                                            }
-                                        },
-                                        "required":[
-                                            "value",
-                                            "points"
-                                        ]
-                                    },
-                                    "points":{
-                                        "type":"integer"
-                                    },
-                                    "options":{
-                                        "type":"array",
-                                        "items":{
-                                            "type":"string"
-                                        }
-                                    }
-                                },
-                                "required":[
-                                    "text",
-                                    "type",
-                                    "answers",
-                                    "points"
-                                ]
-                            },
-                            "required":[
-                                
-                            ]
-                        },
-                        "readings":{
-                            "type":"object",
-                            "description":"The names of the reading files which make up the guide sections.",
-                            "additionalProperties":{
-                                "type":"string",
-                                "description":"Map from reading key to the filename of the reading section."
-                            }
-                        }
-                    },
-                    "required":[
-                        "count",
-                        "title",
-                        "order",
-                        "readings"
-                    ]
+        "StudentGuide":{
+            "type":"object",
+            "required":[
+                "Sections"
+            ],
+            "properties":{
+                "SectionOrder":{
+                    "type":"array",
+                    "description":"The order in which to render the sections. Assume default order if not present.",
+                    "items":{
+                        "type":"integer"
+                    }
                 },
-                "required":[
-                    "sections"
-                ]
+                "Sections":{
+                    "type":"array",
+                    "items":{
+                        "type":"object",
+                        "properties":{
+                            "Count":{
+                                "type":"integer",
+                                "description":"Section number."
+                            },
+                            "Title":{
+                                "type":"string",
+                                "description":"Section title."
+                            },
+                            "Order":{
+                                "type":"array",
+                                "description":"The order in which to render the questions and readings in each section.",
+                                "items":{
+                                    "type":"string",
+                                    "description":"The key of a question or reading, for example: reading1."
+                                }
+                            },
+                            "AltOrder":{
+                                "type":"array",
+                                "description":"Alternative section-internal ordering, mainly for AB testing.",
+                                "items":{
+                                    "type":"string"
+                                }
+                            },
+                            "Questions":{
+                                "type":"object",
+                                "description":"The questions from the YAML file.",
+                                "additionalProperties":{
+                                    "type":"object",
+                                    "properties":{
+                                        "Text":{
+                                            "type":"string"
+                                        },
+                                        "Type":{
+                                            "type":"string"
+                                        },
+                                        "Answers":{
+                                            "type":"array",
+                                            "items":{
+                                                "type":"object",
+                                                "properties":{
+                                                    "Value":{
+                                                        "description":"The  desired answer."
+                                                    },
+                                                    "Points":{
+                                                        "type":"integer"
+                                                    }
+                                                }
+                                            },
+                                            "required":[
+                                                "Value",
+                                                "Points"
+                                            ]
+                                        },
+                                        "Points":{
+                                            "type":"integer"
+                                        },
+                                        "Options":{
+                                            "type":"array",
+                                            "items":{
+                                                "type":"string"
+                                            }
+                                        }
+                                    },
+                                    "required":[
+                                        "Text",
+                                        "Type",
+                                        "Answers",
+                                        "Points"
+                                    ]
+                                }
+                            },
+                            "Readings":{
+                                "type":"object",
+                                "description":"The names of the reading files which make up the guide sections.",
+                                "additionalProperties":{
+                                    "type":"string",
+                                    "description":"Map from reading key to the filename of the reading section."
+                                }
+                            }
+                        },
+                        "required":[
+                            "Count",
+                            "Title",
+                            "Order",
+                            "Readings"
+                        ]
+                    }
+                }
             }
         },
-        "instructor_guide":{
+        "InstructorGuide":{
             "type":"object"
         },
-        "scenario_options":{
+        "ScenarioOptions":{
             "type":"object",
             "description":"Scenario configuration options."
         }
     },
     "required":[
-        "scenario_title",
-        "student_guide"
+        "ScenarioTitle",
+        "StudentGuide"
     ]
 }
