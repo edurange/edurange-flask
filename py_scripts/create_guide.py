@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-Input: markdown guide with interleaved questions.
+Input: markdown guide with interleaved questions, questions.yml, output filepath
 Output: content.json, readings files.
+See content.schema.json for the format specification and sample_content.json for an example.
 """
 
-
 import json
-from flask import jsonify
 import sys, re 
 from yaml import load, Loader
 from os import path
@@ -32,38 +31,52 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     order_l = []
     section_title = ""
     section_count = 0
+    has_non_blank_line = False
 
     def add_section():
-        nonlocal section, sections, section_count, section_title, order_l, questions, readings
-        section["count"] = section_count
-        section["title"] = section_title
-        section["order"] = ", ".join(order_l)
-        section["questions"] = questions.copy()
-        section["readings"] = readings.copy()
+        nonlocal section, \
+                sections, \
+                section_count, \
+                section_title, \
+                order_l, \
+                questions, \
+                readings, \
+                has_non_blank_line
+
+        section["Count"] = section_count
+        section["Title"] = section_title
+        section["Order"] = order_l.copy()
+        section["Questions"] = questions.copy()
+        section["Readings"] = readings.copy()
         sections.append(section.copy())
         # reset for next section
         section = {}
         order_l = []
         questions = {}
         readings = {}
+        has_non_blank_line = False
 
     
     def add_reading():
-        nonlocal reading, readings, ridx, order_l 
-        if len(reading) > 0:
-            reading_title = f"reading{ridx+1}"
+        nonlocal reading, \
+                readings, \
+                ridx, \
+                order_l, \
+                has_non_blank_line
+        if len(reading) > 0: 
+            reading_title = f"Reading{ridx+1}"
             reading_filename = f"{reading_title}.md"
             readings[reading_title] = reading_filename
             order_l.append(reading_title)
             with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
                 readingp.writelines(reading)
-            #print(reading)
             reading=[]
             ridx += 1
+            has_non_blank_line = False
     
     def add_question():
         nonlocal qidx, questions, questions_yaml, order_l
-        question_title = f"question{qidx+1}"
+        question_title = f"Question{qidx+1}"
         questions[question_title] = questions_yaml[qidx]
         order_l.append(question_title)
         qidx += 1
@@ -73,12 +86,12 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     with open(guide_filename, 'r') as fp:
         # Assume first line looks like this "# Guide Title"
         guide_title = fp.readline().split("# ")[1].strip()
-        contents["title"] = guide_title
+        contents["ScenarioTitle"] = guide_title
 
         while line := fp.readline():
 
-            #print(line)
-            if next_match := re.match( # section here: add reading, 
+            # New section
+            if next_match := re.match( 
                 r"^## \d\. ",
                 line
             ): 
@@ -91,7 +104,8 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 section_count = secidx 
                 print(next_match)
 
-            elif next_match := re.match( ## question here: add question to section, increment ridx
+            # New Question
+            elif next_match := re.match( 
                 r"^>>>>>>>",
                 line
             ):
@@ -100,25 +114,38 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 add_question()
 
             else:
-                reading.append(line)
+                if not has_non_blank_line and not str.isspace(line):
+                    has_non_blank_line = True
+                if has_non_blank_line:
+                    reading.append(line)
 
-    # finally, check if there are readings remaining and add final section
+    # Finally, check if there are readings remaining and add final section
     add_reading()
     add_section()
-    contents["sections"] = sections.copy()
+    # Assemble final object and write.
+    student_guide = {
+        "SectionOrder" : list(range(1, len(sections)+1)),
+        "Sections" : sections.copy()
+    }
+    instructor_guide = {}
+    scenario_options = {}
+    contents["StudentGuide"] = student_guide
+    contents["InstructorGuide"] = instructor_guide
+    contents["ScenarioOptions"] = scenario_options
     contents_json = json.dumps(contents, indent=4)
     with open(path.join(out_filepath, "content.json"), 'w') as contentp:
         contentp.writelines(contents_json)
         
 
 def main():
-    """
+    usage = """
     Usage: python3 create_guide.py GPATH QPATH OPATH 
     Where GPATH is the path to the guide file,
           QPATH is the path to the questions file,
           OPATH is the path to the output directory, [scenario]/student_view/
     """
     if len(sys.argv) < 4:
+        print(usage)
         exit()
     guide_filepath = sys.argv[1] 
     questions_filepath = sys.argv[2]
