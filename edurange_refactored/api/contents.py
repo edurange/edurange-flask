@@ -32,7 +32,7 @@ from edurange_refactored.user.forms import RegisterForm
 from edurange_refactored.user.models import GroupUsers, StudentGroups, User
 from edurange_refactored.utils import TokenHelper, flash_errors
 
-blueprint = Blueprint("api", __name__, static_folder="../static")
+blueprint = Blueprint("api", __name__, url_prefix="/api", static_folder="../static")
 jwtToken = JWT()
 helper = TokenHelper()
 oct_data = helper.get_data()
