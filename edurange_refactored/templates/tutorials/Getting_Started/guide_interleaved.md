@@ -1,6 +1,6 @@
 # Getting Started
 
----
+
 
 ## 1. Welcome to Cybersec
 
@@ -12,7 +12,7 @@ Congratulations and welcome to CyberSec. As an intern you will need to complete 
 
 Use the credentials and IP Address provided on the scenario page to SSH into the exercise
 
----
+
 
 
 
@@ -41,7 +41,7 @@ Why should you learn the command line?
 
 In summation, it allows you to do stuff faster than GUI and provides built in automation support.
 
----
+
 
 
 
@@ -59,7 +59,7 @@ The root, signified by a `/` , is the beginning of your files. But you can also 
 
 A root user is someone who has access to everything on the computer. They could even delete everything in a computer. It is best practices to disable root or use a VERY strong password. For example using numbers, letters, capitals, special symbols and a random sampling of each, and no dictionary words.
 
----
+
 
 <h2 class="colH3"> 4. Commands </h2>
 
@@ -173,7 +173,7 @@ TASK: `cd` into your home directory and then type `ls` and you will see a direct
 
 Sometimes commands can only be run as a super user. This is when the command sudo comes to use (which stands for: superuser do). This gives unprivileged users access to privileged commands. The use of sudo in EDURange is restricted, however.
 
----
+
 
 
 
@@ -215,7 +215,7 @@ You should see something like:
 
 TASK: In your home directory there is a folder called `stuff`. Open that up and find out what file types are in there. One is a text file (ASCII). `cat` that and find the secret code inside.
 
----
+
 
 >>>>>>> QUESTION 4
 
@@ -289,7 +289,7 @@ One of the most useful tricks you can use angle brackets for is suppressing erro
 
 >>>>>>> QUESTION 5
 
----
+
 
 ## 7. vim, Regular expresssions, and find
 
@@ -358,7 +358,7 @@ TASK: Hidden throughout your home directory are image files with the name, `edur
 
 >>>>>>> QUESTION 6
 
----
+
 
 ## 8. More Commands
 
@@ -407,7 +407,7 @@ Or you can open up another file or create a new file while you are still in vim 
 
 And you can jump from file to file with the `:b` keystrokes and using tab to go through which file you would like to edit next.
 
----
+
 
 ## 9. Final Mission
 
@@ -415,6 +415,6 @@ Here at CyberSec you have been well trained recruit, now let's put your training
 
 TASK: Our intelligence has told us that somewhere in your computer is an image that is vital to our company. This image has a weird name but we know for certain that it contains the word `cowFJS` in it. This file is somewhere on the system, but it is NOT in your home directory. Through our sources we also know that there is ANOTHER file in that folder. COPY both the image and second file to your home directory in a new folder, called `final-mission`. Then create a new file in the folder, `final-mission`, called `cowsay.file` with the contents of the cowsay man file in it.
 
----
+
 
 >>>>>>> QUESTION 7
