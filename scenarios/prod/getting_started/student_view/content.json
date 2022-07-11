@@ -1,6 +1,8 @@
 {
     "ScenarioTitle": "Getting Started",
     "StudentGuide": {
+        "TotalQuestions": 7,
+        "TotalPoints": 113,
         "SectionOrder": [
             1,
             2,

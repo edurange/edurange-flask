@@ -9,9 +9,19 @@
         "StudentGuide":{
             "type":"object",
             "required":[
-                "Sections"
+                "Sections",
+                "TotalQuestions",
+                "TotalPoints"
             ],
             "properties":{
+                "TotalQuestions":{
+                    "type":"integer",
+                    "description":"The total number of questions in the scenario."
+                },
+                "TotalPoints":{
+                    "type":"integer",
+                    "description":"The sum of the point values of the questions."
+                },
                 "SectionOrder":{
                     "type":"array",
                     "description":"The order in which to render the sections. Assume default order if not present.",

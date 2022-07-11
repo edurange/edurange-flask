@@ -31,17 +31,19 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     order_l = []
     section_title = ""
     section_count = 0
+    total_questions = 0
+    total_points = 0
     has_non_blank_line = False
 
     def add_section():
         nonlocal section, \
                 sections, \
-                section_count, \
-                section_title, \
                 order_l, \
                 questions, \
                 readings, \
-                has_non_blank_line
+                total_questions,\
+                total_points,\
+                has_non_blank_line 
 
         section["Count"] = section_count
         section["Title"] = section_title
@@ -49,6 +51,13 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
         section["Questions"] = questions.copy()
         section["Readings"] = readings.copy()
         sections.append(section.copy())
+        total_questions += len(section["Questions"])
+        total_points += sum(
+            map(
+                lambda question: question["Points"],
+                section["Questions"].values()
+            )
+        )
         # reset for next section
         section = {}
         order_l = []
@@ -75,7 +84,7 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
             has_non_blank_line = False
     
     def add_question():
-        nonlocal qidx, questions, questions_yaml, order_l
+        nonlocal qidx, questions, order_l
         question_title = f"Question{qidx+1}"
         questions[question_title] = questions_yaml[qidx]
         order_l.append(question_title)
@@ -124,8 +133,10 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     add_section()
     # Assemble final object and write.
     student_guide = {
+        "TotalQuestions" : total_questions,
+        "TotalPoints" : total_points,
         "SectionOrder" : list(range(1, len(sections)+1)),
-        "Sections" : sections.copy()
+        "Sections" : sections.copy(),
     }
     instructor_guide = {}
     contents["StudentGuide"] = student_guide
