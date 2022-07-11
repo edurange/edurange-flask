@@ -116,10 +116,6 @@
         },
         "InstructorGuide":{
             "type":"object"
-        },
-        "ScenarioOptions":{
-            "type":"object",
-            "description":"Scenario configuration options."
         }
     },
     "required":[

@@ -128,10 +128,8 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
         "Sections" : sections.copy()
     }
     instructor_guide = {}
-    scenario_options = {}
     contents["StudentGuide"] = student_guide
     contents["InstructorGuide"] = instructor_guide
-    contents["ScenarioOptions"] = scenario_options
     contents_json = json.dumps(contents, indent=4)
     with open(path.join(out_filepath, "content.json"), 'w') as contentp:
         contentp.writelines(contents_json)
