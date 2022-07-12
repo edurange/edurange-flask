@@ -1,6 +1,8 @@
 {
     "ScenarioTitle":"Getting Started",
     "StudentGuide":{
+        "TotalQuestions": 1,
+        "TotalPoints":20,
         "SectionOrder":[ 1,2,3,4,5,6,7 ],
         "Sections":[
             {
@@ -15,30 +17,30 @@
                     "Reading2",
                     "Question1",
                     "Reading1"
-                ],
-                "Questions":{
-                    "Question1":{
-                        "Text":"What can you do with vim?",
-                        "Type":"string",
-                        "Answers":[
-                            {
-                                "Value":"The answer is street sharks.",
-                                "Points":20
-                            }
-                        ],
-                        "Points":20,
-                        "Options":[
-                            "accept-integer",
-                            "accept-decimal"
-                        ]
-                    }
-                },
-                "Readings":{
-                    "Reading1":"reading1.md",
-                    "Reading2":"reading2.md"
-                }
+                ]
             }
-        ]
+        ],
+        "Readings":{
+            "Reading1":"reading1.md",
+            "Reading2":"reading2.md"
+        },
+        "Questions":{
+            "Question1":{
+                "Text":"What can you do with vim?",
+                "Type":"string",
+                "Answers":[
+                    {
+                        "Value":"The answer is street sharks.",
+                        "Points":20
+                    }
+                ],
+                "Points":20,
+                "Options":[
+                    "accept-integer",
+                    "accept-decimal"
+                ]
+            }
+        }
     },
     "InstructorGuide":{
         

@@ -22,8 +22,6 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     qidx = 0
     ridx = 0
     order_l = []
-    questions = {}
-    readings = {} 
     section = {}
     readings = {}
     questions = {}
@@ -48,21 +46,21 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
         section["Count"] = section_count
         section["Title"] = section_title
         section["Order"] = order_l.copy()
-        section["Questions"] = questions.copy()
-        section["Readings"] = readings.copy()
+        # section["Questions"] = questions.copy()
+        # section["Readings"] = readings.copy()
         sections.append(section.copy())
-        total_questions += len(section["Questions"])
-        total_points += sum(
-            map(
-                lambda question: question["Points"],
-                section["Questions"].values()
-            )
-        )
+        # total_questions += qidx#len(section["Questions"])
+        # total_points += sum(
+        #     map(
+        #         lambda question: question["Points"],
+        #         student_guide["Questions"].values()
+        #     )
+        # )
         # reset for next section
         section = {}
         order_l = []
-        questions = {}
-        readings = {}
+        #questions = {}
+        #readings = {}
         has_non_blank_line = False
 
     
@@ -132,11 +130,20 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     add_reading()
     add_section()
     # Assemble final object and write.
+    total_questions = len(questions)
+    total_points = sum(
+        map(
+            lambda q: q["Points"],
+            questions.values()
+        )
+    )
     student_guide = {
         "TotalQuestions" : total_questions,
         "TotalPoints" : total_points,
         "SectionOrder" : list(range(1, len(sections)+1)),
         "Sections" : sections.copy(),
+        "Readings" : readings.copy(),
+        "Questions": questions.copy(),
     }
     instructor_guide = {}
     contents["StudentGuide"] = student_guide
