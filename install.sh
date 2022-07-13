@@ -94,13 +94,6 @@ sudo -Hiu postgres psql -U postgres -c "CREATE DATABASE $dbname ;"
 cd $current_directory
 npm run build
 
-# Upgrade NodeJS from version 12 to 16
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-sudo apt install nodejs -y
-
-# Raise the limit on number of file watchers for the system
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-
 # Clean up
 rm ./terraform_1.2.2_linux_amd64.zip
 rm ./docker.sh
@@ -111,3 +104,10 @@ echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
 
 sudo su $USER --login
+
+# Upgrade NodeJS from version 12 to 16
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+sudo apt install nodejs -y
+
+# Raise the limit on number of file watchers for the system
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
