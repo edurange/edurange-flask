@@ -48,7 +48,7 @@ def test():
 
 @blueprint.route("/get_content/<scenario_id>", methods=["GET"])
 @login_required
-def get_content(scenario_id: int):
+def get_content(scenario_id):
     """
     Input:  ID number of a scenario.
     Output: The JSON outline for a student scenario. 
@@ -57,6 +57,10 @@ def get_content(scenario_id: int):
     TODO:   
             Instructors should only be able to access content for scenarios that they are managing.
     """
+    try:
+        scenario_id = int(scenario_id)
+    except Exception as e:
+        return jsonify({"400":"Bad Request: Required type integer"}), 400
     is_admin, is_instructor = get_roles()
     if is_admin or is_instructor or student_has_access(scenario_id):
         if scenario_exists(scenario_id):
@@ -83,12 +87,16 @@ for each question: highest score, most recent score
 """
 @blueprint.route("/get_state/<scenario_id>", methods=["GET"])
 @login_required
-def get_state(scenario_id: int):
+def get_state(scenario_id):
     """
     Input:  ID number of a scenario.
     Output: The JSON outline for a student scenario.
     Errors: 
     """
+    try:
+        scenario_id = int(scenario_id)
+    except Exception as e:
+        return jsonify({"400":"Bad Request: Required type integer"}), 400
     is_admin, is_instructor = get_roles()
     if is_admin or is_instructor or student_has_access(scenario_id):
         if scenario_exists(scenario_id):
