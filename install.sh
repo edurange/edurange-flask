@@ -107,7 +107,10 @@ sudo su $USER --login
 
 # Upgrade NodeJS from version 12 to 16
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-sudo apt install nodejs -y
+npm cache clean -f
+sudo npm install -g n
+sudo n stable
+node --version
 
 # Raise the limit on number of file watchers for the system
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
