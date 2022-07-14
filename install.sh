@@ -110,7 +110,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 npm cache clean -f
 sudo npm install -g n
 sudo n stable
-node --version
+cd ~/edurange-flask/
+npx create-react-app edurange_react -y
 
 # Raise the limit on number of file watchers for the system
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
