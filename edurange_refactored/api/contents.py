@@ -16,6 +16,7 @@ from flask import (
 import json
 
 from sqlalchemy import func
+from edurange_refactored.form_utils import process_request
 
 from edurange_refactored.role_utils import get_roles, scenario_exists, student_has_access
 
@@ -57,24 +58,22 @@ def get_content(scenario_id):
     TODO:   
             Instructors should only be able to access content for scenarios that they are managing.
     """
-    try:
-        scenario_id = int(scenario_id)
-    except Exception as e:
-        return jsonify({"400":"Bad Request: Required type integer"}), 400
-    is_admin, is_instructor = get_roles()
-    if is_admin or is_instructor or student_has_access(scenario_id):
-        if scenario_exists(scenario_id):
-            if scenario_supports(scenario_id):
-                scenario_type = db.session.query(Scenarios.description)\
-                    .filter_by(id=scenario_id)\
-                    .first()\
-                    .description\
-                    .lower()
-                with open(f"scenarios/prod/{scenario_type}/student_view/content.json", "r") as fp:
-                    return json.load(fp)
-            return jsonify({"405": "Scenario does not support this feature."}), 405
-        return jsonify({"404": "Scenario does not exist."}), 404
-    return jsonify({"401": "You are not permitted to access this content."}), 401
+    if parsable_as(scenario_id, int):
+        is_admin, is_instructor = get_roles()
+        if is_admin or is_instructor or student_has_access(scenario_id):
+            if scenario_exists(scenario_id):
+                if scenario_supports(scenario_id):
+                    scenario_type = db.session.query(Scenarios.description)\
+                        .filter_by(id=scenario_id)\
+                        .first()\
+                        .description\
+                        .lower()
+                    with open(f"scenarios/prod/{scenario_type}/student_view/content.json", "r") as fp:
+                        return json.load(fp)
+                return jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
+            return jsonify({"404": "Not Found: Scenario does not exist."}), 404
+        return jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
+    return jsonify({"400":"Bad Request: Required type integer"}), 400
 
 
 # TODO :
@@ -93,29 +92,36 @@ def get_state(scenario_id):
     Output: The JSON outline for a student scenario.
     Errors: 
     """
-    try:
-        scenario_id = int(scenario_id)
-    except Exception as e:
-        return jsonify({"400":"Bad Request: Required type integer"}), 400
-    is_admin, is_instructor = get_roles()
-    if is_admin or is_instructor or student_has_access(scenario_id):
-        if scenario_exists(scenario_id):
-            if scenario_supports(scenario_id):
-                return jsonify(calc_state(current_user.id, scenario_id))
-            return jsonify({"405": "Scenario does not support this feature."}), 405
-        return jsonify({"404": "Scenario does not exist."}), 404
-    return jsonify({"401": "You are not permitted to access this content."}), 401
-    # return jsonify({"400": "Bad Request: Missing one of required arguments: sid, uid."}), 400
+    if parsable_as(scenario_id, int):
+        is_admin, is_instructor = get_roles()
+        if is_admin or is_instructor or student_has_access(scenario_id):
+            if scenario_exists(scenario_id):
+                if scenario_supports(scenario_id):
+                    return jsonify(calc_state(current_user.id, scenario_id))
+                return jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
+            return jsonify({"404": "Not Found: Scenario does not exist."}), 404
+        return jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
+    return jsonify({"400":"Bad Request: Required type integer"}), 400
 
-@blueprint.route("/post_ans/<i>", methods=["POST"])
+@blueprint.route("/post_ans/<scenario_id>", methods=["POST"])
 @login_required
-def post_ans(i):
+def post_ans(scenario_id):
     """
     Input:  ID number of a scenario.
-    Output: The JSON outline for a student scenario.
+    Effect: POST student response form data to the backend for grading.
     Errors: 
     """
-    return jsonify({"TODO":"TODO"})
+    if parsable_as(scenario_id, int):
+        ajax = process_request(request.form)  
+    return jsonify({"400":"Bad Request: Required type integer."}), 400
+
+
+def parsable_as(input, t: type):
+    try:
+        t(input)
+        return True
+    except Exception:
+        return False
 
 
 def calc_state(user_id:          int,
