@@ -10,23 +10,7 @@
     <li><a href=index.html>Topic D</a></li>
   </ul>
 </nav>
-<div class="question">
-  <form class="question--form">
-            <div class="submission-traits">
-                <p class="submission-points">8 points</p>
-                <p class="submission-state">unsubmitted</p>
-            </div>
-    <p class="question-text">There is one chopstick between each philosopher, to their immediate right and left. <br>
-    In order to eat, a given philosopher needs to use both chopsticks. <br>
-    How can you ensure all the philosophers can eat reliably without starving to death?<p>
-
-
-    <textarea class="answer" rows="1" cols="50"></textarea><br>
-    <input class=submit type="submit" value="Submit">
-  </form>
-  <div class="guide">
-    <p class="text-box">Guide box here</p>
-  </div>
+<div id="student_view_question"></div>
 </div>
 <div class='chatbox'>
   <p>Insert Chatbox Item Here</p>
@@ -63,6 +47,8 @@ $('#log').html(numbers_string);
 
 });
 </script>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<script src="/static/build/student_view_question.bundle.js"></script>
 {% endblock %}
-
-

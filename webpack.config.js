@@ -18,7 +18,8 @@ const ProductionPlugins = [
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 
-module.exports = {
+module.exports = [
+{
   // configuration
   context: __dirname,
   entry: {
@@ -26,7 +27,7 @@ module.exports = {
     main_css: [
       path.join(__dirname, 'node_modules', 'font-awesome', 'css', 'font-awesome.css'),
       path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
-      path.join(__dirname, 'assets', 'css', 'style.css')
+      path.join(__dirname, 'assets', 'css', 'style.css'),
     ],
   },
   mode: debug,
@@ -82,4 +83,37 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ["@babel/preset-env"], cacheDirectory: true } },
     ],
   }
-};
+
+  },
+  {
+    context: path.join(__dirname, '/edurange_refactored/templates/student_view/partials/'),
+    entry: {
+      student_view_question: './student_view_question',
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+
+    },
+    resolve: {
+      extensions: [".js"]
+    },
+    module: {
+      rules: [
+        { 
+          test: /\.?js$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        }
+      ]
+    }
+  },
+];
