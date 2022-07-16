@@ -1,15 +1,12 @@
-"""Public section, including homepage and signup."""
+"""Student View API routes."""
 from functools import reduce
 from logging import raiseExceptions
 from flask import (
     Blueprint,
     current_app,
-    flash,
-    redirect,
     render_template,
     request,
     session,
-    url_for,
     jsonify,
 )
 
@@ -20,22 +17,14 @@ from edurange_refactored.form_utils import process_request
 
 from edurange_refactored.role_utils import get_roles, scenario_exists, student_has_access
 
-from ..user.models import Responses, User, Scenarios
+from ..user.models import Responses, Scenarios
 
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user, login_required
 from jwt import JWT
-from jwt.exceptions import JWTDecodeError
 
-from edurange_refactored.extensions import bcrypt, login_manager, db
-from edurange_refactored.public.forms import (
-    LoginForm,
-    RequestResetPasswordForm,
-    RestorePasswordForm,
-)
-from edurange_refactored.tasks import test_send_async_email
-from edurange_refactored.user.forms import RegisterForm
-from edurange_refactored.user.models import GroupUsers, StudentGroups, User
-from edurange_refactored.utils import TokenHelper, bashAnswer, calcScr, displayProgress, flash_errors, getAttempt, getTotalScore, questionReader, scoreCheck, scoreSetup, tempMaker
+from edurange_refactored.extensions import  db
+from edurange_refactored.user.forms import scenarioResponseForm
+from edurange_refactored.utils import TokenHelper, bashAnswer,  questionReader
 
 blueprint = Blueprint("api", __name__, url_prefix="/api", static_folder="../static")
 jwtToken = JWT()
@@ -43,9 +32,17 @@ helper = TokenHelper()
 oct_data = helper.get_data()
 
 @blueprint.route("/test", methods=["GET"])
+@login_required
 def test():
     """Test page."""
-    return jsonify({"test": "this is a test"})
+    srF = scenarioResponseForm()
+    scenario_id = 4
+    qnum = 1
+    return render_template('api/test.html',
+        srF=srF,
+        scenario_id=scenario_id,
+        qnum=qnum
+    )
 
 @blueprint.route("/get_content/<scenario_id>", methods=["GET"])
 @login_required
@@ -113,7 +110,9 @@ def post_ans(scenario_id):
     """
     if parsable_as(scenario_id, int):
         ajax = process_request(request.form)  
-    return jsonify({"400":"Bad Request: Required type integer."}), 400
+        return jsonify({})
+    else:
+        return jsonify({"400":"Bad Request: Required type integer."}), 400
 
 
 def parsable_as(input, t: type):
