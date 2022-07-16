@@ -75,7 +75,7 @@ class TestRegistering:
         # Check Number of Users
         old_count = len(User.query.all())
         # Clicks Create Account button
-        res = res.click("Create account")
+        res = res.click("Register")
         # Fills out the form
         form = res.forms["registerForm"]
         form["username"] = "foobar"
