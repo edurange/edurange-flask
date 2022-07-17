@@ -66,7 +66,10 @@ def get_content(scenario_id):
                         .description\
                         .lower()
                     with open(f"scenarios/prod/{scenario_type}/student_view/content.json", "r") as fp:
-                        return json.load(fp)
+                        content = json.load(fp)
+                    srF = scenarioResponseForm()
+                    content['StudentGuide']['csrf_token'] = srF['csrf_token']
+                    return content
                 return jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
             return jsonify({"404": "Not Found: Scenario does not exist."}), 404
         return jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
