@@ -9,6 +9,7 @@ import json
 import sys, re 
 from yaml import load, Loader
 from os import path
+import argparse
 
 def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     """
@@ -154,18 +155,21 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
         
 
 def main():
-    usage = """
-    Usage: python3 create_guide.py GPATH QPATH OPATH 
-    Where GPATH is the path to the guide file,
-          QPATH is the path to the questions file,
-          OPATH is the path to the output directory, [scenario]/student_view/
-    """
-    if len(sys.argv) < 4:
-        print(usage)
-        exit()
-    guide_filepath = sys.argv[1] 
-    questions_filepath = sys.argv[2]
-    out_filepath = sys.argv[3]
+
+    parser = argparse.ArgumentParser(description='Create a content.json file from a markdown guide and questions.yml')
+    parser.add_argument('prod_path', metavar='PATH', type=str, nargs=1,help="path to the scenario prod folder")
+    args = parser.parse_args()
+    
+    prod_path = args.prod_path[0]
+
+    guide_filepath = path.join(prod_path, 'guide_interleaved.md')
+    questions_filepath = path.join(prod_path, 'questions.yml')
+    out_filepath = path.join(prod_path, 'student_view')
+
+    assert path.exists(guide_filepath)
+    assert path.exists(questions_filepath)
+    assert path.exists(out_filepath)
+
     parse(guide_filepath, questions_filepath, out_filepath)
 
 
