@@ -11,7 +11,8 @@
             5,
             6,
             7,
-            8
+            8,
+            9
         ],
         "Sections": [
             {
@@ -32,50 +33,57 @@
                 "Count": 3,
                 "Title": "Linux File System",
                 "Order": [
-                    "Reading3",
-                    "Question1",
-                    "Question2",
-                    "Reading4",
-                    "Question3",
-                    "Reading5"
+                    "Reading3"
                 ]
             },
             {
                 "Count": 4,
-                "Title": "File Types",
+                "Title": "Commands",
                 "Order": [
-                    "Reading6",
-                    "Question4"
+                    "Reading4",
+                    "Question1",
+                    "Question2",
+                    "Reading5",
+                    "Question3",
+                    "Reading6"
                 ]
             },
             {
                 "Count": 5,
-                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
+                "Title": "File Types",
                 "Order": [
                     "Reading7",
-                    "Question5"
+                    "Question4"
                 ]
             },
             {
                 "Count": 6,
-                "Title": "vim, Regular expresssions, and find",
+                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
                 "Order": [
                     "Reading8",
-                    "Question6"
+                    "Question5"
                 ]
             },
             {
                 "Count": 7,
-                "Title": "More Commands",
+                "Title": "vim, Regular expresssions, and find",
                 "Order": [
-                    "Reading9"
+                    "Reading9",
+                    "Question6"
                 ]
             },
             {
                 "Count": 8,
+                "Title": "More Commands",
+                "Order": [
+                    "Reading10"
+                ]
+            },
+            {
+                "Count": 9,
                 "Title": "Final Mission",
                 "Order": [
-                    "Reading10",
+                    "Reading11",
                     "Question7"
                 ]
             }
@@ -90,7 +98,8 @@
             "Reading7": "Reading7.md",
             "Reading8": "Reading8.md",
             "Reading9": "Reading9.md",
-            "Reading10": "Reading10.md"
+            "Reading10": "Reading10.md",
+            "Reading11": "Reading11.md"
         },
         "Questions": {
             "Question1": {

@@ -2,7 +2,7 @@
 
 
 
-## 1. Welcome to Cybersec
+## Welcome to Cybersec
 
 ### Your Briefing
 
@@ -17,7 +17,7 @@ Use the credentials and IP Address provided on the scenario page to SSH into the
 
 
 
-## 2. Using the Terminal Commands
+## Using the Terminal Commands
 
 When using your computer (Mac, Linux, Windows) you typically are using a GUI (Graphical User Interface). It's a pretty representation of how your computer works. To really get into the ‘guts' of your computer and to really learn how to control it we will learn how to use the terminal. The terminal is a text based representation of your computer (rather than graphical). Learning to use the terminal will help you along your path to protecting your community and your self.
 
@@ -45,7 +45,7 @@ In summation, it allows you to do stuff faster than GUI and provides built in au
 
 
 
-## 3. Linux File System
+## Linux File System
 
 ### Hierarchy
 
@@ -61,7 +61,7 @@ A root user is someone who has access to everything on the computer. They could 
 
 
 
-<h2 class="colH3"> 4. Commands </h2>
+## Commands 
 
 What is a command? Commands are executable programs that you can call from your command-line terminal. The most common place to look for bash commands is in the `/bin` folder. Let's get started right away and use two different commands.
 
@@ -93,9 +93,9 @@ Type
 
 - `ls`
 
->>>>>>> QUESTION 1
+<question 1>
 
->>>>>>> QUESTION 2
+<question 2>
 
 There are parameters and options you can give a command. What if you wanted to list the permissions of a file and find hidden files? (Yes there are hidden files!)
 
@@ -154,7 +154,7 @@ TASK: Open the man page for `mv`. Can you give a brief description of what the c
 
 - If you don't see it highlighted, you may have typed something by mistake or your console colors may not be optimized. If you typed something by mistake, just retype `/-l` etc.
 
->>>>>>> QUESTION 3
+<question 3>
 
 
 
@@ -177,7 +177,7 @@ Sometimes commands can only be run as a super user. This is when the command sud
 
 
 
-## 5. File Types
+## File Types
 
 Not all files appear as they really are. Just because you see a file that says, `imanimage.png` does not mean that it is an image. It could be a text file or a harmful file if executed! So... how do you protect yourself? One way is with the file command!
 
@@ -217,10 +217,10 @@ TASK: In your home directory there is a folder called `stuff`. Open that up and 
 
 
 
->>>>>>> QUESTION 4
+<question 4>
 
 
-## 6. Case Sensitivity/touch/echo/Angle Brackets
+## Case Sensitivity/touch/echo/Angle Brackets
 
 ### Case Sensitivity
 
@@ -242,7 +242,7 @@ You will see that it was repeated back to you!
 
 ### Angle Brackets
 
-Angle Brackets are `>` `>>>>>>>` `<` `<<` . They have many uses. `>` Will replace a file with what you input. If the file already existed `>` will delete everything in that file and replace it with what you sent it. In contrast if you use `>>` , this will append what you sent to the bottom of the file, leaving the rest of the file intact. Let's give it a try.
+Angle Brackets are `>` `>>` `<` `<<` . They have many uses. `>` Will replace a file with what you input. If the file already existed `>` will delete everything in that file and replace it with what you sent it. In contrast if you use `>>` , this will append what you sent to the bottom of the file, leaving the rest of the file intact. Let's give it a try.
 
 Type
 
@@ -256,13 +256,13 @@ Now type
 
 - `cat newfile`
 
-You can see that `>` will replace any text with what you send it. While `>>>>>>>` will append to a file
+You can see that `>` will replace any text with what you send it. While `>>` will append to a file
 
 Type
 
-- `echo "This is another thing" >>>>>>> secondfile`
+- `echo "This is another thing" >> secondfile`
 
-- `echo "Hello World" >>>>>>> secondfile`
+- `echo "Hello World" >> secondfile`
 
 - `cat secondfile`
 
@@ -270,7 +270,7 @@ Now let's combine the two files.
 
 Type
 
-- `cat newfile >>>>>>> secondfile`
+- `cat newfile >> secondfile`
 
 - `cat secondfile`
 
@@ -287,11 +287,11 @@ There are many ways to accomplish this in one line, here is a hint for one way, 
 One of the most useful tricks you can use angle brackets for is suppressing error messages. If you want to suppress all errors that may result from a command, add '2>/dev/null' to the end of your command. Ex: "find . filename 2>/dev/null". To learn more about what the number 2 stands for there, and what /dev/null is, read this reference on tty streams: <link TODO>
 
 
->>>>>>> QUESTION 5
+<question 5>
 
 
 
-## 7. vim, Regular expresssions, and find
+## vim, Regular expresssions, and find
 
 ### vim
 
@@ -356,11 +356,11 @@ An example as given earlier:
 TASK: Hidden throughout your home directory are image files with the name, `edurange`. Take your skills and find all 6. Create a new file in your home directory and put the location and type of each in that file. Remember there are many types of file images. Png, jpg, jpeg, and gif to name the widely used ones.
 
 
->>>>>>> QUESTION 6
+<question 6>
 
 
 
-## 8. More Commands
+## More Commands
 
 ### mv
 
@@ -409,7 +409,7 @@ And you can jump from file to file with the `:b` keystrokes and using tab to go 
 
 
 
-## 9. Final Mission
+## Final Mission
 
 Here at CyberSec you have been well trained recruit, now let's put your training to test! This is a real mission of the utmost importance. Complete this and you are assured a spot on our team.
 
@@ -417,4 +417,4 @@ TASK: Our intelligence has told us that somewhere in your computer is an image t
 
 
 
->>>>>>> QUESTION 7
+<question 7>

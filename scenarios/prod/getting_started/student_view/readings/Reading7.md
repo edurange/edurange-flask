@@ -1,65 +1,38 @@
-### Case Sensitivity
+Not all files appear as they really are. Just because you see a file that says, `imanimage.png` does not mean that it is an image. It could be a text file or a harmful file if executed! So... how do you protect yourself? One way is with the file command!
 
-Case sensitivity means that HoW yoU labEL yoUR files matters. If you search for a file called hiya.docx, it would not be the same as finding a file, hiyA.docX.
+### file
 
-### touch
+To find out what a file really is regardless of its extension is file. Check out the man page. Give it a peruse by typing in man file. What type of options are there with file? Now let's test it. Type `q` to get out of the man page.
 
-`touch` is a command that ‘touches' a file. If the file exists it updates its modified date. If the file does not exist, then the file will be created with nothing in it. `man touch` to learn more.
+There are 2 files in your Linux box in a folder at your home directory called `/toLearn` . One is called `cat.jpg` and the other is `dog.jpg`
 
-### echo
-
-`echo` will copy what you write to stdout (standard out, explained more later). You can use this in many different ways.
+Both look like images to me! But if you type in `ls -l` you will notice that one is a lot larger in size than the other. One is about 25,000 bytes whereas the other is only about 20. Now let's see what is really going on.
 
 Type
 
-- `echo "This is echoed"`
+- `file dog.jpg`
 
-You will see that it was repeated back to you!
-
-### Angle Brackets
-
-Angle Brackets are `>` `>>>>>>>` `<` `<<` . They have many uses. `>` Will replace a file with what you input. If the file already existed `>` will delete everything in that file and replace it with what you sent it. In contrast if you use `>>` , this will append what you sent to the bottom of the file, leaving the rest of the file intact. Let's give it a try.
-
-Type
-
-- `echo "This is cool" > newfile`
-
-- `cat newfile`
+You'll see something like, dog.jpg: ASCII text
 
 Now type
 
-- `echo "This is cool too" > newfile`
+- `file cat.jpg`
 
-- `cat newfile`
+You'll see something like, cat.jpg: JPEG image data, Exif standard: TIFF image data, ... etc.
 
-You can see that `>` will replace any text with what you send it. While `>>>>>>>` will append to a file
+### cat
 
-Type
-
-- `echo "This is another thing" >>>>>>> secondfile`
-
-- `echo "Hello World" >>>>>>> secondfile`
-
-- `cat secondfile`
-
-Now let's combine the two files.
+Now let's learn a new command, cat. cat prints out the text from a file.
 
 Type
 
-- `cat newfile >>>>>>> secondfile`
+- `cat dog.jpg`
+Go throu
+You should see something like:
 
-- `cat secondfile`
+`meow I am a doggo`
 
-You can see the newfile appended to the end of secondfile whereas if you cat newfile it will still only have what we added to it earlier.
+TASK: In your home directory there is a folder called `stuff`. Open that up and find out what file types are in there. One is a text file (ASCII). `cat` that and find the secret code inside.
 
-TASK: There is a folder in your home directory called `textfiles`. There are three files, append them all to a new file called, `alltogether.txt` in your personal directory. (Your home directory)
-
-The tip below is NOT required but only if you want a harder task!
-
-There are many ways to accomplish this in one line, here is a hint for one way, type
-
-`echo "one"; echo "two"; echo "three";`
-
-One of the most useful tricks you can use angle brackets for is suppressing error messages. If you want to suppress all errors that may result from a command, add '2>/dev/null' to the end of your command. Ex: "find . filename 2>/dev/null". To learn more about what the number 2 stands for there, and what /dev/null is, read this reference on tty streams: <link TODO>
 
 

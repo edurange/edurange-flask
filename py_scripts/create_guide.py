@@ -100,7 +100,7 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
 
             # New section
             if next_match := re.match( 
-                r"^## \d\. ",
+                r"^## ",
                 line
             ): 
                 if secidx > 0:
@@ -112,9 +112,9 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 section_count = secidx 
                 print(next_match)
 
-            # New Question
+            # Question markers look like this ^<question 1> or this ^<question>
             elif next_match := re.match( 
-                r"^>>>>>>>",
+                r"^<question(\s+(?<= )\d*)?>",
                 line
             ):
                 print(next_match)
