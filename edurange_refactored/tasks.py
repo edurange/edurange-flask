@@ -132,12 +132,16 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
         os.makedirs("./data/tmp/" + name)
         os.chdir("./data/tmp/" + name)
 
+        os.makedirs("./student_view")
+
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
 
         questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
+        content = open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")
 
         logger.info(f"Questions Type: {type(questions)}")
+        logger.info(f"Content Type: {type(content)}")
 
         flags = []
         if s_type == "getting_started" or s_type == "file_wrangler":
@@ -145,12 +149,19 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
             flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
 
             questions = questions.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
+            content = content.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
 
         with open("questions.yml", "w") as outfile:
             if type(questions) == str:
                 outfile.write(questions)
             else:
                 outfile.write(questions.read())
+
+        with open("./student_view/content.json", "w") as outfile:
+            if type(content) == str:
+                outfile.write(content)
+            else:
+                outfile.write(content.read())
 
         active_scenarios = Scenarios.query.count()
         starting_octet = int(os.getenv("SUBNET_STARTING_OCTET", 10))

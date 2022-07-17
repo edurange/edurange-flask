@@ -50,7 +50,7 @@ def get_content(scenario_id):
     """
     Input:  ID number of a scenario.
     Output: The JSON outline for a student scenario. 
-            This file will be located at f"scenarios/prod/{sType}/student_view/content.json"
+            This file will be located at f"data/tmp/{scenario_name_collapsed}/content.json"
     Errors: 
     TODO:   
             Instructors should only be able to access content for scenarios that they are managing.
@@ -60,12 +60,13 @@ def get_content(scenario_id):
         if is_admin or is_instructor or student_has_access(scenario_id):
             if scenario_exists(scenario_id):
                 if scenario_supports(scenario_id):
-                    scenario_type = db.session.query(Scenarios.description)\
+                    scenario_name = db.session.query(Scenarios.name)\
                         .filter_by(id=scenario_id)\
                         .first()\
-                        .description\
+                        .name\
                         .lower()
-                    with open(f"scenarios/prod/{scenario_type}/student_view/content.json", "r") as fp:
+                    scenario_name = "".join(char for char in scenario_name if char.isalnum())
+                    with open(f"data/tmp/{scenario_name}/student_view/content.json", "r") as fp:
                         content = json.load(fp)
                     srF = scenarioResponseForm()
                     content['StudentGuide']['csrf_token'] = srF['csrf_token']
