@@ -104,14 +104,3 @@ echo -e "${GRN}If the ${NC} flask ${GRN} or ${NC} celery ${GRN} commands are not
 echo -e "${NC}source ~/.bashrc ${GRN} or ${NC} export PATH=/home/$username/.local/bin:\$PATH ${NC}"
 
 sudo su $USER --login
-
-# Upgrade NodeJS from version 12 to 16
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-npm cache clean -f
-sudo npm install -g n
-sudo n stable
-cd ~/edurange-flask/
-npx create-react-app edurange_react -y
-
-# Raise the limit on number of file watchers for the system
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
