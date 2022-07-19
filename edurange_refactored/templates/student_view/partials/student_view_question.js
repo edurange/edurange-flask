@@ -1,5 +1,7 @@
 import sample_content from './sample_content.json';
 import { Guidebox } from './guidebox.js';
+import { TopicList } from './topic_list.js';
+import { Chatbox } from './chatbox.js';
 let answer = sample_content.StudentGuide.Questions.Question1.Answers.Value;
 
 class Question extends React.Component {
@@ -25,18 +27,22 @@ class Question extends React.Component {
   render() {
 
     return (
-      <div className="question">
+      <div className="student_view">
+        <TopicList className='topic_list' />
+        <div className='question'>
         <h1 className='scenario_name'>{sample_content.ScenarioTitle}</h1>
         <div className="submission-traits">
           <p className="submission-points">{sample_content.StudentGuide.Questions.Question1.Points} points</p>
           <p className="submission-state">{this.state.submission}</p>
         </div>
         <p className="question-text">{sample_content.StudentGuide.Questions.Question1.Text}</p>
-        <div class='answer-area'>
+        <div className='answer-area'>
           <textarea className="answer" rows="1" cols="50"></textarea><br />
           <button className='submit' type="submit" onClick={this.updateSubmit}>Submit</button>
         </div>
         <Guidebox className='guidebox' />
+        </div>
+        <Chatbox className='chatbox' />
       </div>
       
     );
