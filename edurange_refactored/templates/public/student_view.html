@@ -2,12 +2,12 @@
 {% extends "layout.html" %}
 {% block content %}
 <main class="student">
-<nav class='navigation'>
+<nav class='topic_list'>
   <ul>
-    <li><a href=index.html>Topic A</a></li>
-    <li><a href=index.html>Topic B</a></li>
-    <li><a href=index.html>Topic C</a></li>
-    <li><a href=index.html>Topic D</a></li>
+    <li><a href=student_view>Topic A</a></li>
+    <li><a href=student_view>Topic B</a></li>
+    <li><a href=student_view>Topic C</a></li>
+    <li><a href=student_view>Topic D</a></li>
   </ul>
 </nav>
 <div id="student_view_question"></div>
@@ -56,4 +56,5 @@ $('#log').html(numbers_string);
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
 
 <script src="/static/build/student_view_question.bundle.js"></script>
+<script src="/static/build/guidebox.js"></script>
 {% endblock %}
