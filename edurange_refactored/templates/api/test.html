@@ -1,0 +1,8 @@
+{% block content %}
+<form action="/api/post_ans/{{ scenario_id }}" method="post" id="{{qnum}}">
+    {{ srF.csrf_token }}
+    <input class="form-control" type="hidden" name="scenario" value="{{ scenario_id  }}" readonly>
+    <input type="text" name="response" id="input_ID{{ qnum }}" class="form-control mb-2">
+    <button class="btn btn-dark" value="{{ qnum }}" type="submit" name="question"> Submit </button>
+</form>
+{% endblock %}

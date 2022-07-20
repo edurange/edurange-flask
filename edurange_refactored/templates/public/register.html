@@ -7,7 +7,7 @@
                 <div class="card-body p-5 text-center">
 
                     <h3 class="mb-5">Register</h3>
-                    <form class="form" method="POST" role="form">
+                    <form class="form" method="POST" role="form" id="registerForm">
                         {{ form.csrf_token }}
                             <div class="form-outline mb-4">
                                 {{form.code(placeholder="Registration Code", class_="form-control")}}
