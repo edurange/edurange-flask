@@ -171,10 +171,13 @@ def socket_test():
 
     return render_template("public/socket.html")
 
-@blueprint.route("/student_view")
-def student_view():
+@blueprint.route("/student_view/<scenario_id>", defaults={'scenario_id':None})
+def student_view(scenario_id):
 
+    if scenario_id:
+        return render_template("public/student_view.html", scenario_id=scenario_id)
     return render_template("public/student_view.html")
+
 
 @blueprint.route("/bug/")
 def bug_report():

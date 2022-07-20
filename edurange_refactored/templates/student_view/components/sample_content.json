@@ -1,0 +1,107 @@
+{
+    "ScenarioTitle":"Getting Started",
+    "StudentGuide":{
+        "TotalQuestions": 1,
+        "TotalPoints":20,
+        "SectionOrder":[ 1,2,3,4,5,6,7 ],
+        "Sections":[
+            {
+                "Count":1,
+                "Title":"Vim basics",
+                "Order":[
+                    "Reading1",
+                    "Question1",
+                    "Reading2"
+                ],
+                "AltOrder":[
+                    "Reading2",
+                    "Question1",
+                    "Reading1"
+                ]
+            },
+            {
+                "Count":2,
+                "Title":"Bash Commands",
+                "Order":[
+                    "Reading3",
+                    "Question2",
+                    "Reading4"
+                ],
+                "AltOrder":[
+                    "Reading4",
+                    "Question2",
+                    "Reading3"
+                ]
+            },
+            {
+                "Count":3,
+                "Title":"Hacking 101",
+                "Order":[
+                    "Reading5",
+                    "Question3",
+                    "Reading6"
+                ],
+                "AltOrder":[
+                    "Reading6",
+                    "Question3",
+                    "Reading5"
+                ]
+            }
+        ],
+        "Readings":{
+            "Reading1":"reading1.md",
+            "Reading2":"reading2.md",
+            "Reading3":"reading3.md",
+            "Reading4":"reading4.md",
+            "Reading5":"reading5.md",
+            "Reading6":"reading6.md"
+        },
+        "Questions":{
+            "Question1":{
+                "Text":"What can you do with vim?",
+                "Type":"string",
+                "Answers":
+                    {
+                        "Value":"The answer is street sharks.",
+                        "Points":20
+                    },
+                "Points":20,
+                "Options":[
+                    "accept-integer",
+                    "accept-decimal"
+                ]
+            },
+            "Question2":{
+                "Text":"What's cd do?",
+                "Type":"string",
+                "Answers":
+                    {
+                        "Value":"The answer is street sharks.",
+                        "Points":20
+                    },
+                "Points":20,
+                "Options":[
+                    "accept-integer",
+                    "accept-decimal"
+                ]
+            },
+            "Question3":{
+                "Text":"How many times to see The Matrix before you can hack?",
+                "Type":"string",
+                "Answers":
+                    {
+                        "Value":"The answer is street sharks.",
+                        "Points":20
+                    },
+                "Points":20,
+                "Options":[
+                    "accept-integer",
+                    "accept-decimal"
+                ]
+            }
+        }
+    },
+    "InstructorGuide":{
+        
+    }
+}
