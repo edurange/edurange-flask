@@ -82,9 +82,9 @@ module.exports = [
 
   },
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/student_view/partials/'),
+    context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
-      student_view_question: './student_view_question',
+      student_view_scenario: './scenario.component',
     },
     output: {
       chunkFilename: "[id].js",
@@ -96,12 +96,12 @@ module.exports = [
 
     },
     resolve: {
-      extensions: [".js"]
+      extensions: [".js", ".jsx"]
     },
     module: {
       rules: [
         { 
-          test: /\.?js$/,
+          test: /\.?js(x)?$/,
           use: {
             loader: "babel-loader",
             options: {

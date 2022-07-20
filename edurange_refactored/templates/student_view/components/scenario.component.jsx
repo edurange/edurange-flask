@@ -38,16 +38,17 @@ class StudentScenario extends React.Component {
   }
 
     render() {
-        //const { Sections, Readings, Questions } = this.state.content.StudentGuide;
-        console.log(this.state.content.StudentGuide);
-        return (
-          <div className="student_view">
-            <h1>Student Guide</h1>
-          </div>
-        );
+        const { Sections, Readings, Questions } = this.state.content.StudentGuide;
+        // console.log(this.state.content.StudentGuide);
+        // return (
+        //   <div className="student_view">
+        //     <h1>Student Guide</h1>
+        //   </div>
+        // );
         return (
        <div className="student_view">
         <TopicList sections={Sections}/>
+        {/* {console.log(Sections[this.state.seenSection])} */}
         <GuideSection section={Sections[this.state.seenSection]} readings={Readings} questions={Questions} />
         {/* {Sections.map((sec) => {
             return (

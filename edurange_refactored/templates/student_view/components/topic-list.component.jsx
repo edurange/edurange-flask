@@ -7,17 +7,13 @@ class TopicList extends React.Component {
                 <ul>
                     {sections.map(
                         (sec) => {
-                            return (<li>
+                            return (<li key={sec.Count}>
                                 <a href='student_view'>
                                     {sec.Title}
                                 </a>
                             </li>)
                         }
                     )}
-                    <li><a href='student_view'>Topic A</a></li>
-                    <li><a href='student_view'>Topic B</a></li>
-                    <li><a href='student_view'>Topic C</a></li>
-                    <li><a href='student_view'>Topic D</a></li>
                 </ul>
             </div>
         );

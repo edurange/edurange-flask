@@ -2,9 +2,9 @@ class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setState({ 
+    this.state = { 
       submission: 'unsubmitted'
-    })
+    };
     this.updateSubmit = this.updateSubmit.bind(this);
   }
 
