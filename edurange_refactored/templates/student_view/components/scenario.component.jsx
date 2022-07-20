@@ -47,6 +47,7 @@ class StudentScenario extends React.Component {
         // );
         return (
        <div className="student_view">
+        <h1 className='scenario_name'>{sample_content.ScenarioTitle}</h1>
         <TopicList sections={Sections}/>
         {/* {console.log(Sections[this.state.seenSection])} */}
         <GuideSection section={Sections[this.state.seenSection]} readings={Readings} questions={Questions} />
@@ -56,7 +57,6 @@ class StudentScenario extends React.Component {
             );
         }
         )} */}
-         <h1 className='scenario_name'>{sample_content.ScenarioTitle}</h1>
          <Chatbox className='chatbox' />
       </div>           
         );
