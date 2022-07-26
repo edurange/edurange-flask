@@ -1,8 +1,8 @@
-import sample_content from '../sample_content.json';
-import GuideSection from '../guide-section/guide-section.component'
-import TopicList from '../topic-list/topic-list.component'
-import Chatbox from '../chatbox/chatbox.component'
-import "./scenario.styles.css"
+import sample_content from "../sample_content.json";
+import GuideSection from "../guide-section/guide-section.component";
+import TopicList from "../topic-list/topic-list.component";
+import Chatbox from "../chatbox/chatbox.component";
+import "./scenario.styles.css";
 
 class StudentScenario extends React.Component {
     // get content for this scenario
@@ -56,4 +56,9 @@ class StudentScenario extends React.Component {
     }
 }
 
-ReactDOM.render(<StudentScenario />, document.getElementById('student_view_scenario'))
+ReactDOM.render(<StudentScenario />, document.getElementById('student_scenario'))
+// const container = document.getElementById('student_scenario');
+// const root = createRoot(container);
+// root.Render(
+//   <StudentScenario/>
+// );
