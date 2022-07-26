@@ -84,7 +84,7 @@ module.exports = [
   {
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
-      student_view_scenario: './scenario/scenario.component',
+      student_scenario: './scenario/scenario.component',
     },
     output: {
       chunkFilename: "[id].js",
