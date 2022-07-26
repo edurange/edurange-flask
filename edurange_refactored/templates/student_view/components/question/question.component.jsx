@@ -4,18 +4,30 @@ class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      submission: 'unsubmitted'
-    };
+
     this.updateSubmit = this.updateSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+
+
+    this.state = { 
+      submission: 'unsubmitted',
+      response: '',
+    };
+
   }
 
   updateSubmit() {
     this.setState(
       {
-        submission: 'submitted'
+        submission: 'submitted',
       }
     )
+  }
+
+  onChange(e) {
+    this.setState({
+      response: e.target.value
+    });
   }
 
 
@@ -30,7 +42,11 @@ class Question extends React.Component {
             </div>
             <p className="edu-question-text">{question.Text}</p>
             <div className='edu-answer-area'>
-              <textarea className="edu-answer" rows="1" cols="50"></textarea><br />
+            <input
+              className="edu-answer"
+              id='name-input'
+              onChange={this.onChange}
+              value={this.state.response} />
               <button className='edu-submit' type="submit" onClick={this.updateSubmit}>Submit</button>
             </div>
         </div>
