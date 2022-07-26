@@ -1,0 +1,35 @@
+.edu-topic-list {
+  margin-right: .5rem;
+  border-right: 2px solid #ccc;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 1 25%;
+}
+
+.edu-topic-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.edu-topic-list ul li {
+  padding: .5rem 0;
+}
+
+.edu-topic-list ul li a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5px;
+  height: 2rem;
+  width: 30rem;
+  border: 1px solid grey;
+  color: black;
+  transition-duration: .3s;
+}
+
+.edu-topic-list ul li a:hover, .navbar ul li a:focus {
+  background-color: black;
+  color: white;
+}

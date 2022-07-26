@@ -1,6 +1,11 @@
 
 {% extends "layout.html" %}
 {% block content %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='build/student_view_scenario.bundle.css') }}"
+    />
 <main class="student">
 <div id="student_view_scenario"></div>
 </div>

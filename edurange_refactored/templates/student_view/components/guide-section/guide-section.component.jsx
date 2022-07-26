@@ -1,5 +1,6 @@
-import Question from './question.component'
-import Reading from './reading.component'
+import Question from '../question/question.component'
+import Reading from '../reading/reading.component'
+import "./guide-section.styles.css"
 class GuideSection extends React.Component {
 
     render() {

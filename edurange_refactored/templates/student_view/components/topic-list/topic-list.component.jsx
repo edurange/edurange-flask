@@ -1,9 +1,10 @@
+import "./topic-list.styles.css"
 class TopicList extends React.Component {
 
     render() {
         const {sections} = this.props;
         return (
-            <div className='topic_list'>
+            <div className='edu-topic-list'>
                 <ul>
                     {sections.map(
                         (sec) => {

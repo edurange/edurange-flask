@@ -1,0 +1,15 @@
+/* .edu-reading {
+  text-align: center;
+  margin: 1rem 0;
+  border: 1px solid black;
+  border-radius: 3px;
+} */
+
+.edu-reading {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 75%;
+  padding: 1rem;
+  margin: 1rem;
+  box-shadow: 1px 2px 5px 1px lightgray;
+}

@@ -1,7 +1,8 @@
-import sample_content from './sample_content.json';
-import GuideSection from './guide_section.component'
-import TopicList from './topic-list.component'
-import Chatbox from './chatbox.component'
+import sample_content from '../sample_content.json';
+import GuideSection from '../guide-section/guide-section.component'
+import TopicList from '../topic-list/topic-list.component'
+import Chatbox from '../chatbox/chatbox.component'
+import "./scenario.styles.css"
 
 class StudentScenario extends React.Component {
     // get content for this scenario
@@ -47,17 +48,9 @@ class StudentScenario extends React.Component {
         // );
         return (
        <div className="student_view">
-        <h1 className='scenario_name'>{sample_content.ScenarioTitle}</h1>
         <TopicList sections={Sections}/>
-        {/* {console.log(Sections[this.state.seenSection])} */}
         <GuideSection section={Sections[this.state.seenSection]} readings={Readings} questions={Questions} />
-        {/* {Sections.map((sec) => {
-            return (
-                <GuideSection section={sec} readings={Readings} questions={Questions} />
-            );
-        }
-        )} */}
-         <Chatbox className='chatbox' />
+        <Chatbox className='chatbox' />
       </div>           
         );
     }

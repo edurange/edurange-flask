@@ -84,7 +84,7 @@ module.exports = [
   {
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
-      student_view_scenario: './scenario.component',
+      student_view_scenario: './scenario/scenario.component',
     },
     output: {
       chunkFilename: "[id].js",
@@ -96,8 +96,11 @@ module.exports = [
 
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      extensions: [".js", ".jsx", ".css"]
     },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
     module: {
       rules: [
         { 
@@ -108,6 +111,18 @@ module.exports = [
               presets: ['@babel/preset-env', '@babel/preset-react']
             }
           },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
         }
       ]
     }
