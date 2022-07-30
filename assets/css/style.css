@@ -164,8 +164,15 @@ th.fit button:focus {
   font-size: 125%;
 }
 
+.student-scenario-section {
+  margin-left: 10%;
+}
+
 .scenario_name {
   font-size: 150%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
 }
 
 .username {
@@ -319,7 +326,7 @@ background: lightgray;
   font-size: 75%;
   position: fixed;
   right: 1rem;
-  bottom: 1rem;
+  bottom: 55px;
   background-color: rgba(255, 255, 0, .66);
   border-radius: 100%;
   width: 5rem;
