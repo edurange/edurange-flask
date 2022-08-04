@@ -55,26 +55,23 @@ def get_content(scenario_id):
     TODO:   
             Instructors should only be able to access content for scenarios that they are managing.
     """
-    if parsable_as(scenario_id, int):
-        is_admin, is_instructor = get_roles()
-        if is_admin or is_instructor or student_has_access(scenario_id):
-            if scenario_exists(scenario_id):
-                if scenario_supports(scenario_id):
-                    scenario_name = db.session.query(Scenarios.name)\
-                        .filter_by(id=scenario_id)\
-                        .first()\
-                        .name\
-                        .lower()
-                    scenario_name = "".join(char for char in scenario_name if char.isalnum())
-                    with open(f"data/tmp/{scenario_name}/student_view/content.json", "r") as fp:
-                        content = json.load(fp)
-                    srF = scenarioResponseForm()
-                    content['StudentGuide']['csrf_token'] = srF['csrf_token']
-                    return content
-                return jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
-            return jsonify({"404": "Not Found: Scenario does not exist."}), 404
-        return jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
-    return jsonify({"400":"Bad Request: Required type integer"}), 400
+    ok, err, code = validate_usage(scenario_id)
+    if ok:
+        scenario_name = db.session.query(Scenarios.name)\
+            .filter_by(id=scenario_id)\
+            .first()\
+            .name\
+            .lower()
+        scenario_name = "".join(char for char in scenario_name if char.isalnum())
+        with open(f"data/tmp/{scenario_name}/student_view/content.json", "r") as fp:
+            content = json.load(fp)
+        try:
+            srF = scenarioResponseForm()
+            content['StudentGuide']['csrf_token'] = srF['csrf_token']
+        except KeyError as k:
+            assert not current_app.config.get('WTF_CSRF_ENABLED')
+        return content
+    return err, code
 
 
 # TODO :
@@ -93,16 +90,10 @@ def get_state(scenario_id):
     Output: The JSON outline for a student scenario.
     Errors: 
     """
-    if parsable_as(scenario_id, int):
-        is_admin, is_instructor = get_roles()
-        if is_admin or is_instructor or student_has_access(scenario_id):
-            if scenario_exists(scenario_id):
-                if scenario_supports(scenario_id):
-                    return jsonify(calc_state(current_user.id, scenario_id))
-                return jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
-            return jsonify({"404": "Not Found: Scenario does not exist."}), 404
-        return jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
-    return jsonify({"400":"Bad Request: Required type integer"}), 400
+    ok, err, code = validate_usage(scenario_id)
+    if ok:
+        return jsonify(calc_state(current_user.id, scenario_id))
+    return err, code
 
 @blueprint.route("/post_ans/<scenario_id>", methods=["POST"])
 @login_required
@@ -112,12 +103,22 @@ def post_ans(scenario_id):
     Effect: POST student response form data to the backend for grading.
     Errors: 
     """
-    if parsable_as(scenario_id, int):
+    ok, err, code = validate_usage(scenario_id)
+    if ok:
         ajax = process_request(request.form)  
-        return jsonify({})
-    else:
-        return jsonify({"400":"Bad Request: Required type integer."}), 400
+    return err, code
 
+def validate_usage(scenario_id):
+    if parsable_as(scenario_id, int):
+        is_admin, is_instructor = get_roles()
+        if is_admin or is_instructor or student_has_access(scenario_id):
+            if scenario_exists(scenario_id):
+                if scenario_supports(scenario_id):
+                    return True, jsonify({}), 200
+                return False, jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
+            return False, jsonify({"404": "Not Found: Scenario does not exist."}), 404
+        return False, jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
+    return False, jsonify({"400":"Bad Request: Required type integer"}), 400
 
 def parsable_as(input, t: type):
     try:

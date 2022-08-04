@@ -3,6 +3,7 @@
 
 import logging
 import os
+from flask import url_for
 
 import pytest
 from flask.testing import FlaskClient
@@ -130,3 +131,13 @@ def group(db):
     group = GroupFactory()
     db.session.commit()
     return group
+
+
+@pytest.fixture
+def scenario(admin, group, testapp):
+    form = {
+        "scenario_name" : "gs",
+        "Getting_Started" : "",
+        "scenario_group" : group.name
+    }
+    testapp.post(url_for("dashboard.make_scenario"), form)
