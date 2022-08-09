@@ -1,11 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
-
 /*
  * Webpack Plugins
  */
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const ProductionPlugins = [
   // production webpack plugins go here
   new webpack.DefinePlugin({
@@ -14,11 +12,11 @@ const ProductionPlugins = [
     }
   })
 ]
-
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 
-module.exports = {
+module.exports = [
+{
   // configuration
   context: __dirname,
   entry: {
@@ -37,7 +35,6 @@ module.exports = {
     publicPath: "/static/build/",
     library: "lib",
     libraryTarget: "var"
-
   },
   resolve: {
     extensions: [".js", ".jsx", ".css"]
@@ -82,4 +79,52 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ["@babel/preset-env"], cacheDirectory: true } },
     ],
   }
-};
+
+  },
+  {
+    context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
+    entry: {
+      student_scenario: './scenario/scenario.component',
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
+    module: {
+      rules: [
+        { 
+          test: /\.?js(x)?$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
+        }
+      ]
+    }
+  },
+];

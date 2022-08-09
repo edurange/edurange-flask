@@ -101,7 +101,10 @@ def generateNavElements(role, view): # generate all navigational elements
 
 def create_link(route, icon, text):
     """Create html element for a sidebar link (requires route, icon class (font-awesome), and text to label link)."""
-    html = '''<a class="list-group-item list-group-item-action bg-secondary text-white" href="{0}">
+    # html = '''<a class="list-group-item list-group-item-action bg-secondary text-white" href="{0}">
+    #             <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
+    #           </a>'''
+    html = '''<a class href="{0}">
                 <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
               </a>'''
     html = html.format(url_for(route), icon, text)

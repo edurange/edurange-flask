@@ -1,0 +1,217 @@
+{
+    "ScenarioTitle": "Getting Started",
+    "StudentGuide": {
+        "TotalQuestions": 7,
+        "TotalPoints": 113,
+        "SectionOrder": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+        ],
+        "Sections": [
+            {
+                "Count": 1,
+                "Title": "Welcome to Cybersec",
+                "Order": [
+                    "Reading1"
+                ]
+            },
+            {
+                "Count": 2,
+                "Title": "Using the Terminal Commands",
+                "Order": [
+                    "Reading2"
+                ]
+            },
+            {
+                "Count": 3,
+                "Title": "Linux File System",
+                "Order": [
+                    "Reading3"
+                ]
+            },
+            {
+                "Count": 4,
+                "Title": "Commands",
+                "Order": [
+                    "Reading4",
+                    "Question1",
+                    "Question2",
+                    "Reading5",
+                    "Question3",
+                    "Reading6"
+                ]
+            },
+            {
+                "Count": 5,
+                "Title": "File Types",
+                "Order": [
+                    "Reading7",
+                    "Question4"
+                ]
+            },
+            {
+                "Count": 6,
+                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
+                "Order": [
+                    "Reading8",
+                    "Question5"
+                ]
+            },
+            {
+                "Count": 7,
+                "Title": "vim, Regular expresssions, and find",
+                "Order": [
+                    "Reading9",
+                    "Question6"
+                ]
+            },
+            {
+                "Count": 8,
+                "Title": "More Commands",
+                "Order": [
+                    "Reading10"
+                ]
+            },
+            {
+                "Count": 9,
+                "Title": "Final Mission",
+                "Order": [
+                    "Reading11",
+                    "Question7"
+                ]
+            }
+        ],
+        "Readings": {
+            "Reading1": "Reading1.md",
+            "Reading2": "Reading2.md",
+            "Reading3": "Reading3.md",
+            "Reading4": "Reading4.md",
+            "Reading5": "Reading5.md",
+            "Reading6": "Reading6.md",
+            "Reading7": "Reading7.md",
+            "Reading8": "Reading8.md",
+            "Reading9": "Reading9.md",
+            "Reading10": "Reading10.md",
+            "Reading11": "Reading11.md"
+        },
+        "Questions": {
+            "Question1": {
+                "Text": "How many subdirectories are in your home directory? (Not including hidden directories)",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 7,
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "Question2": {
+                "Text": "In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "$RANDOM_ONE",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "Question3": {
+                "Text": "What does the line below NAME on the man page for the \"file\" command say?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "file \u2014 determine file type",
+                        "Points": 15
+                    },
+                    {
+                        "Value": "file - determine file type",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "Question4": {
+                "Text": "What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "$RANDOM_TWO",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "Question5": {
+                "Text": "What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)",
+                "Type": "Essay",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "ESSAY",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "Question6": {
+                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
+                "Type": "Multi String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "edurange5meow.JPG",
+                        "Points": 3
+                    },
+                    {
+                        "Value": "edurange001.gif",
+                        "Points": 3
+                    },
+                    {
+                        "Value": "4edurange.jpeg",
+                        "Points": 3
+                    },
+                    {
+                        "Value": "edurange006weeeeeee.png",
+                        "Points": 3
+                    },
+                    {
+                        "Value": "002edurange.jpg",
+                        "Points": 3
+                    },
+                    {
+                        "Value": "edurange3.GIF",
+                        "Points": 3
+                    }
+                ],
+                "Points": 18
+            },
+            "Question7": {
+                "Text": "What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "/usr/special/secrets/",
+                        "Points": 20
+                    }
+                ],
+                "Points": 20
+            }
+        }
+    },
+    "InstructorGuide": {}
+}

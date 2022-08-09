@@ -142,6 +142,23 @@ def register():
         flash_errors(form)
     return render_template("public/register.html", form=form)
 
+@blueprint.route("/login/", methods=["GET", "POST"])
+def login():
+    """Login the user."""
+    if current_user.is_authenticated:
+        return redirect(url_for("public.home"))
+    form = LoginForm(request.form)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            login_user(form.user)
+            flash("You are logged in.", "success")
+            redirect_url = url_for("public.home")
+            return redirect(redirect_url)
+        else:
+            flash_errors(form)
+    return render_template("public/login.html", form=form)
+
+
 
 @blueprint.route("/about/")
 def about():
@@ -153,3 +170,16 @@ def about():
 def socket_test():
 
     return render_template("public/socket.html")
+
+@blueprint.route("/student_view/<scenario_id>", defaults={'scenario_id':None})
+def student_view(scenario_id):
+
+    if scenario_id:
+        return render_template("public/student_view.html", scenario_id=scenario_id)
+    return render_template("public/student_view.html")
+
+
+@blueprint.route("/bug/")
+def bug_report():
+    """Bug report. Redirect to Github issues."""
+    return redirect("https://github.com/edurange/edurange-flask/issues/new") # TODO replace this with a parameter

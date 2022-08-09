@@ -21,50 +21,33 @@ from .utils import flash_errors, checkAnswer, getAttempt
 from edurange_refactored.notification_utils import NotifyClear
 
 
-def process_request(form):  # Input must be request.form
-    dataKeys = []
-    # for k in form.keys():
-    #    dataKeys.append(k)
-    for k in form.keys():
-        if k != "csrf_token":  # csrf protection is enabled in standard application, only disabled in test app,
-            dataKeys.append(k)  # so even if csrf_token is not a field in a standard request, it will still be rendered invalid
+# Input must be request.form
+def process_request(form):  
+    # csrf protection is enabled in standard application, only disabled in test app,
+    # so even if csrf_token is not a field in a standard request, it will still be rendered invalid
 
-    form_switch = {
-        "modScenarioForm":          ["sid", "mod_scenario"],  # "csrf_token",
-        "startScenario":            ["start_scenario", "stop_scenario"],  # "csrf_token",
-        "GroupForm":                ["name", "create", "size"],  # "csrf_token",
-        "manageInstructorForm":     ["uName", "promote"],  # "csrf_token",
-        "addUsersForm":             ["add", "groups", "uids"],  # "csrf_token",
-        "scenarioResponseForm":     ["scenario", "question", "response"],  # "csrf_token",
-        "deleteGroupForm":          ["group_name", "delete"],  # "csrf_token",
-        "notifyDeleteForm":         ["clearButton"]  # "csrf_token"
-    }
+    dataKeys = [key for key in sorted(form.keys()) if key != 'csrf_token']
 
-    switchVals = []
-    for v in form_switch.values():
-        switchVals.append(v)
-    switchKeys = []
-    for k in form_switch.keys():
-        switchKeys.append(k)
+    match dataKeys:
+        case ["mod_scenario", "sid"]:               
+            return process_scenarioModder()
+        case ["start_scenario", "stop_scenario"]:   
+            return process_scenarioStarter()
+        case ["create", "name", "size"]:            
+            return process_groupMaker()
+        case ["promote", "uName"]:                  
+            return process_manInst()
+        case ["add", "groups", "uids"]:             
+            return process_addUser()
+        case ["question", "response", "scenario"]:  
+            return process_scenarioResponse()
+        case ["delete", "group_name"]:              
+            return process_groupEraser()
+        case ["clearButton"]:                       
+            return process_notifyEmpty()
+        case _:
+            raise Exception('No matching form.')
 
-    i = 0
-    for li in switchVals:
-        if li == dataKeys:
-            i = switchVals.index(li)
-    f = switchKeys[i]
-    # print(f)
-
-    process_switch = {
-        "modScenarioForm":          process_scenarioModder,
-        "startScenario":            process_scenarioStarter,
-        "GroupForm":                process_groupMaker,
-        "manageInstructorForm":     process_manInst,
-        "addUsersForm":             process_addUser,
-        "scenarioResponseForm":     process_scenarioResponse,
-        "deleteGroupForm":          process_groupEraser,
-        "notifyDeleteForm":         process_notifyEmpty
-    }
-    return process_switch[f]()
 
 
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm

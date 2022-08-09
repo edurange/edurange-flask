@@ -1,0 +1,27 @@
+.edu-chatbox {
+  font-size: 75%;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: rgba(255, 255, 0, .66);
+  border-radius: 100%;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 3px 3px 7px grey;
+  color: black;
+}
+
+.edu-chatbox:hover, .chatbox:focus {
+  background-color: rgba(255, 255, 0, 1);
+  width: 6rem;
+  height: 6rem;
+  font-size: 90%;
+}
+
+.edu-chatbox p {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}

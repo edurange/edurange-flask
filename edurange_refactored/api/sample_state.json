@@ -1,0 +1,33 @@
+{
+    "CurrentScore": 95, 
+    "Questions": {
+      "1": {
+        "Correct": true, 
+        "Score": 15
+      }, 
+      "2": {
+        "Correct": false, 
+        "Score": 15
+      }, 
+      "3": {
+        "Correct": true, 
+        "Score": 15
+      }, 
+      "4": {
+        "Correct": true, 
+        "Score": 15
+      }, 
+      "5": {
+        "Correct": true, 
+        "Score": 15
+      }, 
+      "6": {
+        "Correct": false, 
+        "Score": 0
+      }, 
+      "7": {
+        "Correct": true, 
+        "Score": 20
+      }
+    }
+  }
