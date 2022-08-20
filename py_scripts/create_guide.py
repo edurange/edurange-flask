@@ -10,6 +10,7 @@ import sys, re
 from yaml import load, Loader
 from os import path
 import argparse
+import markdown
 
 def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     """
@@ -72,9 +73,10 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 order_l, \
                 has_non_blank_line
         if len(reading) > 0: 
+            # render markdown to html and 
             reading_title = f"Reading{ridx+1}"
             reading_filename = f"{reading_title}.md"
-            readings[reading_title] = reading_filename
+            readings[reading_title] = markdown.markdown('\n'.join(reading))# replace with html reading_filename
             order_l.append(reading_title)
             with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
                 readingp.writelines(reading)
