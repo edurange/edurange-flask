@@ -1,35 +1,50 @@
 .edu-topic-list {
   margin-right: .5rem;
-  border-right: 2px solid #ccc;
+  margin-left: .5rem;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
   overflow: hidden;
   flex: 0 1 25%;
+  max-width: 250px;
+  min-width: 135px;
+  font-family: 'Open Sans';
+  overflow: scroll;
+  padding-right: .5rem;
 }
 
 .edu-topic-list ul {
   list-style: none;
   padding: 0;
+  margin-top: .1rem;
+  flex: 0 1 95%;
 }
 
 .edu-topic-list ul li {
-  padding: .5rem 0;
+  padding-bottom: .75rem;
 }
 
 .edu-topic-list ul li a {
   text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-bottom: 5px;
-  height: 2rem;
-  width: 30rem;
-  border: 1px solid grey;
-  color: black;
+  justify-content: flex-start;
+  min-height: 4rem;
+  color: #555;
   transition-duration: .3s;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #2e9566;
+  border: 1px rgba(46, 149, 102, .3) solid;
 }
 
 .edu-topic-list ul li a:hover, .navbar ul li a:focus {
-  background-color: black;
+  background-color: #2e9566;
   color: white;
+  box-shadow: initial;
+}
+
+#topicNumber {
+  margin: 0 .75rem;
+  font-weight: bolder;
 }

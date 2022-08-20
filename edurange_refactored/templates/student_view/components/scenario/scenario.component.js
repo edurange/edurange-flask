@@ -1,4 +1,4 @@
-import sample_content from "../sample_content.json";
+import sample_content from "/home/vagrant/edurange-flask/scenarios/prod/getting_started/student_view/content.json";
 import GuideSection from "../guide-section/guide-section.component";
 import TopicList from "../topic-list/topic-list.component";
 import Chatbox from "../chatbox/chatbox.component";
@@ -21,7 +21,7 @@ class StudentScenario extends React.Component {
   // }
 
   fetchContent(scenario_id) {
-    return sample_content
+    return sample_content;
   }
 
   // TODO handle error code cases

@@ -1,0 +1,11 @@
+.student-scenario-section {
+    flex: 0 0 66%;
+    overflow: scroll;
+}
+
+@media (max-width: 800px) {
+    .student-scenario-section {
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+}

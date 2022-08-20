@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Oswald:wght@200;300;400;500;600;700&display=swap');
+
+html {
+    height: 100vh;
+}
+
+.student {
+    background: rgb(235, 240, 232);
+    font-family: 'Open Sans';
+    width: 100vw;
+}
+
+.student_view {
+    padding-right: 1rem;
+    display: flex;
+    height: 90vh;
+}

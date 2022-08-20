@@ -37,7 +37,7 @@ class Question extends React.Component {
     return (
         <div className='edu-question'>
             <div className="edu-submission-traits">
-              <p className="edu-submission-points">{question.Points} points</p>
+              <p className="edu-submission-points">- / {question.Points}</p>
               <p className="edu-submission-state">{this.state.submission}</p>
             </div>
             <p className="edu-question-text">{question.Text}</p>
@@ -47,7 +47,7 @@ class Question extends React.Component {
               id='name-input'
               onChange={this.onChange}
               value={this.state.response} />
-              <button className='edu-submit' type="submit" onClick={this.updateSubmit}>Submit</button>
+              <button className='edu-submit' type="submit" onClick={this.updateSubmit}><i class="fa fa-check" /></button>
             </div>
         </div>
     );

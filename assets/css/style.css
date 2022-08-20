@@ -50,7 +50,6 @@ textarea {
 /* footer */
 
 footer {
-  margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
   color: #999999;
@@ -156,16 +155,6 @@ th.fit button:focus {
   top: 50%;
   margin-top: -12px;
   left: 10px;
-}
-
-/* ---------------------------------------------------
-    NEW STUDENT VIEW STYLE
------------------------------------------------------ */
-
-.student_view {
-  padding-right: 1rem;
-  display: flex;
-  height: 85vh;
 }
 
 /* Navbar related style */

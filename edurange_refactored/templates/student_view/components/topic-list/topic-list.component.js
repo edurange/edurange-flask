@@ -10,7 +10,7 @@ class TopicList extends React.Component {
                         (sec) => {
                             return (<li key={sec.Count}>
                                 <a href='student_view'>
-                                    {sec.Title}
+                                    <div id='topicNumber'>{sec.Count}</div><div id='topicName'>{sec.Title}</div>
                                 </a>
                             </li>)
                         }

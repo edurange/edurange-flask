@@ -3,37 +3,57 @@
   flex-direction: column;
   flex: 1 0 75%;
   padding: 1rem;
-  margin: 1rem;
+  margin: 1rem 0;
+  margin-right: 1rem;
   box-shadow: 1px 2px 5px 1px lightgray;
+  background-color: white;
+  border-radius: 5px;
+}
+
+#code {
+  background-color: #f2f2f2;
+  font-family: 'IBM Plex Mono';
+  color: black;
+  font-size: 90%;
+  border-radius: 3px;
 }
 
 .edu-submission-traits {
   font-size:75%;
   width:100%;
-  display:flex;
   flex-wrap: wrap;
   align-content: space-between;
   display:inline-flex;
+  align-items: center;
+}
+
+.edu-submission-traits p {
+  margin-bottom: 0;
 }
 
 .edu-submission-points {
-  background-color: lightgray;
-  padding: 2px 2px 2px 2px;
   border-radius: 5px;
+  font-family: 'Open Sans';
+  font-size: 1.33em;
+  font-weight: bold;
+  margin-left: 5px;
 }
 
 .edu-submission-state {
   margin-left: auto;
-  background-color: lightgray;
-  padding: .25rem .5rem;
+  padding: .25rem 0;
+  padding-right: 5px;
   border-radius: 5px;
+  font-family: 'Open Sans';
+  font-size: 1.2em;
+  color: #555;
 }
 
 .edu-question-text {
-  font-size: 90%;
-  background-color: lightgray;
   padding: 5px;
   border-radius: 5px;
+  white-space: pre-line;
+  vertical-align: bottom;
 }
 
 .edu-answer-area {
@@ -44,39 +64,40 @@
 
 .edu-answer {
   box-sizing: border-box;
-  resize: none; /* prevents corner "grabber" */
+  resize: none;
   border-radius: 4px;
   border: 1px solid lightgray;
   width: 100%;
-  padding: 1rem;
+  padding: .5rem;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
-}
-
-.edu-answer:focus, .answer:hover {
-background: lightgray;
+  font-family: 'Open Sans';
+  font-size: 125%;
+  margin-right: .5rem;
 }
 
 .edu-submit {
   color: white;
-  background-color: #509b79;
-  border-radius: 5px;
-  border-width: 0px;
-  padding: 15px 1em;
+  padding: 10px 1em;
   text-decoration: none;
-  margin: 0 4px;
   cursor: pointer;
-  box-shadow: 2px 2px 2px grey;
+  color: #555;
+  transition-duration: 0s;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #2e9566;
+  border: 1px rgba(46, 149, 102, .3) solid;
   align-self: flex-start;
-  transition-duration: .3s;
+  font-size: 115%;
+  margin-left: 4px;
 }
 
 .edu-submit:hover {
   background-color: #2e9566;
+  color: white;
 }
 
 .edu-submit:active {
-  transition-duration: 0;
   box-shadow: 0 0 lightgray;
   transform: translate(1px, 2px);
 }
