@@ -24,7 +24,7 @@ class GuideSection extends React.Component {
                     if (name.includes("Question")) {
                         return(<Question question={questions[name]} key={name}/>);
                     } else {
-                        return(<Reading fileName={readings[name]} key={name}/>); // TODO dump reading file contents here and pass string?
+                        return(<Reading reading={readings[name]} key={name}/>); // TODO dump reading file contents here and pass string?
                     }
                 }
               )}
