@@ -109,6 +109,7 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                     add_reading()
                     add_section()
 
+                reading.append(line)
                 section_title = line[next_match.end():].strip()
                 secidx += 1
                 section_count = secidx 

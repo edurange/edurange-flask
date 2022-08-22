@@ -47,7 +47,7 @@ class Question extends React.Component {
               id='name-input'
               onChange={this.onChange}
               value={this.state.response} />
-              <button className='edu-submit' type="submit" onClick={this.updateSubmit}><i class="fa fa-check" /></button>
+              <button className='edu-submit' type="submit" onClick={this.updateSubmit}><i className="fa fa-check" /></button>
             </div>
         </div>
     );

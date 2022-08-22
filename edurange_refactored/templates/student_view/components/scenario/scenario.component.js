@@ -1,4 +1,4 @@
-import sample_content from "/home/vagrant/edurange-flask/scenarios/prod/getting_started/student_view/content.json";
+// import sample_content from "../../../../../../edurange-flask/scenarios/prod/getting_started/student_view/content.json";
 import GuideSection from "../guide-section/guide-section.component";
 import TopicList from "../topic-list/topic-list.component";
 import Chatbox from "../chatbox/chatbox.component";
@@ -10,9 +10,18 @@ class StudentScenario extends React.Component {
     super(props);
     this.state = { 
         seenSection: 0,
-        content: sample_content,
-        currentSection: 0
+        currentSection: 0,
+        content: {}
     }
+  }
+
+  componentDidMount() {
+    fetch(`/api/get_content_test/${this.props.scenarioId}`)
+      .then((resp) => resp.json())
+      .then((json) => this.setState({content: json}));
+  }
+
+  componentWillUnmount() {
   }
 
   // clickTopic(id) {
@@ -25,18 +34,19 @@ class StudentScenario extends React.Component {
   //   }) 
   // }
 
-  fetchContent(scenario_id) {
-    return sample_content;
-  }
+  // fetchContent(scenario_id) {
+  //   return sample_content;
+  // }
 
   // TODO handle error code cases
-  fetchContentTODO(scenario_id) {
-    return fetch(`/api/get_content/${scenario_id}`).then((resp) => resp.body.json())
-  }
+  // fetchContent(scenario_id) {
+  //   var s = fetch(`/api/get_content_test/${scenario_id}`).then((resp) => this.setState({content:resp.json()}));
+  //   return s;
+  // }
 
-  fetchState(scenario_id) {
-    return fetch(`/api/get_state/${scenario_id}`).then((resp) => resp.body.json())
-  }
+  // fetchState() {
+  //   return fetch(`/api/get_state/${this.props.scenarioId}`).then((resp) => resp.body.json())
+  // }
 
   putAns(scenario_id, answer) {
     return null
@@ -44,6 +54,7 @@ class StudentScenario extends React.Component {
   }
 
     render() {
+      if (Object.keys(this.state.content).length > 0) {
         const { Sections, Readings, Questions } = this.state.content.StudentGuide;
         // console.log(this.state.content.StudentGuide);
         // return (
@@ -58,10 +69,14 @@ class StudentScenario extends React.Component {
         <Chatbox className='chatbox' />
       </div>           
         );
+      } else {
+        return <div className="student_view"></div>
+      }
     }
 }
 
-ReactDOM.render(<StudentScenario />, document.getElementById('student_scenario'))
+var e = document.getElementById('student_scenario');
+ReactDOM.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} />, e);
 // const container = document.getElementById('student_scenario');
 // const root = createRoot(container);
 // root.Render(

@@ -1,6 +1,7 @@
 .student-scenario-section {
     flex: 0 0 66%;
     overflow: scroll;
+    padding: 0 .5rem;
 }
 
 @media (max-width: 800px) {

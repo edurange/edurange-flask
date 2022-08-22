@@ -73,6 +73,25 @@ def get_content(scenario_id):
         return content
     return err, code
 
+@blueprint.route("/get_content_test/<scenario_id>", methods=["GET"])
+def get_content_test(scenario_id):
+    """
+    Input:  ID number of a scenario.
+    Output: The JSON outline for a student scenario. 
+            This file will be located at f"data/tmp/{scenario_name_collapsed}/content.json"
+    Errors: 
+    TODO:   
+            Instructors should only be able to access content for scenarios that they are managing.
+    """
+    with open(f"scenarios/prod/getting_started/student_view/content.json", "r") as fp:
+        content = json.load(fp)
+    try:
+        srF = scenarioResponseForm()
+        content['StudentGuide']['csrf_token'] = srF['csrf_token']
+    except KeyError as k:
+        assert not current_app.config.get('WTF_CSRF_ENABLED')
+    return content
+
 
 # TODO :
 #       instructors can get all data associated with their students
