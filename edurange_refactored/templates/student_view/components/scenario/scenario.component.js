@@ -10,10 +10,15 @@ class StudentScenario extends React.Component {
     super(props);
     this.state = { 
         seenSection: 0,
-        content: sample_content
+        content: sample_content,
+        currentSection: 0
     }
   }
 
+  // clickTopic(id) {
+
+  //   this.setState({currentSection: id});
+  // }
   // componentDidMount() {
   //   this.setState({
   //     content: this.fetchContent(this.props.scenario_id)
@@ -48,8 +53,8 @@ class StudentScenario extends React.Component {
         // );
         return (
        <div className="student_view">
-        <TopicList sections={Sections}/>
-        <GuideSection section={Sections[this.state.seenSection]} readings={Readings} questions={Questions} />
+        <TopicList currentSection={this.state.currentSection} sections={Sections} setState={p => {this.setState(p)}}/>
+        <GuideSection section={Sections[this.state.currentSection]} readings={Readings} questions={Questions} />
         <Chatbox className='chatbox' />
       </div>           
         );

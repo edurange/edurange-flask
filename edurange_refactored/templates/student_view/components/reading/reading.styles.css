@@ -8,3 +8,11 @@
   background-color: white;
   border-radius: 5px;
 }
+
+code {
+  background-color: #f2f2f2;
+  font-family: 'IBM Plex Mono';
+  color: rgba(200, 25, 200);
+  font-size: 90%;
+  border-radius: 3px;
+}
