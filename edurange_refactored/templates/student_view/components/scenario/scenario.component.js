@@ -11,14 +11,20 @@ class StudentScenario extends React.Component {
     this.state = { 
         seenSection: 0,
         currentSection: 0,
-        content: {}
+        content: {},
+        scenarioState: {},
+        csrf_token:document.getElementById("csrf_token").getAttribute("content"),
     }
   }
 
   componentDidMount() {
-    fetch(`/api/get_content_test/${this.props.scenarioId}`)
+    fetch(`/api/get_content/${this.props.scenarioId}`)
       .then((resp) => resp.json())
       .then((json) => this.setState({content: json}));
+
+    fetch(`/api/get_state/${this.props.scenarioId}`)
+      .then((resp) => resp.json())
+      .then((json) => this.setState({scenarioState: json}));
   }
 
   componentWillUnmount() {
@@ -65,7 +71,7 @@ class StudentScenario extends React.Component {
         return (
        <div className="student_view">
         <TopicList currentSection={this.state.currentSection} sections={Sections} setState={p => {this.setState(p)}}/>
-        <GuideSection section={Sections[this.state.currentSection]} readings={Readings} questions={Questions} />
+        <GuideSection section={Sections[this.state.currentSection]} readings={Readings} questions={Questions} scenarioState={this.state.scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.state.csrf_token} />
         <Chatbox className='chatbox' />
       </div>           
         );

@@ -6,7 +6,7 @@ class GuideSection extends React.Component {
     render() {
         // console.log(this.props)
         // return(<div className="student-scenario-section"><h2>This is a section</h2></div>)
-        const {section, readings, questions} = this.props;
+        const {section, readings, questions, scenarioState, csrf_token} = this.props;
         const useAltOrder = false; // TODO
         // const { Order } = useAltOrder ? section.AltOrder : section.Order;
         var Order;
@@ -22,7 +22,7 @@ class GuideSection extends React.Component {
               {Order.map(
                 (name) => {
                     if (name.includes("Question")) {
-                        return(<Question question={questions[name]} key={name}/>);
+                        return(<Question name={name} question={questions[name]} key={name} scenarioState={scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.props.csrf_token} />);
                     } else {
                         return(<Reading reading={readings[name]} key={name}/>); // TODO dump reading file contents here and pass string?
                     }

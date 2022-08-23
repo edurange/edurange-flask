@@ -299,22 +299,24 @@ def student_scenario(i):
                 example = -1
 
                 return render_template(
-                    "dashboard/student_scenario.html",
-                    id=i,
-                    status=status,
-                    owner=owner,
-                    desc=desc,
-                    s_type=s_type,
-                    s_name=s_name,
-                    u_name=u_name,
-                    pw=pw,
-                    add=addresses,
-                    guide=guide,
-                    questions=questions,
-                    srF=scenarioResponder,
-                    aList=aList,
-                    progress=progress,
-                    example=example
+                    # "dashboard/student_scenario.html",
+                    # id=i,
+                    # status=status,
+                    # owner=owner,
+                    # desc=desc,
+                    # s_type=s_type,
+                    # s_name=s_name,
+                    # u_name=u_name,
+                    # pw=pw,
+                    # add=addresses,
+                    # guide=guide,
+                    # questions=questions,
+                    # srF=scenarioResponder,
+                    # aList=aList,
+                    # progress=progress,
+                    # example=example
+                    "dashboard/student_scenario_new.html",
+                    scenario_id=i,
                 )
 
             # POST request

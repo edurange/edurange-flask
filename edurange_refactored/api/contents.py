@@ -60,8 +60,7 @@ def get_content(scenario_id):
         scenario_name = db.session.query(Scenarios.name)\
             .filter_by(id=scenario_id)\
             .first()\
-            .name\
-            .lower()
+            .name
         scenario_name = "".join(char for char in scenario_name if char.isalnum())
         with open(f"data/tmp/{scenario_name}/student_view/content.json", "r") as fp:
             content = json.load(fp)
@@ -85,11 +84,6 @@ def get_content_test(scenario_id):
     """
     with open(f"scenarios/prod/getting_started/student_view/content.json", "r") as fp:
         content = json.load(fp)
-    try:
-        srF = scenarioResponseForm()
-        content['StudentGuide']['csrf_token'] = srF['csrf_token']
-    except KeyError as k:
-        assert not current_app.config.get('WTF_CSRF_ENABLED')
     return content
 
 
@@ -114,6 +108,12 @@ def get_state(scenario_id):
         return jsonify(calc_state(current_user.id, scenario_id))
     return err, code
 
+@blueprint.route("/get_state_test/<scenario_id>", methods=["GET"])
+def get_state_test(scenario_id):
+    with open(f"edurange_refactored/api/sample_state.json", "r") as fp:
+        content = json.load(fp)
+    return content
+
 @blueprint.route("/post_ans/<scenario_id>", methods=["POST"])
 @login_required
 def post_ans(scenario_id):
@@ -124,7 +124,7 @@ def post_ans(scenario_id):
     """
     ok, err, code = validate_usage(scenario_id)
     if ok:
-        ajax = process_request(request.form)  
+        ajax = process_request(request.json)
     return err, code
 
 def validate_usage(scenario_id):
@@ -177,16 +177,16 @@ def calc_state(user_id:          int,
         # create row and set the most recent result
         points = int(row.points)
         if row.question not in Questions.keys():
-            Questions[row.question] = {
+            Questions['Question'+str(row.question)] = {
                 "Correct" : points > 0,
-                "Score" : 0
+                "Score" : points
             }
         # if the score is passing, check it off and update state
         if points > 0:
             check, checkList = score_check(row.question, row.student_response, checkList)
             # raise Exception("custom breakpoint")
             if not check:
-                Questions[row.question]["Score"] += points
+                Questions["Question" + str(row.question)]["Score"] += points
                 State["CurrentScore"] += points
 
     # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))

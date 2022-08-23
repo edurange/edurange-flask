@@ -46,7 +46,7 @@ def process_request(form):
         case ["clearButton"]:                       
             return process_notifyEmpty()
         case _:
-            raise Exception('No matching form.')
+            raise Exception(f'No matching form. {form}')
 
 
 
