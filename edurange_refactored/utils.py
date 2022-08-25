@@ -501,11 +501,14 @@ def getResponses(uid, att, query, questions):
 
 
 def responseSelector(resp):
-    responses = db.session.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
+    return db.session\
+            .query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt)\
+            .filter_by(id=int(resp))\
+            .first().scalar_subquery()
 
-    for entry in responses:
-        if entry.id == int(resp):
-            return entry
+    # for entry in responses:
+    #     if entry.id == int(resp):
+    #         return entry
 
 # scoring functions used in functions such as queryPolish()
 # used as: scr = score(getScore(uid, att, query), questionReader(sName))
@@ -639,7 +642,7 @@ def setAttempt(sid):
 
 
 def getAttempt(sid):
-    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid)
+    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid).first()[0]
 
 
 def readScenario():

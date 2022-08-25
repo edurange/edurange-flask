@@ -44,9 +44,31 @@
   padding: .25rem .5rem;
   font-family: 'Open Sans';
   font-size: 1.2em;
-  color: white;
+  color: rgba(128,128,128,0.7);
   border-radius: .3rem;
 }
+
+ .completed, .correct {
+  color: rgba(0,128,0,0.7);
+}
+
+/* .unsubmitted, .submitted {
+
+} */
+
+.incorrect {
+  color: rgba(255,0,0,0.7);
+}
+
+.edu-submission-state i {
+  padding: 0px 0px 0px 4px;
+}
+
+
+/* .edu-submission-state i {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: normal;
+} */
 
 .edu-question-text {
   padding: 5px;

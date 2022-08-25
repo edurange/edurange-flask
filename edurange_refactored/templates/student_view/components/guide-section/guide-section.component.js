@@ -15,16 +15,15 @@ class GuideSection extends React.Component {
         } else {
             Order = section.AltOrder
         }
-        console.log(Order);
 
         return (
             <div className="student-scenario-section">
               {Order.map(
-                (name) => {
-                    if (name.includes("Question")) {
-                        return(<Question name={name} question={questions[name]} key={name} scenarioState={scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.props.csrf_token} />);
+                (item) => {
+                    if (item[0] == 'q') {
+                        return(<Question name={item[1]} question={questions[item[1]]} key={item[1]} scenarioState={scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.props.csrf_token} />);
                     } else {
-                        return(<Reading reading={readings[name]} key={name}/>); // TODO dump reading file contents here and pass string?
+                        return(<Reading reading={readings[item[1]]} key={item[1]}/>); // TODO dump reading file contents here and pass string?
                     }
                 }
               )}

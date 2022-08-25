@@ -74,21 +74,23 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 has_non_blank_line
         if len(reading) > 0: 
             # render markdown to html and 
-            reading_title = f"Reading{ridx+1}"
-            reading_filename = f"{reading_title}.md"
-            readings[reading_title] = markdown.markdown('\n'.join(reading))# replace with html reading_filename
-            order_l.append(reading_title)
-            with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
-                readingp.writelines(reading)
+            # reading_title = f"Reading{ridx+1}"
+            # reading_filename = f"{reading_title}.md"
+            readings[ridx] = markdown.markdown(''.join(reading), extensions=['markdown.extensions.fenced_code'])# replace with html reading_filename
+            # order_l.append(reading_title)
+            order_l.append(['r', ridx])
+            # with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
+            #     readingp.writelines(reading)
             reading=[]
             ridx += 1
             has_non_blank_line = False
     
     def add_question():
         nonlocal qidx, questions, order_l
-        question_title = f"Question{qidx+1}"
-        questions[question_title] = questions_yaml[qidx]
-        order_l.append(question_title)
+        # question_title = f"Question{qidx+1}"
+        questions[qidx] = questions_yaml[qidx]
+        # order_l.append(question_title)
+        order_l.append(['q', qidx])
         qidx += 1
 
 

@@ -70,10 +70,18 @@ What is a command? Commands are executable programs that you can call from your 
 `cd` stands for "change directory", meaning to navigate to a new folder.
 Type each of the following. One at a time. Hitting enter after each
 
-- `cd /`
-- `cd /root`
-- `cd`
-- `cd ../`
+```sh
+cd /
+```
+```sh
+cd /root
+```
+```sh
+cd
+```
+```sh
+cd ../
+```
 
 The first command sends you to the root of your entire file system.
 
@@ -91,7 +99,9 @@ TASK: `cd` to `/bin` then `cd` back to your home directory.
 
 Type
 
-- `ls`
+```sh
+ls
+```
 
 <question 1>
 
@@ -101,7 +111,9 @@ There are parameters and options you can give a command. What if you wanted to l
 
 Now type
 
-- `ls -la`
+```sh
+ls -la
+```
 
 Then hit enter.
 
@@ -130,7 +142,9 @@ Man Pages is short for manual pages. These are text documents with lots of infor
 
 Type
 
-- `man ls`
+```sh
+man ls
+```
 
 and hit enter.
 
@@ -163,7 +177,9 @@ TASK: Open the man page for `mv`. Can you give a brief description of what the c
 `pwd` stands for "Print working directory" - it will tell you where you are within the filesystem.
 Now type in
 
-- `pwd`
+```sh
+pwd
+```
  You should see something similar to `/home/yourusername`. To learn more type `man pwd` , then to get out of that page type `q`
 
 
@@ -191,13 +207,17 @@ Both look like images to me! But if you type in `ls -l` you will notice that one
 
 Type
 
-- `file dog.jpg`
+```sh
+file dog.jpg
+```
 
 You'll see something like, dog.jpg: ASCII text
 
 Now type
 
-- `file cat.jpg`
+```sh
+file cat.jpg
+```
 
 You'll see something like, cat.jpg: JPEG image data, Exif standard: TIFF image data, ... etc.
 
@@ -207,8 +227,10 @@ Now let's learn a new command, cat. cat prints out the text from a file.
 
 Type
 
-- `cat dog.jpg`
-Go throu
+```sh
+cat dog.jpg
+```
+Go through to the end
 You should see something like:
 
 `meow I am a doggo`
@@ -236,7 +258,9 @@ Case sensitivity means that HoW yoU labEL yoUR files matters. If you search for 
 
 Type
 
-- `echo "This is echoed"`
+```sh
+echo "This is echoed"
+```
 
 You will see that it was repeated back to you!
 
@@ -246,33 +270,51 @@ Angle Brackets are `>` `>>` `<` `<<` . They have many uses. `>` Will replace a f
 
 Type
 
-- `echo "This is cool" > newfile`
+```sh
+echo "This is cool" > newfile
+```
 
-- `cat newfile`
+```sh
+cat newfile
+```
 
 Now type
 
-- `echo "This is cool too" > newfile`
+```sh
+echo "This is cool too" > newfile
+```
 
-- `cat newfile`
+```sh
+cat newfile
+```
 
 You can see that `>` will replace any text with what you send it. While `>>` will append to a file
 
 Type
 
-- `echo "This is another thing" >> secondfile`
+```sh
+echo "This is another thing" >> secondfile
+```
 
-- `echo "Hello World" >> secondfile`
+```sh
+echo "Hello World" >> secondfile
+```
 
-- `cat secondfile`
+```sh
+cat secondfile
+```
 
 Now let's combine the two files.
 
 Type
 
-- `cat newfile >> secondfile`
+```sh
+cat newfile >> secondfile
+```
 
-- `cat secondfile`
+```sh
+cat secondfile
+```
 
 You can see the newfile appended to the end of secondfile whereas if you cat newfile it will still only have what we added to it earlier.
 
@@ -297,11 +339,15 @@ One of the most useful tricks you can use angle brackets for is suppressing erro
 
 vim is a program that is used to edit files, and will hopefully be your new best friend! There are different editors out there for example, nano and emacs. To create a file just type
 
-- `vim mynewfile.txt`
+```sh
+vim mynewfile.txt
+```
 
 Or
 
-- `vim thisisfun`
+```sh
+vim thisisfun
+```
 
 To edit a file that is already created it's the same procedure, just make sure not to misspell it or you'll create a new file with that spelling.
 
@@ -323,7 +369,9 @@ Once you are in vim the main key strokes to editing a file are:
 
 There is a LOT that vim can do but we won't list it all here. Do a search on the internet to learn more! You can also check out a vim command cheat sheet, here and here. But at the end of this lesson will be a couple more commands that you will find to be amazingly helpful! You can also check out vimtutor:
 
-- `vimtutor`
+```sh
+vimtutor
+```
 
 TASK: In your home directory in a folder called `editme` there is a file called `editme.txt`, open that up in vim. Delete lines 4 and 5 and add 2 more lines of anything you would like at the end of the file. Don't forget to save.
 
@@ -343,7 +391,9 @@ This leads us to find. find is a very helpful tool that you can use to find thin
 
 An example as given earlier:
 
-- `find . -type f -iname *spekter*`
+```sh
+find . -type f -iname *spekter*
+```
 
 - What you see is the command find. The next `.` is telling us where we want to find. It's the path. The dot means, search in this location where I am at. We could also type in `/Documents` or a full path from the root. Where ever you need to search.
 
@@ -379,7 +429,9 @@ less is more. The command less is used to open larger files, page by page. It al
 
 cowsay is probably one of the best commands... ever. Well maybe not ever, but it is fun!
 
-- `cowsay "this is fun"`
+```sh
+cowsay "this is fun"
+```
 
 ### fortune
 
@@ -391,7 +443,9 @@ Piping is a new concept but stick with me on this one. When you give input to a 
 
 Remember fortune? If we just type fortune we get a fortune back. That fortune we get back is a STDOUT. But when we use cowsay we type something for the cow to say, which is STDIN. So we can use a pipe to take our fortune and have the cow say it!
 
-- `fortune | cowsay`
+```sh
+fortune | cowsay
+```
 
 ### More vim
 
@@ -399,11 +453,15 @@ There are a few more really useful commands I would like to teach you about vim.
 
 If you want to open up multiple files at the same time you can do:
 
-- `vim fileone filetwo.c filethree.h filefour.cc`
+```sh
+vim fileone filetwo.c filethree.h filefour.cc
+```
 
 Or you can open up another file or create a new file while you are still in vim with:
 
-- `:e anotherfile.js`
+```sh
+:e anotherfile.js
+```
 
 And you can jump from file to file with the `:b` keystrokes and using tab to go through which file you would like to edit next.
 

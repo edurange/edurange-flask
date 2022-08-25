@@ -163,6 +163,7 @@ def calc_state(user_id:          int,
         .order_by(Responses.response_time.desc())\
         .all()
     # score per questions, total score so far, most recent result -- correct or incorrect
+    # raise Exception(f"query {query}")
     State = {"CurrentScore" : 0}
     Questions = {}
     questions_yml = questionReader(scenario_name)
@@ -177,7 +178,7 @@ def calc_state(user_id:          int,
         # create row and set the most recent result
         points = int(row.points)
         if row.question not in Questions.keys():
-            Questions['Question'+str(row.question)] = {
+            Questions[row.question] = {
                 "Correct" : points > 0,
                 "Score" : points
             }
@@ -186,7 +187,7 @@ def calc_state(user_id:          int,
             check, checkList = score_check(row.question, row.student_response, checkList)
             # raise Exception("custom breakpoint")
             if not check:
-                Questions["Question" + str(row.question)]["Score"] += points
+                Questions[row.question]["Score"] += points
                 State["CurrentScore"] += points
 
     # score = '' + str(score) + ' / ' + str(totalScore(questionReader(sName)))
