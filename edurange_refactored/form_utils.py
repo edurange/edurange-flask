@@ -197,13 +197,9 @@ def process_scenarioResponse():
         score = checkAnswer(qnum, sid, resp, uid)
         # get attempt number
         att = getAttempt(sid)
+        #raise Exception(f"sid: {sid}, qnum: {qnum}, resp: {resp}, uid: {uid}, score: {score}, att: {att}")
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
-        if score > 0:
-            flash("A CORRECT answer was given for question {0}.".format(qnum))
-            return 'utils/student_answer_response.html', score
-        else:
-            flash("An INCORRECT answer was given for question {0}.".format(qnum))
-            return 'utils/student_answer_response.html', score
+        return 'utils/student_answer_response.html', score
     else:
         flash_errors(sR)
         return False
