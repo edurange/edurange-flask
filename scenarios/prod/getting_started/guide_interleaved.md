@@ -72,14 +72,8 @@ Type each of the following. One at a time. Hitting enter after each
 
 ```sh
 cd /
-```
-```sh
 cd /root
-```
-```sh
 cd
-```
-```sh
 cd ../
 ```
 
@@ -272,9 +266,6 @@ Type
 
 ```sh
 echo "This is cool" > newfile
-```
-
-```sh
 cat newfile
 ```
 
@@ -282,9 +273,6 @@ Now type
 
 ```sh
 echo "This is cool too" > newfile
-```
-
-```sh
 cat newfile
 ```
 
@@ -294,13 +282,7 @@ Type
 
 ```sh
 echo "This is another thing" >> secondfile
-```
-
-```sh
 echo "Hello World" >> secondfile
-```
-
-```sh
 cat secondfile
 ```
 
@@ -310,9 +292,6 @@ Type
 
 ```sh
 cat newfile >> secondfile
-```
-
-```sh
 cat secondfile
 ```
 

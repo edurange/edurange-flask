@@ -4,7 +4,6 @@ class Question extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.updateState = this.updateState.bind(this);
     this.onChange = this.onChange.bind(this);
 
@@ -54,12 +53,14 @@ class Question extends React.Component {
               qstate = Completed;
             } else if (!(this.props.name) in scenarioState.Questions) {
               qstate = Unsubmitted;
+              // bug? TODO
+              return;
             } else if (scenarioState.Questions[this.props.name].Correct != true) {
               qstate = Incorrect;
             } else {
               qstate = Correct;
             }
-            this.setState({scenarioState, qstate});
+            this.setState({currentScore: scenarioState.Questions[this.props.name].Score, scenarioState, qstate});
           });
         });
   }
@@ -116,28 +117,7 @@ class Question extends React.Component {
   }
 
   render() {
-    console.log(this.state.scenarioState);
     const {question, scenarioState, name} = this.props;
-    // const {Unsubmitted, Submitted, Incorrect, Correct, Completed} = this.Question.QUESTION_STATE;
-    // var currentScore = "-";
-    // var submissionStateColor;
-    // if (name in scenarioState.Questions) {
-    //   currentScore = scenarioState.Questions[name].Score;
-    //   if (currentScore == 0) {
-    //     submissionState = "Incorrect";
-    //     submissionStateColor = {"background-color":"rgba(255,0,0,0.7)"}
-    //   } else if (currentScore > 0 && currentScore < question.Points) {
-    //     submissionState = "In Progress";
-    //     submissionStateColor = {"background-color":"rgba(255,255,0,0.7)"};
-    //   } else {
-    //     submissionState = "Correct";
-    //     submissionStateColor = {"background-color":"rgba(0,128,0,0.7)"}
-    //   }
-    // } else {
-    //   currentScore = '-';
-    //   submissionState = "Not Attempted";
-    //   submissionStateColor = {"background-color":"rgba(128,128,128,0.7)"}
-    // }
     return (
         <div className='edu-question'>
             <div className="edu-submission-traits">
@@ -160,7 +140,4 @@ class Question extends React.Component {
   }
 }
 
-
-
-// ReactDOM.render(<Question />, document.getElementById('student_view_question'))
 export default Question;

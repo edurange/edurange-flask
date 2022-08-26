@@ -76,9 +76,9 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
             # render markdown to html and 
             # reading_title = f"Reading{ridx+1}"
             # reading_filename = f"{reading_title}.md"
-            readings[ridx] = markdown.markdown(''.join(reading), extensions=['markdown.extensions.fenced_code'])# replace with html reading_filename
+            readings[str(ridx+1)] = markdown.markdown(''.join(reading), extensions=['markdown.extensions.fenced_code'])# replace with html reading_filename
             # order_l.append(reading_title)
-            order_l.append(['r', ridx])
+            order_l.append(['r', str(ridx + 1)])
             # with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
             #     readingp.writelines(reading)
             reading=[]
@@ -88,9 +88,9 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     def add_question():
         nonlocal qidx, questions, order_l
         # question_title = f"Question{qidx+1}"
-        questions[qidx] = questions_yaml[qidx]
+        questions[str(qidx+1)] = questions_yaml[qidx]
         # order_l.append(question_title)
-        order_l.append(['q', qidx])
+        order_l.append(['q', str(qidx + 1)])
         qidx += 1
 
 
