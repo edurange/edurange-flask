@@ -15,9 +15,9 @@
                 <div class="card-header" id="headingAnswers">
                     <div class="row">
                         <h5 class="mb-0">
-                            <h2> <i class="fa fa-user"></i> Student Answers
+                            <h2> <i class="fa-solid fa-user"></i> Student Answers
                                 <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseAnswers" aria-expanded="false" aria-controls="collapseAnswers">
-                                    <i class="fa fa-caret-down"></i>
+                                    <i class="fa-solid fa-caret-down"></i>
                                 </button> </h2>
                         </h5>
                     </div>
@@ -47,10 +47,10 @@
                                             <td> {{ d['student_response'] }} </td>
                                             <td> {{ d['earned'] }} </td>
                                             {% if d['correct'] == True %}
-                                                <td> <i class="fa fa-check"></i> {{ d['correct'] }} </td>
+                                                <td> <i class="fa-solid fa-check"></i> {{ d['correct'] }} </td>
                                             {% endif %}
                                             {% if d['correct'] == False %}
-                                                <td> <i class="fa fa-ban"></i> {{ d['correct'] }} </td>
+                                                <td> <i class="fa-solid fa-ban"></i> {{ d['correct'] }} </td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}

@@ -282,7 +282,7 @@ def guideHelp4(sec, num):
     <div class="card-header" id="[HEADER_ID]">
         <div class="row">
             <h2> [SECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
-                <i class="fa fa-caret-down"></i> </button></h2>
+                <i class="fa-solid fa-caret-down"></i> </button></h2>
         </div>
     </div>
     <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#acc">
@@ -329,7 +329,7 @@ def guideHelp6(sec, num):
     <div class="card-header" id="[HEADER_ID]">
         <div class="row">
             <h3> [SUBSECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
-                <i class="fa fa-caret-down"></i> </button> </h3>
+                <i class="fa-solid fa-caret-down"></i> </button> </h3>
         </div>
     </div>
     <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#[SEC_ACC]">

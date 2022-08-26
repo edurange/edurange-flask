@@ -28,7 +28,7 @@
                     <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
             <p style="margin-top: -10px;"><b>SSH Command: </b>
                 <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}}  -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
-                <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i> Copy </button>
+                <button class="btn btn-dark ml-2" id="copySSH"><i class="fa-solid fa-clipboard"></i> Copy </button>
                 <script>function showSSHConsole() {
                     window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
                 }
@@ -70,10 +70,10 @@
                                             <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i></i></label> <!-- added i element so replaceWith() works in all cases -->
                                         {% endif %}
                                         {% if aList[i] != 0 and aList[i] != example %}
-                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-check">Correct</i></label>
+                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa-solid fa-check">Correct</i></label>
                                         {% endif %}
                                         {% if aList[i] == 0 %}
-                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa fa-ban">Incorrect</i></label>
+                                            <label id="question_ID{{i}}"><b>{{i}})</b> {{ questions[i] }} <i class="fa-solid fa-ban">Incorrect</i></label>
                                         {% endif %}
                                         <input class="form-control" type="hidden" name="scenario" value="{{ id }}" readonly>
                                         {#<input class="form-control" type="hidden" name="question" value="{{ i }}" readonly>#}
