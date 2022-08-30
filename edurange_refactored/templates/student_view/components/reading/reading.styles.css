@@ -21,6 +21,7 @@ code {
   color: rgba(200, 25, 200);
   font-size: 90%;
   border-radius: 3px;
+  padding: 0 .1rem;
 }
 
 pre {

@@ -180,7 +180,7 @@ def calc_state(user_id:          int,
         if row.question not in Questions.keys():
             Questions[row.question] = {
                 "Correct" : points > 0,
-                "Score" : points
+                "Score" : 0
             }
         # if the score is passing, check it off and update state
         if points > 0:
