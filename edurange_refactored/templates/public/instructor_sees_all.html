@@ -3,10 +3,10 @@
     <link
             rel="stylesheet"
             type="text/css"
-            href="{{ url_for('static', filename='build/student_scenario.bundle.css') }}"
+            href="{{ url_for('static', filename='build/instructor_view.bundle.css') }}"
     />
-<main class="student">
-  <div id="student_scenario" scenario_id={{scenario_id}}></div>
+<main class="instructor">
+    <div id="instructor_view">
 </div>
 </main>
 
@@ -21,5 +21,5 @@
 <!-- <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
 
-<script src="/static/build/student_scenario.bundle.js"></script>
+<script src="/static/build/instructor_view.bundle.js"></script>
 {% endblock %}

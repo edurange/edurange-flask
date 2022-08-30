@@ -1,0 +1,6 @@
+#instructor_view {
+    display: inline-flex;
+    width: 100%;
+    height: 90vh;
+    justify-content: space-evenly;
+}

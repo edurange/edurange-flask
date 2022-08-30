@@ -1,0 +1,5 @@
+#student {
+    color: goldenrod;
+    flex: 0 1 66%;
+    border-right: 3px solid darkblue;
+}

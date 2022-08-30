@@ -171,15 +171,12 @@ def socket_test():
 
     return render_template("public/socket.html")
 
-@blueprint.route("/student_view/<scenario_id>")
-def student_view(scenario_id):
-
-    if scenario_id:
-        return render_template("public/student_view.html", scenario_id=scenario_id)
-    return render_template("public/student_view.html")
-
-
 @blueprint.route("/bug/")
 def bug_report():
     """Bug report. Redirect to Github issues."""
     return redirect("https://github.com/edurange/edurange-flask/issues/new") # TODO replace this with a parameter
+
+@blueprint.route("/instructor_sees_all/")
+@login_required
+def instructor_sees_all():
+    return render_template("public/instructor_sees_all.html")
