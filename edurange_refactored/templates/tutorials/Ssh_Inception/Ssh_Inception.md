@@ -1,6 +1,6 @@
 # SSH Inception
 
----
+
 
 ## 1. NAT
 
@@ -16,7 +16,7 @@ levels.
 IMPORTANT NOTE: Every stop of the journey after the NAT instance contains a file named `secret`. This contains the secret code you should enter into edurange for each stop along the way.
 
 
----
+
 
 ## 2. Starting Line
 
@@ -38,7 +38,7 @@ Can you figure out what these commands mean?
 
 Are there any helpful flags or options on the ssh man page, perhaps relating to ports?
 
----
+
 
 ## 3. First Stop
 
@@ -62,7 +62,7 @@ Find an IP that's a few addresses higher than your current address. Login using 
 
 (Hint: If you don't know or you forgot your current IP address, you can always type `ifconfig` to see your current IP)
 
----
+
 
 ## 4. Second Stop
 
@@ -80,7 +80,7 @@ Maybe there is a flag that will allow you to pass a file containing a private ke
 
 (Hint: perform another nmap scan of the subnet to find the next IP address)
 
----
+
 
 ## 5. Third Stop
 
@@ -101,7 +101,7 @@ Ok, so you found the password and the next IP address, you used an nmap scan to 
 Is there another IP address you can SSH from?
 
 
----
+
 
 ## 6. Fourth Stop
 
@@ -125,7 +125,7 @@ The decryptpass file is [encrypted](https://en.wikipedia.org/wiki/Encryption). R
 Use the IP address you received from the FTP server and the password you recieved from running decryptpass to get to the Fifth Stop.
 
 
----
+
 
 ## 7. Fifth Stop
 
@@ -138,7 +138,7 @@ Use that command to perform an in depth search of the man pages using a keyword 
 (HINT: try a few of the different commands returned in your search. Read their man pages carefully and see if any flags or options will be helpful. You will know you successfully decoded betcha_cant_read_me when you see the directions to the next stop printed on your console.)
 
 
----
+
 
 ## 8. Satan's Palace
 
@@ -168,4 +168,4 @@ It would be an awful lot of work to figure out what rotation this has been encry
 
 Once your SSH Master title has been earned, submit your proof inside your browser opened to edurange!
 
----
+
