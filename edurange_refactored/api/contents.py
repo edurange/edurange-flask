@@ -132,9 +132,7 @@ def validate_usage(scenario_id):
         is_admin, is_instructor = get_roles()
         if is_admin or is_instructor or student_has_access(scenario_id):
             if scenario_exists(scenario_id):
-                if scenario_supports(scenario_id):
-                    return True, jsonify({}), 200
-                return False, jsonify({"405": "Method Not Allowed: Scenario does not support this feature."}), 405
+                return True, jsonify({}), 200
             return False, jsonify({"404": "Not Found: Scenario does not exist."}), 404
         return False, jsonify({"401": "Unauthorized: You are not permitted to access this content."}), 401
     return False, jsonify({"400":"Bad Request: Required type integer"}), 400
