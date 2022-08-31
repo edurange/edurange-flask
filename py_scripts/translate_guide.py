@@ -167,7 +167,7 @@ def main():
     
     prod_path = args.prod_path[0]
 
-    guide_filepath = path.join(prod_path, 'guide_interleaved.md')
+    guide_filepath = path.join(prod_path, 'guide.md')
     questions_filepath = path.join(prod_path, 'questions.yml')
     out_filepath = path.join(prod_path, 'student_view')
 
