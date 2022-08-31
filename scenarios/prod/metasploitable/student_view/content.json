@@ -1,8 +1,8 @@
 {
-    "ScenarioTitle": "Getting Started",
+    "ScenarioTitle": "Metasploitable",
     "StudentGuide": {
-        "TotalQuestions": 7,
-        "TotalPoints": 113,
+        "TotalQuestions": 8,
+        "TotalPoints": 40,
         "SectionOrder": [
             1,
             2,
@@ -10,206 +10,217 @@
             4,
             5,
             6,
-            7,
-            8,
-            9
+            7
         ],
         "Sections": [
             {
                 "Count": 1,
-                "Title": "Welcome to Cybersec",
+                "Title": "What is Metasploit",
                 "Order": [
-                    "Reading1"
+                    [
+                        "r",
+                        "1"
+                    ]
                 ]
             },
             {
                 "Count": 2,
-                "Title": "Using the Terminal Commands",
+                "Title": "Learning Objectives",
                 "Order": [
-                    "Reading2"
+                    [
+                        "r",
+                        "2"
+                    ]
                 ]
             },
             {
                 "Count": 3,
-                "Title": "Linux File System",
+                "Title": "Basic Metasploit Commands",
                 "Order": [
-                    "Reading3"
+                    [
+                        "r",
+                        "3"
+                    ]
                 ]
             },
             {
                 "Count": 4,
-                "Title": "Commands",
+                "Title": "Services",
                 "Order": [
-                    "Reading4",
-                    "Question1",
-                    "Question2",
-                    "Reading5",
-                    "Question3",
-                    "Reading6"
+                    [
+                        "r",
+                        "4"
+                    ]
                 ]
             },
             {
                 "Count": 5,
-                "Title": "File Types",
+                "Title": "Information",
                 "Order": [
-                    "Reading7",
-                    "Question4"
+                    [
+                        "r",
+                        "5"
+                    ]
                 ]
             },
             {
                 "Count": 6,
-                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
+                "Title": "Example Use of Metasploit",
                 "Order": [
-                    "Reading8",
-                    "Question5"
+                    [
+                        "r",
+                        "6"
+                    ]
                 ]
             },
             {
                 "Count": 7,
-                "Title": "vim, Regular expresssions, and find",
+                "Title": "Exercises",
                 "Order": [
-                    "Reading9",
-                    "Question6"
-                ]
-            },
-            {
-                "Count": 8,
-                "Title": "More Commands",
-                "Order": [
-                    "Reading10"
-                ]
-            },
-            {
-                "Count": 9,
-                "Title": "Final Mission",
-                "Order": [
-                    "Reading11",
-                    "Question7"
+                    [
+                        "r",
+                        "7"
+                    ],
+                    [
+                        "q",
+                        "1"
+                    ],
+                    [
+                        "q",
+                        "2"
+                    ],
+                    [
+                        "q",
+                        "3"
+                    ],
+                    [
+                        "q",
+                        "4"
+                    ],
+                    [
+                        "q",
+                        "5"
+                    ],
+                    [
+                        "q",
+                        "6"
+                    ],
+                    [
+                        "q",
+                        "7"
+                    ],
+                    [
+                        "q",
+                        "8"
+                    ]
                 ]
             }
         ],
         "Readings": {
-            "Reading1": "Reading1.md",
-            "Reading2": "Reading2.md",
-            "Reading3": "Reading3.md",
-            "Reading4": "Reading4.md",
-            "Reading5": "Reading5.md",
-            "Reading6": "Reading6.md",
-            "Reading7": "Reading7.md",
-            "Reading8": "Reading8.md",
-            "Reading9": "Reading9.md",
-            "Reading10": "Reading10.md",
-            "Reading11": "Reading11.md"
+            "1": "<h2>What is Metasploit</h2>\n<p>Metasploit is a framework for automating the process of exploiting vulnerabilities in application software. It has tools to support the cyber kill chain. which consists of the steps: \n- reconnaissance, identifying the target and software services running on the target\n- finding vulnerabilities, this may include CVEs for the specific software versions running on the target and severity of the vulnerabilities\n- weaponization, identifying exploits that could be used for the vulnerabilities\n- delivery, in order to get the exploit to the target, it may be necessary to bypass firewalls\n- exploitation, choosing a payload, producing packets that contain the exploit with payload and delivering them to the target\n- persistence, creating accounts, backdoors, beacons, etc. </p>",
+            "2": "<h2>Learning Objectives</h2>\n<ul>\n<li>use the Metasploit shell.</li>\n<li>identify targets and services running on open ports</li>\n<li>given the service running and the version, find known vulnerabilities and severity.</li>\n<li>find exploits provided by the Metasploit framework to use.</li>\n<li>use the Metasploit Framework to exploit a vulnerable service.</li>\n</ul>",
+            "3": "<h2>Basic Metasploit Commands</h2>\n<blockquote>\n<p>Square brackets indicate the command input.</p>\n</blockquote>\n<ul>\n<li>\n<p><code>msfconsole</code>: opens the Metasploit shell, which allows for Metasploit commands to be run.</p>\n</li>\n<li>\n<p><code>help</code>: when used alone, shows the possible options; when used with a command as input, shows information on the specified command.</p>\n</li>\n<li>\n<p><code>search [search_term]</code>: searches the Metasploit vulnerability database and returns the available exploit module names.</p>\n</li>\n<li>\n<p><code>use [module_name]</code>: tells Metasploit which exploit is being used.</p>\n</li>\n<li>\n<p><code>back</code>: tells Metasploit to stop using the current exploit.</p>\n</li>\n<li>\n<p><code>options</code>: shows the options that can be set for the exploit currently in use. (NOTE: some options are required for the exploit to be run.)</p>\n</li>\n<li>\n<p><code>set [option] [value]</code>: sets the given option to the given value for the exploit currently in use.</p>\n</li>\n<li>\n<p><code>exploit</code>: tells Metasploit to try to run the current exploit.</p>\n</li>\n<li>\n<p><code>exit</code>: can be used to exit the Metasploit command line and return to the bash shell (<code>quit</code> can be used for the same purpose).</p>\n</li>\n</ul>\n<blockquote>\n<p>Note: options such as RHOSTS which holds information for the target ip address will likely have to be set for each exploit used.</p>\n</blockquote>\n<h3>Example use of Metasploit</h3>\n<p>The following is an example use of the metasploit framework that has been generalized to show how the given commands can be used.</p>\n<!--![Metasploit Command Line Example](/assets/img/Metasploitable/m-h_example_cmd_line.png)-->\n\n<pre><code>msf5 &gt; search exploit\n\n Matching Modules\n ================\n\n    #  Name                                 Disclosure Date  Rank       Check  Description\n    -  -                                 ---------------  ----       -----  -----------\n    0  type/os/directory/exploit_name  xxxx-xx-xx       excellent  Yes    Short description of the exploit\n\n\n msf5 &gt; use type/os/directory/exploit_name\n msf5 exploit(os/directory/exploit_name) &gt; options\n\n Module options (type/os/directory/exploit_name):\n\n    Name    Current Setting  Required  Description\n    -    ---------------  --------  -----------\n    RHOSTS                   yes       The target address range or CIDR identifier\n    RPORT   xxxx             yes       The target port (TCP)\n\n\n Exploit target:\n\n    Id  Name\n    --  -\n    0   Automatic Target\n\n\n msf5 exploit(os/directory/exploit_name) &gt; set RHOSTS target\n RHOSTS =&gt; target\n msf5 exploit(os/directory/exploit_name) &gt; exploit\n msf5 &gt;\n msf5 &gt;\n msf5 exploit(os/directory/exploit_name) &gt; back\n msf5 &gt;\n</code></pre>\n<!--\n<pre>\nmsf > use windows/smb/ms08_067_netapi\nexploit(ms08_067_netapi) > show options\nexploit(ms08_067_netapi) > set RHOST 10.0.0.1\nexploit(ms08_067_netapi) > show targets\nexploit(ms08_067_netapi) > set target 0\n</pre>\n-->",
+            "4": "<h2>Services</h2>\n<p>The following is a list of the types of vulnerable services provided by Metasploitable</p>\n<ul>\n<li>\n<p>A compiler</p>\n</li>\n<li>\n<p>An internet relay chat (irc)</p>\n</li>\n<li>\n<p>Two file transfer protocols (ftp)</p>\n</li>\n<li>\n<p>An http service (php_cgi)</p>\n</li>\n<li>\n<p>An sql database</p>\n</li>\n</ul>",
+            "5": "<h2>Information</h2>\n<p>Once you have logged into the attacker machine, you should be able to run nmap, which is the standard tool for scanning a target. The use of nmap\nis covered in the scenarios SSH_inception and Total Recon. In this exercise, the target machine can be accessed using the keyword <code>target</code> instead of scanning a network to find the IP Address.</p>\n<p>It is recommended that when you scan the target machine, to scan all ports from 0 to 65535. Once you have identified the open ports you can narrow down the range of ports that you scan for additional information.</p>\n<p>When you scan the target machine you should see 15 open ports.</p>\n<p>The next step is to identify services with known vulnerabilites.</p>\n<p>When looking for exploits to use on a service, we highly recommend that you only try exploits that are ranked <code>excellent</code>.</p>",
+            "6": "<h2>Example Use of Metasploit</h2>\n<p>Using a basic nmap scan, we can see that an http service is running on port 80. This service will be used as an example of how to use Metasploit. </p>\n<p>Open the Metasploit shell using <code>msfconsole</code></p>\n<p>Use the Metasploit search command to find a usable http exploit. Notice that if you just search for http (<code>search http</code>), you will be given a few over two thousand results. This is a few results too many, so instead we can search for <code>php_cgi</code> to find a single usable result. Note that in other cases the number of results will be more managable, so do not worry about trying to search for specific exploits with other services.</p>\n<p>Using <code>search php_cgi</code> will give us one result. We can now use the <code>use</code> command followed by the exploit name to tell Metasploit that we want to use this exploit.</p>\n<p>Once we are using the exploit we can now make sure that all of the exploits options are properly set. To do so, we will use the <code>options</code> command.</p>\n<p>The options command shows us that there are four required options, and that three of them are already set. We can use the <code>set</code> command to set the <code>RHOSTS</code> option. The <code>RHOSTS</code> option specifies the target address. <code>set RHOSTS target</code></p>\n<p>Once all the required options are set, we can use the <code>exploit</code> command to run the exploit.</p>\n<p>Some exploits will result in a meterpreter shell, we can get to a normal shell by entering the command <code>shell</code>.</p>",
+            "7": "<h2>Exercises</h2>\n<p>Now that you have had some practice with the http php exploit, use the information given above to find and exploit the five remaining services.</p>"
         },
         "Questions": {
-            "Question1": {
-                "Text": "How many subdirectories are in your home directory? (Not including hidden directories)",
-                "Type": "Number",
-                "Options": [
-                    "accept-integer",
-                    "accept-decimal"
-                ],
-                "Answers": [
-                    {
-                        "Value": 7,
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question2": {
-                "Text": "In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?",
-                "Type": "String",
-                "Answers": [
-                    {
-                        "Value": "$RANDOM_ONE",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question3": {
-                "Text": "What does the line below NAME on the man page for the \"file\" command say?",
+            "1": {
+                "Text": "What is the version of the vulnerable FTP service?",
                 "Type": "String",
                 "Options": [],
                 "Answers": [
                     {
-                        "Value": "file \u2014 determine file type",
-                        "Points": 15
-                    },
-                    {
-                        "Value": "file - determine file type",
-                        "Points": 15
+                        "Value": "2.3.4",
+                        "Points": 5
                     }
                 ],
-                "Points": 15
+                "Points": 5
             },
-            "Question4": {
-                "Text": "What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)",
-                "Type": "String",
-                "Answers": [
-                    {
-                        "Value": "$RANDOM_TWO",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question5": {
-                "Text": "What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)",
-                "Type": "Essay",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "ESSAY",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question6": {
-                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
-                "Type": "Multi String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "edurange5meow.JPG",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange001.gif",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "4edurange.jpeg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange006weeeeeee.png",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "002edurange.jpg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange3.GIF",
-                        "Points": 3
-                    }
-                ],
-                "Points": 18
-            },
-            "Question7": {
-                "Text": "What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)",
+            "2": {
+                "Text": "What is the Metasploit module used to exploit the above service?",
                 "Type": "String",
                 "Options": [],
                 "Answers": [
                     {
-                        "Value": "/usr/special/secrets/",
-                        "Points": 20
+                        "Value": "exploit/unix/ftp/vsftpd_234_backdoor",
+                        "Points": 5
                     }
                 ],
-                "Points": 20
+                "Points": 5
+            },
+            "3": {
+                "Text": "What user does the above exploit log you into?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "root",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "4": {
+                "Text": "What is the exploit you can use on port 80 that gets you a meterpreter shell?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "exploit/multi/http/php_cgi_arg_injection",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "5": {
+                "Text": "What is the full MySQL version running on the target?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "5.0.51a-3ubuntu5",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "6": {
+                "Text": "What is the highest port open on the target host?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": 6697,
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "7": {
+                "Text": "What service is running on the above port?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "IRC",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "8": {
+                "Text": "What is the admin email of the above service?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "admin@Metasploitable.LAN",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
             }
         }
     },
