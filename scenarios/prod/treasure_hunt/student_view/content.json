@@ -1,215 +1,266 @@
 {
-    "ScenarioTitle": "Getting Started",
+    "ScenarioTitle": "Treasure Hunt",
     "StudentGuide": {
-        "TotalQuestions": 7,
-        "TotalPoints": 113,
+        "TotalQuestions": 16,
+        "TotalPoints": 210,
         "SectionOrder": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9
+            1
         ],
         "Sections": [
             {
                 "Count": 1,
-                "Title": "Welcome to Cybersec",
+                "Title": "Excercises",
                 "Order": [
-                    "Reading1"
-                ]
-            },
-            {
-                "Count": 2,
-                "Title": "Using the Terminal Commands",
-                "Order": [
-                    "Reading2"
-                ]
-            },
-            {
-                "Count": 3,
-                "Title": "Linux File System",
-                "Order": [
-                    "Reading3"
-                ]
-            },
-            {
-                "Count": 4,
-                "Title": "Commands",
-                "Order": [
-                    "Reading4",
-                    "Question1",
-                    "Question2",
-                    "Reading5",
-                    "Question3",
-                    "Reading6"
-                ]
-            },
-            {
-                "Count": 5,
-                "Title": "File Types",
-                "Order": [
-                    "Reading7",
-                    "Question4"
-                ]
-            },
-            {
-                "Count": 6,
-                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
-                "Order": [
-                    "Reading8",
-                    "Question5"
-                ]
-            },
-            {
-                "Count": 7,
-                "Title": "vim, Regular expresssions, and find",
-                "Order": [
-                    "Reading9",
-                    "Question6"
-                ]
-            },
-            {
-                "Count": 8,
-                "Title": "More Commands",
-                "Order": [
-                    "Reading10"
-                ]
-            },
-            {
-                "Count": 9,
-                "Title": "Final Mission",
-                "Order": [
-                    "Reading11",
-                    "Question7"
+                    [
+                        "r",
+                        "1"
+                    ],
+                    [
+                        "q",
+                        "1"
+                    ],
+                    [
+                        "q",
+                        "2"
+                    ],
+                    [
+                        "q",
+                        "3"
+                    ],
+                    [
+                        "q",
+                        "4"
+                    ],
+                    [
+                        "q",
+                        "5"
+                    ],
+                    [
+                        "q",
+                        "6"
+                    ],
+                    [
+                        "q",
+                        "7"
+                    ],
+                    [
+                        "q",
+                        "8"
+                    ],
+                    [
+                        "q",
+                        "9"
+                    ],
+                    [
+                        "q",
+                        "10"
+                    ],
+                    [
+                        "q",
+                        "11"
+                    ],
+                    [
+                        "q",
+                        "12"
+                    ],
+                    [
+                        "q",
+                        "13"
+                    ],
+                    [
+                        "q",
+                        "14"
+                    ],
+                    [
+                        "q",
+                        "15"
+                    ],
+                    [
+                        "q",
+                        "16"
+                    ]
                 ]
             }
         ],
         "Readings": {
-            "Reading1": "Reading1.md",
-            "Reading2": "Reading2.md",
-            "Reading3": "Reading3.md",
-            "Reading4": "Reading4.md",
-            "Reading5": "Reading5.md",
-            "Reading6": "Reading6.md",
-            "Reading7": "Reading7.md",
-            "Reading8": "Reading8.md",
-            "Reading9": "Reading9.md",
-            "Reading10": "Reading10.md",
-            "Reading11": "Reading11.md"
+            "1": "<h3>Description</h3>\n<p>Treasure Hunt is an exercise that teaches about permissions and other security loopholes in\nLinux. In this virtual machine there are 16 imaginary users. Somewhere in his/her home\ndirectory, each of these imaginary users has a \u201csecret\u201d file named username-secret.<ext>\n(where <ext> is a file extension) whose contents are intended to be private (readable only by\nthe user and no one else). However, each of their secret files can actually be read by other\nusers who are both determined and clever. </p>\n<p>Your goal is to collect the contents of as many of the\nsixteen secret files as you can.</p>\n<h3>Background</h3>\n<p>There are often multiple users on the same system or network. Given this case, how does a\nsystem determine who is able to access specific files?</p>\n<p>Linux system of file access permissions are used to control who is able to read, write and execute certain files. This is used both to keep\nuser files private as well as to protect critical system files. In order to obtain many of the secrets\nin this exercise, you will need to understand the read, write, and execute permissions as well as\nhow permissions are applied to the owner, group owner, and every user. </p>\n<p>If you are unfamiliar with linux permissions, see the section on Linux File Permissions in the Student Tutorials\nsection below.</p>\n<p>This exercise also utilizes password cracking for a few users. That password cracking method\nthat you will work with utilizes linux password hashes. This exercise is not intended to teach\nabout hashes and password security techniques. If you are unfamiliar with the general idea of\nthem, a quick web search should catch you up with the basics. </p>\n<p>The files that contain the password hashes are not publicly available on linux systems, but we have made them so for this\nexercise and will show where to find them. Hopefully, this will give you an idea if the passwords\nyou use are secure or not!</p>\n<p>You will also run into the .htaccess file in this exercise. This is a configuration file for Apache\nWeb Server. It is used for many things but here it is only used from user authorization. You\nshould be able to figure it out when you come across it. If not, a simple web search will help you\nout again.</p>\n<h3>Learning Objectives</h3>\n<p>Know the difference between read, write, and execute permissions and how this affects\ndirectories and files U</p>\n<p>Understand linux groups</p>\n<p>Understand what Set User ID and Set Group ID do</p>\n<p>Know how to find a file\u2019s permissions and interpret this and similar lines \u2018-rwsr-xr-x\u2018</p>\n<p>Be able to create a symbolic link and know what it does</p>\n<p>Recognize what sorts of passwords are easily cracked from known password hashes</p>\n<p>Have a moderate understanding of some basic linux tools and how to use them</p>\n<h3>Instructions</h3>\n<p>Connect to the scenario via your instructor\u2019s directions, or as displayed on the EDURange page.</p>\n<p>Once logged in, it is your goal to find the secrets of the following 16 fake users:</p>\n<ul>\n<li>Alice Wan (awan)</li>\n<li>Bob Duomo (bduomo)</li>\n<li>Cathy Dry (cdry)</li>\n<li>Debbie Shi (dshi)</li>\n<li>Ellen Quintus (equintus)</li>\n<li>Fred Sexon (fsexon)</li>\n<li>George Hepta (ghepta)</li>\n<li>Helen Ochoa (hochoa)</li>\n<li>Inna Nunez (inunez)</li>\n<li>Jack Dekka (jdekka)</li>\n<li>Karen Elva (kelva)</li>\n<li>Loretta Douzette (Idouzette)</li>\n<li>Patricia Kaideka (pkaideka)</li>\n<li>Pyotr Theodore Radessime (pradessime)</li>\n<li>Quinn Sanera (qsanera)</li>\n<li>Tudor Daforth (tdaforth)</li>\n</ul>\n<h4>Important Disclaimer:</h4>\n<p>Accessing some secret files will require that you make changes to certain files/directories in the\naccounts of the fake users. Once you determine the secret, be sure to undo any changes that\nyou make so that you leave the system exactly in the same state that you found it. </p>\n<p>Otherwise, you could (1) make it very easy for others to access the information you worked so hard to get\nor (2) make it impossible for others to access the information you found (this is unacceptable in\nthis exercise, though not in the real world).</p>\n<p>Since some of your changes may be hard for you to undo, you can use the <code>resetFakeUsers</code>\ncommand to resets all fake user accounts to their initial states and also resets other parts of the\nsystem (e.g. deletes all files in the /tmp directory). </p>\n<p>Executing this command should solve all reseting issues; if it does not, please let us know. By calling resetFakeUsers frequently, you\ncould cause a denial of service attack against your classmates; please do not do this!</p>\n<h3>User Secrets</h3>\n<p>Each secret is contained somewhere in that user's home directory. All fake users belong to a\ngroup named student, a fact that is important for some of the attacks. There are other significant\ngroups as well that some of these users are in.</p>\n<p>There is no strict sequential order for finding the secrets, though some you will only be able to\nget after gaining access to another user's account. Password cracking is a great place to start.\nWe will walk you through that below.</p>\n<h3>Password Cracking:</h3>\n<p>For password cracking download <a href=\"http:/Awww.openwall.com/john/\">John the Ripper</a> onto a\nlocal computer. John the Ripper is not on the Treasure Hunt container, and you won't be able to install\nit there. </p>\n<p>If you only have access to a Windows computer for your local machine, John the Ripper\nsuggests HashSuite; though we won't provide you with instructions on how to use that program.</p>\n<p>On the Treasure Hunt mcontainer, gain access to the file /etc/shadow. (See hints below if stuck).\nYou will need a copy of /etc/shadow and /etc/passwd on your machine running John the Ripper.</p>\n<p>Next, use John\u2019s unshadow command to combine /etc/passwd and /etc/shadow into a single\npassword file (e.g. \u2018'unshadow passwd shadow &gt; mypasswd\u2019).\nManually edit 'mypasswd' to exclude all accounts other than the 16 fake users for this problem \u2014\notherwise you\u2019re wasting processing time in your password cracker. </p>\n<p>When you find the secret of a fake user, removing that user from the unshadowed file will help speed up future attempts.\nYou do not want to waste processing time trying to crack passwords you don\u2019t need!</p>\n<p>Run John on 'mypasswd' (e.g. \u2018john passwords\u2019). The basic john command uses the default\nwordlist run/password.Ist, which should be able to fairly quickly crack two user passwords.\nThere is one more password that can be cracked, but you will need to feed john a custom word\nlist. Maybe if you Knew more about fake users...</p>\n<h3>User Web Pages:</h3>\n<p>Each user has at least one web page in a public html directory. Some of these pages contain\ninformation relevant to finding their secret. Although many of the user web pages are publicly\nreadable by any user on the THVM, some can only be read via a web browser. </p>\n<p>Since you are logged in via ssh, you might be wondering how you can view these web pages. \nLynx is a textbased web browser that we have provided for your use. Typing <code>lynx localhost/~awan/</code> will let\nyou view awan's homepage. The same format can be used to view the other 15 user's pages.</p>\n<p>Though you can see the public html pages in each user's directory, due to the permissions of\nany private files, you will need to use Lynx to uncover some of the secrets. See Lynx's man\npage for specific instructions. </p>\n<p><code>wget</code> and <code>curl</code> are also good alternative tools, since Lynx may not show you everything...</p>\n<h3>Other Hints:</h3>\n<ul>\n<li>\n<p>It may be helpful to export certain files from the THVM to your local computer (or vice versa).\n  You can use scp or ftp from your local computer to do this.</p>\n</li>\n<li>\n<p>Having trouble gaining access to /etc/shadow? Look in /bin/ and see if you can find something\n  to help you.</p>\n</li>\n<li>\n<p>Access to web directories can be controlled by a .htaccess file. See\n  http://www.javascriptkit.com/howto/htaccess.shtml for documentation on .htaccess files.</p>\n</li>\n<li>\n<p>The web server runs as user/group www-data. Including www-data in a group gives the web\n  server whatever permissions are given to the group. There is a group named apache whose\n  only member is www-data.</p>\n</li>\n<li>\n<p>In an HTML file, text between &lt;!-- and &gt; is a comment that is not displayed by the web\n  browser.</p>\n</li>\n<li>\n<p>The utility <code>pdftotext</code> is installed for reading pdf files in the console. Alternatively, you may want to export relevant\n  .pdf files from the THVM to your local computer and view them there.)</p>\n</li>\n<li>\n<p>It is possible to convert .pdf files to other file formats, and there are programs in the THVM for\n  doing this. But saying exactly what those programs are would make one secret too easy too\n  find. So you might want to research how to convert .pdf files to other formats in Linux.</p>\n</li>\n<li>\n<p>.docx format is a zipped (compressed) directory of XML files; it can be uncompressed with the\n  unzip command. There are many ways to obtain that secret though.</p>\n</li>\n<li>\n<p>If you want to add a directory dir to the front of your PATH variable, a good way to do this is\n  with the following command - export PATH= dir :$PATH (e.g. \u2018export PATH=/tmp/:$PATH\u2019)</p>\n</li>\n<li>\n<p>The strings command could be helpful for some secrets. As well as a hex viewer.</p>\n</li>\n</ul>\n<h2>Excercises</h2>"
         },
         "Questions": {
-            "Question1": {
-                "Text": "How many subdirectories are in your home directory? (Not including hidden directories)",
-                "Type": "Number",
-                "Options": [
-                    "accept-integer",
-                    "accept-decimal"
-                ],
-                "Answers": [
-                    {
-                        "Value": 7,
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question2": {
-                "Text": "In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?",
+            "1": {
+                "Text": "Who is the author of awan's quote?",
                 "Type": "String",
                 "Answers": [
                     {
-                        "Value": "$RANDOM_ONE",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question3": {
-                "Text": "What does the line below NAME on the man page for the \"file\" command say?",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "file \u2014 determine file type",
-                        "Points": 15
-                    },
-                    {
-                        "Value": "file - determine file type",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question4": {
-                "Text": "What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)",
-                "Type": "String",
-                "Answers": [
-                    {
-                        "Value": "$RANDOM_TWO",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question5": {
-                "Text": "What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)",
-                "Type": "Essay",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "ESSAY",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question6": {
-                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
-                "Type": "Multi String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "edurange5meow.JPG",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange001.gif",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "4edurange.jpeg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange006weeeeeee.png",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "002edurange.jpg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange3.GIF",
-                        "Points": 3
-                    }
-                ],
-                "Points": 18
-            },
-            "Question7": {
-                "Text": "What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "/usr/special/secrets/",
+                        "Value": "Woody Allen",
                         "Points": 20
                     }
                 ],
                 "Points": 20
+            },
+            "2": {
+                "Text": "Who is the author of bduomo's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Robert Benchley",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "3": {
+                "Text": "Who is the author of cdry's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Benjamin Franklin",
+                        "Points": 20
+                    }
+                ],
+                "Points": 20
+            },
+            "4": {
+                "Text": "Who is the author of dshi's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Orson Welles",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "5": {
+                "Text": "From what country is the proverb of equintu's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "China",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "6": {
+                "Text": "What is the last word in fsexon's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "man",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "7": {
+                "Text": "From what country is the proverb of ghepta's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Japan",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "8": {
+                "Text": "Who is the author of hochoa's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Robert Frost",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "9": {
+                "Text": "Who is the author of inunez's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Mark Twain",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "10": {
+                "Text": "Who is the author of jdekka's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Ellen DeGeneres",
+                        "Points": 5
+                    }
+                ],
+                "Points": 5
+            },
+            "11": {
+                "Text": "Who is the author of kelva's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "P. G. Wodehouse",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "12": {
+                "Text": "Who is the author of ldouzette's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Norm Crosby",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "13": {
+                "Text": "Who is the author of pkaideka's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Max Lerner",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "14": {
+                "Text": "Who is the author of pradessime's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "George Burns",
+                        "Points": 25
+                    }
+                ],
+                "Points": 25
+            },
+            "15": {
+                "Text": "Who is the author of qsanera's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Mark Twain",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "16": {
+                "Text": "Who is the author of tdaforth's quote?",
+                "Type": "String",
+                "Answers": [
+                    {
+                        "Value": "Erma Bombeck",
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
             }
         }
     },

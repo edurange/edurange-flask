@@ -96,7 +96,7 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
 
     # Parse sections
     with open(guide_filename, 'r') as fp:
-        # Assume first line looks like this "# Guide Title"
+        #Assume first line looks like this "# Guide Title"
         guide_title = fp.readline().split("# ")[1].strip()
         contents["ScenarioTitle"] = guide_title
 

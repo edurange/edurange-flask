@@ -1,8 +1,8 @@
 {
-    "ScenarioTitle": "Getting Started",
+    "ScenarioTitle": "File Wrangler",
     "StudentGuide": {
-        "TotalQuestions": 7,
-        "TotalPoints": 113,
+        "TotalQuestions": 12,
+        "TotalPoints": 30,
         "SectionOrder": [
             1,
             2,
@@ -12,98 +12,230 @@
             6,
             7,
             8,
-            9
+            9,
+            10,
+            11
         ],
         "Sections": [
             {
                 "Count": 1,
-                "Title": "Welcome to Cybersec",
+                "Title": "Learning Objectives",
                 "Order": [
-                    "Reading1"
+                    [
+                        "r",
+                        "1"
+                    ]
                 ]
             },
             {
                 "Count": 2,
-                "Title": "Using the Terminal Commands",
+                "Title": "Task 1",
                 "Order": [
-                    "Reading2"
+                    [
+                        "r",
+                        "2"
+                    ],
+                    [
+                        "q",
+                        "1"
+                    ]
                 ]
             },
             {
                 "Count": 3,
-                "Title": "Linux File System",
+                "Title": "Task 2",
                 "Order": [
-                    "Reading3"
+                    [
+                        "r",
+                        "3"
+                    ],
+                    [
+                        "q",
+                        "2"
+                    ]
                 ]
             },
             {
                 "Count": 4,
-                "Title": "Commands",
+                "Title": "Task 3",
                 "Order": [
-                    "Reading4",
-                    "Question1",
-                    "Question2",
-                    "Reading5",
-                    "Question3",
-                    "Reading6"
+                    [
+                        "r",
+                        "4"
+                    ],
+                    [
+                        "q",
+                        "3"
+                    ]
                 ]
             },
             {
                 "Count": 5,
-                "Title": "File Types",
+                "Title": "Task 4",
                 "Order": [
-                    "Reading7",
-                    "Question4"
+                    [
+                        "r",
+                        "5"
+                    ],
+                    [
+                        "q",
+                        "4"
+                    ],
+                    [
+                        "r",
+                        "6"
+                    ],
+                    [
+                        "q",
+                        "5"
+                    ]
                 ]
             },
             {
                 "Count": 6,
-                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
+                "Title": "Task 5",
                 "Order": [
-                    "Reading8",
-                    "Question5"
+                    [
+                        "r",
+                        "7"
+                    ],
+                    [
+                        "q",
+                        "6"
+                    ]
                 ]
             },
             {
                 "Count": 7,
-                "Title": "vim, Regular expresssions, and find",
+                "Title": "Task 6",
                 "Order": [
-                    "Reading9",
-                    "Question6"
+                    [
+                        "r",
+                        "8"
+                    ],
+                    [
+                        "q",
+                        "7"
+                    ],
+                    [
+                        "r",
+                        "9"
+                    ],
+                    [
+                        "q",
+                        "8"
+                    ]
                 ]
             },
             {
                 "Count": 8,
-                "Title": "More Commands",
+                "Title": "Task 7",
                 "Order": [
-                    "Reading10"
+                    [
+                        "r",
+                        "10"
+                    ],
+                    [
+                        "q",
+                        "9"
+                    ]
                 ]
             },
             {
                 "Count": 9,
-                "Title": "Final Mission",
+                "Title": "Task 8",
                 "Order": [
-                    "Reading11",
-                    "Question7"
+                    [
+                        "r",
+                        "11"
+                    ],
+                    [
+                        "q",
+                        "10"
+                    ]
+                ]
+            },
+            {
+                "Count": 10,
+                "Title": "Task 9",
+                "Order": [
+                    [
+                        "r",
+                        "12"
+                    ],
+                    [
+                        "q",
+                        "11"
+                    ],
+                    [
+                        "r",
+                        "13"
+                    ]
+                ]
+            },
+            {
+                "Count": 11,
+                "Title": "Task 10",
+                "Order": [
+                    [
+                        "r",
+                        "14"
+                    ],
+                    [
+                        "q",
+                        "12"
+                    ],
+                    [
+                        "r",
+                        "15"
+                    ]
                 ]
             }
         ],
         "Readings": {
-            "Reading1": "Reading1.md",
-            "Reading2": "Reading2.md",
-            "Reading3": "Reading3.md",
-            "Reading4": "Reading4.md",
-            "Reading5": "Reading5.md",
-            "Reading6": "Reading6.md",
-            "Reading7": "Reading7.md",
-            "Reading8": "Reading8.md",
-            "Reading9": "Reading9.md",
-            "Reading10": "Reading10.md",
-            "Reading11": "Reading11.md"
+            "1": "<h2>Learning Objectives</h2>\n<ol>\n<li>Become familiar with ls and common flags: -a, -l</li>\n<li>(see <a href=\"https://github.com/edurange/edurange-flask/blob/master/edurange_refactored/templates/tutorials/Getting_Started/Getting_Started.md\">Getting Started</a>) Know how to search man pages to find a specific option.</li>\n<li>Navigate file system to find specific files</li>\n<li>Move and copy files.</li>\n<li>Set permissions (access control) for files.</li>\n</ol>",
+            "2": "<h2>Task 1</h2>\n<p>The <code>pwd</code> command will give you the current working directory. This tells you where you are in the Linux file system.</p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Type <code>pwd</code> into the prompt</p>\n</li>\n<li>\n<p>Answer question 1 in EDURange.</p>\n</li>\n</ol>",
+            "3": "<h2>Task 2</h2>\n<p>The <code>man</code> command outputs the manual entry for a given command. The format is as follows:</p>\n<p><code>man [command]</code></p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>View the manual entry for the <code>pwd</code> command by replacing with <code>pwd</code>. (Note that you need to type <code>q</code> to get out of the manual!)</p>\n</li>\n<li>\n<p>Answer question 2 in EDURange.</p>\n</li>\n</ol>",
+            "4": "<h2>Task 3</h2>\n<p>Now that we know where we are, we will want to know what is in this directory. For a simple list of files and directories, you would use the list command.</p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Type <code>ls</code> into the prompt for a list of files and directories.</p>\n</li>\n<li>\n<p>Answer question 3 in EDURange.</p>\n</li>\n</ol>",
+            "5": "<h2>Task 4</h2>\n<p>Steps:</p>\n<ol>\n<li>View the manual entry for the <code>ls</code> command. Notice in the <code>SYNOPSIS</code>, the format of the command is as follows:</li>\n</ol>\n<p><code>ls [OPTION]... [FILE]...</code></p>\n<p>Anything in square brackets is optional. In this case, we can use <code>ls</code> along with one of the options listed with <code>-</code> or <code>--</code> and we could add a complete file path.</p>\n<ol>\n<li>\n<p>Scroll through to manual to find the option that will provide a long listing format for the <code>ls</code> command.</p>\n</li>\n<li>\n<p>Answer question 4 in EDURange.</p>\n</li>\n</ol>",
+            "6": "<ol>\n<li>\n<p>Try this command with the option you found. Don\u2019t forget to include the <code>-</code> or <code>--</code>! You can immediately tell whether the item is a file or a directory by the very first character provided in the output. Files are denoted by a <code>-</code> and directories are denoted by a <code>d</code>.</p>\n</li>\n<li>\n<p>Answer question 5 in EDURange.</p>\n</li>\n</ol>",
+            "7": "<h2>Task 5</h2>\n<p>The <code>cd</code> command allows you to change into another directory. The format is as follows:</p>\n<p><code>cd</code></p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Change into the view directory and run the list (<code>ls</code>) command to view the files in this directory.</p>\n</li>\n<li>\n<p>Answer question 6 in EDURange.</p>\n</li>\n</ol>",
+            "8": "<h2>Task 6</h2>\n<p>Hidden files begin with a <code>'.'</code> and are not displayed unless you specify an option with the <code>ls</code> command.</p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>View the manual entry for the <code>ls</code> command again.</p>\n</li>\n<li>\n<p>Scroll through to manual to find the option that will not ignore files that start with a <code>'.'</code>.</p>\n</li>\n<li>\n<p>Answer question 7 in EDURange.</p>\n</li>\n</ol>",
+            "9": "<ol>\n<li>\n<p>Try this command with the option you found. You should see any hidden files or folders (those beginning with a <code>'.'</code>).</p>\n</li>\n<li>\n<p>Answer question 8 in EDURange.</p>\n</li>\n</ol>",
+            "10": "<h2>Task 7</h2>\n<p>To go back a directory, you would type the following command:</p>\n<p><code>cd ..</code></p>\n<p>The command <code>pwd</code>, will show you where you are in the Linux file system.</p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Type <code>cd ..</code> into the prompt.</p>\n</li>\n<li>\n<p>Type <code>pwd</code> into the prompt. You should see that you are back in the home directory for the account you log in with.</p>\n</li>\n<li>\n<p>Answer question 9 in EDURange.</p>\n</li>\n</ol>",
+            "11": "<h2>Task 8</h2>\n<p>You can chain options for a single command. So, for example, you could include both the options for long listing and listing hidden files by simply adding each option after the <code>ls</code> command.</p>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Type this chained command now. You should now see all files and folders, including those that are hidden, and all of the details about them.</p>\n</li>\n<li>\n<p>Answer question 10 in EDURange.</p>\n</li>\n</ol>",
+            "12": "<h2>Task 9</h2>\n<p>Steps:</p>\n<ol>\n<li>\n<p>Change into the manipulate directory and run the list (<code>ls</code>) command to view the files in this directory.</p>\n</li>\n<li>\n<p>Renaming files</p>\n<ul>\n<li>\n<p>a. Look up the manual entry for the <code>mv</code> command</p>\n</li>\n<li>\n<p>b. Use the <code>mv</code> command to rename <code>file1.txt</code> to <code>renamed_file1.txt</code>. Be sure to be exact!</p>\n</li>\n</ul>\n</li>\n<li>\n<p>Copying files</p>\n<ul>\n<li>\n<p>a. Look up the manual entry for the <code>cp</code> command.</p>\n</li>\n<li>\n<p>b. Use the <code>cp</code> command to copy <code>file2.txt</code> to <code>copied_file2.txt</code>.</p>\n</li>\n</ul>\n</li>\n<li>\n<p>Type the following into the prompt for the flag: <code>sudo manflag</code></p>\n</li>\n<li>\n<p>Answer question 11 in EDURange.</p>\n</li>\n</ol>",
+            "13": "<ol>\n<li>Go back to your home directory, and then go to the permissions directory.</li>\n</ol>",
+            "14": "<h2>Task 10</h2>\n<p>Steps:</p>\n<ol>\n<li>\n<p>run the list (<code>ls</code>) command to view the files in this directory.</p>\n</li>\n<li>\n<p>Read the following resource on Linux file permissions: http://linuxcommand.org/lc3_lts0090.php</p>\n</li>\n<li>\n<p>Copy the <code>perm1.txt</code> to <code>copied_perm1.txt</code>.</p>\n</li>\n<li>\n<p>Changing permissions</p>\n<ul>\n<li>\n<p>a. Look up the manual entry for the <code>chmod</code> command.</p>\n</li>\n<li>\n<p>b. Use the <code>chmod</code> command to change the permissions of <code>copied_perm1.txt</code> to:</p>\n<ul>\n<li>\n<p>i. Owner = Read + Write</p>\n</li>\n<li>\n<p>ii. Group = Read + Write</p>\n</li>\n<li>\n<p>iii. User = No permissions</p>\n</li>\n</ul>\n</li>\n<li>\n<p>c. Copy the <code>perm2.txt</code> to <code>copied_perm2.txt</code></p>\n</li>\n<li>\n<p>d. Use the <code>chmod</code> command to change the permissions of <code>copied_perm2.txt</code> to:</p>\n<ul>\n<li>\n<p>i. Owner = Read + Write + Execute</p>\n</li>\n<li>\n<p>ii. Group = Read + Write</p>\n</li>\n<li>\n<p>iii. User = Read only</p>\n</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<p>Type the following into the terminal for the flag: <code>sudo perflag</code></p>\n</li>\n<li>\n<p>Answer question 12 in EDURange.</p>\n</li>\n</ol>",
+            "15": "<p>Exercise Complete!</p>"
         },
         "Questions": {
-            "Question1": {
-                "Text": "How many subdirectories are in your home directory? (Not including hidden directories)",
+            "1": {
+                "Text": "What is the full path of your directory when you typed the pwd command?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "/home/${player.login}",
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "2": {
+                "Text": "What command would you type into the prompt to see the manual entry for the current directory command?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "man pwd",
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "3": {
+                "Text": "How many visible files and directories are in the account home directory?",
                 "Type": "Number",
                 "Options": [
                     "accept-integer",
@@ -111,105 +243,129 @@
                 ],
                 "Answers": [
                     {
-                        "Value": 7,
-                        "Points": 15
+                        "Value": 12,
+                        "Points": 1
                     }
                 ],
-                "Points": 15
+                "Points": 1
             },
-            "Question2": {
-                "Text": "In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?",
+            "4": {
+                "Text": "What is the option for the ls command that will provide a long listing format? (Don't forget the -!)",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "-l",
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "5": {
+                "Text": "How many directories are there in the account home directory?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 4,
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "6": {
+                "Text": "How many VISIBLE FILES are in the view directory?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 8,
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "7": {
+                "Text": "What is the complete command for listing all files, including hidden files?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "ls -a",
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "8": {
+                "Text": "How many HIDDEN FILES are in the view directory?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 1,
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "9": {
+                "Text": "What is the full path of the directory you are in after typing cd ..?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "/home/${player.login}",
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "10": {
+                "Text": "How many HIDDEN DIRECTORIES are in the home directory? (. and .. don't count)",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 2,
+                        "Points": 1
+                    }
+                ],
+                "Points": 1
+            },
+            "11": {
+                "Text": "What is the flag you discovered by running sudo manflag in the manipulate directory?",
                 "Type": "String",
                 "Answers": [
                     {
                         "Value": "$RANDOM_ONE",
-                        "Points": 15
+                        "Points": 10
                     }
                 ],
-                "Points": 15
+                "Points": 10
             },
-            "Question3": {
-                "Text": "What does the line below NAME on the man page for the \"file\" command say?",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "file \u2014 determine file type",
-                        "Points": 15
-                    },
-                    {
-                        "Value": "file - determine file type",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question4": {
-                "Text": "What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)",
+            "12": {
+                "Text": "What is the flag you discovered by running sudo perflag in the permissions directory?",
                 "Type": "String",
                 "Answers": [
                     {
                         "Value": "$RANDOM_TWO",
-                        "Points": 15
+                        "Points": 10
                     }
                 ],
-                "Points": 15
-            },
-            "Question5": {
-                "Text": "What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)",
-                "Type": "Essay",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "ESSAY",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question6": {
-                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
-                "Type": "Multi String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "edurange5meow.JPG",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange001.gif",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "4edurange.jpeg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange006weeeeeee.png",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "002edurange.jpg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange3.GIF",
-                        "Points": 3
-                    }
-                ],
-                "Points": 18
-            },
-            "Question7": {
-                "Text": "What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "/usr/special/secrets/",
-                        "Points": 20
-                    }
-                ],
-                "Points": 20
+                "Points": 10
             }
         }
     },
