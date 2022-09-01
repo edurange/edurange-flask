@@ -1,22 +1,10 @@
-//import React BREAK
+import io from 'socket.io-client';
 //import React, { useState, useEffect } from 'react';
-
-//importing io BREAK
-//import io from 'socket.io-client';
-
-/*
-class ClientSocket extends React.Component {
-  render() {
-    return (
-      <div>
-        <button>APPPPPP</button>
-      </div>
-    );
-  }
-}
-*/
-
 function ClientSocket() {
+
+  //const [lastMessage, setLastMessage] = useState(null);
+
+  const socket = io('localhost:3001');
   return (
     <div>
       <button>APPPPPP</button>
@@ -25,13 +13,15 @@ function ClientSocket() {
 }
 
 export default ClientSocket;
+
+
 /*
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('localhost:3001');
 
-function App() {
+function ClientSocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
 
@@ -66,5 +56,7 @@ function App() {
     </div>
   );
 }
+
+export default ClientSocket;
 */
 
