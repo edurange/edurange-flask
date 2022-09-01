@@ -1,3 +1,4 @@
+import React from 'react';
 import Question from '../question/question.component'
 import Reading from '../reading/reading.component'
 import "./guide-section.styles.css"

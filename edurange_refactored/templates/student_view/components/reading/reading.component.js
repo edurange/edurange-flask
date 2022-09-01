@@ -1,3 +1,4 @@
+import React from 'react';
 import "./reading.styles.css"
 
 class Reading extends React.Component {

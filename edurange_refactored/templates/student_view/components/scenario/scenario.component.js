@@ -1,5 +1,6 @@
 // import sample_content from "../../../../../../edurange-flask/scenarios/prod/getting_started/student_view/content.json";
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import GuideSection from "../guide-section/guide-section.component";
 import TopicList from "../topic-list/topic-list.component";

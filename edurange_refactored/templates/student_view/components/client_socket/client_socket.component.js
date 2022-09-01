@@ -1,10 +1,13 @@
+/*
 import io from 'socket.io-client';
-//import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
+const socket = io('localhost:3001');
 function ClientSocket() {
 
-  //const [lastMessage, setLastMessage] = useState(null);
-
-  const socket = io('localhost:3001');
+  const [lastMessage, setLastMessage] = useState(null);
+  
+  
   return (
     <div>
       <button>APPPPPP</button>
@@ -14,8 +17,8 @@ function ClientSocket() {
 
 export default ClientSocket;
 
+*/
 
-/*
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
@@ -47,8 +50,11 @@ function ClientSocket() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="ClientSocket">
+      <header className="ClientSocket-header">
+        <div>
+        <button>CLIENT SOCKET</button>
+        </div>
         <p>Connected: { '' + isConnected }</p>
         <p>Last message: { lastMessage || '-' }</p>
         <button onClick={ sendMessage }>Say hello!</button>
@@ -57,6 +63,7 @@ function ClientSocket() {
   );
 }
 
+
 export default ClientSocket;
-*/
+
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import "./question.styles.css"
 
 class Question extends React.Component {

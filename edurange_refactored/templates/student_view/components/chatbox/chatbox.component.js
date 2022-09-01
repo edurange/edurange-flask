@@ -1,3 +1,5 @@
+
+import React from 'react';
 import "./chatbox.styles.css"
 import ClientSocket from "../client_socket/client_socket.component"
 class Chatbox extends React.Component {
