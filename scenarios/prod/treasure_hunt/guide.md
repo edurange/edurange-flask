@@ -1,6 +1,6 @@
 # Treasure Hunt
 
-### Description
+## Description
 
 Treasure Hunt is an exercise that teaches about permissions and other security loopholes in
 Linux. In this virtual machine there are 16 imaginary users. Somewhere in his/her home
@@ -58,7 +58,7 @@ Recognize what sorts of passwords are easily cracked from known password hashes
 
 Have a moderate understanding of some basic linux tools and how to use them
 
-### Instructions
+## Instructions
 Connect to the scenario via your instructor’s directions, or as displayed on the EDURange page.
 
 Once logged in, it is your goal to find the secrets of the following 16 fake users:
@@ -81,7 +81,7 @@ Once logged in, it is your goal to find the secrets of the following 16 fake use
 * Tudor Daforth (tdaforth)
 
 
-#### Important Disclaimer:
+## Important Disclaimer:
 Accessing some secret files will require that you make changes to certain files/directories in the
 accounts of the fake users. Once you determine the secret, be sure to undo any changes that
 you make so that you leave the system exactly in the same state that you found it. 
@@ -97,7 +97,7 @@ system (e.g. deletes all files in the /tmp directory).
 Executing this command should solve all reseting issues; if it does not, please let us know. By calling resetFakeUsers frequently, you
 could cause a denial of service attack against your classmates; please do not do this!
  
-### User Secrets
+## User Secrets
 Each secret is contained somewhere in that user's home directory. All fake users belong to a
 group named student, a fact that is important for some of the attacks. There are other significant
 groups as well that some of these users are in.
@@ -107,9 +107,9 @@ get after gaining access to another user's account. Password cracking is a great
 We will walk you through that below.
 
  
-### Password Cracking:
+## Password Cracking:
 
-For password cracking download [John the Ripper](http:/Awww.openwall.com/john/) onto a
+For password cracking download [John the Ripper](http://www.openwall.com/john/) onto a
 local computer. John the Ripper is not on the Treasure Hunt container, and you won't be able to install
 it there. 
 
@@ -133,7 +133,7 @@ There is one more password that can be cracked, but you will need to feed john a
 list. Maybe if you Knew more about fake users...
 
 
-### User Web Pages:
+## User Web Pages:
 Each user has at least one web page in a public html directory. Some of these pages contain
 information relevant to finding their secret. Although many of the user web pages are publicly
 readable by any user on the THVM, some can only be read via a web browser. 
@@ -148,7 +148,7 @@ page for specific instructions.
 
 `wget` and `curl` are also good alternative tools, since Lynx may not show you everything...
 
-### Other Hints:
+## Other Hints:
 - It may be helpful to export certain files from the THVM to your local computer (or vice versa).
   You can use scp or ftp from your local computer to do this.
   
