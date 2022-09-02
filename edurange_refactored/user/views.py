@@ -301,14 +301,10 @@ def student_scenario(i):
                 return render_template(
                     # "dashboard/student_scenario.html",
                     # id=i,
-                    # status=status,
                     # owner=owner,
                     # desc=desc,
                     # s_type=s_type,
                     # s_name=s_name,
-                    # u_name=u_name,
-                    # pw=pw,
-                    # add=addresses,
                     # guide=guide,
                     # questions=questions,
                     # srF=scenarioResponder,
@@ -316,6 +312,10 @@ def student_scenario(i):
                     # progress=progress,
                     # example=example
                     "dashboard/student_scenario_new.html",
+                    add=addresses,
+                    status=status,
+                    u_name=u_name,
+                    pw=pw,
                     scenario_id=i,
                 )
 

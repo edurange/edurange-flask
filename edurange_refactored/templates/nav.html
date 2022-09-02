@@ -72,6 +72,10 @@
                             </button>
                         {% else %}
 
+                            <script>function showSSHConsole() {
+                                window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                            }
+                            </script>
 
                             <span class="dropdown-item"><b>Username:</b> {{ u_name }}</span>
                             <span class="dropdown-item" href="#"><b>Password:</b> {{ pw }}</span>

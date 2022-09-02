@@ -12,12 +12,8 @@ class GuideSection extends React.Component {
         var Order;
         if (!useAltOrder) {
             Order = section.Order
-            console.log('Order');
-            console.log(Order);
         } else {
             Order = section.AltOrder
-            console.log('AltOrder');
-            console.log(Order);
         }
 
         return (
