@@ -56,7 +56,7 @@ function ClientSocket() {
         <button>CLIENT SOCKET</button>
         </div>
         <p>Connected: { '' + isConnected }</p>
-        <p>Last message: { lastMessage || '-' }</p>
+        <p>Last message: { lastMessage || 'you' }</p>
         <p>Socket: { socket.id }</p>
         <button onClick={ sendMessage }>Say hello!</button>
       </header>
