@@ -18,7 +18,10 @@ function ClientSocket() {
 export default ClientSocket;
 
 */
-
+/*
+//grabbing the port number from the .env file
+require('dotenv').config({ path: '../../.env' })
+*/
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
