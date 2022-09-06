@@ -36,6 +36,7 @@ class Question extends React.Component {
   }
 
   updateState(e) {
+    e.preventDefault();
     var csrf_token = this.props.csrf_token;
     const { Unsubmitted, Submitted, Incorrect, Correct, Completed } = Question.QUESTION_STATE;
     var qstate;
@@ -69,6 +70,12 @@ class Question extends React.Component {
     this.setState({
       answer:(e.target.value),
     });
+  }
+
+  _onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      this.updateState(e);
+    }
   }
 
   static QUESTION_STATE = {
@@ -126,6 +133,10 @@ class Question extends React.Component {
             </div>
             <p className="edu-question-text">{question.Text}</p>
             <div className='edu-answer-area'>
+            <form
+              onSubmit={this.updateState}
+              autocomplete="off"
+            >
             <input
               type='text'
               className="edu-answer"
@@ -133,7 +144,8 @@ class Question extends React.Component {
               id='name-input'
               onChange={this.onChange}
               value={this.state.response} />
-              <button className='edu-submit' type="submit" onClick={this.updateState}><i className="fa-solid fa-check" /></button>
+              <button className='edu-submit' type="submit"><i className="fa-solid fa-check" /></button>
+            </form>
             </div>
         </div>
     );
