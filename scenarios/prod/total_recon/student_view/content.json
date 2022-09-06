@@ -1,109 +1,258 @@
 {
-    "ScenarioTitle": "Getting Started",
+    "ScenarioTitle": "Total Recon",
     "StudentGuide": {
-        "TotalQuestions": 7,
-        "TotalPoints": 113,
+        "TotalQuestions": 16,
+        "TotalPoints": 185,
         "SectionOrder": [
             1,
             2,
             3,
             4,
             5,
-            6,
-            7,
-            8,
-            9
+            6
         ],
         "Sections": [
             {
                 "Count": 1,
-                "Title": "Welcome to Cybersec",
+                "Title": "1. About",
                 "Order": [
-                    "Reading1"
+                    [
+                        "r",
+                        "1"
+                    ]
                 ]
             },
             {
                 "Count": 2,
-                "Title": "Using the Terminal Commands",
+                "Title": "2. Background",
                 "Order": [
-                    "Reading2"
+                    [
+                        "r",
+                        "2"
+                    ]
                 ]
             },
             {
                 "Count": 3,
-                "Title": "Linux File System",
+                "Title": "3. Learning Objectives",
                 "Order": [
-                    "Reading3"
+                    [
+                        "r",
+                        "3"
+                    ]
                 ]
             },
             {
                 "Count": 4,
-                "Title": "Commands",
+                "Title": "4. Instructions",
                 "Order": [
-                    "Reading4",
-                    "Question1",
-                    "Question2",
-                    "Reading5",
-                    "Question3",
-                    "Reading6"
+                    [
+                        "r",
+                        "4"
+                    ]
                 ]
             },
             {
                 "Count": 5,
-                "Title": "File Types",
+                "Title": "5. Lab Assignments and Questions",
                 "Order": [
-                    "Reading7",
-                    "Question4"
+                    [
+                        "r",
+                        "5"
+                    ],
+                    [
+                        "q",
+                        "1"
+                    ],
+                    [
+                        "q",
+                        "2"
+                    ],
+                    [
+                        "q",
+                        "3"
+                    ],
+                    [
+                        "q",
+                        "4"
+                    ],
+                    [
+                        "q",
+                        "5"
+                    ],
+                    [
+                        "q",
+                        "6"
+                    ],
+                    [
+                        "q",
+                        "7"
+                    ],
+                    [
+                        "q",
+                        "8"
+                    ],
+                    [
+                        "q",
+                        "9"
+                    ],
+                    [
+                        "q",
+                        "10"
+                    ],
+                    [
+                        "q",
+                        "11"
+                    ],
+                    [
+                        "q",
+                        "12"
+                    ],
+                    [
+                        "q",
+                        "13"
+                    ],
+                    [
+                        "q",
+                        "14"
+                    ],
+                    [
+                        "q",
+                        "15"
+                    ],
+                    [
+                        "q",
+                        "16"
+                    ],
+                    [
+                        "r",
+                        "6"
+                    ]
                 ]
             },
             {
                 "Count": 6,
-                "Title": "Case Sensitivity/touch/echo/Angle Brackets",
+                "Title": "6. Discussion Questions",
                 "Order": [
-                    "Reading8",
-                    "Question5"
-                ]
-            },
-            {
-                "Count": 7,
-                "Title": "vim, Regular expresssions, and find",
-                "Order": [
-                    "Reading9",
-                    "Question6"
-                ]
-            },
-            {
-                "Count": 8,
-                "Title": "More Commands",
-                "Order": [
-                    "Reading10"
-                ]
-            },
-            {
-                "Count": 9,
-                "Title": "Final Mission",
-                "Order": [
-                    "Reading11",
-                    "Question7"
+                    [
+                        "r",
+                        "7"
+                    ]
                 ]
             }
         ],
         "Readings": {
-            "Reading1": "Reading1.md",
-            "Reading2": "Reading2.md",
-            "Reading3": "Reading3.md",
-            "Reading4": "Reading4.md",
-            "Reading5": "Reading5.md",
-            "Reading6": "Reading6.md",
-            "Reading7": "Reading7.md",
-            "Reading8": "Reading8.md",
-            "Reading9": "Reading9.md",
-            "Reading10": "Reading10.md",
-            "Reading11": "Reading11.md"
+            "1": "<hr />\n<h2>1. About</h2>\n<p>Total Recon is a story-based game designed to teach how network\nprotocols such as TCP, UDP, and ICMP can be used to reveal information about\na network. Total Recon focuses on reconnaissance to determine hosts in an\nunknown network. You will explore tradeoffs between speed and stealth when\nusing tools such as nmap.</p>\n<hr />",
+            "2": "<h2>2. Background</h2>\n<p>Whether you're doing a large-scale security audit, inventorying a network, or\nanalyzing network response times, nmap is a powerful tool to help you complete\nyour task. In order to understand this exercise, you should be familiar with the\n3-way handshake for TCP. A basic understanding of ICMP and UDP will also\nbe helpful. This exercise is not designed to teach you all of the details of those\nprotocols, but rather to show you how they can be used for network exploring.\nYou will learn how to discover hosts on a network, determine which ports on\nthose hosts are open, and what applications are running on them.\nIn practice, each message that is sent over the Internet uses multiple protocols,\nwhich are divided into five layers: physical layer, link layer, network layer,\ntransport layer and application layer. For example, the physical layer handles\nwhat is encoded as a 0 or 1. The link layer handles communication on local area\nnetworks (LANs). The network layer handles routing on wide area networks\n(WANs), e.g. IP. The transport layer handles ports and processes, e.g. TCP,\nUDP, ICMP. The application layer handles applications communicating with\neach other, e.g. http, ftp, by nesting packets inside of packets. In general, these\npackets correspond to layers of functionality: TCP is connection-oriented and is\nresponsible for a number of things including reliably conveying messages between\nthe application layers on two hosts. The three-way handshake establishes this\npairing with the following sequence: SYN, SYN-ACK, and ACK You can get a\nsummary of the important protocols and their layers in: Chapter 4 of Hacking:\nThe Art of Exploitation (Erickson)[1] or Chapter 2 of Counter Hack Reloaded\n[2]. Network Security by Kaufman, Perlman, Speciner [3].</p>\n<hr />",
+            "3": "<h2>3. Learning Objectives</h2>\n<p>Understand how the networking protocols (TCP, UDP, ICMP) can be\nexploited for recon</p>\n<ul>\n<li>\n<p>Know how to use nmap to find hosts and open ports on a network</p>\n</li>\n<li>\n<p>Recognize the standard common ports (e.g. SSH, FTP, HTTP, SMTP,\nIMAP)</p>\n</li>\n<li>\n<p>Understand the TCP flags and how they can be used for different types of\nscans</p>\n</li>\n<li>\n<p>Understand CIDR network configuration and how to subdivide a network\nIP range</p>\n</li>\n</ul>\n<hr />",
+            "4": "<h2>4. Instructions</h2>\n<p>Connect to the VM via your instructor's directions, or as displayed on your\nEDURange account. Instructions will be displayed upon logging in and at each\nnew checkpoint.</p>\n<hr />",
+            "5": "<h2>5. Lab Assignments and Questions</h2>",
+            "6": "<hr />",
+            "7": "<h2>6. Discussion Questions</h2>\n<ol>\n<li>\n<p>What is the 3-way handshake?</p>\n</li>\n<li>\n<p>What does 10.1.1.0/17 mean? how many IP addresses does that include?</p>\n</li>\n<li>\n<p>What does the SYN flag do? What does the FIN flag do?</p>\n</li>\n<li>\n<p>What are the options for nmap and what are their differences in terms of\ntime, stealth and protocols?</p>\n</li>\n<li>\n<p>Which methods did you use to speed up your scans? What else could you\nhave done?</p>\n</li>\n</ol>\n<hr />"
         },
         "Questions": {
-            "Question1": {
-                "Text": "How many subdirectories are in your home directory? (Not including hidden directories)",
+            "1": {
+                "Text": "What port is open at Rekall?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal",
+                    "accept-hex"
+                ],
+                "Answers": [
+                    {
+                        "Value": 444,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "2": {
+                "Text": "What standard port does an HTTP server use?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer"
+                ],
+                "Answers": [
+                    {
+                        "Value": 80,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "3": {
+                "Text": "What is the last octet of the IP address for Subway?",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": 101,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "4": {
+                "Text": "What is the state of ports 80 and 443 on the earth-spaceport host?",
+                "Type": "String",
+                "Options": [
+                    "ignore-case"
+                ],
+                "Answers": [
+                    {
+                        "Value": "filtered",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "5": {
+                "Text": "In the nmap man page, under \"--min-rate\", what --min-rate example do they give? (Hint, it's an integer greater than 100 and less than 500)",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal",
+                    "accept-hex"
+                ],
+                "Answers": [
+                    {
+                        "Value": 300,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "6": {
+                "Text": "What is the nmap option for a Ping scan (disable port scan)? It should take the form -Xx. For example, -sL is the option for List scan.",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": "-sn",
+                        "Points": 10
+                    },
+                    {
+                        "Value": "-sP",
+                        "Points": 10
+                    }
+                ],
+                "Points": 20
+            },
+            "7": {
+                "Text": "What is the 3rd octet of the Mars spaceport IP address? (The last octet is 33)",
+                "Type": "String",
+                "Options": [],
+                "Answers": [
+                    {
+                        "Value": 217,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "8": {
+                "Text": "What has the ssh port on Venusville been changed to?",
                 "Type": "Number",
                 "Options": [
                     "accept-integer",
@@ -111,105 +260,127 @@
                 ],
                 "Answers": [
                     {
-                        "Value": 7,
-                        "Points": 15
+                        "Value": 123,
+                        "Points": 10
                     }
                 ],
-                "Points": 15
+                "Points": 10
             },
-            "Question2": {
-                "Text": "In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?",
-                "Type": "String",
+            "9": {
+                "Text": "What has the SSH port on Last Resort been changed to?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
                 "Answers": [
                     {
-                        "Value": "$RANDOM_ONE",
-                        "Points": 15
+                        "Value": 2345,
+                        "Points": 10
                     }
                 ],
-                "Points": 15
+                "Points": 10
             },
-            "Question3": {
-                "Text": "What does the line below NAME on the man page for the \"file\" command say?",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "file \u2014 determine file type",
-                        "Points": 15
-                    },
-                    {
-                        "Value": "file - determine file type",
-                        "Points": 15
-                    }
+            "10": {
+                "Text": "What port was open on the Resistance Base?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
                 ],
-                "Points": 15
-            },
-            "Question4": {
-                "Text": "What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)",
-                "Type": "String",
                 "Answers": [
                     {
-                        "Value": "$RANDOM_TWO",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question5": {
-                "Text": "What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)",
-                "Type": "Essay",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "ESSAY",
-                        "Points": 15
-                    }
-                ],
-                "Points": 15
-            },
-            "Question6": {
-                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
-                "Type": "Multi String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "edurange5meow.JPG",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange001.gif",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "4edurange.jpeg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange006weeeeeee.png",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "002edurange.jpg",
-                        "Points": 3
-                    },
-                    {
-                        "Value": "edurange3.GIF",
-                        "Points": 3
-                    }
-                ],
-                "Points": 18
-            },
-            "Question7": {
-                "Text": "What is the absolute path of the directory containing the file that has 'cowFJS' in its name? (Just the path to the directory, no filename)",
-                "Type": "String",
-                "Options": [],
-                "Answers": [
-                    {
-                        "Value": "/usr/special/secrets/",
+                        "Value": 632,
                         "Points": 20
                     }
                 ],
                 "Points": 20
+            },
+            "11": {
+                "Text": "What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.34? (Do not include scan in your answer)",
+                "Type": "String",
+                "Options": [
+                    "ignore-case"
+                ],
+                "Answers": [
+                    {
+                        "Value": "xmas",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "12": {
+                "Text": "What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.36? (Do not include scan in your answer)",
+                "Type": "String",
+                "Options": [
+                    "ignore-case"
+                ],
+                "Answers": [
+                    {
+                        "Value": "null",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "13": {
+                "Text": "What kind of stealth scan, other than a basic SYN scan, works on 10.0.233.38? (Do not include scan in your answer)",
+                "Type": "String",
+                "Options": [
+                    "ignore-case"
+                ],
+                "Answers": [
+                    {
+                        "Value": "fin",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "14": {
+                "Text": "How many possible hosts does the subnet 10.0.192.0/18 cover?",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 16382,
+                        "Points": 15
+                    }
+                ],
+                "Points": 15
+            },
+            "15": {
+                "Text": "How many ports are open on the control room host? (The IP ends in 5)",
+                "Type": "Number",
+                "Options": [
+                    "accept-integer",
+                    "accept-decimal"
+                ],
+                "Answers": [
+                    {
+                        "Value": 9,
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
+            },
+            "16": {
+                "Text": "On the control_room box, what is the name of the directory where chmod was moved to?",
+                "Type": "String",
+                "Options": [
+                    "ignore-case"
+                ],
+                "Answers": [
+                    {
+                        "Value": "look-in-here",
+                        "Points": 10
+                    }
+                ],
+                "Points": 10
             }
         }
     },

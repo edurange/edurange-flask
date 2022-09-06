@@ -1,6 +1,6 @@
 # File Wrangler
 
----
+
 
 ## Learning Objectives
 1. Become familiar with ls and common flags: -a, -l
@@ -10,7 +10,7 @@
 4. Move and copy files.
 5. Set permissions (access control) for files.
 
----
+
 
 ## Task 1
 
@@ -24,7 +24,7 @@ Steps:
 
 <question 1>
 
----
+
 
 ## Task 2
 
@@ -40,7 +40,7 @@ Steps:
 
 <question 2>
 
----
+
 
 ## Task 3
 
@@ -53,7 +53,7 @@ Steps:
 2. Answer question 3 in EDURange.
 
 <question 3>
----
+
 
 ## Task 4
 
@@ -77,7 +77,7 @@ Anything in square brackets is optional. In this case, we can use `ls` along wit
 
 <question 5>
 
----
+
 
 ## Task 5
 
@@ -92,7 +92,7 @@ Steps:
 2. Answer question 6 in EDURange.
 
 <question 6>
----
+
 
 ## Task 6
 
@@ -114,7 +114,7 @@ Steps:
 
 <question 8>
 
----
+
 
 ## Task 7
 
@@ -134,7 +134,7 @@ Steps:
 
 <question 9>
 
----
+
 
 ## Task 8
 
@@ -148,7 +148,7 @@ Steps:
 
 <question 10>
 
----
+
 
 ## Task 9
 
@@ -176,7 +176,7 @@ Steps:
 
 6. Go back to your home directory, and then go to the permissions directory.
 
----
+
 
 ## Task 10
 
@@ -218,4 +218,4 @@ Steps:
 
 Exercise Complete!
 
----
+
