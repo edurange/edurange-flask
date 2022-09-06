@@ -23,42 +23,27 @@ const io = new Server(server, {
     // allows server-client communication 
     cors: {
         // accept communication with this port
-        origin: "http://localhost:3000",
+        origin: "http://localhost:5000",
 
         // accept these types of HTTP requests
         methods: ["GET", "POST"],
     },
 });
 
-// when user connects...
-io.on("connection", (socket) => {
-    console.log(`User connected ${socket.id}`);
+io.on('connection', socket => {
+  console.log(`connect: ${socket.id}`);
 
-    /*
-    // "join_room" is a function called in App.js
-    socket.on("join_room", (data) => {
-        socket.join(data);
-        console.log(`User with ID ${socket.id} joined room ${data}`);
-    });
-    */
-    socket.emit("connect");
-
-    // "sendd_message" is a function called in Chat.js
-    socket.on("message", (/*data*/) => {
-        // room is in the array of data var passed
-        //socket.to(data.room).emit("receive_message", data);
-
-        socket.emit("receive_message");
-    });
-
-    // when user disconnects...
-    socket.on("disconnect", () => {
-        console.log("User disconnected", socket.id)
-    });
-});
-
-// server listens from port 3001
-server.listen(3001, () => {
-    console.log("SERVER RUNNING");
+  socket.on('hello!', () => {
+    console.log(`hello from ${socket.id}`);
   });
 
+  socket.on('disconnect', () => {
+    console.log(`disconnect: ${socket.id}`);
+  });
+});
+
+io.listen(3001);
+
+setInterval(() => {
+  io.emit('message', new Date().toISOString());
+}, 1000);

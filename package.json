@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG\" \"celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555\" \"node webssh2/app/index.js\" \"node /edurange_refactored/chat_server/server.js\"",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG\" \"celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555\" \"node webssh2/app/index.js\" \"node edurange_refactored/chat_server/server.js\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",
@@ -39,7 +39,7 @@
     "redis": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "socket.io": "^3.0.5",
-    "socket.io-client": "^2.3.0",
+    "socket.io-client": "^4.5.2",
     "ssh2": "^0.8.9",
     "validator": "^13.5.2"
   },
