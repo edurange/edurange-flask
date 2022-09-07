@@ -72,6 +72,10 @@
                             </button>
                         {% else %}
 
+                            <script>function showSSHConsole() {
+                                window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                            }
+                            </script>
 
                             <span class="dropdown-item"><b>Username:</b> {{ u_name }}</span>
                             <span class="dropdown-item" href="#"><b>Password:</b> {{ pw }}</span>
@@ -147,7 +151,7 @@
                 </button>
                 <div class="dropdown-menu  dropdown-menu-right position-absolute">
                     <a class="dropdown-item" href="{{ url_for('dashboard.account') }}">
-                        <i class="fa-solid fa-address-card-o" aria-hidden="true"></i> Manage Account
+                        <i class="fa-regular fa-address-card" aria-hidden="true"></i> Manage Account
                     </a>
                     <div class="dropdown-divider"></div>
                     {% if nav['views'] is not none %}

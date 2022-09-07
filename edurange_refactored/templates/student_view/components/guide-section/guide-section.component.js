@@ -20,11 +20,11 @@ class GuideSection extends React.Component {
         return (
             <div className="student-scenario-section">
               {Order.map(
-                (item) => {
+                (item, i) => {
                     if (item[0] == 'q') {
-                        return(<Question name={item[1]} question={questions[item[1]]} key={item[1]} scenarioState={scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.props.csrf_token} />);
+                        return(<Question name={item[1]} question={questions[item[1]]} key={i} scenarioState={scenarioState} scenarioId={this.props.scenarioId} csrf_token={this.props.csrf_token} />);
                     } else {
-                        return(<Reading reading={readings[item[1]]} key={item[1]}/>); // TODO dump reading file contents here and pass string?
+                        return(<Reading reading={readings[item[1]]} key={i}/>); // TODO dump reading file contents here and pass string?
                     }
                 }
               )}

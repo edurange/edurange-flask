@@ -44,10 +44,6 @@
   color: rgba(0,128,0,0.7);
 }
 
-/* .unsubmitted, .submitted {
-
-} */
-
 .incorrect {
   color: rgba(255,0,0,0.7);
 }
@@ -57,22 +53,11 @@
 }
 
 
-/* .edu-submission-state i {
-  font-family: 'Font Awesome 6 Free';
-  font-weight: normal;
-} */
-
 .edu-question-text {
   padding: 5px;
   border-radius: 5px;
   white-space: pre-line;
   vertical-align: bottom;
-}
-
-.edu-answer-area {
-  display: flex;
-  flex-direction: row;
-  font-size: 75%;
 }
 
 .edu-answer {
@@ -113,4 +98,11 @@
 .edu-submit:active {
   box-shadow: 0 0 lightgray;
   transform: translate(1px, 2px);
+}
+
+.edu-answer-area form {
+  display: flex;
+  flex-direction: row;
+  font-size: 75%;
+
 }

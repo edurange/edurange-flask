@@ -1,8 +1,6 @@
 # Total Recon
 
----
-
-## 1. About
+## About
 
 Total Recon is a story-based game designed to teach how network
 protocols such as TCP, UDP, and ICMP can be used to reveal information about
@@ -10,9 +8,7 @@ a network. Total Recon focuses on reconnaissance to determine hosts in an
 unknown network. You will explore tradeoffs between speed and stealth when
 using tools such as nmap.
 
----
-
-## 2. Background
+## Background
 
 Whether you're doing a large-scale security audit, inventorying a network, or
 analyzing network response times, nmap is a powerful tool to help you complete
@@ -38,9 +34,7 @@ summary of the important protocols and their layers in: Chapter 4 of Hacking:
 The Art of Exploitation (Erickson)[1] or Chapter 2 of Counter Hack Reloaded
 [2]. Network Security by Kaufman, Perlman, Speciner [3].
 
----
-
-## 3. Learning Objectives
+## Learning Objectives
 
 Understand how the networking protocols (TCP, UDP, ICMP) can be
 exploited for recon
@@ -56,17 +50,13 @@ scans
 - Understand CIDR network configuration and how to subdivide a network
 IP range
 
----
-
-## 4. Instructions
+## Instructions
 
 Connect to the VM via your instructor's directions, or as displayed on your
 EDURange account. Instructions will be displayed upon logging in and at each
 new checkpoint.
 
----
-
-## 5. Lab Assignments and Questions
+## Lab Assignments and Questions
 
 <question 1>
 <question 2>
@@ -85,9 +75,7 @@ new checkpoint.
 <question 15>
 <question 16>
 
----
-
-## 6. Discussion Questions
+## Discussion Questions
 
 1. What is the 3-way handshake?
 
@@ -100,5 +88,3 @@ time, stealth and protocols?
 
 5. Which methods did you use to speed up your scans? What else could you
 have done?
-
----

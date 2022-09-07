@@ -38,7 +38,10 @@ function ClientSocket() {
     socket.on('disconnect', () => {
       setIsConnected(false);
     });
-    socket.on('message', data => {
+    // i before e
+    // except after c
+    // unless it makes the sound "a"
+    socket.on('receive_message', data => {
       setLastMessage(data);
     });
     return () => {

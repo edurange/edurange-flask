@@ -71,6 +71,7 @@ class StudentScenario extends React.Component {
         //     <h1>Student Guide</h1>
         //   </div>
         // );
+        console.log(Sections[this.state.currentSection]);
         return (
        <div className="student_view">
         <TopicList currentSection={this.state.currentSection} sections={Sections} setState={p => {this.setState(p)}}/>
