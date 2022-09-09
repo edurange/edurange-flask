@@ -1,6 +1,9 @@
 /**
  * Component that alerts if you click outside of it
  */
+
+import React from 'react';
+
 export default class OutsideAlerter extends React.Component {
   constructor(props) {
     super(props);

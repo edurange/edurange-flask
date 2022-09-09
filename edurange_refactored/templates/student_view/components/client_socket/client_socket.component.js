@@ -1,35 +1,17 @@
-/*
-import io from 'socket.io-client';
-import React, { useState, useEffect } from 'react';
-
-const socket = io('localhost:3001');
-function ClientSocket() {
-
-  const [lastMessage, setLastMessage] = useState(null);
-  
-  
-  return (
-    <div>
-      <button>APPPPPP</button>
-    </div>
-  );
-}
-
-export default ClientSocket;
-
-*/
-/*
-//grabbing the port number from the .env file
-require('dotenv').config({ path: '../../.env' })
-*/
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('localhost:3001');
+
+// catch-all listener for development phase
+socket.onAny((event, ...args) => {
+  console.log(event, args);
+});
 
 function ClientSocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
+  const [inputData, setChange] = useState(null);
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -38,9 +20,6 @@ function ClientSocket() {
     socket.on('disconnect', () => {
       setIsConnected(false);
     });
-    // i before e
-    // except after c
-    // unless it makes the sound "a"
     socket.on('receive_message', data => {
       setLastMessage(data);
     });
@@ -52,18 +31,32 @@ function ClientSocket() {
   });
 
   const sendMessage = () => {
-    socket.emit('hello!');
+    socket.emit('message', inputData);
+  }
+
+  const onChange = (e) => {
+    setChange(e.target.value);
   }
 
   return (
     <div className="ClientSocket">
       <header className="ClientSocket-header">
-        <div>
-        <button>CLIENT SOCKET</button>
-        </div>
         <p>Connected: { '' + isConnected }</p>
-        <p>Last message: { lastMessage || 'you' }</p>
+        <p>Last message: { lastMessage || 'lastMessage' }</p>
+        <p>Input Data: { inputData || 'inputData' }</p>
         <p>Socket: { socket.id }</p>
+        <div className='chat-input-area'>
+            <form
+              onSubmit={ sendMessage }
+              autoComplete="off"
+            >
+            <input
+              type='text'
+              className="chat-input-box"
+              onChange={ onChange }
+              />
+            </form>
+            </div>
         <button onClick={ sendMessage }>Say hello!</button>
       </header>
     </div>

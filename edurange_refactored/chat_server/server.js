@@ -45,6 +45,7 @@ const io = new Server(server, {
 
 io.on('connection', socket => {
   console.log(`connect: ${socket.id}`);
+  console.log("I'm working");
 
   socket.on('hello!', () => {
     console.log(`hello from ${socket.id}`);
@@ -52,6 +53,10 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     console.log(`disconnect: ${socket.id}`);
+  });
+
+  socket.on('message', (inputData) => {
+    console.log(`message recieved ${inputData}`);
   });
 });
 
