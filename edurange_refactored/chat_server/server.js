@@ -43,7 +43,15 @@ const io = new Server(server, {
     },
 });
 
+
+
 io.on('connection', socket => {
+
+  // join arbitrary room
+  const roomName = "kitchen"
+  socket.join(roomName);
+  io.to(roomName).emit("room_joined", roomName);
+
   console.log(`connect: ${socket.id}`);
   console.log("I'm working");
 
@@ -57,7 +65,10 @@ io.on('connection', socket => {
 
   socket.on('message', (inputData) => {
     console.log(`message recieved ${inputData}`);
+    io.to(roomName).emit('message', inputData);
   });
+
+
 });
 
 console.log(process.env.CHAT_SERVER_PORT);

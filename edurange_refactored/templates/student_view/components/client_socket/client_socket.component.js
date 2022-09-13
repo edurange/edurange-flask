@@ -12,6 +12,7 @@ function ClientSocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
   const [inputData, setChange] = useState(null);
+  const [roomName, setRoomName] = useState(null);
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -20,9 +21,14 @@ function ClientSocket() {
     socket.on('disconnect', () => {
       setIsConnected(false);
     });
-    socket.on('receive_message', data => {
+    socket.on('message', data => {
       setLastMessage(data);
     });
+
+    socket.on('room_joined', (roomNameData) => {
+      setRoomName(roomNameData);
+    });
+
     return () => {
       socket.off('connect');
       socket.off('disconnect');
@@ -42,9 +48,11 @@ function ClientSocket() {
     <div className="ClientSocket">
       <header className="ClientSocket-header">
         <p>Connected: { '' + isConnected }</p>
+        <p>Room name: { roomName || 'limbo'}</p>
         <p>Last message: { lastMessage || 'lastMessage' }</p>
         <p>Input Data: { inputData || 'inputData' }</p>
         <p>Socket: { socket.id }</p>
+
         <div className='chat-input-area'>
             <form
               onSubmit={ sendMessage }
