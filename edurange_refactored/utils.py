@@ -105,7 +105,7 @@ def create_link(route, icon, text):
     #             <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
     #           </a>'''
     html = '''<a class href="{0}">
-                <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
+                <i class="fa-solid {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
               </a>'''
     html = html.format(url_for(route), icon, text)
 
