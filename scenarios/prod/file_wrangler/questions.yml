@@ -75,7 +75,7 @@
   - accept-integer
   - accept-decimal
   Answers:
-  - Value: 2
+  - Value: 0
     Points: 1
   Points: 1
 - Text: What is the flag you discovered by running sudo manflag in the manipulate directory?
