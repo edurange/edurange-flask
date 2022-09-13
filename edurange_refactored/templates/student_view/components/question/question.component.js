@@ -5,9 +5,6 @@ class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateState = this.updateState.bind(this);
-    this.onChange = this.onChange.bind(this);
-
     this.state = {
       qstate: Question.QUESTION_STATE.Unsubmitted,
       currentScore: '-',
@@ -18,10 +15,10 @@ class Question extends React.Component {
 
   // Set up initial state of question
   componentDidMount() {
-    const {question, scenarioState, name} = this.props;
-    if (!(name in scenarioState.Questions)) {
+    const {question, scenarioState, qid} = this.props;
+    if (!(qid in scenarioState.Questions)) {
       this.setState({scenarioState});
-    } else if (scenarioState.Questions[name].Score == question.Points) {
+    } else if (scenarioState.Questions[qid].Score == question.Points) {
       this.setState({
         scenarioState, 
         qstate: Question.QUESTION_STATE.Completed,
@@ -31,52 +28,51 @@ class Question extends React.Component {
       this.setState({
         scenarioState, 
         qstate: Question.QUESTION_STATE.Submitted,
-        currentScore: scenarioState.Questions[name].Score.toString(),
+        currentScore: scenarioState.Questions[qid].Score.toString(),
       })
     }
   }
 
-  updateState(e) {
+
+  // Post an answer to the back end. Fetch the new state 
+  // and re-render the question to show the result.
+  onSubmit = (e) => {
+    const {qid, csrf_token, scenarioId} = this.props;
+    // Prevent the form from posting to the front-end by default
     e.preventDefault();
-    var csrf_token = this.props.csrf_token;
     const { Unsubmitted, Submitted, Incorrect, Correct, Completed } = Question.QUESTION_STATE;
     var qstate;
     const requestOptions = {
       method:'POST',
       headers:{'Content-Type':'application/json; charset=UTF-8', 'X-CSRFToken':csrf_token}, 
-      body:JSON.stringify({"question":this.props.name, "scenario": this.props.scenarioId, "response":this.state.answer}),
+      body:JSON.stringify({"question": qid, "scenario": scenarioId, "response":this.state.answer}),
     };
-    fetch(`/api/post_ans/${this.props.scenarioId}`, requestOptions)
+    // POST and only after we've posted, GET the current state from the back end
+    fetch(`/api/post_ans/${scenarioId}`, requestOptions)
       .then((_) => {
-        fetch(`/api/get_state/${this.props.scenarioId}`)
+        fetch(`/api/get_state/${scenarioId}`)
           .then((resp) => resp.json())
           .then((scenarioState) => {
             if (this.state.qstate == Completed) {
               qstate = Completed;
-            } else if (!(this.props.name) in scenarioState.Questions) {
+            } else if (!(qid) in scenarioState.Questions) {
               qstate = Unsubmitted;
-              // bug? TODO
               return;
-            } else if (scenarioState.Questions[this.props.name].Correct != true) {
+            } else if (scenarioState.Questions[qid].Correct == false) {
               qstate = Incorrect;
             } else {
               qstate = Correct;
             }
-            this.setState({currentScore: scenarioState.Questions[this.props.name].Score, scenarioState, qstate});
+            this.setState({currentScore: scenarioState.Questions[qid].Score, scenarioState, qstate});
           });
         });
   }
 
-  onChange(e) {
+  // Save what the student has entered in the text box.
+  onChange = (e) => {
     this.setState({
       answer:(e.target.value),
     });
-  }
-
-  _onKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      this.updateState(e);
-    }
   }
 
   static QUESTION_STATE = {
@@ -87,7 +83,7 @@ class Question extends React.Component {
     Completed:   4, // 20/20 and checkmark, never reverts
   }
 
-  renderSubmissionState() {
+  renderSubmissionState = () => {
     var cssclass, icon, text;
     switch (this.state.qstate) {
       case Question.QUESTION_STATE.Unsubmitted:
@@ -125,7 +121,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const {question, scenarioState, name} = this.props;
+    const {question} = this.props;
     return (
         <div className='edu-question'>
             <div className="edu-submission-traits">
@@ -135,8 +131,10 @@ class Question extends React.Component {
             <p className="edu-question-text">{question.Text}</p>
             <div className='edu-answer-area'>
             <form
-              onSubmit={this.updateState}
-              autocomplete="off"
+              // POST answer and GET new state
+              onSubmit={this.onSubmit}
+              // Don't show the autocomplete menu which collects answers for all questions
+              autoComplete="off"
             >
             <input
               type='text'
@@ -144,7 +142,7 @@ class Question extends React.Component {
               name='edu-answer'
               id='name-input'
               onChange={this.onChange}
-              value={this.state.response} />
+            />
               <button className='edu-submit' type="submit"><i className="fa-solid fa-check" /></button>
             </form>
             </div>
