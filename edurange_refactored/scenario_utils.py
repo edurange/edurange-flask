@@ -262,4 +262,6 @@ def gen_chat_names(sid: int):
     student_ids = map(lambda row: row[0] % num_words, student_ids)
     
     return {id: adjectives[id] + nouns[id] for id in student_ids}
+
+
     

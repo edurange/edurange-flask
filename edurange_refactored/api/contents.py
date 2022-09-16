@@ -12,6 +12,10 @@ from flask import (
 
 import json
 
+
+from random import seed, shuffle
+from edurange_refactored.user.models import GroupUsers, ScenarioGroups
+
 from sqlalchemy import func
 from edurange_refactored.form_utils import process_request
 
@@ -261,3 +265,92 @@ def canonicalize_response(scenario_id: int,
     student_response: str,
     answer: str):
     return student_response
+
+@blueprint.route("/chat_init/<scenario_id>", methods=["GET"])
+@login_required
+def gen_chat_names(scenario_id): 
+    """
+    Synopsis
+    --------
+    Return a mapping of student IDs to temporary anonymous chat usernames.
+    One name is created as <adjective><Noun> in camel case. Assumes the number of 
+
+    Parameters
+    ----------
+    sid : int
+        Scenario id
+
+    Returns
+    -------
+    dict
+        Dictionary of {student ID : chatname} mappings
+    
+    """
+    # Save the db session as a variable
+    session = db.session
+
+    nouns = [
+            "Animal",      "Horse",     "Parrot",   "Rainbow",    "Lizard",
+            "Ghost",       "Oyster",    "Potato",   "Fish",       "Lion",
+            "Kangaroo",    "Rocket",    "Engine",   "Magician",   "Tractor",
+            "Poetry",      "Piano",     "Finger",   "Ambassador", "Boxer",
+            "Goldsmith",   "Scavenger", "Surgeon",  "Chemist",    "Cobra",
+            "Elk",         "Wolf",      "Tiger",    "Shark",      "Otter",
+            "Fox",         "Falcon",    "Badger",   "Bear",       "Raven",
+            "Rabbit",      "Hare",      "Ant",      "Scorpion",   "Owl",
+            "Finch",       "Starling",  "Sparrow",  "Bulldozer",  "Astronomer",
+            "Philosopher", "Engineer",  "Catfish",  "Pirate",     "Bilder",
+            "Captain",     "Sailor",    "Cactus",   "Genie",      "Chimera",
+            "Banshee",     "Dragon",    "Pheonix",  "Basilisk",   "Griffin",
+            "Centaur",     "Sprite",    "Golem",    "Sphinx",     "Moose",
+            "Mongoose",    "Star",      "Starfish", "Comet",      "Argonaut"
+        ]
+
+    adjectives = [
+        "blue",          "fast",       "squirrely",     "round",
+        "extravagant",   "orange",     "red",           "small",
+        "rotund",        "supreme",    "inconspicuous", "fancy",
+        "enraging",      "unseen",     "proper",        "green",
+        "fabulous",      "nostalgic",  "shy",           "large",
+        "oblivious",     "obvious",    "extreme",       "unphased",
+        "frightening",   "suspicious", "miniscule",     "enormous",
+        "gigantic",      "pink",       "fuzzy",         "sleek",
+        "fantastic",     "boring",     "colorful",      "loud",
+        "quiet",         "powerful",   "focused",       "confusing",
+        "skillful",      "purple",     "invisible",     "undecided",
+        "calming",       "tall",       "flat",          "octagonal",
+        "hexagonal",     "triangular", "robust",        "thorough",
+        "surprising",    "unexpected", "whimsical",     "musical",
+        "imaginary",     "squishy",    "intricate",     "complex",
+        "uncomplicated", "efficient",  "hidden",        "sophisticated",
+        "ridiculous",    "strong",     "turquoise",     "plentiful",
+        "yodeling",      "sneaky"
+    ]
+
+    num_words = min(len(nouns), len(adjectives))
+
+    # Shuffle the lists, seeded on the scenario id
+    seed(scenario_id)
+    shuffle(nouns)
+    shuffle(adjectives)
+
+    # Get group id from scenario id
+    gid = session\
+                    .query(ScenarioGroups.group_id)\
+                    .filter(ScenarioGroups.scenario_id == scenario_id)\
+                    .first()[0]
+    # Get list of student ids from group id
+    student_ids = session\
+                    .query(GroupUsers.id)\
+                    .filter(GroupUsers.group_id == gid)\
+                    .all()
+
+    # Collect only the useful part of the DB query
+    # Reduce the ids by the number of words to allow indexing
+    student_ids = map(lambda row: row[0] % num_words, student_ids)
+     
+    ok, err, code = validate_usage(scenario_id)
+    if ok:
+        return jsonify({id: adjectives[id] + nouns[id] for id in student_ids})
+    return err, code
+

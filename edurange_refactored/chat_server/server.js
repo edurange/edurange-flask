@@ -43,17 +43,59 @@ const io = new Server(server, {
     },
 });
 
+const crypto = require("crypto");
+const randomId = () => crypto.randomBytes(8).toString("hex");
+
+const { InMemorySessionStore } = require("./sessionStore");
+const sessionStore = new InMemorySessionStore();
+
+const { InMemoryMessageStore } = require("./messageStore");
+const messageStore = new InMemoryMessageStore();
+
+io.use((socket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  if (sessionID) {
+    const session = sessionStore.findSession(sessionID);
+    if (session) {
+      socket.sessionID = sessionID;
+      socket.userID = session.userID;
+      socket.isInstructor = session.isInstructor;
+      return next();
+    }
+  }
+  socket.sessionID = randomId();
+  socket.userID = randomId();
+  socket.isInstructor = false;
+  next();
+});
+
 
 
 io.on('connection', socket => {
 
+
+  // persist session
+ sessionStore.saveSession(socket.sessionID, {
+  userID: socket.userID,
+  username: socket.username,
+  connected: true,
+  });
+
+  // emit session details
+  socket.emit("session", {
+  sessionID: socket.sessionID,
+  userID: socket.userID,
+  isInstructor: socket.isInstructor,
+  });
+
   // join arbitrary room
-  const roomName = "kitchen"
+  const roomName = socket.id;
   socket.join(roomName);
-  io.to(roomName).emit("room_joined", roomName);
+  io.emit("room_joined", roomName);
 
   console.log(`connect: ${socket.id}`);
-  console.log("I'm working");
+  console.log("INSTRUCTOR STATUS: " + socket.auth.isInstructor)
+
 
   socket.on('hello!', () => {
     console.log(`hello from ${socket.id}`);
@@ -65,15 +107,13 @@ io.on('connection', socket => {
 
   socket.on('message', (inputData) => {
     console.log(`message recieved ${inputData}`);
-    io.to(roomName).emit('message', inputData);
+    io.emit('message', inputData);
   });
+
+  
 
 
 });
 
 console.log(process.env.CHAT_SERVER_PORT);
 io.listen(process.env.CHAT_SERVER_PORT);
-
-setInterval(() => {
-  io.emit('message', new Date().toISOString());
-}, 1000);
