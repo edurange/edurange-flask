@@ -1,7 +1,7 @@
 import json
 import os
 
-from random import shuffle, seed
+from random import seed, getrandbits
 import yaml
 from flask import flash
 from edurange_refactored.settings import KNOWN_SCENARIOS
@@ -211,7 +211,7 @@ def gen_chat_names(sid: int):
             "Fox",         "Falcon",    "Badger",   "Bear",       "Raven",
             "Rabbit",      "Hare",      "Ant",      "Scorpion",   "Owl",
             "Finch",       "Starling",  "Sparrow",  "Bulldozer",  "Astronomer",
-            "Philosopher", "Engineer",  "Catfish",  "Pirate",     "Bilder",
+            "Philosopher", "Engineer",  "Catfish",  "Pirate",     "Builder",
             "Captain",     "Sailor",    "Cactus",   "Genie",      "Chimera",
             "Banshee",     "Dragon",    "Pheonix",  "Basilisk",   "Griffin",
             "Centaur",     "Sprite",    "Golem",    "Sphinx",     "Moose",
@@ -239,13 +239,6 @@ def gen_chat_names(sid: int):
         "yodeling",      "sneaky"
     ]
 
-    num_words = min(len(nouns), len(adjectives))
-
-    # Shuffle the lists, seeded on the scenario id
-    seed(sid)
-    shuffle(nouns)
-    shuffle(adjectives)
-
     # Get group id from scenario id
     gid = session\
                     .query(ScenarioGroups.group_id)\
@@ -258,10 +251,9 @@ def gen_chat_names(sid: int):
                     .all()
 
     # Collect only the useful part of the DB query
-    # Reduce the ids by the number of words to allow indexing
-    student_ids = map(lambda row: row[0] % num_words, student_ids)
+    student_ids = map(lambda row: row[0], student_ids)
     
-    return {id: adjectives[id] + nouns[id] for id in student_ids}
-
-
+    seed(sid)
+    # Note the size of the word arrays are specified here
+    return {id: adjectives[getrandbits(32)%70] + nouns[getrandbits(32)%70] for id in student_ids}
     
