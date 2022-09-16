@@ -312,6 +312,7 @@ def student_scenario(i):
                     # progress=progress,
                     # example=example
                     "dashboard/student_scenario_new.html",
+                    uid = uid,
                     add=addresses,
                     status=status,
                     u_name=u_name,

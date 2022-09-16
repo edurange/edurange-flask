@@ -63,4 +63,4 @@ class StudentScenario extends React.Component {
 }
 
 var e = document.getElementById('student_scenario');
-ReactDOM.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} />, e);
+ReactDOM.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} uid={e.attributes.uid.value}/>, e);
