@@ -53,7 +53,11 @@ class StudentScenario extends React.Component {
           scenarioId={this.props.scenarioId} 
           csrf_token={this.state.csrf_token} 
         />
-        <Chatbox className='chatbox' />
+        <Chatbox 
+          className='chatbox'
+          uid={this.props.uid}
+        />
+          
       </div /* student-view */>           
         );
       } else {

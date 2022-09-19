@@ -8,7 +8,7 @@ socket.onAny((event, ...args) => {
   console.log(event, args);
 });
 
-function ClientSocket() {
+function ClientSocket(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
   const [inputData, setChange] = useState(null);
@@ -80,6 +80,7 @@ function ClientSocket() {
   return (
     <div className="ClientSocket">
       <header className="ClientSocket-header">
+        <p>USER ID: {props.uid}</p>
         <p>Connected: { '' + isConnected }</p>
         <p>Room name: { roomName } </p>
         <p>Last message: { lastMessage || 'lastMessage' }</p>

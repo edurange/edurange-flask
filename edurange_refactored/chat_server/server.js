@@ -1,3 +1,5 @@
+
+
 var _path = require('path'); 
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
 
@@ -47,7 +49,7 @@ const crypto = require("crypto");
 const randomId = () => crypto.randomBytes(8).toString("hex");
 
 const { InMemorySessionStore } = require("./sessionStore");
-const sessionStore = new InMemorySessionStore();
+const sessionStore =  new InMemorySessionStore();
 
 const { InMemoryMessageStore } = require("./messageStore");
 const messageStore = new InMemoryMessageStore();
@@ -94,8 +96,6 @@ io.on('connection', socket => {
   io.emit("room_joined", roomName);
 
   console.log(`connect: ${socket.id}`);
-  console.log("INSTRUCTOR STATUS: " + socket.auth.isInstructor)
-
 
   socket.on('hello!', () => {
     console.log(`hello from ${socket.id}`);
