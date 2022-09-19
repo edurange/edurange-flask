@@ -8,16 +8,15 @@ class ChatEntry extends React.Component {
     }
 
     render() {
-        const {timeSent, fromSelf, messageContents} = this.props;
-        
+        const {message} = this.props;
+        const fromSelf = message.fromSelf;
         // determine value of message div className
-        const {messageType} = {fromSelf} ? 'fromSelf' : 'fromOther'; 
+        const messageType = fromSelf ? 'fromSelf' : 'fromOther'; 
         
         return (
             <div id='chat_entry'>
-                <p>{timeSent}</p>
                 <div className={messageType}>
-                    {messageContents}
+                    {message}
                 </div>
             </div>
         );
