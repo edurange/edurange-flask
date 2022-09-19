@@ -1,7 +1,7 @@
 /* Display one chat session.
  */
 import io from 'socket.io-client';
-import "./chat_window.css"
+import "./chat_input.css"
 
 // same client socket as student counterpart (found in ./student_view/client_socket/)
 const socket = io('localhost:3001');
@@ -31,6 +31,7 @@ class ChatInput extends React.Component {
     }
 
     render() {
+        
         return (
 
             <div id='chat_input'>
@@ -47,7 +48,7 @@ class ChatInput extends React.Component {
                         onChange={this.onChange}
                     />
                     <button className='edu-submit' type="submit">
-                        <i className="fa-solid fa-check" />
+                        send
                     </button>
                 </form>
             </div>
