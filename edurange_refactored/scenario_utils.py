@@ -5,7 +5,6 @@ from random import seed, getrandbits
 import yaml
 from flask import flash
 from edurange_refactored.settings import KNOWN_SCENARIOS
-from edurange_refactored.user.models import GroupUsers, ScenarioGroups
 from edurange_refactored.database import db
 
 # Import the scenario string, and set to 'known_types' as a list
