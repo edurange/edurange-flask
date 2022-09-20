@@ -1,6 +1,6 @@
 // import sample_content from "../../../../../../edurange-flask/scenarios/prod/getting_started/student_view/content.json";
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 import GuideSection from "../guide-section/guide-section.component";
 import TopicList from "../topic-list/topic-list.component";
@@ -67,4 +67,5 @@ class StudentScenario extends React.Component {
 }
 
 var e = document.getElementById('student_scenario');
-ReactDOM.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} uid={e.attributes.uid.value}/>, e);
+var root = createRoot(e);
+root.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} uid={e.attributes.uid.value} />);
