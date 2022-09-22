@@ -4,14 +4,13 @@
 import Student from "../student/student.component";
 import "./instructor_view.css";
 import ChatWindow from "../chat_window/chat_window.component";
-import ChatInput from "../chat_input/chat_input.components";
+import {createRoot} from 'react-dom/client';
 
 class InstructorView extends React.Component {
     render () {
         
         return (
             <div id="instructor_view">
-                <ChatInput />
                 <Student />
                 <ChatWindow />
             </div>
@@ -20,4 +19,6 @@ class InstructorView extends React.Component {
 }
 
 var e = document.getElementById('instructor_view');
-ReactDOM.render(<InstructorView />, e);
+const root=createRoot(e);
+
+root.render(<InstructorView />);
