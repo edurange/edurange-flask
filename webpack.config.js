@@ -12,6 +12,8 @@ const ProductionPlugins = [
     }
   })
 ]
+
+
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 

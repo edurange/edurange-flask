@@ -19,6 +19,9 @@
   "engines": {
     "node": ">=12"
   },
+  "browser": {
+    "fs": false
+  },
   "bugs": {
     "url": "https://github.com/coojac09/edurange_refactored/issues"
   },

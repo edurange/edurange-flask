@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import "./chat_window.css"
 import React, { useState, useEffect } from 'react';
 import ChatEntry from "../chat_entry/chat_entry.component";
-import ChatInput from "../chat_input/chat_input.component";
+//import ChatInput from "../chat_input/chat_input.component";
 
 const socket = io('localhost:3001');
 
