@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+//REMOVED FOR BUG TESTING
+//var _path = require('path'); 
 
-var _path = require('path'); 
-const dotEnvPath = _path.resolve(process.cwd(), '.env');
+//REMOVED FOR BUG TESTING
+//const dotEnvPath = _path.resolve(process.cwd(), '.env');
 
 //grabbing the port number from the .env file
-const dotenv = require('dotenv').config({ path: dotEnvPath });
+//REMOVED FOR BUG TESTING
+//const dotenv = require('dotenv').config({ path: dotEnvPath });
 
 
-const socket = io(process.env.HOST_EXTERN_ADDRESS  + ":3001");
+//const socket = io(process.env.HOST_EXTERN_ADDRESS  + ":3001");
+const socket = io(`${window.location.hostname}:3001`);
 
 // catch-all listener for development phase
 socket.onAny((event, ...args) => {
