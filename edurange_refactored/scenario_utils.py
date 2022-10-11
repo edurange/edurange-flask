@@ -179,7 +179,7 @@ def query_valid_scenario_id(id, session):
     return scenId
 
 
-def gen_chat_names(sid: int): 
+def gen_chat_names(student_ids, sid): 
     """
     Synopsis
     --------
@@ -197,8 +197,6 @@ def gen_chat_names(sid: int):
         Dictionary of {student ID : chatname} mappings
     
     """
-    # Save the db session as a variable
-    session = db.session
 
     nouns = [
             "Animal",      "Horse",     "Parrot",   "Rainbow",    "Lizard",
@@ -239,15 +237,6 @@ def gen_chat_names(sid: int):
     ]
 
     # Get group id from scenario id
-    gid = session\
-                    .query(ScenarioGroups.group_id)\
-                    .filter(ScenarioGroups.scenario_id == sid)\
-                    .first()[0]
-    # Get list of student ids from group id
-    student_ids = session\
-                    .query(GroupUsers.id)\
-                    .filter(GroupUsers.group_id == gid)\
-                    .all()
 
     # Collect only the useful part of the DB query
     student_ids = map(lambda row: row[0], student_ids)
