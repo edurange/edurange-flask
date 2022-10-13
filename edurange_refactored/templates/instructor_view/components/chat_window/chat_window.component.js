@@ -8,6 +8,7 @@ import ChatEntry from "../chat_entry/chat_entry.component";
 
 const socket = io('localhost:3001');
 
+
 function ChatWindow(props) {
     const [user, setUser] = useState(props);                        //Current user
     const [messages, setMessages] = useState([{                     //Messages for current user

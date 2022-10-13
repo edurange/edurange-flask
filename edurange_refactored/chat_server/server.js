@@ -94,16 +94,11 @@ io.on('connection', socket => {
 
   //recieve the correct ID
   socket.on("studentID", (studentID) => {
+    socket.userID = studentID;
     sessionStore.saveSession(socket.sessionID, {
       userID: studentID,
       });    
   });
-
-
-
-  //save the correct ID
-
-  console.log("Session ID: " + socket.sessionID);
 
   // join arbitrary room
   const roomName = socket.id;
@@ -120,12 +115,45 @@ io.on('connection', socket => {
     console.log(`disconnect: ${socket.id}`);
   });
 
-  socket.on('message', (inputData) => {
-    console.log(`message recieved ${inputData}`);
-    io.emit('message', inputData);
-  });
 
-  
+  // fetch existing users
+ const users = [];
+ const messagesPerUser = new Map();
+ messageStore.findMessagesForUser(socket.userID).forEach((message) => {
+   const { from, to } = message;
+   const otherUser = socket.userID === from ? to : from;
+   if (messagesPerUser.has(otherUser)) {
+     messagesPerUser.get(otherUser).push(message);
+   } else {
+     messagesPerUser.set(otherUser, [message]);
+   }
+ });
+ sessionStore.findAllSessions().forEach((session) => {
+   users.push({
+     userID: session.userID,
+     connected: session.connected,
+     messages: messagesPerUser.get(session.userID) || [],
+   });
+ });
+ socket.emit("users", users);
+
+ // notify existing users
+ socket.broadcast.emit("user connected", {
+   userID: socket.userID,
+   connected: true,
+   messages: [],
+ });
+ // forward the private message to the right recipient (and to other tabs of the sender)
+ socket.on("message", ({ content, to }) => {
+   const message = {
+     content,
+     from: socket.userID,
+     to,
+   };
+   socket.to(to).to(socket.userID).emit("message", message);
+   messageStore.saveMessage(message);
+ });
+
 
 
 });
