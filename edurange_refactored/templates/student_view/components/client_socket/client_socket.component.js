@@ -23,9 +23,10 @@ function ClientSocket(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
   const [inputData, setChange] = useState(null);
-  const [roomName, setRoomName] = useState(null);
-  const [socketUserID, setSocketUserID] = useState(null);
-  const [socketInstructorStatus, setSocketInstructorStatus] = useState(socket.isInstructor)
+  //const [roomName, setRoomName] = useState(null);
+  const [sessionID, setSessionID] = useState(null);
+  const [socketInstructorStatus, setSocketInstructorStatus] = useState(false);
+  const [socketUserID, setSocketUserID] = useState(props.uid);
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -38,10 +39,11 @@ function ClientSocket(props) {
     socket.on('message', data => {
       setLastMessage(data);
     });
-
+/*
     socket.on('room_joined', roomNameData => {
       setRoomName(roomNameData);
     });
+    */
 
     const sessionID = localStorage.getItem("sessionID");
  
@@ -54,12 +56,20 @@ function ClientSocket(props) {
       // attach the session ID to the next reconnection attempts
       socket.auth = { sessionID };
       // store it in the localStorage
+      
       localStorage.setItem("sessionID", sessionID);
       // save the ID of the user
-      socket.userID = userID;
+      socket.userID = props.uid;
       // save the instructor status of the user
       socket.isInstructor = isInstructor;
+      setSessionID(sessionID);
+      setSocketInstructorStatus(false);
+      console.log("socket.userID: " + socket.userID);
     });
+
+    //setting the database id to the server to set as the userID
+    socket.emit("studentID", props.uid);
+
 
     socket.on('private_message', ({content, from, to }) => {
       if (user.userID === (fromSelf ? to : from)) {
@@ -93,11 +103,11 @@ function ClientSocket(props) {
       <header className="ClientSocket-header">
         <p>USER ID: {props.uid}</p>
         <p>Connected: { '' + isConnected }</p>
-        <p>Room name: { roomName } </p>
         <p>Last message: { lastMessage || 'lastMessage' }</p>
         <p>Input Data: { inputData || 'inputData' }</p>
         <p>Socket: { socket.id }</p>
-        <p>isInstructor: { socketInstructorStatus }</p>
+        <p>Session ID: { sessionID || 'sessionID' }</p>
+
 
         <div className='chat-input-area'>
             <form
