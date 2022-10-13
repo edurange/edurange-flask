@@ -27,7 +27,7 @@
   bottom: 3rem;
   right: 1rem;
   overflow: hidden;
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: column;
   border: 2px black solid;

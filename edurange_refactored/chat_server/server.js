@@ -76,10 +76,10 @@ io.use((socket, next) => {
 io.on('connection', socket => {
 
 
+  //initally save sessions
   // persist session
  sessionStore.saveSession(socket.sessionID, {
   userID: socket.userID,
-  username: socket.username,
   connected: true,
   });
 
@@ -90,10 +90,25 @@ io.on('connection', socket => {
   isInstructor: socket.isInstructor,
   });
 
+
+
+  //recieve the correct ID
+  socket.on("studentID", (studentID) => {
+    sessionStore.saveSession(socket.sessionID, {
+      userID: studentID,
+      });    
+  });
+
+
+
+  //save the correct ID
+
+  console.log("Session ID: " + socket.sessionID);
+
   // join arbitrary room
   const roomName = socket.id;
   socket.join(roomName);
-  io.emit("room_joined", roomName);
+  //io.emit("room_joined", roomName);
 
   console.log(`connect: ${socket.id}`);
 

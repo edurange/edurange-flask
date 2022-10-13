@@ -138,7 +138,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
             json.dump(students, outfile)
 
         # create file of chat names for the scenario
-        with open(f"chatnames.json", "w") as chatnamefile:
+        with open(f"../chatnames.json", "w") as chatnamefile:
            json.dump(namedict, chatnamefile)
 
         questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
