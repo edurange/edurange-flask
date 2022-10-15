@@ -105,7 +105,7 @@ io.on('connection', socket => {
   socket.join(roomName);
   //io.emit("room_joined", roomName);
 
-  console.log(`connect: ${socket.id}`);
+  console.log(`connect: ${socket.id} userid: ${socket.userID}`);
 
   socket.on('hello!', () => {
     console.log(`hello from ${socket.id}`);

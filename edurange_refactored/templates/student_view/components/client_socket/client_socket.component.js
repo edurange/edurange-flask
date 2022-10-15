@@ -49,7 +49,7 @@ function ClientSocket(props) {
  
     if (sessionID) {
       socket.auth = { sessionID };
-      socket.connect();
+      //socket.connect();
     }
   
     socket.on("session", ({ sessionID, userID, isInstructor }) => {

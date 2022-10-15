@@ -1,6 +1,6 @@
 /* Display one chat session.
  */
-import "./chat_input.css"
+
 
 class ChatInput extends React.Component {
     constructor(props) {
