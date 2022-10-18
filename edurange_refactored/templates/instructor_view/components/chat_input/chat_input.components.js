@@ -11,20 +11,7 @@ class ChatInput extends React.Component {
         };
       }
 
-    onSubmit = () => {
-        this.setState({
-            message: inputData,
-        });
-        socket.emit('private_message', inputData);
-    }
 
-
-        // Save what the student has entered in the text box.
-    onChange = (e) => {
-        this.setState({
-            inputData:(e.target.value),
-        });
-    }
 
     render() {
         

@@ -45,6 +45,8 @@ const io = new Server(server, {
     },
 });
 
+//TO-DO CREATE SESSION
+/*
 const crypto = require("crypto");
 const randomId = () => crypto.randomBytes(8).toString("hex");
 
@@ -61,22 +63,21 @@ io.use((socket, next) => {
     if (session) {
       socket.sessionID = sessionID;
       socket.userID = session.userID;
-      socket.isInstructor = session.isInstructor;
       return next();
     }
   }
   socket.sessionID = randomId();
   socket.userID = randomId();
-  socket.isInstructor = false;
   next();
 });
+
+*/
 
 
 
 io.on('connection', socket => {
 
-
-  //initally save sessions
+  /* TO DO CREATE SESSION
   // persist session
  sessionStore.saveSession(socket.sessionID, {
   userID: socket.userID,
@@ -89,71 +90,16 @@ io.on('connection', socket => {
   userID: socket.userID,
   isInstructor: socket.isInstructor,
   });
-
-
-
-  //recieve the correct ID
-  socket.on("studentID", (studentID) => {
-    socket.userID = studentID;
-    sessionStore.saveSession(socket.sessionID, {
-      userID: studentID,
-      });    
-  });
-
-  // join arbitrary room
-  const roomName = socket.id;
-  socket.join(roomName);
-  //io.emit("room_joined", roomName);
+  */
 
   console.log(`connect: ${socket.id} userid: ${socket.userID}`);
 
-  socket.on('hello!', () => {
-    console.log(`hello from ${socket.id}`);
+  socket.on("student connected", (studentID) => {
+      console.log(`student connected: socketID ${socket.id} userID: ${socket.userID}`);
+      console.log(`         studentID passed = ${studentID}`);
+      console.log(`         # of sockets = ${socket.length}`);
+      
   });
-
-  socket.on('disconnect', () => {
-    console.log(`disconnect: ${socket.id}`);
-  });
-
-
-  // fetch existing users
- const users = [];
- const messagesPerUser = new Map();
- messageStore.findMessagesForUser(socket.userID).forEach((message) => {
-   const { from, to } = message;
-   const otherUser = socket.userID === from ? to : from;
-   if (messagesPerUser.has(otherUser)) {
-     messagesPerUser.get(otherUser).push(message);
-   } else {
-     messagesPerUser.set(otherUser, [message]);
-   }
- });
- sessionStore.findAllSessions().forEach((session) => {
-   users.push({
-     userID: session.userID,
-     connected: session.connected,
-     messages: messagesPerUser.get(session.userID) || [],
-   });
- });
- socket.emit("users", users);
-
- // notify existing users
- socket.broadcast.emit("user connected", {
-   userID: socket.userID,
-   connected: true,
-   messages: [],
- });
- // forward the private message to the right recipient (and to other tabs of the sender)
- socket.on("message", ({ content, to }) => {
-   const message = {
-     content,
-     from: socket.userID,
-     to,
-   };
-   socket.to(to).to(socket.userID).emit("message", message);
-   messageStore.saveMessage(message);
- });
-
 
 
 });
