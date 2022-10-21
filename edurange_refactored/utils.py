@@ -421,9 +421,8 @@ def tempMaker(sId, i):
         return status, ownerName, description, ty, sName, username, pw, guide, questions
 
 
-def checkAnswer(qnum, sid, student_answer, uid):
+def checkAnswer(scenario, qnum, sid, student_answer, uid):
     """Check student answer matches correct one from YAML file."""
-    scenario = db.session.query(Scenarios.name).filter(Scenarios.id == sid).first()
     questions = questionReader(scenario[0])
 
     question = questions[qnum-1]
