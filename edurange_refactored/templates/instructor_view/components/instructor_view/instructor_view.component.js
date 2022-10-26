@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import Student from "../student/student.component";
 import "./instructor_view.css";
 import ChatWindow from "../chat_window/chat_window.component";
+import StudentList from "../student_list/student_list.component";
 import {createRoot} from 'react-dom/client';
 import React from 'react';
 import chatnameMap from "../../../../../data/tmp/chatnames.json";
@@ -40,9 +41,8 @@ class InstructorView extends React.Component {
         return (
 
             <div id="instructor_view">
-                <Student />
+                <StudentList />
                 <ChatWindow />
-    
             </div>
         );
     }
