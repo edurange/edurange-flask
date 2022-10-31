@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
-const socket = io(`${window.location.hostname}:3001`);
+const socket = io(`${window.location.hostname}:3001`, {autoConnect: false});
 
 // catch-all listener for development phase
 socket.onAny((event, ...args) => {
@@ -11,14 +11,17 @@ socket.onAny((event, ...args) => {
 function ClientSocket(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
 
+  
   useEffect(() => {
-    socket.on('connect', () => {
-      setIsConnected(true);
-      socket.emit("student connected", props.uid);
-      //emit props.
-    });
+    console.log("props" + props.uid);
+    const uid = props.uid;
+    console.log("UID" + uid);
+    socket.auth = { uid };
+    socket.connect();
 
-    const sessionID = localStorage.getItem("sessionID");
+    socket.on("connect", () => {
+      console.log(`Student with ID '${uid}' is connected!`)
+    });
 
     return () => {
       socket.off('connect');

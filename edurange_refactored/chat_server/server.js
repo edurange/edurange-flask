@@ -78,43 +78,58 @@ io.use((socket, next) => {
 
 */
 
+//create middleware
+io.use((socket, next) => {
+  const uid = socket.handshake.auth.uid;
+  if(!uid) {
+    return next(new Error("no user ID"));
+  }
+  socket.uid = uid;
+  next();
+});
 
 
 io.on('connection', socket => {
-  const emit_users = () => {
-    const users = [];
-    for (let [id, socket] of io.of("/").sockets) {
-      if (socket.uid!=="000") {
-        users.push({
-          socketid: id,
-          uid: socket.uid,
-          username: studentList[socket.uid-1],
-        });
+  const emit_users = (alertType) => {
+    let alertString = {};
+    alertTime = new Date().toISOString()
+    .replace('T', ' ')
+    .replace('Z', '');
+    if (socket.uid!=="000") {
+      alertString = {
+        uid: socket.uid,
+        id: studentList[socket.uid-1],
+        type:  alertType,
+        time: alertTime,
+        };
       }
-    }
-    socket.to("000").emit("connected students", users);
+    socket.to("000").emit("connected students", alertString);
     console.log(io.sockets.adapter.rooms); // servers rooms maps.
   }
 
-  // emit session details
-  socket.emit("session", {
-  sessionID: socket.sessionID,
-  userID: socket.userID,
-  isInstructor: socket.isInstructor,
+  socket.on("connect_error", err => {
+    console.log("CONNECTION ERROR NO UID")
   });
-  
 
-  console.log(`connect: ${socket.id} userid: ${socket.userID}`);
+  //join rooms. 
+  socket.join(socket.uid); //students join their own room. 
+  if(socket.uid=="000") { //instructors join everyone else's.
+    socket.join("000");
+    for(let key in studentList) {
+      socket.join(key);
+    }
+  }
 
-  socket.on("student connected", (studentID) => {
-      console.log(`student connected: socketID ${socket.id} userID: ${socket.userID}`);
-      console.log(`         studentID passed = ${studentID}`);
-      console.log(`         # of sockets = ${socket.length}`);
-      
+  emit_users("studJoin");
+
+
+  socket.on("disconnect", () => {
+    emit_users("studLeave");
   });
+
 
 
 });
 
-console.log(process.env.CHAT_SERVER_PORT);
+console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`)
 io.listen(process.env.CHAT_SERVER_PORT);

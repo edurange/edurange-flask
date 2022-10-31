@@ -40,15 +40,8 @@ function StudentList(props) {
   }, []);
 
   const onRecvConnectedStudents = (connectedStuds) => {
-    connectedStuds[0]["type"] = "studJoin";
-    const now = new Date().toISOString()
-    .replace('T', ' ')
-    .replace('Z', '');
-    connectedStuds[0]["time"] = now;
-
-    connectedStuds = JSON.stringify(connectedStuds);
-    setConnectedUsers(connectedStuds);
-    console.log(`value of connectedStuds : ${JSON.stringify(connectedStuds)}`);
+    console.log(`value of connectedStuds : ${connectedStuds}`);
+    handleEvent(connectedStuds);
   }
 
 /* Contains the list of chat sessions and the 'Everyone' chat session.
