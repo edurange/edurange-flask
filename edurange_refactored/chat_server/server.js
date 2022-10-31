@@ -3,29 +3,34 @@
 var _path = require('path'); 
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
 
+
+
+
 //grabbing the port number from the .env file
 const dotenv = require('dotenv').config({ path: dotEnvPath });
 
-/*1. import express */
-/*2. app variable set to instance of express function */
-/*3. http variable grabbed from http library (inherent to npm) */
-/*4. import cors library */
-/*5. import a CLASS from socket.io library */
+const express = require("express");
+const app = express();
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
 
-/*1.*/const express = require("express");
-/*2.*/const app = express();
-/*3.*/const http = require("http");
-/*4.*/const cors = require("cors");
-/*5.*/const { Server } = require("socket.io");
-
- 
-
-//
 app.use(cors());
 
 
 // create server
 const server = http.createServer(app);
+
+// gathering student user ID / username list
+const fs = require('fs');
+let studentList;
+fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
+    if (err) throw err;
+    studentList = JSON.parse(data);
+});
+
+
+
 
 // create new instance of { Server } class
 const io = new Server(server, {
@@ -76,13 +81,20 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-
-  /* TO DO CREATE SESSION
-  // persist session
- sessionStore.saveSession(socket.sessionID, {
-  userID: socket.userID,
-  connected: true,
-  });
+  const emit_users = () => {
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+      if (socket.uid!=="000") {
+        users.push({
+          socketid: id,
+          uid: socket.uid,
+          username: studentList[socket.uid-1],
+        });
+      }
+    }
+    socket.to("000").emit("connected students", users);
+    console.log(io.sockets.adapter.rooms); // servers rooms maps.
+  }
 
   // emit session details
   socket.emit("session", {

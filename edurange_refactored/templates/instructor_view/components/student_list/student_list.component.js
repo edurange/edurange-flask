@@ -4,6 +4,53 @@ import studentStates from '../../states.json';
 import { useState, useEffect } from "react";
 import Student from '../student/student.component';
 
+import { io } from 'socket.io-client';
+const socket = io(`${window.location.hostname}:3001`, {autoConnect:false});
+
+// catch-all listener for development phase
+socket.onAny((event, ...args) => {
+  console.log(event, args);
+});
+var i = 0;
+
+/* list of dummy events */
+function StudentList(props) {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [connectedUsers, setConnectedUsers] = useState();
+
+  useEffect(() => {
+    const uid = "000";
+    socket.auth = { uid }
+    socket.connect();
+
+    socket.on('connect', () => {
+      console.log("instructor HAS connected");
+    });
+
+    socket.emit("instructor connected");
+
+    socket.on("connected students", (connectedStudents) => {
+    console.log(`value of connectedStuds : ${JSON.stringify(connectedStudents)}`);
+      onRecvConnectedStudents(connectedStudents);
+    });
+
+    return () => {
+      socket.off('connect');
+    };
+  }, []);
+
+  const onRecvConnectedStudents = (connectedStuds) => {
+    connectedStuds[0]["type"] = "studJoin";
+    const now = new Date().toISOString()
+    .replace('T', ' ')
+    .replace('Z', '');
+    connectedStuds[0]["time"] = now;
+
+    connectedStuds = JSON.stringify(connectedStuds);
+    setConnectedUsers(connectedStuds);
+    console.log(`value of connectedStuds : ${JSON.stringify(connectedStuds)}`);
+  }
+
 /* Contains the list of chat sessions and the 'Everyone' chat session.
  * Represent the chat sessions as: 
  * 'Everyone' is always at the top
@@ -14,10 +61,7 @@ import Student from '../student/student.component';
 
 
 
-var i = 0;
 
-/* list of dummy events */
-function StudentList(props) {
     const initStuds = [
         "Marco",
         "Mary",
@@ -89,6 +133,7 @@ function StudentList(props) {
     }
     
     const handleEvent = (e) => {
+        console.log(`value of e : ${JSON.stringify(e)}`)
         var newDate = e["time"]
         console.assert(newDate != null)
         switch (e["type"]) {
@@ -150,6 +195,7 @@ function StudentList(props) {
                     isLive={live?.includes(stud)}/>
                 )
             })}
+        <p>{"CONNECTED USERS" + {connectedUsers}}</p>
         </div>
     )
 }
