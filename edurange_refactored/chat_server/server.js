@@ -102,7 +102,7 @@ io.on('connection', socket => {
   userID: socket.userID,
   isInstructor: socket.isInstructor,
   });
-  */
+  
 
   console.log(`connect: ${socket.id} userid: ${socket.userID}`);
 
