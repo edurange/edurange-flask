@@ -90,7 +90,7 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-  const emit_users = (alertType) => {
+  const trafficAlert = (alertType) => {
     let alertString = {};
     alertTime = new Date().toISOString()
     .replace('T', ' ')
@@ -104,9 +104,8 @@ io.on('connection', socket => {
         time: alertTime,
         };
       }
-    console.log(JSON.stringify(alertString));
     socket.to("000").emit("alert", alertString);
-    console.log(io.sockets.adapter.rooms); // servers rooms maps.
+    //console.log(io.sockets.adapter.rooms); // servers rooms maps.
   }
 
   socket.on("connect_error", err => {
@@ -124,8 +123,9 @@ io.on('connection', socket => {
 
   const messages = [];
   socket.on("new message", ({messageContents, _to, _from}) => {
-    console.log(`message. from : ${_from} | to :${_to} |  content: ${messageContents}`)
     let recipient = (_to=="instructor") ? "000" : _to; 
+    console.log(`message. from : ${_from} | to :${recipient} |  content: ${messageContents}`)
+    
     messages.push({
       contents: messageContents,
       from: _from,
@@ -135,10 +135,10 @@ io.on('connection', socket => {
   });
 
   //emit join alert.
-  emit_users("studJoin");
+  trafficAlert("studJoin");
 
   socket.on("disconnect", () => {
-    emit_users("studLeave");
+    trafficAlert("studLeave");
   });
 
 });

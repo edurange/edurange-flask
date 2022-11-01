@@ -25,7 +25,7 @@ function ClientSocket(props) {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         if(inputData) {
-          socket.emit("new message", {messageContents: inputData, to: "instructor", from: uid});
+          socket.emit("new message", {messageContents: inputData, _to: "instructor", _from: uid});
           setInputData("");
         }
       }
@@ -47,7 +47,7 @@ function ClientSocket(props) {
   const onFormSubmit = e => {
     e.preventDefault();
     if(inputData) {
-        socket.emit("new message", {messageContents: inputData, to: "instructor"});
+        socket.emit("new message", {messageContents: inputData, _to: "instructor", _from: props.uid});
         setInputData("");
     }
   }

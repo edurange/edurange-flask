@@ -14,6 +14,7 @@ socket.onAny((event, ...args) => {
 });
 
 var i = 0;
+var allStudents = [];
 
 /* list of dummy events */
 function StudentList(props) {
@@ -32,7 +33,7 @@ function StudentList(props) {
     
     const [inputData, setInputData] = useState("");
     const [selectedStudent, setSelectedStudent] = useState();
-    var allStudents = [];
+
     const usernames = usernameList;
 
     const statesLen = Object.keys(studentStates).length;
@@ -45,14 +46,14 @@ function StudentList(props) {
     socket.connect();
 
     socket.on('connect', () => {
-      console.log("instructor HAS connected");
+      console.log("instructor has connected.");
     });
 
     socket.emit("instructor connected");
 
     socket.on("alert", (_alert) => {
-        console.log(`alert : ${JSON.stringify(_alert)}`);
-      onRecvAlert(_alert);
+        //console.log(`alert : ${JSON.stringify(_alert)}`);
+        onRecvAlert(_alert);
     });
 
     socket.on("new message", ({messageContent, to, from}) => {
@@ -75,9 +76,6 @@ function StudentList(props) {
           
           if(inputData && selectedStudent) {
             const recipient = findStudent(selectedStudent)
-            console.log(`listener: selected student type : ${typeof(selectedStudent)}`);
-            console.log(`recipient : ${recipient}`);
-            console.log(`recipient["uid"] : ${recipient["uid"]}`);
             socket.emit("new message", {messageContents: inputData, to: recipient["uid"], from: "000"});
             setInputData("");
         } else if (inputData && !selectedStudent) { 
@@ -105,9 +103,7 @@ function StudentList(props) {
     // Add id key.
     _alert["id"] = usernames[_alert["uid"] - 1] // user1 has a uid of 2.
     allStudents.push(_alert);
-    console.log("pushed all students");
-    console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
-
+    //console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
     handleEvent(_alert);
   }
 
@@ -177,7 +173,6 @@ function StudentList(props) {
 
         // set as intended recipient for messages.
         setSelectedStudent(stud);
-        console.log(selectedStudent);
     }
     
     const handleEvent = (e) => {
@@ -218,32 +213,20 @@ function StudentList(props) {
     }
 
     const onChange = (e) => {
-        
         setInputData(e.target.value);
-        console.log(inputData);
       }
     
     const onFormSubmit = e => {
         e.preventDefault();
         if(inputData && selectedStudent) {
-            console.log("before let recipient")
             let recipient;
-            console.log("before loop. allStudents.length = " + allStudents.length);
             for(let i = 0; i < allStudents.length; i++){
-                console.log(`typeof allstudents[i] : ${typeof(allStudents[i])}`)
-                console.log(`typeof allstudents[i] : ${JSON.stringify(allStudents[i])}`);
-                if (allStudents[i]["id"] == selStud) {
-                    console.log("in loop");
-                    console.log(allStudents[i]);
-                    recipient = allStudents[i];
-                    
+                if (allStudents[i]["id"] == selectedStudent) {
+                    recipient = allStudents[i];    
                }
             }
-            console.log(`onFormSubmit:  selected student type : ${typeof(selectedStudent)}`);
             if(recipient) {
-            console.log(`recipient : ${recipient}`);
-            console.log(`recipient["uid"] : ${recipient["uid"]}`);
-            socket.emit("new message", {messageContents: inputData, to: recipient["uid"], from: "000"});
+                socket.emit("new message", {messageContents: inputData, _to: recipient["uid"], _from: "000"});
             } else {
                 console.log("recipient is null");
             }
@@ -254,7 +237,6 @@ function StudentList(props) {
             console.log("selectedStudent, no inputData");
         } else {
             console.log("no input data, no selectedStudent");
-  
         }
     }
     
