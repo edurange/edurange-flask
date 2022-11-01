@@ -10,52 +10,74 @@ socket.onAny((event, ...args) => {
 
 function ClientSocket(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
-
+  const [inputData, setInputData] = useState("");
   
   useEffect(() => {
-    console.log("props" + props.uid);
     const uid = props.uid;
-    console.log("UID" + uid);
     socket.auth = { uid };
     socket.connect();
 
     socket.on("connect", () => {
-      console.log(`Student with ID '${uid}' is connected!`)
+      console.log(`Student with ID '${uid}' is connected!`);
     });
+
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        if(inputData) {
+          socket.emit("new message", {messageContents: inputData, to: "instructor", from: uid});
+          setInputData("");
+        }
+      }
+    };
+
+    document.addEventListener("keydown", listener);
 
     return () => {
       socket.off('connect');
+      document.removeEventListener("keydown", listener);
     };
+
   });
 
-  /* TO DO MESSAGE.
-  const sendMessage = () => {
-    socket.emit('message', inputData);
-
-            <div className='chat-input-area'>
-            <form
-              onSubmit={ sendMessage }
-              autoComplete="off"
-            >
-            <input
-              type='text'
-              className="chat-input-box"
-              onChange={ onChange }
-              />
-            </form>
-        </div>
-        <button onClick={ sendMessage }>Say hello!</button>
-  }*/
-
   const onChange = (e) => {
-    setChange(e.target.value);
+    setInputData(e.target.value);
   }
 
-  
+  const onFormSubmit = e => {
+    e.preventDefault();
+    if(inputData) {
+        socket.emit("new message", {messageContents: inputData, to: "instructor"});
+        setInputData("");
+    }
+  }
+
 
   return (
     <div className="ClientSocket">
         <p>Connected: { '' + isConnected }</p>
+
+        <div className='chat-input-area'>
+            <form
+              onSubmit={ onFormSubmit }
+              autoComplete="off"
+            >
+              <input
+                type='text'
+                className="chat-input-box"
+                autoComplete='off'
+                onChange={ onChange }
+                value= {inputData}
+              />
+              <button
+                type="submit"
+              >
+              Send
+              </button>
+
+            </form>
+        </div>
+
     </div>
   );
 }

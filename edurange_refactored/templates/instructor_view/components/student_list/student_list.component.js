@@ -3,6 +3,7 @@ import { render } from "less";
 import studentStates from '../../states.json';
 import { useState, useEffect } from "react";
 import Student from '../student/student.component';
+import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.json'
 
 import { io } from 'socket.io-client';
 const socket = io(`${window.location.hostname}:3001`, {autoConnect:false});
@@ -11,12 +12,32 @@ const socket = io(`${window.location.hostname}:3001`, {autoConnect:false});
 socket.onAny((event, ...args) => {
   console.log(event, args);
 });
+
 var i = 0;
 
 /* list of dummy events */
 function StudentList(props) {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [connectedUsers, setConnectedUsers] = useState();
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [currAlert, setCurrAlert] = useState();
+    const initStuds = [
+        "Marco",
+        "Mary",
+        "Zebra",
+    ];
+    const [lastDate, setLastDate] = useState('0');
+    const [lastFrom, setLastFrom] = useState();
+    const [live, setLive] = useState(initStuds);
+    const [uq, setUq] = useState([]);
+    const [rq, setRq] = useState(initStuds);
+    
+    const [inputData, setInputData] = useState("");
+    const [selectedStudent, setSelectedStudent] = useState();
+    const allStudents = [];
+    const usernames = usernameList;
+
+    const statesLen = Object.keys(studentStates).length;
+
+    // gathering student user ID / username list
 
   useEffect(() => {
     const uid = "000";
@@ -29,19 +50,39 @@ function StudentList(props) {
 
     socket.emit("instructor connected");
 
-    socket.on("connected students", (connectedStudents) => {
-    console.log(`value of connectedStuds : ${JSON.stringify(connectedStudents)}`);
-      onRecvConnectedStudents(connectedStudents);
+    socket.on("alert", (_alert) => {
+        console.log(`alert : ${JSON.stringify(_alert)}`);
+      onRecvAlert(_alert);
     });
 
+    socket.on("new message", ({messageContent, to, from}) => {
+
+    });
+
+    const listener = event => {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+          event.preventDefault();
+          if(inputData && selectedStudent) {
+
+            socket.emit("new message", {messageContents: inputData, to: selectedStudent["uid"], from: uid});
+            setInputData("");
+          }
+        }
+      };
+  
+      document.addEventListener("keydown", listener);
+  
     return () => {
       socket.off('connect');
+      socket.off('connected students');
+      document.removeEventListener("keydown", listener);
     };
   }, []);
 
-  const onRecvConnectedStudents = (connectedStuds) => {
-    console.log(`value of connectedStuds : ${connectedStuds}`);
-    handleEvent(connectedStuds);
+  const onRecvAlert = (_alert) => {
+    // Add id key.
+    _alert["id"] = usernames[_alert["uid"] - 1] // user1 has a uid of 2.
+    handleEvent(_alert);
   }
 
 /* Contains the list of chat sessions and the 'Everyone' chat session.
@@ -51,22 +92,6 @@ function StudentList(props) {
  *      entering the chat session and new messages.
  *      Each student that is popped from the queue is re-pushed immediately.
  */ 
-
-
-
-
-    const initStuds = [
-        "Marco",
-        "Mary",
-        "Zebra",
-    ];
-    const [lastDate, setLastDate] = useState('0');
-    const [lastFrom, setLastFrom] = useState();
-    const [live, setLive] = useState(initStuds);
-    const [uq, setUq] = useState([]);
-    const [rq, setRq] = useState(initStuds);
-    const statesLen = Object.keys(studentStates).length
-    
     const isNewer = (date1, date2) =>  {
         return date1 > date2;
     }
@@ -123,6 +148,10 @@ function StudentList(props) {
         newRq.push(stud)
         setRq(newRq)
         setUq(newUq)
+
+        // set as intended recipient for messages.
+        setSelectedStudent(stud);
+        console.log(selectedStudent);
     }
     
     const handleEvent = (e) => {
@@ -162,9 +191,44 @@ function StudentList(props) {
         }
     }
 
+    const onChange = (e) => {
+        setInputData(e.target.value);
+      }
+    
+    const onFormSubmit = e => {
+        e.preventDefault();
+        if(inputData && selectedStudent) {
+            socket.emit("new message", {messageContents: inputData, to: selectedStudent["uid"], from: uid});
+            setInputData("");
+        }
+    }
+    
     
     return (
         <div id="studentList" className="list-group w-25 overflow-auto">
+        
+        <div className='instrucotr-chat-input-area'>
+            <form
+              onSubmit={ onFormSubmit }
+              autoComplete="off"
+            >
+              <input
+                type='text'
+                className="instructor-chat-input-box"
+                autoComplete='off'
+                onChange={ onChange }
+                value= {inputData}
+              />
+              <button
+                type="submit"
+              >
+              Send
+              </button>
+
+            </form>
+        </div>
+
+
             <button onClick={msgOnClick}>
             Click Me
             </button>
@@ -188,7 +252,8 @@ function StudentList(props) {
                     isLive={live?.includes(stud)}/>
                 )
             })}
-        <p>{"CONNECTED USERS" + {connectedUsers}}</p>
+        
+
         </div>
     )
 }

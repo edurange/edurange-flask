@@ -98,17 +98,19 @@ io.on('connection', socket => {
     if (socket.uid!=="000") {
       alertString = {
         uid: socket.uid,
-        id: studentList[socket.uid-1],
+        username: studentList[socket.uid-2],
+        id: studentList[socket.uid-2],
         type:  alertType,
         time: alertTime,
         };
       }
-    socket.to("000").emit("connected students", alertString);
+    console.log(JSON.stringify(alertString));
+    socket.to("000").emit("alert", alertString);
     console.log(io.sockets.adapter.rooms); // servers rooms maps.
   }
 
   socket.on("connect_error", err => {
-    console.log("CONNECTION ERROR NO UID")
+    console.log("Connnection Error: no user id.")
   });
 
   //join rooms. 
@@ -120,14 +122,23 @@ io.on('connection', socket => {
     }
   }
 
-  emit_users("studJoin");
+  const messages = [];
+  socket.on("new message", ({messageContents, _to, _from}) => {
+    let recipient = (_to=="instructor") ? "000" : _to; 
+    messages.push({
+      contents: messageContents,
+      from: _from,
+      to: recipient,
+    });
+    socket.to(recipient).emit("new message")
+  });
 
+  //emit join alert.
+  emit_users("studJoin");
 
   socket.on("disconnect", () => {
     emit_users("studLeave");
   });
-
-
 
 });
 
