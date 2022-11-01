@@ -21,11 +21,21 @@ function ClientSocket(props) {
       console.log(`Student with ID '${uid}' is connected!`);
     });
 
+    socket.on("send message", ({messageContents, _to, _from}) => {
+      console.log("send message");
+      console.log(`Send message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+  });
+
+  socket.on("new message", ({messageContents, _to, _from}) => {
+      console.log("new messsage");
+      console.log(`new message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+  });
+
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         if(inputData) {
-          socket.emit("new message", {messageContents: inputData, _to: "instructor", _from: uid});
+          socket.emit("send message", {messageContents: inputData, _to: "instructor", _from: uid});
           setInputData("");
         }
       }
@@ -35,6 +45,8 @@ function ClientSocket(props) {
 
     return () => {
       socket.off('connect');
+      socket.off("new message");
+      socket.off("send message");
       document.removeEventListener("keydown", listener);
     };
 
@@ -47,7 +59,7 @@ function ClientSocket(props) {
   const onFormSubmit = e => {
     e.preventDefault();
     if(inputData) {
-        socket.emit("new message", {messageContents: inputData, _to: "instructor", _from: props.uid});
+        socket.emit("send message", {messageContents: inputData, _to: "000", _from: props.uid});
         setInputData("");
     }
   }

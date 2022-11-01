@@ -114,24 +114,38 @@ io.on('connection', socket => {
 
   //join rooms. 
   socket.join(socket.uid); //students join their own room. 
+ /*
   if(socket.uid=="000") { //instructors join everyone else's.
     socket.join("000");
     for(let key in studentList) {
       socket.join(key);
     }
-  }
+  }*/
 
-  const messages = [];
-  socket.on("new message", ({messageContents, _to, _from}) => {
-    let recipient = (_to=="instructor") ? "000" : _to; 
-    console.log(`message. from : ${_from} | to :${recipient} |  content: ${messageContents}`)
-    
+  var messages = [];
+  // when the server has been alerted the user wants to send a message
+  // push message to message array
+  socket.on("send message", ({messageContents, _to, _from}) => {
+    console.log("send message");
     messages.push({
       contents: messageContents,
       from: _from,
-      to: recipient,
+      to: _to,
     });
-    socket.to(recipient).emit("new message")
+      socket.to(_to).emit("new message", {messageContents, _to, _from});
+      socket.emit("send message", {messageContents, _to, _from});
+});
+
+  // push recieved messages to message array
+  socket.on("new message", ({messageContents, _to, _from}) => {
+    console.log(`I'm ${socket.uid}. from : ${_from} | to :${_to} |  content: ${messageContents}`)
+      messages.push({
+        contents: messageContents,
+        from: _from,
+        to: _to,
+      });
+      //socket.to(_to).to(_from).emit("new message", {messageContents, _to, _from});
+      socket.emit("message list", messages);
   });
 
   //emit join alert.

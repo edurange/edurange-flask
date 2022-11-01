@@ -56,8 +56,14 @@ function StudentList(props) {
         onRecvAlert(_alert);
     });
 
-    socket.on("new message", ({messageContent, to, from}) => {
+    socket.on("send message", ({messageContents, _to, _from}) => {
+        console.log("send message");
+        console.log(`Send message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+    });
 
+    socket.on("new message", ({messageContents, _to, _from}) => {
+        console.log("new messsage");
+        console.log(`new message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
     });
 
     const findStudent = (selStud) => {
@@ -76,7 +82,7 @@ function StudentList(props) {
           
           if(inputData && selectedStudent) {
             const recipient = findStudent(selectedStudent)
-            socket.emit("new message", {messageContents: inputData, to: recipient["uid"], from: "000"});
+            socket.emit("send message", {messageContents: inputData, to: recipient["uid"], from: "000"});
             setInputData("");
         } else if (inputData && !selectedStudent) { 
             console.log("input data, no selectedStudent");
@@ -94,7 +100,9 @@ function StudentList(props) {
   
     return () => {
       socket.off('connect');
-      socket.off('connected students');
+      socket.off('alert');
+      socket.off("new message");
+      socket.off("send message");
       document.removeEventListener("keydown", listener);
     };
   }, []);
@@ -226,7 +234,7 @@ function StudentList(props) {
                }
             }
             if(recipient) {
-                socket.emit("new message", {messageContents: inputData, _to: recipient["uid"], _from: "000"});
+                socket.emit("send message", {messageContents: inputData, _to: recipient["uid"], _from: "000"});
             } else {
                 console.log("recipient is null");
             }
