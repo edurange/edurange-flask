@@ -124,6 +124,7 @@ io.on('connection', socket => {
 
   const messages = [];
   socket.on("new message", ({messageContents, _to, _from}) => {
+    console.log(`message. from : ${_from} | to :${_to} |  content: ${messageContents}`)
     let recipient = (_to=="instructor") ? "000" : _to; 
     messages.push({
       contents: messageContents,

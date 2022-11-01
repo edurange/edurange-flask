@@ -32,7 +32,7 @@ function StudentList(props) {
     
     const [inputData, setInputData] = useState("");
     const [selectedStudent, setSelectedStudent] = useState();
-    const allStudents = [];
+    var allStudents = [];
     const usernames = usernameList;
 
     const statesLen = Object.keys(studentStates).length;
@@ -59,18 +59,40 @@ function StudentList(props) {
 
     });
 
+    const findStudent = (selStud) => {
+        for(let i in allStudents) {
+            if (allStudents[i][id] == selStud) {
+                return allStudents[i];
+           }
+        }
+        return null;
+    };
+
     const listener = event => {
         if (event.code === "Enter" || event.code === "NumpadEnter") {
+            console.log("enter pressed...");
           event.preventDefault();
+          
           if(inputData && selectedStudent) {
-
-            socket.emit("new message", {messageContents: inputData, to: selectedStudent["uid"], from: uid});
+            const recipient = findStudent(selectedStudent)
+            console.log(`listener: selected student type : ${typeof(selectedStudent)}`);
+            console.log(`recipient : ${recipient}`);
+            console.log(`recipient["uid"] : ${recipient["uid"]}`);
+            socket.emit("new message", {messageContents: inputData, to: recipient["uid"], from: "000"});
             setInputData("");
-          }
+        } else if (inputData && !selectedStudent) { 
+            console.log("input data, no selectedStudent");
+        } else if (!inputData && selectedStudent) {
+            console.log("selectedStudent, no inputData");
+        } else {
+            console.log("no input data, no selectedStudent");
         }
-      };
+        }
+    };
+
+    
   
-      document.addEventListener("keydown", listener);
+    document.addEventListener("keydown", listener);
   
     return () => {
       socket.off('connect');
@@ -82,6 +104,10 @@ function StudentList(props) {
   const onRecvAlert = (_alert) => {
     // Add id key.
     _alert["id"] = usernames[_alert["uid"] - 1] // user1 has a uid of 2.
+    allStudents.push(_alert);
+    console.log("pushed all students");
+    console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
+
     handleEvent(_alert);
   }
 
@@ -192,16 +218,46 @@ function StudentList(props) {
     }
 
     const onChange = (e) => {
+        
         setInputData(e.target.value);
+        console.log(inputData);
       }
     
     const onFormSubmit = e => {
         e.preventDefault();
         if(inputData && selectedStudent) {
-            socket.emit("new message", {messageContents: inputData, to: selectedStudent["uid"], from: uid});
+            console.log("before let recipient")
+            let recipient;
+            console.log("before loop. allStudents.length = " + allStudents.length);
+            for(let i = 0; i < allStudents.length; i++){
+                console.log(`typeof allstudents[i] : ${typeof(allStudents[i])}`)
+                console.log(`typeof allstudents[i] : ${JSON.stringify(allStudents[i])}`);
+                if (allStudents[i]["id"] == selStud) {
+                    console.log("in loop");
+                    console.log(allStudents[i]);
+                    recipient = allStudents[i];
+                    
+               }
+            }
+            console.log(`onFormSubmit:  selected student type : ${typeof(selectedStudent)}`);
+            if(recipient) {
+            console.log(`recipient : ${recipient}`);
+            console.log(`recipient["uid"] : ${recipient["uid"]}`);
+            socket.emit("new message", {messageContents: inputData, to: recipient["uid"], from: "000"});
+            } else {
+                console.log("recipient is null");
+            }
             setInputData("");
+        } else if (inputData && !selectedStudent) { 
+            console.log("input data, no selectedStudent");
+        } else if (!inputData && selectedStudent) {
+            console.log("selectedStudent, no inputData");
+        } else {
+            console.log("no input data, no selectedStudent");
+  
         }
     }
+    
     
     
     return (
