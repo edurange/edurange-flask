@@ -12,7 +12,15 @@ function ChatWindow({handleClick, displayMessages}) {
     const [user, setUser] = useState("");  
     const [input, setInput] = useState("");                      //Current user
     const [messages, setMessages] = useState(null);
-    const chat = React.createRef();                          //Input entry for chat
+    const chat = React.createRef();   
+    
+    useEffect(()=>{
+        if(displayMessages) {
+            setMessages(displayMessages);
+
+        }
+      
+     }, [displayMessages]);                       //Input entry for chat
 
     // useEffect(() => {
     //         setMessages([
@@ -26,17 +34,22 @@ function ChatWindow({handleClick, displayMessages}) {
     //     });
     // });
 
-    function getMessagesContent(messages) { 
-    if(!messages) {
-        return;
-    }                        //Get chat messages from server-side
-    if(messages.length != 0){                                   //Ensure messages is an array
-        let messageList = messages.map((message) =>             //Map the messages to a component
-            <ChatEntry key={Math.random() * 100} message={message.content} fromSelf={message.from=="000"} user={fromself?"me":message.id} />
-        )
-        return messageList;                                     //Return the componenet for rendering
+    function getMessagesContent(displayMessages) {                         
+        if(displayMessages && displayMessages.length != 0) {  
+            let studentID = (displayMessages[0].from=="000") ? displayMessages[0].to : displayMessages[0].from; 
+            let messageList = displayMessages.map((message) =>             //Map the messages to a component
+                <ChatEntry key={Math.random() * 100} 
+                message={message.contents} 
+                fromSelf={message.from=="000"} 
+                user={studentID} 
+                />
+            )
+            return messageList;                                     //Return the componenet for rendering
+        } else if(!displayMessages) { 
+            console.log("CHAT WINDOW NO DISPLAY MESSAGES");
         }
-        return;
+
+    return;
     }
 
     function onSubmit(e) {  
@@ -61,7 +74,8 @@ function ChatWindow({handleClick, displayMessages}) {
     
     return(
          <div id='chatWindow'>
-            {getMessagesContent(displayMessages)}                          {/* Render the current messages */}
+          {getMessagesContent(displayMessages)}
+                                      {/* Render the current messages */}
             {/* <ChatInput /> */}                                   {/* Input component */}
             <div id='chat_input'>
                 <form onSubmit={onSubmit} autoComplete="off" id="chat_entry_box" >
