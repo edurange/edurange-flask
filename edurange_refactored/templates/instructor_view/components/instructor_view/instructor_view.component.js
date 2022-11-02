@@ -25,7 +25,7 @@ var newest_msg = "";
 
 function InstructorView() {
     const [input, setInput] = useState("chat");
-    const [displayMessages, setDisplayMessages] = useState(null);
+    //const [displayMessages, setDisplayMessages] = useState(null);
     const [currAlert, setCurrAlert] = useState();
     const [inputData, setInputData] = useState("");
     const [selectedStudent, setSelectedStudent] = useState();
@@ -64,11 +64,8 @@ function InstructorView() {
     for(let i in allStudents) {
         if (allStudents[i]["uid"] == room) {
           allStudents[i]["messages"] = msg_list;
-        }
       }
-      global_msg_list = msg_list;
-      setNewMessage(msg_list[msg_list.length - 1]);
-      newest_msg = global_msg_list[global_msg_list.length - 1];
+    }
   });
 
   const findStudent = (selStud) => {
@@ -153,9 +150,6 @@ function InstructorView() {
     for(let i = 0; i < allStudents.length; i++){
       if (allStudents[i]["id"] == displayName) {
         setSelectedStudent(allStudents[i]);
-        if(allStudents[i]["messages"]) {
-          setDisplayMessages(allStudents[i]["messages"]);
-        } 
       }
     }
   };
@@ -167,7 +161,6 @@ function InstructorView() {
     
 
             <div id="instructor_view">
-
 <div className='instructor-chat-input-area'>
            <form
              onSubmit={ onFormSubmit }
@@ -196,7 +189,7 @@ function InstructorView() {
                 <p>{input || "input"}</p>
                 <ChatWindow 
                     handleClick={handleClick} 
-                    displayMessages={displayMessages}
+                    selectedStudent={selectedStudent}
                 />
             </div>
         );

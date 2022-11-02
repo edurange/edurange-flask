@@ -8,19 +8,19 @@ import ChatEntry from "../chat_entry/chat_entry.component";
 
 
 
-function ChatWindow({handleClick, displayMessages}) {
+function ChatWindow({handleClick, selectedStudent}) {
     const [user, setUser] = useState("");  
     const [input, setInput] = useState("");                      //Current user
     const [messages, setMessages] = useState(null);
     const chat = React.createRef();   
     
     useEffect(()=>{
-        if(displayMessages) {
-            setMessages(displayMessages);
+        if(selectedStudent) {
+            setUser(selectedStudent);
 
         }
       
-     }, [displayMessages]);                       //Input entry for chat
+     }, [selectedStudent]);                       //Input entry for chat
 
     // useEffect(() => {
     //         setMessages([
@@ -34,19 +34,20 @@ function ChatWindow({handleClick, displayMessages}) {
     //     });
     // });
 
-    function getMessagesContent(displayMessages) {                         
-        if(displayMessages && displayMessages.length != 0) {  
-            let studentID = (displayMessages[0].from=="000") ? displayMessages[0].to : displayMessages[0].from; 
-            let messageList = displayMessages.map((message) =>             //Map the messages to a component
+    function getMessagesContent(selectedStudent) {  
+
+        if(selectedStudent && selectedStudent["messages"]) { 
+            let studentID = selectedStudent["id"];
+            let messageList = selectedStudent["messages"].map((message) =>             //Map the messages to a component
                 <ChatEntry key={Math.random() * 100} 
                 message={message.contents} 
                 fromSelf={message.from=="000"} 
-                user={studentID} 
+                user={message.from=="000"?"me":studentID} 
                 />
             )
             return messageList;                                     //Return the componenet for rendering
-        } else if(!displayMessages) { 
-            console.log("CHAT WINDOW NO DISPLAY MESSAGES");
+        } else if(!selectedStudent) { 
+            console.log("CHAT WINDOW NO STUDENT SELECTED");
         }
 
     return;
@@ -74,7 +75,7 @@ function ChatWindow({handleClick, displayMessages}) {
     
     return(
          <div id='chatWindow'>
-          {getMessagesContent(displayMessages)}
+          {getMessagesContent(selectedStudent)}
                                       {/* Render the current messages */}
             {/* <ChatInput /> */}                                   {/* Input component */}
             <div id='chat_input'>
