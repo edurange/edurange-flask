@@ -21,15 +21,15 @@ function ClientSocket(props) {
       console.log(`Student with ID '${uid}' is connected!`);
     });
 
-    socket.on("send message", ({messageContents, _to, _from}) => {
-      console.log("send message");
-      console.log(`Send message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+    socket.on("new message", ({messageContents, _to, _from, room}) => {
+      socket.emit("request msg_list", {messageContents, _to, _from, room});
   });
 
-  socket.on("new message", ({messageContents, _to, _from}) => {
-      console.log("new messsage");
-      console.log(`new message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
-  });
+
+  socket.on("msg_list update", (msg_list) => {
+    console.log(`STUDENT: message is ${JSON.stringify(msg_list)}`);
+});
+
 
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -47,6 +47,7 @@ function ClientSocket(props) {
       socket.off('connect');
       socket.off("new message");
       socket.off("send message");
+      socket.off("msg_list update");
       document.removeEventListener("keydown", listener);
     };
 

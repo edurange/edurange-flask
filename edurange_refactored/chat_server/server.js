@@ -105,7 +105,7 @@ io.on('connection', socket => {
         };
       }
     socket.to("000").emit("alert", alertString);
-    //console.log(io.sockets.adapter.rooms); // servers rooms maps.
+    console.log(io.sockets.adapter.rooms); // servers rooms maps.
   }
 
   socket.on("connect_error", err => {
@@ -114,38 +114,40 @@ io.on('connection', socket => {
 
   //join rooms. 
   socket.join(socket.uid); //students join their own room. 
- /*
+ 
   if(socket.uid=="000") { //instructors join everyone else's.
     socket.join("000");
     for(let key in studentList) {
       socket.join(key);
     }
-  }*/
+  }
 
-  var messages = [];
+  var msg_list = [];
   // when the server has been alerted the user wants to send a message
   // push message to message array
   socket.on("send message", ({messageContents, _to, _from}) => {
-    console.log("send message");
-    messages.push({
-      contents: messageContents,
-      from: _from,
-      to: _to,
-    });
-      socket.to(_to).emit("new message", {messageContents, _to, _from});
-      socket.emit("send message", {messageContents, _to, _from});
+    var room = (_to!=="000") ? _to : _from;
+    console.log(`room value : ${room}`);
+    // send room members message so they can make server-side update
+    io.to(room).emit("new message", {messageContents, _to, _from, room});
 });
 
-  // push recieved messages to message array
-  socket.on("new message", ({messageContents, _to, _from}) => {
-    console.log(`I'm ${socket.uid}. from : ${_from} | to :${_to} |  content: ${messageContents}`)
-      messages.push({
-        contents: messageContents,
-        from: _from,
+  // push recieved message to msg_list array
+  // send entire list
+  socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
+    console.log("new message reached server.")
+    console.log(`I'm ${socket.uid}. from : ${_from} | to :${_to} |  content: ${messageContents} | room ${room}`);
+    msg_list.push({
+      contents: messageContents,
+      from: _from,
         to: _to,
-      });
-      //socket.to(_to).to(_from).emit("new message", {messageContents, _to, _from});
-      socket.emit("message list", messages);
+    });
+    
+    // students capture specific student instructor correspondance
+    if(socket.uid===room) {
+      io.to(room).emit("msg_list update", {msg_list, room});
+    }
+    
   });
 
   //emit join alert.

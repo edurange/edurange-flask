@@ -15,9 +15,11 @@ socket.onAny((event, ...args) => {
 
 var i = 0;
 var allStudents = [];
+var global_msg_list=[];
+var newest_msg = "";
 
 /* list of dummy events */
-function StudentList(props) {
+function StudentList({returnSelectedUser}) {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [currAlert, setCurrAlert] = useState();
     const initStuds = [
@@ -33,6 +35,7 @@ function StudentList(props) {
     
     const [inputData, setInputData] = useState("");
     const [selectedStudent, setSelectedStudent] = useState();
+    const [newMessage, setNewMessage] = useState(null);
 
     const usernames = usernameList;
 
@@ -56,14 +59,21 @@ function StudentList(props) {
         onRecvAlert(_alert);
     });
 
-    socket.on("send message", ({messageContents, _to, _from}) => {
-        console.log("send message");
-        console.log(`Send message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+    socket.on("new message", ({messageContents, _to, _from, room}) => {
+        socket.emit("request msg_list", {messageContents, _to, _from, room});
     });
 
-    socket.on("new message", ({messageContents, _to, _from}) => {
-        console.log("new messsage");
-        console.log(`new message. message. from : ${_from} | to :${_to} |  content: ${messageContents}`);
+    socket.on("msg_list update", ({msg_list, room}) => {
+        global_msg_list = msg_list;
+        setNewMessage(msg_list[msg_list.length - 1]);
+        newest_msg = global_msg_list[global_msg_list.length - 1];
+
+        let stud;
+        for(let i = 0; i < allStudents.length; i++){
+            if (allStudents[i]["uid"] == room) {
+                allStudents[i]["messages"] = msg_list;    
+            }
+        }
     });
 
     const findStudent = (selStud) => {
@@ -103,17 +113,19 @@ function StudentList(props) {
       socket.off('alert');
       socket.off("new message");
       socket.off("send message");
+      socket.off("msg_list update");
       document.removeEventListener("keydown", listener);
     };
   }, []);
 
-  const onRecvAlert = (_alert) => {
-    // Add id key.
-    _alert["id"] = usernames[_alert["uid"] - 1] // user1 has a uid of 2.
-    allStudents.push(_alert);
-    //console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
-    handleEvent(_alert);
-  }
+    const onRecvAlert = (_alert) => {
+        // Add id key.
+        _alert["id"] = usernames[_alert["uid"] - 1]; // user1 has a uid of 2.
+        allStudents.push(_alert);
+        console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
+        handleEvent(_alert);
+    }
+
 
 /* Contains the list of chat sessions and the 'Everyone' chat session.
  * Represent the chat sessions as: 
@@ -179,8 +191,17 @@ function StudentList(props) {
         setRq(newRq)
         setUq(newUq)
 
-        // set as intended recipient for messages.
+        // set as intended recipient for message
         setSelectedStudent(stud);
+        let selectedUser;
+            for(let i = 0; i < allStudents.length; i++){
+                if (allStudents[i]["id"] == stud) {
+                    selectedUser = allStudents[i];    
+               }
+            }
+        if(selectedUser) {
+            returnSelectedUser(selectedUser);    
+        }
     }
     
     const handleEvent = (e) => {
@@ -253,7 +274,7 @@ function StudentList(props) {
     return (
         <div id="studentList" className="list-group w-25 overflow-auto">
         
-        <div className='instrucotr-chat-input-area'>
+        <div className='instructor-chat-input-area'>
             <form
               onSubmit={ onFormSubmit }
               autoComplete="off"
@@ -274,7 +295,7 @@ function StudentList(props) {
             </form>
         </div>
 
-
+        <p>{JSON.stringify(newMessage) || "newest message"}</p>
             <button onClick={msgOnClick}>
             Click Me
             </button>
