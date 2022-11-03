@@ -1,7 +1,7 @@
 import React from 'react';
 import OutsideAlerter from "../../utils/outstide-alerter";
 import "./chatbox.styles.css"
-import ClientSocket from "../studentChat/client_socket/client_socket.component"
+import ClientSocket from "../client_socket/client_socket.component"
 class Chatbox extends React.Component {
     constructor(props) {
         super(props);

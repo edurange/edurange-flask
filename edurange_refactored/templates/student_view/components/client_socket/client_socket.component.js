@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import StudentChatWindow from '../student_chat_window/student_chat_window.component';
 import { io } from 'socket.io-client';
 
 const socket = io(`${window.location.hostname}:3001`, {autoConnect: false});
@@ -11,6 +12,7 @@ socket.onAny((event, ...args) => {
 function ClientSocket(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [inputData, setInputData] = useState("");
+  const [messages, setMessages] = useState();
   
   useEffect(() => {
     const uid = props.uid;
@@ -23,12 +25,11 @@ function ClientSocket(props) {
 
     socket.on("new message", ({messageContents, _to, _from, room}) => {
       socket.emit("request msg_list", {messageContents, _to, _from, room});
-  });
+    });
 
-
-  socket.on("msg_list update", (msg_list) => {
-    console.log(`STUDENT: message is ${JSON.stringify(msg_list)}`);
-});
+    socket.on("msg_list update", ({msg_list, room}) => {
+      setMessages(msg_list); // by changing a state, the component is forced to update. 
+    });
 
 
     const listener = event => {
@@ -68,8 +69,10 @@ function ClientSocket(props) {
 
   return (
     <div className="ClientSocket">
-    <StudentChatWindow chat_opened={props.chat_opened}/>
-        <p>Connected: { '' + isConnected }</p>
+    <StudentChatWindow 
+      chat_opened={props.chat_opened}
+      messages={messages}  
+      />
 
         <div className='chat-input-area'>
             <form

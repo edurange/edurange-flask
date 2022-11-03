@@ -1,6 +1,8 @@
 /* Display one chat entry.
  */
-import "./chat_entry.css"
+
+import React from 'react';
+import "./student_chat_entry.css"
 
 class StudentChatEntry extends React.Component {
     constructor(props) {
