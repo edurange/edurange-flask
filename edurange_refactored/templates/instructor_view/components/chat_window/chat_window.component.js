@@ -53,24 +53,16 @@ function ChatWindow({handleClick, selectedStudent}) {
     return;
     }
 
-    function onSubmit(e) {  
-        console.log("on submit reached.")                                        //Send input as a chat message
+    function onSubmit(e) {                                        //Send input as a chat message
         e.preventDefault();
-        /*                                         //Don't refresh the whole page when a message is sent
-        setMessages([...messages,                                   //Add new message to message list
-            {
-                fromSelf: true,
-                content: chat.current.value,
-                user: "Me",
-            }]);
-            */
-        setInput("");//Clear current message from input  
-        handleClick(e, input);     
+        console.log("CHAT WINDOW : " + input);
+        handleClick(e, input); 
+        setInput("");//Clear current message from input      
     }
 
     const onChange = (e) => {
         setInput(e.target.value);
-        console.log(input);
+        console.log("INPUT" + input);
     }
     
     return(
@@ -83,7 +75,7 @@ function ChatWindow({handleClick, selectedStudent}) {
                     <input 
                         type='text'
                         placeholder="Your Text Here!"
-                        onChange={ onChange }
+                        onChange={onChange}
                         value= {input} 
                         ref={chat}
                         className="chat_input_area" 

@@ -135,19 +135,23 @@ io.on('connection', socket => {
   // push recieved message to msg_list array
   // send entire list
   socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
-    console.log("new message reached server.")
-    console.log(`I'm ${socket.uid}. from : ${_from} | to :${_to} |  content: ${messageContents} | room ${room}`);
+    // TEMPORARY: both users keep a message list
+    // this should be resolved when disconnection protocol decided. 
     msg_list.push({
       contents: messageContents,
       from: _from,
         to: _to,
     });
     
+    // student messages alert instructor
+    if(_from!=="000") {
+      trafficAlert("message");
+    }
+
     // students capture specific student instructor correspondance
     if(socket.uid===room) {
       io.to(room).emit("msg_list update", {msg_list, room});
     }
-    
   });
 
   //emit join alert.

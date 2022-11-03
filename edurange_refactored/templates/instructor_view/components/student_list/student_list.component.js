@@ -13,17 +13,13 @@ var i = 0;
  
 /* list of dummy events */
 function StudentList({returnSelectedUser, alert}) {
- 
-   const initStuds = [
-       "Marco",
-       "Mary",
-       "Zebra",
-   ];
+    
+   const initStuds = ["Marco","Mary","Zebra",];
    const [lastDate, setLastDate] = useState('0');
    const [lastFrom, setLastFrom] = useState();
    const [live, setLive] = useState(initStuds);
    const [uq, setUq] = useState([]);
-   const [rq, setRq] = useState(initStuds);
+   const [rq, setRq] = useState(Object.values(usernameList));
    const usernames = usernameList;
  
    const statesLen = Object.keys(studentStates).length;
@@ -69,7 +65,7 @@ function StudentList({returnSelectedUser, alert}) {
    const newUnread = (from) => {
        /* remove student from rq and push to uq */
        if (!uq?.includes(from)) {
-           let newUq = removeFromUq(from);
+           let newUq = removeFromUq(from); //ASK LEVI: remove from rq?
            newUq.push(from)
            setUq(newUq)
        }
@@ -109,8 +105,8 @@ function StudentList({returnSelectedUser, alert}) {
        console.assert(newDate != null)
        switch (e["type"]) {
            case "message":
-               console.log(`message from: ${e["from"]}, to ${e["to"]}`)
-               newUnread(e["from"]);
+               //console.log(`message from: ${e["from"]}, to ${e["to"]}`)
+               newUnread(e["id"]);
                break;
            case "studJoin":
                console.log(`student ${e["id"]} joined`)
@@ -142,10 +138,6 @@ function StudentList({returnSelectedUser, alert}) {
   
    return (
        <div id="studentList" className="list-group w-25 overflow-auto">
-      
-                <button onClick={msgOnClick}>
-           Click Me
-           </button>
            {uq?.map((stud) => {
                return(
                    <Student

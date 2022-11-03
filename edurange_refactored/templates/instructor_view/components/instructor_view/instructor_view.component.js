@@ -24,10 +24,8 @@ var global_msg_list=[];
 var newest_msg = "";
 
 function InstructorView() {
-    const [input, setInput] = useState("chat");
     //const [displayMessages, setDisplayMessages] = useState(null);
     const [currAlert, setCurrAlert] = useState();
-    const [inputData, setInputData] = useState("");
     const [selectedStudent, setSelectedStudent] = useState();
     const [newMessage, setNewMessage] = useState(null);
     const [alert, setAlert] = useState();
@@ -67,7 +65,7 @@ function InstructorView() {
       }
     }
   });
-
+/*
   const findStudent = (selStud) => {
       for(let i in allStudents) {
           if (allStudents[i][id] == selStud) {
@@ -77,6 +75,7 @@ function InstructorView() {
       return null;
   };
 
+  
   const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
           console.log("enter pressed...");
@@ -94,9 +93,12 @@ function InstructorView() {
       }
       }
   };
-
+  
  
-   document.addEventListener("keydown", listener);
+   document.addEventListener("keydown", listener);*/
+
+
+
    return () => {
     socket.off('connect');
     socket.off('alert');
@@ -114,37 +116,39 @@ function InstructorView() {
       console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
       //handleEvent(_alert);
   }*/
-
+/*
 
   const onChange = (e) => {
       setInputData(e.target.value);
     }
  
+
   const onFormSubmit = e => {
       e.preventDefault();
-      if(inputData && selectedStudent) {
-          socket.emit("send message", {
-            messageContents: inputData,
-            _to: selectedStudent["uid"],
-            _from: "000"
-          });
-          setInputData("");
-      } else if (inputData && !selectedStudent) {
-          console.log("input data, no selectedStudent");
-      } else if (!inputData && selectedStudent) {
-          console.log("selectedStudent, no inputData");
-      } else {
-          console.log("no input data, no selectedStudent");
-      }
+      
   }
+  */
 
   
   
     const handleClick = (event, chatInput) => {
     console.log(event.target);
 
-    setInput(chatInput);
+    if(chatInput && selectedStudent) {
+      socket.emit("send message", {
+        messageContents: chatInput,
+        _to: selectedStudent["uid"],
+        _from: "000"
+      });
+  } else if (chatInput && !selectedStudent) {
+      console.log("chatInput data, no selectedStudent");
+  } else if (!chatInput && selectedStudent) {
+      console.log("selectedStudent, no chatInputData");
+  } else {
+      console.log("no chatInput data, no selectedStudent");
+  }
   };
+  
 
   const returnSelectedUser = (displayName) => {  
     for(let i = 0; i < allStudents.length; i++){
@@ -161,32 +165,10 @@ function InstructorView() {
     
 
             <div id="instructor_view">
-<div className='instructor-chat-input-area'>
-           <form
-             onSubmit={ onFormSubmit }
-             autoComplete="off"
-           >
-             <input
-               type='text'
-               className="instructor-chat-input-box"
-               autoComplete='off'
-               onChange={ onChange }
-               value= {inputData}
-             />
-             <button
-               type="submit"
-             >
-             Send
-             </button>
- 
-           </form>
-       </div>
-
                 <StudentList
                     returnSelectedUser={returnSelectedUser}
                     alert={alert}
                 />
-                <p>{input || "input"}</p>
                 <ChatWindow 
                     handleClick={handleClick} 
                     selectedStudent={selectedStudent}
