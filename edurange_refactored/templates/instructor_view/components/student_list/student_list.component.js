@@ -15,6 +15,7 @@ var i = 0;
 function StudentList({returnSelectedUser, alert}) {
     
    const initStuds = ["Marco","Mary","Zebra",];
+   const [selectedStudent, setSelectedStudent] = useState();
    const [lastDate, setLastDate] = useState('0');
    const [lastFrom, setLastFrom] = useState();
    const [live, setLive] = useState(initStuds);
@@ -97,6 +98,9 @@ function StudentList({returnSelectedUser, alert}) {
 
        // pass this user to parent, instructor view
        returnSelectedUser(stud);
+
+       // set state to pass as props for Student component.
+       setSelectedStudent(stud);
    }
   
    const handleEvent = (e) => {
@@ -140,22 +144,26 @@ function StudentList({returnSelectedUser, alert}) {
        <div id="studentList" className="list-group w-25 overflow-auto">
            {uq?.map((stud) => {
                return(
-                   <Student
-                       key={stud}
-                       name={stud}
-                       status="unread"
-                       onClick={chatOnClick}
-                       isLive={live?.includes(stud)}/>
+                    <Student
+                        selectedStudent={selectedStudent}
+                        key={stud}
+                        name={stud}
+                        status="unread"
+                        onClick={chatOnClick}
+                        isLive={live?.includes(stud)}
+                    />
                )
            })}
            {rq?.map((stud) => {
                return(
-                   <Student
-                   key={stud}
-                   name={stud}
-                   status="read"
-                   onClick={chatOnClick}
-                   isLive={live?.includes(stud)}/>
+                    <Student
+                        selectedStudent={selectedStudent}
+                        key={stud}
+                        name={stud}
+                        status="read"
+                        onClick={chatOnClick}
+                        isLive={live?.includes(stud)}
+                    />
                )
            })}
  
