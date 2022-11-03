@@ -68,6 +68,7 @@ function ClientSocket(props) {
 
   return (
     <div className="ClientSocket">
+    <StudentChatWindow chat_opened={props.chat_opened}/>
         <p>Connected: { '' + isConnected }</p>
 
         <div className='chat-input-area'>

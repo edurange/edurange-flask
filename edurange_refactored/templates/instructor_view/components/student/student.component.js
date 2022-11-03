@@ -19,8 +19,7 @@ function Student(props) {
         } else {
             setClassNameState(`${className} ${props.status}`);
         }
-
-    },[]);
+    },[props.status, props.selectedStudent]);
 
     const isLive = true;
     //

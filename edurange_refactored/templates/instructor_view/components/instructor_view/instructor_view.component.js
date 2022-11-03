@@ -62,9 +62,11 @@ function InstructorView() {
     for(let i in allStudents) {
         if (allStudents[i]["uid"] == room) {
           allStudents[i]["messages"] = msg_list;
+          setNewMessage(msg_list); // by changing a state, the component is forced to update. 
       }
     }
   });
+
 /*
   const findStudent = (selStud) => {
       for(let i in allStudents) {
@@ -108,6 +110,10 @@ function InstructorView() {
     document.removeEventListener("keydown", listener);
   };
 }, []);
+/*
+useEffect(() => {
+    
+}, []);*/
 /*  const onRecvAlert = (_alert) => {
       // Add id key.
       _alert["id"] = usernames[_alert["uid"] - 1]; // user1 has a uid of 2.

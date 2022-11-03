@@ -1,11 +1,11 @@
 #student span {
-    color: goldenrod;
+    color: blueviolet;
 }
 
 .read {
-    background-color: yellow;
+    background-color: yellow !important;
 }
 
 .unread {
-    background-color: aqua;
+    background-color: aqua !important;
 }

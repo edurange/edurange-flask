@@ -1,7 +1,7 @@
 import React from 'react';
 import OutsideAlerter from "../../utils/outstide-alerter";
 import "./chatbox.styles.css"
-import ClientSocket from "../client_socket/client_socket.component"
+import ClientSocket from "../studentChat/client_socket/client_socket.component"
 class Chatbox extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ class Chatbox extends React.Component {
             <OutsideAlerter callback={this.closeChat}>
                 <div className={ this.state.open ? 'edu-chatbox-open' : 'edu-chatbox-closed' } onClick={this.openChat}>
                     <p>Chat me up?</p>
-                    <ClientSocket uid={this.props.uid}/>
+                    <ClientSocket uid={this.props.uid} chat_opened={this.state.open}/>
                 </div>
             </OutsideAlerter>
         );
