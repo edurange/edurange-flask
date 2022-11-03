@@ -12,7 +12,7 @@ import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect } from 'react';
 
 import { io } from 'socket.io-client';
-const socket = io(`${window.location.hostname}:3001`, {autoConnect:false});
+const socket = io(`${window.location.hostname}:3001`, {autoConnect:false}); //autoconnect false. Connection once uid sent.
  
 // catch-all listener for development phase
 socket.onAny((event, ...args) => {
@@ -34,21 +34,24 @@ function InstructorView() {
  
  useEffect(() => {
   const uid = "000";
-  socket.auth = { uid }
+  socket.auth = { uid } // .auth : uid sent during client-request in TCP handshake.
   socket.connect();
 
   socket.on('connect', () => {
     console.log("instructor has connected.");
   });
-
   socket.emit("instructor connected");
 
+  // Alerts (message, join, and leave) passed to StudentList component.
   socket.on("alert", (_alert) => {
-      //console.log(`alert : ${JSON.stringify(_alert)}`);
+     
+      //NEED TO FIX ---- ALERT SHOULD ALREADY HAVE ID AND TIME
       _alert["id"] = usernames[_alert["uid"] - 1]; // user1 has a uid of 2.
       _alert["time"] = new Date().toISOString()
         .replace('T', ' ')
         .replace('Z', ''); // user1 has a uid of 2.
+      
+      //NEED TO FIX --- MAKE ACTIVE LIST INSTEAD OF ALL STUDENTS
       allStudents.push(_alert);
       setAlert(_alert);
       //onRecvAlert(_alert);
@@ -60,102 +63,35 @@ function InstructorView() {
 
   socket.on("msg_list update", ({msg_list, room}) => {
     for(let i in allStudents) {
-        if (allStudents[i]["uid"] == room) {
-          allStudents[i]["messages"] = msg_list;
-          setNewMessage(msg_list); // by changing a state, the component is forced to update. 
+      if (allStudents[i]["uid"] == room) {
+        allStudents[i]["messages"] = msg_list;
+        setNewMessage(msg_list); // by changing a state, the component is forced to update. 
       }
     }
   });
 
-/*
-  const findStudent = (selStud) => {
-      for(let i in allStudents) {
-          if (allStudents[i][id] == selStud) {
-              return allStudents[i];
-         }
-      }
-      return null;
-  };
-
-  
-  const listener = event => {
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-          console.log("enter pressed...");
-        event.preventDefault();
-       
-        if(inputData && selectedStudent) {
-          socket.emit("send message", {messageContents: inputData, to: selectedStudent["uid"], from: "000"});
-          setInputData("");
-      } else if (inputData && !selectedStudent) {
-          console.log("input data, no selectedStudent");
-      } else if (!inputData && selectedStudent) {
-          console.log("selectedStudent, no inputData");
-      } else {
-          console.log("no input data, no selectedStudent");
-      }
-      }
-  };
-  
- 
-   document.addEventListener("keydown", listener);*/
-
-
-
    return () => {
-    socket.off('connect');
-    socket.off('alert');
-    socket.off("new message");
-    socket.off("send message");
-    socket.off("msg_list update");
-    document.removeEventListener("keydown", listener);
-  };
-}, []);
-/*
-useEffect(() => {
-    
-}, []);*/
-/*  const onRecvAlert = (_alert) => {
-      // Add id key.
-      _alert["id"] = usernames[_alert["uid"] - 1]; // user1 has a uid of 2.
-      allStudents.push(_alert);
-      setAlert(_alert);
-      console.log(`all students now contains ${JSON.stringify(allStudents)}}`)
-      //handleEvent(_alert);
-  }*/
-/*
-
-  const onChange = (e) => {
-      setInputData(e.target.value);
-    }
- 
-
-  const onFormSubmit = e => {
-      e.preventDefault();
-      
-  }
-  */
-
-  
+      // cleanup sockets when component "dismounts"
+      socket.off('connect');
+      socket.off('alert');
+      socket.off('new message');
+      socket.off('msg_list update');
+    };
+  }, []);
   
     const handleClick = (event, chatInput) => {
-    console.log(event.target);
-
     if(chatInput && selectedStudent) {
       socket.emit("send message", {
         messageContents: chatInput,
         _to: selectedStudent["uid"],
         _from: "000"
       });
-  } else if (chatInput && !selectedStudent) {
+    } else if (chatInput && !selectedStudent) {
       console.log("chatInput data, no selectedStudent");
-  } else if (!chatInput && selectedStudent) {
-      console.log("selectedStudent, no chatInputData");
-  } else {
-      console.log("no chatInput data, no selectedStudent");
-  }
+    }
   };
   
-
+  // this handler function is passed to student list
   const returnSelectedUser = (displayName) => {  
     for(let i = 0; i < allStudents.length; i++){
       if (allStudents[i]["id"] == displayName) {
@@ -164,12 +100,7 @@ useEffect(() => {
     }
   };
 
-
-
-  
   return (
-    
-
             <div id="instructor_view">
                 <StudentList
                     returnSelectedUser={returnSelectedUser}
