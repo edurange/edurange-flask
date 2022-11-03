@@ -1,9 +1,8 @@
 /* This is the entry point for the instructor view and 
  * the super container for the other components.
  */ 
-//import { io } from 'socket.io-client';
-import Student from "../student/student.component";
 import "./instructor_view.css";
+
 import ChatWindow from "../chat_window/chat_window.component";
 import StudentList from "../student_list/student_list.component";
 import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.json'
@@ -22,14 +21,10 @@ socket.onAny((event, ...args) => {
 var studentList = [];
 
 function InstructorView() {
-    //const [displayMessages, setDisplayMessages] = useState(null);
-    const [currAlert, setCurrAlert] = useState();
     const [selectedStudent, setSelectedStudent] = useState();
     const [newMessage, setNewMessage] = useState(null);
     const [alert, setAlert] = useState();
-    const usernames = usernameList;
    
- 
  useEffect(() => {
   const uid = "000";
   socket.auth = { uid } // .auth : uid sent during client-request in TCP handshake.
@@ -46,13 +41,17 @@ function InstructorView() {
     }
     console.log("instructor has connected.");
     console.log(`student list : ${JSON.stringify(studentList)}`);
+
+    if(window.localStorage.getItem("allStudentMessages")) {
+      studentList = JSON.parse(window.localStorage.getItem("allStudentMessages"));
+    }
   });
   socket.emit("instructor connected");
 
   // Alerts (message, join, and leave) passed to StudentList component.
   socket.on("alert", (_alert) => {
-    let alertStud = studentList[parseInt(_alert["uid"])-2];
-    alertStud.connected = _alert.type=="studLeave" ? false : true;
+    //let alertStud = studentList[parseInt(_alert["uid"])-2];
+    _alert.connected = _alert.type=="studLeave" ? false : true;
 
     setAlert(_alert);
   });
@@ -64,6 +63,11 @@ function InstructorView() {
   socket.on("msg_list update", ({msg_list, room}) => {
     studentList[parseInt(room)-2]["messages"] = msg_list;
     setNewMessage(msg_list); // changing the value of some state forces the component to update
+    
+
+    console.log("PERSISTING MESSAGES " + JSON.stringify(studentList) );
+    //persist messages.
+    window.localStorage.setItem('allStudentMessages', JSON.stringify(studentList));
   });
 
    return () => {
@@ -89,15 +93,7 @@ function InstructorView() {
   
   // this handler function is passed to student list
   const returnSelectedUser = (displayName) => { 
-    
     setSelectedStudent(studentList.find(student => student.id == displayName));
-    console.log(`SET SELECTED STUDENT ${JSON.stringify(studentList.find(student => student.id == displayName))}`);
-    /*
-    for(let i in studentList){
-      if (studentList[i]["id"] == displayName) {
-        setSelectedStudent(studentList[i]);
-      }
-    }*/
   };
 
   return (

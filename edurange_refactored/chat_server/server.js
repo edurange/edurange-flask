@@ -1,13 +1,6 @@
-
-
 var _path = require('path'); 
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
-
-
-
-
-//grabbing the port number from the .env file
-const dotenv = require('dotenv').config({ path: dotEnvPath });
+const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
 
 const express = require("express");
 const app = express();
@@ -16,7 +9,6 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 
 app.use(cors());
-
 
 // create server
 const server = http.createServer(app);
@@ -60,7 +52,7 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-  
+
   // Error handler for middleware.
   socket.on("connect_error", err => {
     console.log("Connnection Error: no user id.")
@@ -103,6 +95,7 @@ io.on('connection', socket => {
   trafficAlert("studJoin");
 
   var msg_list = [];
+
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
     //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)

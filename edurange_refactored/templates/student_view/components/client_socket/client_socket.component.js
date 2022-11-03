@@ -10,7 +10,6 @@ socket.onAny((event, ...args) => {
 });
 
 function ClientSocket(props) {
-  const [isConnected, setIsConnected] = useState(socket.connected);
   const [inputData, setInputData] = useState("");
   const [messages, setMessages] = useState();
   
@@ -30,7 +29,6 @@ function ClientSocket(props) {
     socket.on("msg_list update", ({msg_list, room}) => {
       setMessages(msg_list); // by changing a state, the component is forced to update. 
     });
-
 
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -65,7 +63,6 @@ function ClientSocket(props) {
         setInputData("");
     }
   }
-
 
   return (
     <div className="ClientSocket">
