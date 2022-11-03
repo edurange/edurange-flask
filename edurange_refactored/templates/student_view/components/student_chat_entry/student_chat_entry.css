@@ -1,0 +1,37 @@
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: .5rem 0;
+}
+
+.fromOther {
+    background-color: rgba(0, 125, 0, .5);
+    align-self: flex-end;
+    text-align: right;
+    padding-right: .5rem;
+}
+
+.fromSelf {
+    background-color: rgba(0, 200, 200, .5);
+    align-self: flex-start;
+    padding-left: .5rem;
+}
+
+.fromSelf, .fromOther {
+    width: 45%;
+    border-radius: .5rem;
+}
+
+.userID {
+    font-size: 75%;
+}
+
+#fromSelf {
+    padding-left: .5rem;
+}
+
+#fromOther {
+    align-self: flex-end;
+    padding-right: .5rem;
+}
