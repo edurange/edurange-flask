@@ -20,6 +20,9 @@ function ClientSocket(props) {
 
     socket.on("connect", () => {
       console.log(`Student with ID '${uid}' is connected!`);
+      if(window.localStorage.getItem("studentMessages")) {
+        studentList = JSON.parse(window.localStorage.getItem("studentMessages"));
+      }
     });
 
     socket.on("new message", ({messageContents, _to, _from, room}) => {
@@ -27,14 +30,15 @@ function ClientSocket(props) {
     });
 
     socket.on("msg_list update", ({msg_list, room}) => {
-      setMessages(msg_list); // by changing a state, the component is forced to update. 
+      setMessages(msg_list); // by changing a state, the component is forced to update.
+      window.localStorage.setItem("studentMessages", JSON.stringify(msg_list)); //persist the messages
     });
 
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         if(inputData) {
-          socket.emit("send message", {messageContents: inputData, _to: "instructor", _from: uid});
+          socket.emit("send message", {messageContents: inputData, _to: "000", _from: uid});
           setInputData("");
         }
       }

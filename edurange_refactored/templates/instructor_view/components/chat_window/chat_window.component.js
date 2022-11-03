@@ -17,22 +17,24 @@ function ChatWindow({handleClick, selectedStudent}) {
     useEffect(()=>{
         if(selectedStudent) {
             setUser(selectedStudent);
-
         }
-      
-     }, [selectedStudent]);                       //Input entry for chat
 
-    // useEffect(() => {
-    //         setMessages([
-    //             ...messages,
-    //             {
-    //                 fromSelf: true,
-    //                 content: {data},
-    //                 id: "You",
-    //             }
-    //         ]);
-    //     });
-    // });
+        const listener = event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+              event.preventDefault();
+              if(input) {
+                handleClick(event, input);
+                setInput("");
+              }
+            }
+          };
+      
+        document.addEventListener("keydown", listener);
+
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+     }, [selectedStudent]);                       //Input entry for chat
 
     function getMessagesContent(selectedStudent) {  
 
@@ -45,12 +47,9 @@ function ChatWindow({handleClick, selectedStudent}) {
                 user={message.from=="000"?"me":studentID} 
                 />
             )
-            return messageList;                                     //Return the componenet for rendering
-        } else if(!selectedStudent) { 
-            console.log("CHAT WINDOW NO STUDENT SELECTED");
-        }
-
-    return;
+            return messageList; 
+        }                                    //Return the componenet for rendering
+        return;
     }
 
     function onSubmit(e) {                                        //Send input as a chat message

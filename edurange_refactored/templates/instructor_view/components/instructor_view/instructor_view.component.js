@@ -31,22 +31,22 @@ function InstructorView() {
   socket.connect();
 
   socket.on('connect', () => {
-    console.log(`username list ${Object.values(usernameList)}`);
-    for(let i in Object.values(usernameList)) {
-      studentList.push({
-        uid:(parseInt(i)+2).toString(),
-        id: Object.values(usernameList)[i], 
-        connected: false,
-      });
-    }
     console.log("instructor has connected.");
-    console.log(`student list : ${JSON.stringify(studentList)}`);
-
+    
+    // assign or retrieve master "studentList"
     if(window.localStorage.getItem("allStudentMessages")) {
       studentList = JSON.parse(window.localStorage.getItem("allStudentMessages"));
+    } else {
+      for(let i in Object.values(usernameList)) {
+        studentList.push({
+          messages: [],
+          uid:(parseInt(i)+2).toString(),
+          id: Object.values(usernameList)[i], 
+          connected: false,
+        });
+      }
     }
   });
-  socket.emit("instructor connected");
 
   // Alerts (message, join, and leave) passed to StudentList component.
   socket.on("alert", (_alert) => {
@@ -64,7 +64,6 @@ function InstructorView() {
     studentList[parseInt(room)-2]["messages"] = msg_list;
     setNewMessage(msg_list); // changing the value of some state forces the component to update
     
-
     console.log("PERSISTING MESSAGES " + JSON.stringify(studentList) );
     //persist messages.
     window.localStorage.setItem('allStudentMessages', JSON.stringify(studentList));

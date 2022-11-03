@@ -43,6 +43,7 @@ const io = new Server(server, {
 //create middleware
 io.use((socket, next) => {
   const uid = socket.handshake.auth.uid;
+  const messages = socket.handshake.auth.messages;
   if(!uid) {
     return next(new Error("no user ID"));
   }
@@ -53,6 +54,7 @@ io.use((socket, next) => {
 
 io.on('connection', socket => {
 
+  
   // Error handler for middleware.
   socket.on("connect_error", err => {
     console.log("Connnection Error: no user id.")
@@ -66,9 +68,10 @@ io.on('connection', socket => {
     for(let key in studentList) {
       socket.join(key);
     }
+    io.emit("instructor connected");
   }
-  console.log(io.sockets.adapter.rooms);
-  // Error Logging -- console.log(io.sockets.adapter.rooms); // servers rooms maps.
+  // Rooms Error Logging --> console.log(io.sockets.adapter.rooms); // servers rooms maps.
+
 
     // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
@@ -95,7 +98,6 @@ io.on('connection', socket => {
   trafficAlert("studJoin");
 
   var msg_list = [];
-
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
     //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
@@ -128,6 +130,9 @@ io.on('connection', socket => {
 
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
+    if(socket.uid=="000") {
+      io.emit("instructor disconnected");
+    }
   });
 
 });
