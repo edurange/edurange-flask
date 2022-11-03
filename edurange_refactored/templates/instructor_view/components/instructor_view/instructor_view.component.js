@@ -19,9 +19,7 @@ socket.onAny((event, ...args) => {
  console.log(event, args);
 });
  
-var allStudents = [];
-var global_msg_list=[];
-var newest_msg = "";
+var studentList = [];
 
 function InstructorView() {
     //const [displayMessages, setDisplayMessages] = useState(null);
@@ -38,36 +36,34 @@ function InstructorView() {
   socket.connect();
 
   socket.on('connect', () => {
+    console.log(`username list ${Object.values(usernameList)}`);
+    for(let i in Object.values(usernameList)) {
+      studentList.push({
+        uid:(parseInt(i)+2).toString(),
+        id: Object.values(usernameList)[i], 
+        connected: false,
+      });
+    }
     console.log("instructor has connected.");
+    console.log(`student list : ${JSON.stringify(studentList)}`);
   });
   socket.emit("instructor connected");
 
   // Alerts (message, join, and leave) passed to StudentList component.
   socket.on("alert", (_alert) => {
-     
-      //NEED TO FIX ---- ALERT SHOULD ALREADY HAVE ID AND TIME
-      _alert["id"] = usernames[_alert["uid"] - 1]; // user1 has a uid of 2.
-      _alert["time"] = new Date().toISOString()
-        .replace('T', ' ')
-        .replace('Z', ''); // user1 has a uid of 2.
-      
-      //NEED TO FIX --- MAKE ACTIVE LIST INSTEAD OF ALL STUDENTS
-      allStudents.push(_alert);
-      setAlert(_alert);
-      //onRecvAlert(_alert);
+    let alertStud = studentList[parseInt(_alert["uid"])-2];
+    alertStud.connected = _alert.type=="studLeave" ? false : true;
+
+    setAlert(_alert);
   });
 
   socket.on("new message", ({messageContents, _to, _from, room}) => {
-      socket.emit("request msg_list", {messageContents, _to, _from, room});
+    socket.emit("request msg_list", {messageContents, _to, _from, room});
   });
 
   socket.on("msg_list update", ({msg_list, room}) => {
-    for(let i in allStudents) {
-      if (allStudents[i]["uid"] == room) {
-        allStudents[i]["messages"] = msg_list;
-        setNewMessage(msg_list); // by changing a state, the component is forced to update. 
-      }
-    }
+    studentList[parseInt(room)-2]["messages"] = msg_list;
+    setNewMessage(msg_list); // changing the value of some state forces the component to update
   });
 
    return () => {
@@ -84,7 +80,7 @@ function InstructorView() {
       socket.emit("send message", {
         messageContents: chatInput,
         _to: selectedStudent["uid"],
-        _from: "000"
+        _from: "000",
       });
     } else if (chatInput && !selectedStudent) {
       console.log("chatInput data, no selectedStudent");
@@ -92,12 +88,16 @@ function InstructorView() {
   };
   
   // this handler function is passed to student list
-  const returnSelectedUser = (displayName) => {  
-    for(let i = 0; i < allStudents.length; i++){
-      if (allStudents[i]["id"] == displayName) {
-        setSelectedStudent(allStudents[i]);
+  const returnSelectedUser = (displayName) => { 
+    
+    setSelectedStudent(studentList.find(student => student.id == displayName));
+    console.log(`SET SELECTED STUDENT ${JSON.stringify(studentList.find(student => student.id == displayName))}`);
+    /*
+    for(let i in studentList){
+      if (studentList[i]["id"] == displayName) {
+        setSelectedStudent(studentList[i]);
       }
-    }
+    }*/
   };
 
   return (

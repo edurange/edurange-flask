@@ -75,6 +75,7 @@ io.on('connection', socket => {
       socket.join(key);
     }
   }
+  console.log(io.sockets.adapter.rooms);
   // Error Logging -- console.log(io.sockets.adapter.rooms); // servers rooms maps.
 
     // Traffic Alerts: Join, Leave, Message.
@@ -84,13 +85,13 @@ io.on('connection', socket => {
     alertTime = new Date().toISOString() 
     .replace('T', ' ')
     .replace('Z', '');
-
+    //console.log(`${socket.uid} | ${parseInt(socket.uid)} | ${typeof studentList} | ${studentList[parseInt(socket.uid)]}`)
     // Sockets belonging to students create alerts for instructor
     if (socket.uid!=="000") {
       alertString = {
         uid: socket.uid,
-        username: studentList[socket.uid-2], // (the first user's database ID is "2")
-        id: studentList[socket.uid-2],
+        username: studentList[socket.uid-1], // (the first user's database ID is "2")
+        id: studentList[socket.uid-1],
         type:  alertType,
         time: alertTime,
         };
@@ -98,10 +99,15 @@ io.on('connection', socket => {
     socket.to("000").emit("alert", alertString);  //emit alert.
   }
 
+  //emit join alert.
+  trafficAlert("studJoin");
+
   var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
+    //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
+    console.log(`typeof room ${typeof room}`);
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
 
@@ -109,6 +115,7 @@ io.on('connection', socket => {
   // send entire list
   socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
     // both members keep track of message discourse in case of disconnection
+    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     msg_list.push({               
       contents: messageContents,
       from: _from,
@@ -117,7 +124,7 @@ io.on('connection', socket => {
     
     // student messages alert instructor
     if(_from!=="000") {
-      trafficAlert("message");
+      trafficAlert("message", {msg_list, room});
     }
 
     // students capture specific student instructor correspondance
@@ -125,9 +132,6 @@ io.on('connection', socket => {
       io.to(room).emit("msg_list update", {msg_list, room});
     }
   });
-
-  //emit join alert.
-  trafficAlert("studJoin");
 
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
