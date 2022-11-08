@@ -45,23 +45,23 @@ function StudentList({returnSelectedUser, alert}) {
    }
  
    const removeFromRq = (stud) => {
-       let newRq = [...rq]
-       var idx = newRq.indexOf(stud)
+       let newRq = [...rq];
+       var idx = newRq.indexOf(stud);
        if (idx >= 0) {
            newRq.splice(idx, 1);
-           return (true, newRq)
+           return (true, newRq);
        }
        return (false, newRq);
    }
  
    const removeFromUq = (stud) => {
-       let newUq = [...uq]
-       var idx = newUq.indexOf(stud)
+       let newUq = [...uq];
+       var idx = newUq.indexOf(stud);
        if (idx >= 0) {
            newUq.splice(idx, 1);
-           return (true, newUq)
+           return (true, newUq);
        }
-       return (false, newUq)
+       return (false, newUq);
    }
    const newUnread = (from) => {
        /* remove student from rq and push to uq */
@@ -71,7 +71,7 @@ function StudentList({returnSelectedUser, alert}) {
            setUq(newUq)
        }
        let newRq = removeFromRq(from);
-       setRq(newRq)
+       setRq(newRq);
    }
  
    const newJoined = (stud) => {
@@ -82,6 +82,26 @@ function StudentList({returnSelectedUser, alert}) {
            setRq(newRq);
        }
    }
+
+   const newLive = (stud) => {
+    let newLive = [...live]
+    /* if student not in one of the queues, add to read queue */
+    if (!live?.includes(stud)) {
+        newLive.push(stud);
+        setLive(newLive);
+    }
+   }
+
+   const removeLive = (stud) => {
+    let newLive = [...live]
+    /* if student not in one of the queues, add to read queue */
+    if (live?.includes(stud)) {
+        newLive.splice(live.indexOf(stud),1);
+        setLive(newLive);
+    }
+   }
+
+
  
    const chatOnClick = (stud) => {
        /* remove stud from both lists if in them,
@@ -108,6 +128,7 @@ function StudentList({returnSelectedUser, alert}) {
        var newDate = e["time"]
        console.assert(newDate != null)
        switch (e["type"]) {
+        case "message":
            case "message":
                //console.log(`message from: ${e["from"]}, to ${e["to"]}`)
                newUnread(e["id"]);
@@ -117,14 +138,14 @@ function StudentList({returnSelectedUser, alert}) {
                newJoined(e["id"])
                if (isNewer(newDate, lastDate)) {
                    setLastDate(newDate);
-                   setLive(e["live"])
+                   newLive(e["id"]);
                }
                break;
            case "studLeave":
                console.log(`student ${e["id"]} left`)
                if (isNewer(newDate, lastDate)) {
                    setLastDate(newDate);
-                   setLive(e["live"])
+                   removeLive(e["id"]);
                }
                break;
        }
@@ -142,6 +163,7 @@ function StudentList({returnSelectedUser, alert}) {
   
    return (
        <div id="studentList" className="list-group w-25 overflow-auto">
+        
            {uq?.map((stud) => {
                return(
                     <Student

@@ -52,7 +52,7 @@ function InstructorView() {
   socket.on("alert", (_alert) => {
     //let alertStud = studentList[parseInt(_alert["uid"])-2];
     _alert.connected = _alert.type=="studLeave" ? false : true;
-
+    console.log(`ALERT: ${JSON.stringify(_alert)}`);
     setAlert(_alert);
   });
 

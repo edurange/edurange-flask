@@ -11,7 +11,7 @@ import "./student.css"
 function Student(props) {
     var className = "list-group-item list-group-item-action d-flex justify-content-between"
     const [classNameState, setClassNameState] = useState(className);
-
+    // ASK LEVI AND MICHAEL
     useEffect(() => {
         setClassNameState(`${className} ${props.status}`);
         if(props.selectedStudent==props.name) {

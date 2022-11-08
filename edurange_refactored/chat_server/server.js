@@ -54,6 +54,9 @@ io.use((socket, next) => {
 
 io.on('connection', socket => {
 
+  // ASK MICHAEL AND LEVI
+  // How to create a global array 
+
   
   // Error handler for middleware.
   socket.on("connect_error", err => {

@@ -21,7 +21,7 @@ function ClientSocket(props) {
     socket.on("connect", () => {
       console.log(`Student with ID '${uid}' is connected!`);
       if(window.localStorage.getItem("studentMessages")) {
-        studentList = JSON.parse(window.localStorage.getItem("studentMessages"));
+        setMessages(JSON.parse(window.localStorage.getItem("studentMessages")));
       }
     });
 
