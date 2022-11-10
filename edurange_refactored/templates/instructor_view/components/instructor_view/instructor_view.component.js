@@ -56,6 +56,18 @@ function InstructorView() {
     setAlert(_alert);
   });
 
+  socket.on("instructor previous chat", (instructorPrevChat) => {
+    for(let i in instructorPrevChat) {
+      if(i!="000"){
+        studentList[parseInt(i)-2]["messages"] = instructorPrevChat[i]["messages"];
+        console.log(`studentList[parseInt(i or ${i})-2]["messages"] :: ${JSON.stringify(studentList[parseInt(i)-2]["messages"])}`)
+      }
+      
+      console.log(JSON.stringify(i));
+      console.log(`type of i ${typeof i}`);
+    }
+  });
+
   socket.on("new message", ({messageContents, _to, _from, room}) => {
     socket.emit("request msg_list", {messageContents, _to, _from, room});
   });

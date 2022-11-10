@@ -20,9 +20,15 @@ function ClientSocket(props) {
 
     socket.on("connect", () => {
       console.log(`Student with ID '${uid}' is connected!`);
+      /*
       if(window.localStorage.getItem("studentMessages")) {
         setMessages(JSON.parse(window.localStorage.getItem("studentMessages")));
       }
+      */
+    });
+    
+    socket.on("previous chat list", (prevChat) => {
+      setMessages(prevChat);
     });
 
     socket.on("new message", ({messageContents, _to, _from, room}) => {
@@ -30,7 +36,8 @@ function ClientSocket(props) {
     });
 
     socket.on("msg_list update", ({msg_list, room}) => {
-      setMessages(msg_list); // by changing a state, the component is forced to update.
+      setMessages(msg_list);
+      console.log(`Client Socket. Type of msg_list = ${typeof msg_list}`); // by changing a state, the component is forced to update.
       window.localStorage.setItem("studentMessages", JSON.stringify(msg_list)); //persist the messages
     });
 

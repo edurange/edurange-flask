@@ -30,7 +30,8 @@ function StudentChatWindow({messages, chat_opened}) {
     //     });
     // });
 
-    function getMessagesContent() {  
+    function getMessagesContent() {
+        console.log(`DISPLAY MESSAGES TYPE = ${displayMessages}`);
         if(displayMessages) { 
             let messageList = displayMessages.map((message) =>             //Map the messages to a component
                 <StudentChatEntry key={Math.random() * 100} 

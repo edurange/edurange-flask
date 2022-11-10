@@ -22,6 +22,9 @@ fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, 
     studentList = JSON.parse(data);
 });
 
+//dictionary of chat sessions
+let masterListChats = {};
+
 // create new instance of { Server } class
 const io = new Server(server, {
     // CORS = cross-origin resource sharing
@@ -53,11 +56,19 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-
-  // ASK MICHAEL AND LEVI
-  // How to create a global array 
-
-  
+  if (masterListChats[socket.uid]!=null) {
+    if(socket.uid!="000") {
+      prevChat = masterListChats[socket.uid]["messages"];
+      socket.emit("previous chat list",prevChat);
+    } else {
+      instructorPrevChat = masterListChats;
+      socket.emit("instructor previous chat", instructorPrevChat);
+    }
+  } else {
+    masterListChats[socket.uid] = {
+      messages: [],
+    }
+  }
   // Error handler for middleware.
   socket.on("connect_error", err => {
     console.log("Connnection Error: no user id.")
@@ -119,9 +130,16 @@ io.on('connection', socket => {
       from: _from,
         to: _to,
     });
+    masterListChats[socket.uid]["messages"].push({               
+      contents: messageContents,
+      from: _from,
+        to: _to,
+    });
     
     // student messages alert instructor
     if(_from!=="000") {
+      console.log(`masterListChats[${socket.uid}]["messages"] :: ${JSON.stringify(masterListChats[socket.uid]["messages"])}`);
+      console.log(`msg_list :: ${JSON.stringify(msg_list)}`);
       trafficAlert("message", {msg_list, room});
     }
 
