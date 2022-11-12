@@ -35,8 +35,9 @@ function ClientSocket(props) {
       socket.emit("request msg_list", {messageContents, _to, _from, room});
     });
 
-    socket.on("msg_list update", ({msg_list, room}) => {
-      setMessages(msg_list);
+    socket.on("msg_list update", ({newMessage, room}) => {
+      let newMessages = messages.push(newMessage);
+      setMessages(newMessages);
       console.log(`Client Socket. Type of msg_list = ${typeof msg_list}`); // by changing a state, the component is forced to update.
       window.localStorage.setItem("studentMessages", JSON.stringify(msg_list)); //persist the messages
     });

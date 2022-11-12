@@ -72,8 +72,9 @@ function InstructorView() {
     socket.emit("request msg_list", {messageContents, _to, _from, room});
   });
 
-  socket.on("msg_list update", ({msg_list, room}) => {
-    studentList[parseInt(room)-2]["messages"] = msg_list;
+  socket.on("msg_list update", ({newMessage, room}) => {
+    let newMessages = studentList[parseInt(room)-2]["messages"].push(newMessage);
+    studentList[parseInt(room)-2]["messages"] = newMessages;
     setNewMessage(msg_list); // changing the value of some state forces the component to update
     
     console.log("PERSISTING MESSAGES " + JSON.stringify(studentList) );

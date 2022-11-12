@@ -125,6 +125,11 @@ io.on('connection', socket => {
   socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
     // both members keep track of message discourse in case of disconnection
     console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
+    let newMessage = {
+      contents: messageContents,
+      from: _from,
+        to: _to,
+    }
     msg_list.push({               
       contents: messageContents,
       from: _from,
@@ -145,7 +150,7 @@ io.on('connection', socket => {
 
     // students capture specific student instructor correspondance
     if(socket.uid===room) {
-      io.to(room).emit("msg_list update", {msg_list, room});
+      io.to(room).emit("msg_list update", {newMessage, room});
     }
   });
 
