@@ -1,14 +1,17 @@
 .edu-chatbox-closed {
+  font-weight: 200;
+  color: whitesmoke;
   position: fixed;
-  bottom: 3rem;
-  right: 1rem;
+  bottom: 4rem;
+  right: 4rem;
   overflow: hidden;
   text-align: center;
   display: flex;
   flex-direction: column;
-  border: 2px black solid;
-  background-color: white;
-  border-radius: .3rem;
+  background-color: #33b077;
+  border-radius: 1rem 1rem 0 0;
+  width: 23rem;
+  height: 5rem;
 }
 
 .type_here {
@@ -22,18 +25,20 @@
   padding: .2rem .5rem;
 }
 
+
 .edu-chatbox-open {
+  font-weight: 200;
   position: fixed;
-  bottom: 3rem;
-  right: 1rem;
+  bottom: 4rem;
+  right: 4rem;
   overflow: hidden;
   text-align: left;
   display: flex;
   flex-direction: column;
-  border: 2px black solid;
-  background-color: white;
+  border: 2px whitesmoke solid;
+  background-color: whitesmoke;
   border-radius: .3rem;
-  width:20rem;
+  width:23rem;
   height: 20rem;
 }
 

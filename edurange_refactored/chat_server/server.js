@@ -46,7 +46,6 @@ const io = new Server(server, {
 //create middleware
 io.use((socket, next) => {
   const uid = socket.handshake.auth.uid;
-  const messages = socket.handshake.auth.messages;
   if(!uid) {
     return next(new Error("no user ID"));
   }
@@ -56,13 +55,16 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-  if (masterListChats[socket.uid]!=null) {
+  
+  
+  if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
+    console.log(`masterListChats[socket.uid] = ${JSON.stringify(masterListChats[socket.uid])}`)
     if(socket.uid!="000") {
-      prevChat = masterListChats[socket.uid]["messages"];
-      socket.emit("previous chat list",prevChat);
+      prevChat = masterListChats[socket.uid].messages;
+      socket.emit("student session retrieval",prevChat);
     } else {
       instructorPrevChat = masterListChats;
-      socket.emit("instructor previous chat", instructorPrevChat);
+      socket.emit("instructor session retrieval", instructorPrevChat);
     }
   } else {
     masterListChats[socket.uid] = {
@@ -111,15 +113,29 @@ io.on('connection', socket => {
   //emit join alert.
   trafficAlert("studJoin");
 
-  var msg_list = [];
+  //var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
     //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
-    console.log(`typeof room ${typeof room}`);
+    
+    masterListChats[socket.uid].messages.push({               
+      contents: messageContents,
+      from: _from,
+        to: _to,
+    });
+
+    msg_list = masterListChats[socket.uid].messages;
+
+    // student messages alert instructor
+    if(_from!=="000") {
+      trafficAlert("message", {msg_list, room});
+    }
+    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
 
+  /*
   // push recieved message to msg_list array
   // send entire list
   socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
@@ -135,11 +151,7 @@ io.on('connection', socket => {
       from: _from,
         to: _to,
     });
-    masterListChats[socket.uid]["messages"].push({               
-      contents: messageContents,
-      from: _from,
-        to: _to,
-    });
+    
     
     // student messages alert instructor
     if(_from!=="000") {
@@ -153,7 +165,7 @@ io.on('connection', socket => {
       io.to(room).emit("msg_list update", {newMessage, room});
     }
   });
-
+*/
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
     if(socket.uid=="000") {

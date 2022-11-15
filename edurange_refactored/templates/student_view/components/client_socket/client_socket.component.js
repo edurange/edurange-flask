@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import StudentChatWindow from '../student_chat_window/student_chat_window.component';
 import { io } from 'socket.io-client';
+import "./client_socket.styles.css"
 
 const socket = io(`${window.location.hostname}:3001`, {autoConnect: false});
 
@@ -20,26 +21,25 @@ function ClientSocket(props) {
 
     socket.on("connect", () => {
       console.log(`Student with ID '${uid}' is connected!`);
-      /*
-      if(window.localStorage.getItem("studentMessages")) {
-        setMessages(JSON.parse(window.localStorage.getItem("studentMessages")));
-      }
-      */
     });
     
-    socket.on("previous chat list", (prevChat) => {
+    socket.on("student session retrieval", (prevChat) => {
       setMessages(prevChat);
     });
 
     socket.on("new message", ({messageContents, _to, _from, room}) => {
-      socket.emit("request msg_list", {messageContents, _to, _from, room});
-    });
-
-    socket.on("msg_list update", ({newMessage, room}) => {
-      let newMessages = messages.push(newMessage);
+      let newMessages = messages ? messages : [];
+      console.log(`new message recieved : ${messageContents} to ${_to} from ${_from}`)
+      //console.log(`typeof newMessages: ${typeof newMessages} JSON.stringify: ${JSON.stringify(newMessages)}`);
+      let newMessage = {
+        contents: messageContents,
+        to: _to,
+        from: _from,
+      };
+      
+      newMessages.push(newMessage);
       setMessages(newMessages);
-      console.log(`Client Socket. Type of msg_list = ${typeof msg_list}`); // by changing a state, the component is forced to update.
-      window.localStorage.setItem("studentMessages", JSON.stringify(msg_list)); //persist the messages
+
     });
 
     const listener = event => {
@@ -57,8 +57,6 @@ function ClientSocket(props) {
     return () => {
       socket.off('connect');
       socket.off("new message");
-      socket.off("send message");
-      socket.off("msg_list update");
       document.removeEventListener("keydown", listener);
     };
 
@@ -88,18 +86,21 @@ function ClientSocket(props) {
               onSubmit={ onFormSubmit }
               autoComplete="off"
             >
+            <div className="input-group mb-3">
               <input
                 type='text'
-                className="chat-input-box"
+                className="form-control chat-input-box"
                 autoComplete='off'
                 onChange={ onChange }
                 value= {inputData}
               />
               <button
                 type="submit"
+                className="btn btn-outline-success"
               >
               Send
               </button>
+            </div>
 
             </form>
         </div>
@@ -109,5 +110,3 @@ function ClientSocket(props) {
 }
 
 export default ClientSocket;
-
-

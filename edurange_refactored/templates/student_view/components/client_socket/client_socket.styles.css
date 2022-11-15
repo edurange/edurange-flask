@@ -1,0 +1,11 @@
+.input-group > .form-control {
+    background-color: black;
+    color: whitesmoke;
+    opacity: 10%;
+}
+
+.btn {
+    background-color: black;
+    color: whitesmoke;
+    opacity: 20%;
+}

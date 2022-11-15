@@ -18,7 +18,7 @@ socket.onAny((event, ...args) => {
  console.log(event, args);
 });
  
-var studentList = [];
+let studentList = [];
 
 function InstructorView() {
     const [selectedStudent, setSelectedStudent] = useState();
@@ -32,54 +32,50 @@ function InstructorView() {
 
   socket.on('connect', () => {
     console.log("instructor has connected.");
-    
-    // assign or retrieve master "studentList"
-    if(window.localStorage.getItem("allStudentMessages")) {
-      studentList = JSON.parse(window.localStorage.getItem("allStudentMessages"));
-    } else {
-      for(let i in Object.values(usernameList)) {
-        studentList.push({
-          messages: [],
-          uid:(parseInt(i)+2).toString(),
-          id: Object.values(usernameList)[i], 
-          connected: false,
-        });
-      }
-    }
   });
 
   // Alerts (message, join, and leave) passed to StudentList component.
   socket.on("alert", (_alert) => {
-    //let alertStud = studentList[parseInt(_alert["uid"])-2];
     _alert.connected = _alert.type=="studLeave" ? false : true;
-    console.log(`ALERT: ${JSON.stringify(_alert)}`);
     setAlert(_alert);
   });
 
-  socket.on("instructor previous chat", (instructorPrevChat) => {
+  socket.on("instructor session retrieval", (instructorPrevChat) => {
     for(let i in instructorPrevChat) {
       if(i!="000"){
-        studentList[parseInt(i)-2]["messages"] = instructorPrevChat[i]["messages"];
-        console.log(`studentList[parseInt(i or ${i})-2]["messages"] :: ${JSON.stringify(studentList[parseInt(i)-2]["messages"])}`)
+        if(instructorPrevChat[i] && instructorPrevChat[i].messages) {
+          console.log(`instructorPrevChat                             : ${JSON.stringify(instructorPrevChat)}`)
+          console.log(`instructorPrevChat[i]                          : ${instructorPrevChat[i]}`)
+          console.log(`instructorPrevChat[i].messages              : ${instructorPrevChat[i].messages}`)
+          console.log(`studentList                             : ${JSON.stringify(studentList)}`)
+          console.log(`studentList[parseInt(i)-2]              : ${studentList[parseInt(i)-2]}`)
+          studentList[parseInt(i)-2] = {
+            messages: instructorPrevChat[i].messages
+          }
+        } else {
+          studentList[parseInt(i)-2] = {
+            messages = []
+          }
+        }
       }
-      
-      console.log(JSON.stringify(i));
-      console.log(`type of i ${typeof i}`);
     }
   });
 
   socket.on("new message", ({messageContents, _to, _from, room}) => {
-    socket.emit("request msg_list", {messageContents, _to, _from, room});
-  });
-
-  socket.on("msg_list update", ({newMessage, room}) => {
-    let newMessages = studentList[parseInt(room)-2]["messages"].push(newMessage);
-    studentList[parseInt(room)-2]["messages"] = newMessages;
-    setNewMessage(msg_list); // changing the value of some state forces the component to update
+    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
+    let newMessage = {
+      contents: messageContents,
+      to: _to,
+      from: _from,
+    };
+    if(!studentList[parseInt(room)-2].messages) {
+      studentList[parseInt(room)-2].messages = [];
+    }
+    let tmpMessages = studentList[parseInt(room)-2].messages;
+    tmpMessages.push(newMessage);
+    studentList[parseInt(room)-2].messages = tmpMessages;
     
-    console.log("PERSISTING MESSAGES " + JSON.stringify(studentList) );
-    //persist messages.
-    window.localStorage.setItem('allStudentMessages', JSON.stringify(studentList));
+    setNewMessage(newMessage); // changing the value of some state forces the component to update
   });
 
    return () => {

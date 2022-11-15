@@ -18,26 +18,14 @@ function StudentChatWindow({messages, chat_opened}) {
         setDisplayMessages(messages)
      }, [messages]);                       //Input entry for chat
 
-    // useEffect(() => {
-    //         setMessages([
-    //             ...messages,
-    //             {
-    //                 fromSelf: true,
-    //                 content: {data},
-    //                 id: "You",
-    //             }
-    //         ]);
-    //     });
-    // });
-
     function getMessagesContent() {
-        console.log(`DISPLAY MESSAGES TYPE = ${displayMessages}`);
         if(displayMessages) { 
-            let messageList = displayMessages.map((message) =>             //Map the messages to a component
+            let messageList = displayMessages.map((message) =>  
+                //Map the messages to a component
                 <StudentChatEntry key={Math.random() * 100} 
-                message={message.contents} 
-                fromSelf={message.from=="000"} 
-                user={message.from!="000"?"me":"The Benevolent Instructor"} 
+                    message={message.contents} 
+                    fromSelf={message.from=="000"} 
+                    user={message.from!="000"?"me":"The Benevolent Instructor"} 
                 />
             )
             return messageList;                                     //Return the componenet for rendering
@@ -52,7 +40,6 @@ function StudentChatWindow({messages, chat_opened}) {
 
     const onChange = (e) => {
         setInput(e.target.value);
-        console.log("INPUT" + input);
     }
     
     return(
