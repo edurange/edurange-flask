@@ -40,40 +40,44 @@ function InstructorView() {
     setAlert(_alert);
   });
 
+  for(let i in usernameList) {
+    console.log(`i ${i}`)
+    let name = usernameList[i];
+    let userID = (parseInt(i)+1).toString();
+    let empty = []
+    studentList.push({
+      uid: userID,
+      id: name,
+      messages: empty
+    });
+    console.log(`i ${i} JSONstudentList ${JSON.stringify(studentList[i])}`)
+  }
+
   socket.on("instructor session retrieval", (instructorPrevChat) => {
     for(let i in instructorPrevChat) {
       if(i!="000"){
-        if(instructorPrevChat[i] && instructorPrevChat[i].messages) {
-          console.log(`instructorPrevChat                             : ${JSON.stringify(instructorPrevChat)}`)
-          console.log(`instructorPrevChat[i]                          : ${instructorPrevChat[i]}`)
-          console.log(`instructorPrevChat[i].messages              : ${instructorPrevChat[i].messages}`)
-          console.log(`studentList                             : ${JSON.stringify(studentList)}`)
-          console.log(`studentList[parseInt(i)-2]              : ${studentList[parseInt(i)-2]}`)
-          studentList[parseInt(i)-2] = {
-            messages: instructorPrevChat[i].messages
-          }
-        } else {
-          studentList[parseInt(i)-2] = {
-            messages = []
-          }
-        }
+        let previousChat = (instructorPrevChat[i] && instructorPrevChat[i].messages) ?
+                        instructorPrevChat[i].messages :
+                        [];
+        //console.log(`studentList[parseInt(i)-2] ${JSON.stringify(studentList[parseInt(i)-2])}`)
+        studentList[parseInt(i)-2].messages = previousChat;
+        
+        //console.log(`studentList[parseInt(i)-2] ${JSON.stringify(studentList[parseInt(i)-2])}`)
       }
     }
   });
 
   socket.on("new message", ({messageContents, _to, _from, room}) => {
-    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
+    //console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     let newMessage = {
       contents: messageContents,
       to: _to,
       from: _from,
     };
-    if(!studentList[parseInt(room)-2].messages) {
-      studentList[parseInt(room)-2].messages = [];
-    }
-    let tmpMessages = studentList[parseInt(room)-2].messages;
+    let student = studentList.find(student => student.uid == room)
+    let tmpMessages = student.messages;
     tmpMessages.push(newMessage);
-    studentList[parseInt(room)-2].messages = tmpMessages;
+    student.messages = tmpMessages;
     
     setNewMessage(newMessage); // changing the value of some state forces the component to update
   });
@@ -100,7 +104,10 @@ function InstructorView() {
   };
   
   // this handler function is passed to student list
-  const returnSelectedUser = (displayName) => { 
+  const returnSelectedUser = (displayName) => {
+    console.log("Instructor view: Selected student" + JSON.stringify(displayName));
+    console.log("Student List to select students:");
+    console.log(JSON.stringify(studentList))
     setSelectedStudent(studentList.find(student => student.id == displayName));
   };
 

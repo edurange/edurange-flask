@@ -121,6 +121,7 @@ function StudentList({returnSelectedUser, alert}) {
 
        // set state to pass as props for Student component.
        setSelectedStudent(stud);
+       console.log("Student List: Selected student" + JSON.stringify(stud));
    }
   
    const handleEvent = (e) => {

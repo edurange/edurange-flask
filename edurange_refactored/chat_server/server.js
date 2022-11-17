@@ -119,7 +119,7 @@ io.on('connection', socket => {
     //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     
-    masterListChats[socket.uid].messages.push({               
+    masterListChats[room].messages.push({               
       contents: messageContents,
       from: _from,
         to: _to,
@@ -127,12 +127,20 @@ io.on('connection', socket => {
 
     msg_list = masterListChats[socket.uid].messages;
 
+    console.log(JSON.stringify(masterListChats));
+
     // student messages alert instructor
     if(_from!=="000") {
       trafficAlert("message", {msg_list, room});
     }
     console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
+    io.to(room).emit("save message", {messageContents, _to, _from, room}); // all room members sent message
+  });
+
+  socket.on("save message", ({messageContents, _to, _from}) => {
+    //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
+    console.log(`save message recieved : ${messageContents} to ${_to} from ${_from}`)
   });
 
   /*

@@ -30,7 +30,7 @@ function ClientSocket(props) {
     socket.on("new message", ({messageContents, _to, _from, room}) => {
       let newMessages = messages ? messages : [];
       console.log(`new message recieved : ${messageContents} to ${_to} from ${_from}`)
-      //console.log(`typeof newMessages: ${typeof newMessages} JSON.stringify: ${JSON.stringify(newMessages)}`);
+      console.log(`typeof newMessages: ${typeof newMessages} JSON.stringify: ${JSON.stringify(newMessages)}`);
       let newMessage = {
         contents: messageContents,
         to: _to,
