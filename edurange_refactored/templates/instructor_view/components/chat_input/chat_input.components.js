@@ -11,8 +11,6 @@ class ChatInput extends React.Component {
         };
       }
 
-
-
     render() {
         
         return (

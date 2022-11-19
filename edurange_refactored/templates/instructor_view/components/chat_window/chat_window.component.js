@@ -21,8 +21,8 @@ function ChatWindow({handleClick, selectedStudent}) {
 
         const listener = event => {
             if (event.code === "Enter" || event.code === "NumpadEnter") {
-              event.preventDefault();
               if(input) {
+                event.preventDefault();
                 handleClick(event, input);
                 setInput("");
               }
@@ -34,7 +34,7 @@ function ChatWindow({handleClick, selectedStudent}) {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-     }, [selectedStudent]);                       //Input entry for chat
+    }, [selectedStudent]);                       //Input entry for chat
 
     function getMessagesContent(selectedStudent) {  
 
@@ -54,23 +54,25 @@ function ChatWindow({handleClick, selectedStudent}) {
 
     function onSubmit(e) {                                        //Send input as a chat message
         e.preventDefault();
-        console.log("CHAT WINDOW : " + input);
         handleClick(e, input); 
         setInput("");//Clear current message from input      
     }
 
     const onChange = (e) => {
         setInput(e.target.value);
-        console.log("INPUT" + input);
     }
+
+    
     
     return(
          <div id='chatWindow'>
           {getMessagesContent(selectedStudent)}
-                                      {/* Render the current messages */}
-            {/* <ChatInput /> */}                                   {/* Input component */}
+            {/* Render the current messages */}
+            {/* <ChatInput /> */}                                   
             <div id='chat_input'>
-                <form onSubmit={onSubmit} autoComplete="off" id="chat_entry_box" >
+                {/* Input component */}
+
+                {selectedStudent && <form onSubmit={onSubmit} autoComplete="off" id="chat_entry_box" >
                     <input 
                         type='text'
                         placeholder="Your Text Here!"
@@ -78,13 +80,11 @@ function ChatWindow({handleClick, selectedStudent}) {
                         value= {input} 
                         ref={chat}
                         className="chat_input_area" 
-
                         />
                     <button className='edu-submit' type="submit">
                         Send
                     </button>
-                    
-                </form>
+                </form>}
             </div>
         </div>
     );

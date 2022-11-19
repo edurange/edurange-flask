@@ -18,10 +18,6 @@ function ClientSocket(props) {
     const uid = props.uid;
     socket.auth = { uid };
     socket.connect();
-
-    socket.on("connect", () => {
-      console.log(`Student with ID '${uid}' is connected!`);
-    });
     
     socket.on("student session retrieval", (prevChat) => {
       setMessages(prevChat);
@@ -29,17 +25,13 @@ function ClientSocket(props) {
 
     socket.on("new message", ({messageContents, _to, _from, room}) => {
       let newMessages = messages ? messages : [];
-      console.log(`new message recieved : ${messageContents} to ${_to} from ${_from}`)
-      console.log(`typeof newMessages: ${typeof newMessages} JSON.stringify: ${JSON.stringify(newMessages)}`);
       let newMessage = {
         contents: messageContents,
         to: _to,
         from: _from,
       };
-      
       newMessages.push(newMessage);
       setMessages(newMessages);
-
     });
 
     const listener = event => {
@@ -55,7 +47,7 @@ function ClientSocket(props) {
     document.addEventListener("keydown", listener);
 
     return () => {
-      socket.off('connect');
+      socket.off("student session retrieval");
       socket.off("new message");
       document.removeEventListener("keydown", listener);
     };

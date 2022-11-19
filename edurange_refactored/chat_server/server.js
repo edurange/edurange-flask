@@ -55,6 +55,16 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
+
+  for(let i in studentList) {
+    let x_uid = (parseInt(i) + 1).toString()
+    if(!masterListChats[x_uid] || !masterListChats[x_uid].messages)  {
+      masterListChats[x_uid] = {
+        messages: [],
+      }
+      console.log(JSON.stringify(masterListChats))
+    }
+  }
   
   
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
@@ -96,7 +106,6 @@ io.on('connection', socket => {
     alertTime = new Date().toISOString() 
     .replace('T', ' ')
     .replace('Z', '');
-    //console.log(`${socket.uid} | ${parseInt(socket.uid)} | ${typeof studentList} | ${studentList[parseInt(socket.uid)]}`)
     // Sockets belonging to students create alerts for instructor
     if (socket.uid!=="000") {
       alertString = {
@@ -116,9 +125,9 @@ io.on('connection', socket => {
   //var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
-    //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
-    var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     
+    var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
+    console.log(JSON.stringify(masterListChats))
     masterListChats[room].messages.push({               
       contents: messageContents,
       from: _from,
@@ -126,54 +135,14 @@ io.on('connection', socket => {
     });
 
     msg_list = masterListChats[socket.uid].messages;
-
-    console.log(JSON.stringify(masterListChats));
-
     // student messages alert instructor
     if(_from!=="000") {
+      msg_list = masterListChats[socket.uid].messages;
       trafficAlert("message", {msg_list, room});
     }
-    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
-    io.to(room).emit("save message", {messageContents, _to, _from, room}); // all room members sent message
   });
-
-  socket.on("save message", ({messageContents, _to, _from}) => {
-    //console.log(`send message recieved : ${messageContents} to ${_to} from ${_from}`)
-    console.log(`save message recieved : ${messageContents} to ${_to} from ${_from}`)
-  });
-
-  /*
-  // push recieved message to msg_list array
-  // send entire list
-  socket.on("request msg_list", ({messageContents, _to, _from, room}) => {
-    // both members keep track of message discourse in case of disconnection
-    console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
-    let newMessage = {
-      contents: messageContents,
-      from: _from,
-        to: _to,
-    }
-    msg_list.push({               
-      contents: messageContents,
-      from: _from,
-        to: _to,
-    });
-    
-    
-    // student messages alert instructor
-    if(_from!=="000") {
-      console.log(`masterListChats[${socket.uid}]["messages"] :: ${JSON.stringify(masterListChats[socket.uid]["messages"])}`);
-      console.log(`msg_list :: ${JSON.stringify(msg_list)}`);
-      trafficAlert("message", {msg_list, room});
-    }
-
-    // students capture specific student instructor correspondance
-    if(socket.uid===room) {
-      io.to(room).emit("msg_list update", {newMessage, room});
-    }
-  });
-*/
+  
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
     if(socket.uid=="000") {

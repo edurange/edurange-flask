@@ -8,11 +8,9 @@ import StudentChatEntry from "../student_chat_entry/student_chat_entry.component
 
 
 
-function StudentChatWindow({messages, chat_opened}) {
-    const [user, setUser] = useState("");  
-    const [input, setInput] = useState("");                      //Current user
+function StudentChatWindow({messages, chat_opened}) {                    //Current user
     const [displayMessages, setDisplayMessages] = useState(null);
-    const chat = React.createRef();   
+    //const chat = React.createRef();   
     
     useEffect(()=>{
         setDisplayMessages(messages)
@@ -32,35 +30,10 @@ function StudentChatWindow({messages, chat_opened}) {
         }
         return;
     }
-
-    function onSubmit(e) {                                        //Send input as a chat message
-        e.preventDefault();
-        setInput("");//Clear current message from input      
-    }
-
-    const onChange = (e) => {
-        setInput(e.target.value);
-    }
     
     return(
          <div id='studentChatWindow'>
           {getMessagesContent(displayMessages)}
-           {/*} <div id='student_chat_input'>
-                <form onSubmit={onSubmit} autoComplete="off" id="student_chat_entry_box" >
-                    <input 
-                        type='text'
-                        placeholder="Your Text Here!"
-                        onChange={onChange}
-                        value= {input} 
-                        ref={chat}
-                        className="chat_input_area" 
-                        />
-                    <button className='student_chat_submit' type="submit">
-                        Send
-                    </button>
-                </form>
-            </div>
-            */}
         </div>
     );
 }
