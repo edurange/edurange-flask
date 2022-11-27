@@ -43,6 +43,7 @@ function StudentList({returnSelectedUser, alert, liveStuds}) {
         }
     }
  }, [alert, liveStuds]);
+ //hook called when alert or liveStuds changes.
  
 /* Contains the list of chat sessions and the 'Everyone' chat session.
 * Represent the chat sessions as:

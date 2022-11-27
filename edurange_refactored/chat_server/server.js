@@ -80,8 +80,7 @@ io.on('connection', socket => {
     console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
   }
   
-  
-  
+
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
       prevChat = masterListChats[socket.uid].messages;
