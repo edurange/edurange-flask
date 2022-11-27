@@ -22,6 +22,7 @@ let studentList = [];
 
 function InstructorView() {
     const [selectedStudent, setSelectedStudent] = useState();
+    const [liveStuds, setLiveStuds] = useState();
     const [newMessage, setNewMessage] = useState(null);
     const [alert, setAlert] = useState();
    
@@ -41,7 +42,6 @@ function InstructorView() {
   });
 
   for(let i in usernameList) {
-    console.log(`i ${i}`)
     let name = usernameList[i];
     let userID = (parseInt(i)+1).toString();
     let empty = []
@@ -50,7 +50,6 @@ function InstructorView() {
       id: name,
       messages: empty
     });
-    console.log(`i ${i} JSONstudentList ${JSON.stringify(studentList[i])}`)
   }
 
   socket.on("instructor session retrieval", (instructorPrevChat) => {
@@ -59,16 +58,12 @@ function InstructorView() {
         let previousChat = (instructorPrevChat[i] && instructorPrevChat[i].messages) ?
                         instructorPrevChat[i].messages :
                         [];
-        //console.log(`studentList[parseInt(i)-2] ${JSON.stringify(studentList[parseInt(i)-2])}`)
         studentList[parseInt(i)-2].messages = previousChat;
-        
-        //console.log(`studentList[parseInt(i)-2] ${JSON.stringify(studentList[parseInt(i)-2])}`)
       }
     }
   });
 
   socket.on("new message", ({messageContents, _to, _from, room}) => {
-    //console.log(`request message recieved : ${messageContents} to ${_to} from ${_from}`)
     let newMessage = {
       contents: messageContents,
       to: _to,
@@ -80,6 +75,10 @@ function InstructorView() {
     student.messages = tmpMessages;
     
     setNewMessage(newMessage); // changing the value of some state forces the component to update
+  });
+
+  socket.on("live students", (masterLiveStuds) => {
+    setLiveStuds(masterLiveStuds);
   });
 
    return () => {
@@ -98,16 +97,11 @@ function InstructorView() {
         _to: selectedStudent["uid"],
         _from: "000",
       });
-    } else if (chatInput && !selectedStudent) {
-      console.log("chatInput data, no selectedStudent");
     }
   };
   
   // this handler function is passed to student list
   const returnSelectedUser = (displayName) => {
-    console.log("Instructor view: Selected student" + JSON.stringify(displayName));
-    console.log("Student List to select students:");
-    console.log(JSON.stringify(studentList))
     setSelectedStudent(studentList.find(student => student.id == displayName));
   };
 
@@ -116,6 +110,7 @@ function InstructorView() {
                 <StudentList
                     returnSelectedUser={returnSelectedUser}
                     alert={alert}
+                    liveStuds={liveStuds}
                 />
                 <ChatWindow 
                     handleClick={handleClick} 

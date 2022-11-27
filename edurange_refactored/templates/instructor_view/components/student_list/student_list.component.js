@@ -12,7 +12,7 @@ import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.js
 var i = 0;
  
 /* list of dummy events */
-function StudentList({returnSelectedUser, alert}) {
+function StudentList({returnSelectedUser, alert, liveStuds}) {
     
    const initStuds = ["Marco","Mary","Zebra",];
    const [selectedStudent, setSelectedStudent] = useState();
@@ -31,7 +31,18 @@ function StudentList({returnSelectedUser, alert}) {
     if(alert) {
         handleEvent(alert);
     }
- }, [alert]);
+
+    if(liveStuds) {
+        let iter = 0;
+        let liveStudUser;
+        for(let i in liveStuds) {
+            liveStudUser = Object.values(usernameList)[iter]
+            if(liveStuds[i].live) 
+                newLive(liveStudUser)
+            iter++;
+        }
+    }
+ }, [alert, liveStuds]);
  
 /* Contains the list of chat sessions and the 'Everyone' chat session.
 * Represent the chat sessions as:

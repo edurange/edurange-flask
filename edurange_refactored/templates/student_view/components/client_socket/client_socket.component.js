@@ -34,6 +34,12 @@ function ClientSocket(props) {
       setMessages(newMessages);
     });
 
+    /*
+    socket.on("instructor connected", () => {
+      socket.emit("student live");
+    })
+    */
+
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();

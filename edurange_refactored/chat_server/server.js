@@ -7,6 +7,7 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+//const chat_post = require("contents.py");
 
 app.use(cors());
 
@@ -24,6 +25,7 @@ fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, 
 
 //dictionary of chat sessions
 let masterListChats = {};
+let masterLiveStuds = {};
 
 // create new instance of { Server } class
 const io = new Server(server, {
@@ -62,13 +64,25 @@ io.on('connection', socket => {
       masterListChats[x_uid] = {
         messages: [],
       }
-      console.log(JSON.stringify(masterListChats))
     }
+
+    if(!masterLiveStuds[x_uid] || !masterLiveStuds[x_uid].live)  {
+      masterLiveStuds[x_uid] = {
+        live: false,
+      }
+    } else {
+      console.log("found previous" + masterLiveStuds[x_uid].live)
+    }
+  }
+
+  for(let i in studentList) {
+    let x_uid = (parseInt(i) + 1).toString();
+    console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
   }
   
   
+  
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
-    console.log(`masterListChats[socket.uid] = ${JSON.stringify(masterListChats[socket.uid])}`)
     if(socket.uid!="000") {
       prevChat = masterListChats[socket.uid].messages;
       socket.emit("student session retrieval",prevChat);
@@ -94,10 +108,11 @@ io.on('connection', socket => {
     for(let key in studentList) {
       socket.join(key);
     }
-    io.emit("instructor connected");
+    socket.emit("live students", masterLiveStuds);
   }
-  // Rooms Error Logging --> console.log(io.sockets.adapter.rooms); // servers rooms maps.
 
+  
+  //console.log(io.sockets.adapter.rooms);
 
     // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
@@ -120,21 +135,31 @@ io.on('connection', socket => {
   }
 
   //emit join alert.
+  if(socket.uid != "000") {
+    masterLiveStuds[socket.uid] = { live: true }
+  }
   trafficAlert("studJoin");
 
   //var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
-    
+
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
-    console.log(JSON.stringify(masterListChats))
+    
     masterListChats[room].messages.push({               
       contents: messageContents,
       from: _from,
         to: _to,
     });
 
+   const intFrom = parseInt(_from);
+   const intTo = parseInt(_to);
+
+   // #chat_post.createPost(intFrom, intTo, messageContents);
+
     msg_list = masterListChats[socket.uid].messages;
+
+
     // student messages alert instructor
     if(_from!=="000") {
       msg_list = masterListChats[socket.uid].messages;
@@ -147,6 +172,8 @@ io.on('connection', socket => {
     trafficAlert("studLeave");
     if(socket.uid=="000") {
       io.emit("instructor disconnected");
+    } else {
+      masterLiveStuds[socket.uid] = { live: false }
     }
   });
 
