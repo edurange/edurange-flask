@@ -1,15 +1,38 @@
-/* .edu-reading {
-  text-align: center;
-  margin: 1rem 0;
-  border: 1px solid black;
-  border-radius: 3px;
-} */
-
 .edu-reading {
   display: flex;
   flex-direction: column;
-  flex: 1 0 75%;
   padding: 1rem;
-  margin: 1rem;
+  margin: 1rem 0;
+  margin-right: 1rem;
   box-shadow: 1px 2px 5px 1px lightgray;
+  background-color: white;
+  border-radius: 5px;
+} 
+
+.edu-reading h2 { 
+  padding-bottom: .6rem;
+  margin-bottom: 1.33rem;
+  border-bottom: 1px rgb(225, 225, 225) solid;
+}
+
+code {
+  background-color: #f2f2f2;
+  font-family: 'IBM Plex Mono';
+  color: rgba(200, 25, 200);
+  font-size: 90%;
+  border-radius: 3px;
+  padding: 0 .1rem;
+}
+
+pre {
+  background-color: rgb(68, 68, 68);
+  border-radius: .5rem;
+  padding: .5rem 0;
+  padding-left: 1rem;
+  border: 5px solid darkgrey;
+}
+
+pre code {
+  background-color: initial;
+  color: rgba(122, 227, 122);
 }

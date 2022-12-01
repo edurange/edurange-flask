@@ -40,7 +40,7 @@ from ..role_utils import (
     user_is_admin,
     user_is_instructor
 )
-from ..scenario_utils import identify_state, identify_type, populate_catalog
+from ..scenario_utils import gen_chat_names, identify_state, identify_type, populate_catalog
 from ..tasks import CreateScenarioTask
 from ..utils import (
     check_role_view,
@@ -299,22 +299,25 @@ def student_scenario(i):
                 example = -1
 
                 return render_template(
-                    "dashboard/student_scenario.html",
-                    id=i,
+                    # "dashboard/student_scenario.html",
+                    # id=i,
+                    # owner=owner,
+                    # desc=desc,
+                    # s_type=s_type,
+                    # s_name=s_name,
+                    # guide=guide,
+                    # questions=questions,
+                    # srF=scenarioResponder,
+                    # aList=aList,
+                    # progress=progress,
+                    # example=example
+                    "dashboard/student_scenario_new.html",
+                    uid = uid,
+                    add=addresses,
                     status=status,
-                    owner=owner,
-                    desc=desc,
-                    s_type=s_type,
-                    s_name=s_name,
                     u_name=u_name,
                     pw=pw,
-                    add=addresses,
-                    guide=guide,
-                    questions=questions,
-                    srF=scenarioResponder,
-                    aList=aList,
-                    progress=progress,
-                    example=example
+                    scenario_id=i,
                 )
 
             # POST request
@@ -391,7 +394,15 @@ def make_scenario():
 
         # s_id, g_id = s_id._asdict(), g_id._asdict()
 
-        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list)
+        gid = g_id["id"]
+        student_ids = db_ses\
+                    .query(GroupUsers.id)\
+                    .filter(GroupUsers.group_id == gid)\
+                    .all()
+
+        namedict = gen_chat_names(student_ids, s_id_list)
+
+        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list, namedict)
         flash(
             "Success! Your scenario will appear shortly. This page will automatically update. " \
             f"Students found: {students}",

@@ -50,9 +50,9 @@
             <div class="card-header" id="headingInstructors">
                 <div class="row">
                     <h5 class="mb-0">
-                        <h2> <i class="fa fa-user"></i> All Instructors
+                        <h2> <i class="fa-solid fa-user"></i> All Instructors
                             <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseInstructors" aria-expanded="false" aria-controls="collapseInstructors">
-                                <i class="fa fa-caret-down"></i>
+                                <i class="fa-solid fa-caret-down"></i>
                             </button> </h2>
                     </h5>
                 </div>
@@ -90,9 +90,9 @@
         <div class="card mb-2 mt-2" id="beforeUsers"> <!--user table collapse-->
             <div class="card-header container-fluid p-4" id="headingUsers">
                 <div class="row">
-                    <h2> <i class="fa fa-user"></i> Manage Students
+                    <h2> <i class="fa-solid fa-user"></i> Manage Students
                         <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                            <i class="fa fa-caret-down"></i>
+                            <i class="fa-solid fa-caret-down"></i>
                         </button>
                     </h2>
                     <!--<div class="col-sm my-auto text-right" id="stuCount"> Count: {{ student_count }} </div>-->
@@ -120,9 +120,9 @@
 
                             <div class="col-sm-4 btn-group-vertical float-right">
                                 <button name="add" class="btn btn-dark user-button float-right mb-3" type="submit" value="true">
-                                    <i class="fa fa-plus"></i>Add <i class="selCount"></i> Students to Group</button>
+                                    <i class="fa-solid fa-plus"></i>Add <i class="selCount"></i> Students to Group</button>
                                 <button name="add" class="btn btn-dark user-button float-right mb-2" type="submit" value="false">
-                                    <i class="fa fa-minus"></i>Remove <i class="selCount"></i> Students from Group</button>
+                                    <i class="fa-solid fa-minus"></i>Remove <i class="selCount"></i> Students from Group</button>
                             </div>
                         </div>
                         <input class="form-control mb-3" name="uids" type="text" id="selection" placeholder="User ID's..">
@@ -155,10 +155,10 @@
 
         <div class="card mb-2 mt-2" id="groupStart"> <!-- groups table collapse -->
             <div class="card-header d-inline-flex" id="headingGroups">
-                <h2><i class="fa fa-user"></i> All Groups
+                <h2><i class="fa-solid fa-user"></i> All Groups
                     <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse"
                             data-target="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
-                        <i class="fa fa-caret-down"></i>
+                        <i class="fa-solid fa-caret-down"></i>
                     </button>
                 </h2>
             </div>
@@ -398,7 +398,7 @@
 
                 for (let i = 0; i < ids.length; i++) { // iterate over ids
                     $('#studentTable tr[id="' + ids[i] + '"] td:last-child').append(
-                        '<span class="in-group"><i class="fa fa-check" aria-hidden="true"></i>  In Group </span>'
+                        '<span class="in-group"><i class="fa-solid fa-check" aria-hidden="true"></i>  In Group </span>'
                     ); // append 'in group' indicator to the 'select' column in row whose id matches the current id
                 }
                 $("#groupPop").text($("#" + tableID + "_size").text() + " in group");

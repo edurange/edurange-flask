@@ -10,6 +10,7 @@ import sys, re
 from yaml import load, Loader
 from os import path
 import argparse
+import markdown
 
 def parse(guide_filename: str, questions_filename: str, out_filepath: str):
     """
@@ -72,27 +73,30 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                 order_l, \
                 has_non_blank_line
         if len(reading) > 0: 
-            reading_title = f"Reading{ridx+1}"
-            reading_filename = f"{reading_title}.md"
-            readings[reading_title] = reading_filename
-            order_l.append(reading_title)
-            with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
-                readingp.writelines(reading)
+            # render markdown to html and 
+            # reading_title = f"Reading{ridx+1}"
+            # reading_filename = f"{reading_title}.md"
+            readings[str(ridx+1)] = markdown.markdown(''.join(reading), extensions=['markdown.extensions.fenced_code'])# replace with html reading_filename
+            # order_l.append(reading_title)
+            order_l.append(['r', str(ridx + 1)])
+            # with open(path.join(out_filepath,"readings", f"{reading_title}.md"), 'w') as readingp:
+            #     readingp.writelines(reading)
             reading=[]
             ridx += 1
             has_non_blank_line = False
     
     def add_question():
         nonlocal qidx, questions, order_l
-        question_title = f"Question{qidx+1}"
-        questions[question_title] = questions_yaml[qidx]
-        order_l.append(question_title)
+        # question_title = f"Question{qidx+1}"
+        questions[str(qidx+1)] = questions_yaml[qidx]
+        # order_l.append(question_title)
+        order_l.append(['q', str(qidx + 1)])
         qidx += 1
 
 
     # Parse sections
     with open(guide_filename, 'r') as fp:
-        # Assume first line looks like this "# Guide Title"
+        #Assume first line looks like this "# Guide Title"
         guide_title = fp.readline().split("# ")[1].strip()
         contents["ScenarioTitle"] = guide_title
 
@@ -107,6 +111,7 @@ def parse(guide_filename: str, questions_filename: str, out_filepath: str):
                     add_reading()
                     add_section()
 
+                reading.append(line)
                 section_title = line[next_match.end():].strip()
                 secidx += 1
                 section_count = secidx 
@@ -162,7 +167,7 @@ def main():
     
     prod_path = args.prod_path[0]
 
-    guide_filepath = path.join(prod_path, 'guide_interleaved.md')
+    guide_filepath = path.join(prod_path, 'guide.md')
     questions_filepath = path.join(prod_path, 'questions.yml')
     out_filepath = path.join(prod_path, 'student_view')
 

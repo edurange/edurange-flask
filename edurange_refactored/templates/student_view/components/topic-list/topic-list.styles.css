@@ -1,35 +1,70 @@
 .edu-topic-list {
   margin-right: .5rem;
-  border-right: 2px solid #ccc;
+  margin-left: .5rem;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
   overflow: hidden;
   flex: 0 1 25%;
+  max-width: 250px;
+  min-width: 175px;
+  font-family: 'Open Sans';
+  overflow: scroll;
+  padding-right: .5rem;
+  padding-left: .5rem;
 }
 
 .edu-topic-list ul {
   list-style: none;
   padding: 0;
+  margin-top: .1rem;
+  flex: 0 1 95%;
 }
 
 .edu-topic-list ul li {
-  padding: .5rem 0;
+  padding-bottom: .75rem;
 }
 
-.edu-topic-list ul li a {
+#topic {
   text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-bottom: 5px;
-  height: 2rem;
-  width: 30rem;
-  border: 1px solid grey;
-  color: black;
+  justify-content: flex-start;
+  min-height: 4rem;
   transition-duration: .3s;
+  border-radius: 5px;
+  border: 1px rgba(46, 149, 102, .3) solid;
+  background-color: #f8f9fa;
+  color: #555;
+  box-shadow: 1px 1px 2px #2e9566;
 }
 
-.edu-topic-list ul li a:hover, .navbar ul li a:focus {
-  background-color: black;
+#topic:hover, #topic:focus {
+  background-color: #2e9566;
+  color: white !important;
+  box-shadow: initial;
+  cursor: pointer;
+}
+
+#topic-current {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 4rem;
+  transition-duration: .3s;
+  border-radius: 5px;
+  border: 1px rgba(46, 149, 102, .3) solid;
+  background-color: #2e9566;
   color: white;
+  box-shadow: initial;
+}
+
+#topic-current:hover, #topic-current:focus {
+  cursor: pointer;
+}
+
+#topicNumber {
+  margin: 0 .75rem;
+  font-weight: bolder;
 }

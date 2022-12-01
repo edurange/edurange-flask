@@ -22,6 +22,8 @@ Steps:
 
 2. Answer question 1 in EDURange.
 
+<question 1>
+
 ---
 
 ## Task 2
@@ -36,6 +38,8 @@ Steps:
 
 2. Answer question 2 in EDURange.
 
+<question 2>
+
 ---
 
 ## Task 3
@@ -48,6 +52,7 @@ Steps:
 
 2. Answer question 3 in EDURange.
 
+<question 3>
 ---
 
 ## Task 4
@@ -64,9 +69,13 @@ Anything in square brackets is optional. In this case, we can use `ls` along wit
 
 3. Answer question 4 in EDURange.
 
+<question 4>
+
 4. Try this command with the option you found. Don’t forget to include the `-` or `--`! You can immediately tell whether the item is a file or a directory by the very first character provided in the output. Files are denoted by a `-` and directories are denoted by a `d`.
 
 5. Answer question 5 in EDURange.
+
+<question 5>
 
 ---
 
@@ -82,6 +91,7 @@ Steps:
 
 2. Answer question 6 in EDURange.
 
+<question 6>
 ---
 
 ## Task 6
@@ -96,9 +106,13 @@ Steps:
 
 3. Answer question 7 in EDURange.
 
+<question 7>
+
 4. Try this command with the option you found. You should see any hidden files or folders (those beginning with a `'.'`).
 
 5. Answer question 8 in EDURange.
+
+<question 8>
 
 ---
 
@@ -118,6 +132,8 @@ Steps:
 
 3. Answer question 9 in EDURange.
 
+<question 9>
+
 ---
 
 ## Task 8
@@ -129,6 +145,8 @@ Steps:
 1. Type this chained command now. You should now see all files and folders, including those that are hidden, and all of the details about them.
 
 2. Answer question 10 in EDURange.
+
+<question 10>
 
 ---
 
@@ -153,6 +171,8 @@ Steps:
 4. Type the following into the prompt for the flag: `sudo manflag`
 
 5. Answer question 11 in EDURange.
+
+<question 11>
 
 6. Go back to your home directory, and then go to the permissions directory.
 
@@ -193,6 +213,8 @@ Steps:
 5. Type the following into the terminal for the flag: `sudo perflag`
 
 6. Answer question 12 in EDURange.
+
+<question 12>
 
 Exercise Complete!
 

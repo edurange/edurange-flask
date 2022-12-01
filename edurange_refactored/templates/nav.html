@@ -5,7 +5,7 @@
             class="btn btn-light"
             data-toggle="sidenav"
             data-target="#edu-sidenav">
-            <i class="fa fa-bars"></i>
+            <i class="fa-solid fa-bars"></i>
         </button>
         #}
             <button id="edu-sidenav-toggler" 
@@ -16,15 +16,15 @@
                 aria-haspopup="true"
                 aria-expanded="false" 
             >
-            <i class="fa fa-bars fa-lg"></i>
+            <i class="fa-solid fa-bars fa-lg"></i>
             </button>
     <!-- </div> -->
 
     {# old sidebar button
     <button id="toggleSidebar" class="btn btn-light btn-primary mr-auto" type="button">
-        <i class="fa fa-bars"></i>
+        <i class="fa-solid fa-bars"></i>
          <a class="navbar-brand mr-auto" style="margin-left: 10px;" href="{{ url_for('public.home') }}"> 
-            EDURange<i class="fa fa-tree"></i>
+            EDURange<i class="fa-solid fa-tree"></i>
         </a> 
     </button>
     #}
@@ -45,7 +45,7 @@
     <div class="connection-details mx-auto order-0">
         <div class="dropdown" style="margin-left: 10px;">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-terminal"></i>
+                <i class="fa-solid fa-terminal"></i>
                 <span>Connection Details</span>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="center-aligned-dropdown-menu">
@@ -72,17 +72,21 @@
                             </button>
                         {% else %}
 
+                            <script>function showSSHConsole() {
+                                window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                            }
+                            </script>
 
                             <span class="dropdown-item"><b>Username:</b> {{ u_name }}</span>
                             <span class="dropdown-item" href="#"><b>Password:</b> {{ pw }}</span>
                             <span class="dropdown-item" href="#"><b>Port:</b>     {{ add[container][add[container].index(':') + 1:] }}</span>
                             <div class="dropdown-divider"></div>
                             <button class="btn dropdown-item" id="copySSH">
-                                Copy SSH Command      <i class="fa fa-clipboard"></i>
+                                Copy SSH Command      <i class="fa-solid fa-clipboard"></i>
                             </button> <!-- TODO clipboard logo -->
                             <div class="dropdown-divider"></div>
                             <button class="btn dropdown-item" id="openWebSSH" onClick="showSSHConsole()">
-                                Launch SSH in Browser <i class="fa fa-terminal"></i>
+                                Launch SSH in Browser <i class="fa-solid fa-terminal"></i>
                             </button> <!-- TODO new tab logo -->
                         {% endif %}
                     {% endif %}
@@ -141,13 +145,13 @@
             <li class="nav-item dropdown active">
                 {#<a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown" style="text-align: center;">#}
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-user"></i>
+                    <i class="fa-solid fa-user"></i>
                     <span>Logged in as {{ current_user.username }}</span>
                 {#</a>#}
                 </button>
                 <div class="dropdown-menu  dropdown-menu-right position-absolute">
                     <a class="dropdown-item" href="{{ url_for('dashboard.account') }}">
-                        <i class="fa fa-address-card-o" aria-hidden="true"></i> Manage Account
+                        <i class="fa-regular fa-address-card" aria-hidden="true"></i> Manage Account
                     </a>
                     <div class="dropdown-divider"></div>
                     {% if nav['views'] is not none %}
@@ -157,7 +161,7 @@
                     <div class="dropdown-divider"></div>
                     {% endif %}
                     <a class="dropdown-item" href="{{ url_for('public.logout') }}">
-                        <i class="fa fa-sign-out"></i> Logout
+                        <i class="fa-solid fa-sign-out"></i> Logout
                     </a>
                 </div>
             </li>

@@ -1,3 +1,4 @@
+## Commands 
 What is a command? Commands are executable programs that you can call from your command-line terminal. The most common place to look for bash commands is in the `/bin` folder. Let's get started right away and use two different commands.
 
 ### cd

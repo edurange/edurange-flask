@@ -1,27 +1,53 @@
-.edu-chatbox {
-  font-size: 75%;
+.edu-chatbox-closed {
+  font-weight: 200;
+  color: whitesmoke;
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  background-color: rgba(255, 255, 0, .66);
-  border-radius: 100%;
-  width: 5rem;
-  height: 5rem;
-  display: flex;
-  align-items: center;
-  box-shadow: 3px 3px 7px grey;
-  color: black;
-}
-
-.edu-chatbox:hover, .chatbox:focus {
-  background-color: rgba(255, 255, 0, 1);
-  width: 6rem;
-  height: 6rem;
-  font-size: 90%;
-}
-
-.edu-chatbox p {
+  bottom: 4rem;
+  right: 4rem;
+  overflow: hidden;
   text-align: center;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #33b077;
+  border-radius: 1rem 1rem 0 0;
+  width: 23rem;
+  height: 5rem;
+}
+
+.type_here {
+  display: none;
+  border: 1px black solid;
+  border-radius: .3rem;
+}
+
+.edu-chatbox-closed p {
   margin: 0;
+  padding: .2rem .5rem;
+}
+
+
+.edu-chatbox-open {
+  font-weight: 200;
+  position: fixed;
+  bottom: 4rem;
+  right: 4rem;
+  overflow: hidden;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  border: 2px whitesmoke solid;
+  background-color: whitesmoke;
+  border-radius: .3rem;
+  width:23rem;
+  height: 20rem;
+}
+
+.edu-chatbox-open p {
+  margin: 0;
+  padding: .2rem .5rem;
+}
+
+.edu-chatbox-open .type_here {
+  margin-top: auto;
+  display: block;
 }

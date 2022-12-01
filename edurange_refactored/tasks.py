@@ -91,7 +91,7 @@ def test_send_async_email(email_data):
 
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
+def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
     ''' self is the task instance, other arguments are the results of database queries '''
     from edurange_refactored.user.models import ScenarioGroups, Scenarios
 
@@ -136,6 +136,10 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id):
 
         with open("students.json", "w") as outfile:
             json.dump(students, outfile)
+
+        # create file of chat names for the scenario
+        with open(f"../chatnames.json", "w") as chatnamefile:
+           json.dump(namedict, chatnamefile)
 
         questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
         content = open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")

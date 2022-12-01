@@ -2,6 +2,8 @@ import os
 
 from flask import flash, request, session, current_app
 from flask_login import current_user
+import time
+import json
 
 from edurange_refactored.extensions import db
 from edurange_refactored.user.forms import (
@@ -15,7 +17,7 @@ from edurange_refactored.user.forms import (
 )
 
 from . import tasks
-from .user.models import GroupUsers, StudentGroups, User, Responses, ScenarioGroups
+from .user.models import GroupUsers, Scenarios, StudentGroups, User, Responses, ScenarioGroups
 from .user.models import generate_registration_code as grc
 from .utils import flash_errors, checkAnswer, getAttempt
 from edurange_refactored.notification_utils import NotifyClear
@@ -46,7 +48,7 @@ def process_request(form):
         case ["clearButton"]:                       
             return process_notifyEmpty()
         case _:
-            raise Exception('No matching form.')
+            raise Exception(f'No matching form. {form}')
 
 
 
@@ -192,18 +194,35 @@ def process_scenarioResponse():
         sid = sR.scenario.data
         qnum = int(sR.question.data)
         resp = sR.response.data
+        scenario = db.session.query(Scenarios.name).filter(Scenarios.id == sid).first()
         uid = current_user.id
         # answer checking function in utils
-        score = checkAnswer(qnum, sid, resp, uid)
+        score = checkAnswer(scenario, qnum, sid, resp, uid)
         # get attempt number
         att = getAttempt(sid)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
-        if score > 0:
-            flash("A CORRECT answer was given for question {0}.".format(qnum))
-            return 'utils/student_answer_response.html', score
+
+        # Add response line to log file 
+        logfilename = f"logs/{scenario[0]}_responses.json"
+        if not os.path.exists(logfilename):
+            jsonarray = []
         else:
-            flash("An INCORRECT answer was given for question {0}.".format(qnum))
-            return 'utils/student_answer_response.html', score
+            with open(logfilename, "r") as fp:
+                jsonarray = json.load(fp)
+
+        d = dict()
+        d["uid"] = uid
+        d["sid"] = sid
+        d["qnum"] = qnum
+        d["resp"] = resp
+        d["score"] = score
+        d["att"] = att
+        d["time"] = int(time.time())
+        jsonarray.append(d)
+        with open(logfilename, "w") as fp:
+            json.dump(jsonarray, fp)
+
+        return 'utils/student_answer_response.html', score
     else:
         flash_errors(sR)
         return False

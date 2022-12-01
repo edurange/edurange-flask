@@ -12,7 +12,7 @@ users who are both determined and clever.
 Your goal is to collect the contents of as many of the
 sixteen secret files as you can.
 
- ---
+
 
 ### Background
 There are often multiple users on the same system or network. Given this case, how does a
@@ -41,7 +41,7 @@ Web Server. It is used for many things but here it is only used from user author
 should be able to figure it out when you come across it. If not, a simple web search will help you
 out again.
 
- --- 
+  
 ### Learning Objectives
 Know the difference between read, write, and execute permissions and how this affects
 directories and files U
@@ -80,7 +80,7 @@ Once logged in, it is your goal to find the secrets of the following 16 fake use
 * Quinn Sanera (qsanera)
 * Tudor Daforth (tdaforth)
 
----
+
 #### Important Disclaimer:
 Accessing some secret files will require that you make changes to certain files/directories in the
 accounts of the fake users. Once you determine the secret, be sure to undo any changes that
@@ -96,7 +96,7 @@ system (e.g. deletes all files in the /tmp directory).
 
 Executing this command should solve all reseting issues; if it does not, please let us know. By calling resetFakeUsers frequently, you
 could cause a denial of service attack against your classmates; please do not do this!
- ---
+ 
 ### User Secrets
 Each secret is contained somewhere in that user's home directory. All fake users belong to a
 group named student, a fact that is important for some of the attacks. There are other significant
@@ -106,7 +106,7 @@ There is no strict sequential order for finding the secrets, though some you wil
 get after gaining access to another user's account. Password cracking is a great place to start.
 We will walk you through that below.
 
---- 
+ 
 ### Password Cracking:
 
 For password cracking download [John the Ripper](http:/Awww.openwall.com/john/) onto a
@@ -179,3 +179,22 @@ page for specific instructions.
   with the following command - export PATH= dir :$PATH (e.g. ‘export PATH=/tmp/:$PATH’)
   
 - The strings command could be helpful for some secrets. As well as a hex viewer.
+
+## Excercises
+
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>
+<question>

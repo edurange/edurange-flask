@@ -46,7 +46,7 @@
                                 <!-- <p> &nbsp;&nbsp;&nbsp; {{ container }} : {{ add[container] }}</p> -->
                         <p style="margin-top: -10px;"><b>SSH Command: </b>
                             <textarea cols="45" rows="1" id="sshCmd" readonly="readonly" style="overflow: auto;resize: none;position:relative;top:10px;">ssh root@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}</textarea>
-                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa fa-clipboard"></i>Copy</button>
+                            <button class="btn btn-dark ml-2" id="copySSH"><i class="fa-solid fa-clipboard"></i>Copy</button>
                         </p>
                                 <p><b>Password:</b> Check the .env file for your root password.</p>
                                 {% endif %}
@@ -78,9 +78,9 @@
                         <div class="card-header" id="headingResponses">
                             <div class="row">
                                 <h5 class="mb-0">
-                                    <h2> <i class="fa fa-user"></i> Student Responses
+                                    <h2> <i class="fa-solid fa-user"></i> Student Responses
                                         <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseResponses" aria-expanded="false" aria-controls="collapseResponses">
-                                            <i class="fa fa-caret-down"></i>
+                                            <i class="fa-solid fa-caret-down"></i>
                                         </button> </h2>
                                 </h5>
                             </div>
@@ -153,8 +153,8 @@
                         <div class="card-header" id="headingCmdHist">
                             <div class="row">
                                 <h5 class="mb-0">
-                                    <h2> <i class="fa fa-code"></i> Command History <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseCmdHist" aria-expanded="false" aria-controls="collapseCmdHist">
-                                        <i class="fa fa-caret-down"></i>
+                                    <h2> <i class="fa-solid fa-code"></i> Command History <button class="btn btn-dark btn-sm ml-2 " type="button" data-toggle="collapse" data-target="#collapseCmdHist" aria-expanded="false" aria-controls="collapseCmdHist">
+                                        <i class="fa-solid fa-caret-down"></i>
                                     </button> </h2>
                                     <h2 class="ml-auto pr-1"> Player: <span id="chosenPlayer">None</span></h2>
                                 </h5>

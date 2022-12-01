@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='build/instructor_view.bundle.css') }}"
+    />
+<main class="instructor">
+    <div id="instructor_view">
+</div>
+</main>
+
+{% endblock %}
+
+{% block  js %}
+<!-- development React scripts !!Replace with production scripts (below) for release!! -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<!-- production React scripts -->
+<!-- <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
+
+<script src="/static/build/instructor_view.bundle.js"></script>
+{% endblock %}

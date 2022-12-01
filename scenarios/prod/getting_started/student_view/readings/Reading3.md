@@ -1,3 +1,4 @@
+## Linux File System
 ### Hierarchy
 
 Linux folders and files are arranged like an upside down tree, where the slash `/` is called the root node, or beginning, of all your files in the entire computer. The root is the base of the tree and as you go down it keeps splitting into branches and leaves. The leaves would be a file and the branches are folders. This means that if you want to search the entire file system, you need to start at `/`

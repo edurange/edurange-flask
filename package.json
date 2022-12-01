@@ -4,7 +4,7 @@
   "description": "EDURange",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p && npm run flask-static-digest",
-    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG\" \"celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555\" \"node webssh2/app/index.js\"",
+    "start": "concurrently -n \"WEBPACK,FLASK,CELERY,FLOWER,WEBSSH,CHATSERVER\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold,bgYellow.bold\" \"npm run webpack-watch\" \"npm run flask-server\" \"celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG\" \"celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555\" \"node webssh2/app/index.js\" \"node edurange_refactored/chat_server/server.js\"",
     "webpack-watch": "NODE_ENV=debug webpack --mode development --watch",
     "flask-server": "flask run --host=0.0.0.0",
     "flask-static-digest": "flask digest compile",
@@ -19,24 +19,33 @@
   "engines": {
     "node": ">=12"
   },
+  "browser": {
+    "fs": false
+  },
   "bugs": {
     "url": "https://github.com/coojac09/edurange_refactored/issues"
   },
   "homepage": "https://github.com/coojac09/edurange_refactored#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-free": "^6.1.2",
     "bootstrap": "^4.5.3",
     "cidr-matcher": "^2.1.1",
+    "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "font-awesome": "^4.7.0",
+    "fs": "^0.0.1-security",
     "jquery": "^3.5.1",
     "jsx": "^0.9.89",
     "morgan": "^1.10.0",
+    "path": "^0.12.7",
     "popper.js": "^1.15.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "redis": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "socket.io": "^3.0.5",
+    "socket.io-client": "^4.5.2",
     "ssh2": "^0.8.9",
     "validator": "^13.5.2"
   },
@@ -59,6 +68,7 @@
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.9.0",
+    "nodemon": "^2.0.19",
     "npm": "^7.0.10",
     "raw-loader": "^4.0.2",
     "url-loader": "^3.0.0",

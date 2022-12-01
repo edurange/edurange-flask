@@ -105,7 +105,7 @@ def create_link(route, icon, text):
     #             <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
     #           </a>'''
     html = '''<a class href="{0}">
-                <i class="fa {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
+                <i class="fa-solid {1}" aria-hidden="true"></i>&nbsp;&nbsp;{2}
               </a>'''
     html = html.format(url_for(route), icon, text)
 
@@ -282,7 +282,7 @@ def guideHelp4(sec, num):
     <div class="card-header" id="[HEADER_ID]">
         <div class="row">
             <h2> [SECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
-                <i class="fa fa-caret-down"></i> </button></h2>
+                <i class="fa-solid fa-caret-down"></i> </button></h2>
         </div>
     </div>
     <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#acc">
@@ -329,7 +329,7 @@ def guideHelp6(sec, num):
     <div class="card-header" id="[HEADER_ID]">
         <div class="row">
             <h3> [SUBSECTION_HEADER] <button class="btn btn-dark btn-sm ml-2" type="button" data-toggle="collapse" data-target="#[BODY_ID]" aria-expanded="false" aria-controls="[BODY_ID]">
-                <i class="fa fa-caret-down"></i> </button> </h3>
+                <i class="fa-solid fa-caret-down"></i> </button> </h3>
         </div>
     </div>
     <div id="[BODY_ID]" class="collapse" aria-labelledby="[HEADER_ID]" data-parent="#[SEC_ACC]">
@@ -421,9 +421,8 @@ def tempMaker(sId, i):
         return status, ownerName, description, ty, sName, username, pw, guide, questions
 
 
-def checkAnswer(qnum, sid, student_answer, uid):
+def checkAnswer(scenario, qnum, sid, student_answer, uid):
     """Check student answer matches correct one from YAML file."""
-    scenario = db.session.query(Scenarios.name).filter(Scenarios.id == sid).first()
     questions = questionReader(scenario[0])
 
     question = questions[qnum-1]
@@ -501,11 +500,14 @@ def getResponses(uid, att, query, questions):
 
 
 def responseSelector(resp):
-    responses = db.session.query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt).all()
+    return db.session\
+            .query(Responses.id, Responses.user_id, Responses.scenario_id, Responses.attempt)\
+            .filter_by(id=int(resp))\
+            .first().scalar_subquery()
 
-    for entry in responses:
-        if entry.id == int(resp):
-            return entry
+    # for entry in responses:
+    #     if entry.id == int(resp):
+    #         return entry
 
 # scoring functions used in functions such as queryPolish()
 # used as: scr = score(getScore(uid, att, query), questionReader(sName))
@@ -639,7 +641,7 @@ def setAttempt(sid):
 
 
 def getAttempt(sid):
-    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid)
+    return db.session.query(Scenarios.attempt).filter(Scenarios.id == sid).first()[0]
 
 
 def readScenario():
