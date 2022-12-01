@@ -41,6 +41,8 @@ function StudentList({returnSelectedUser, alert, liveStuds}) {
                 newLive(liveStudUser)
             iter++;
         }
+        let userKeys = Object.keys(usernameList)
+        console.log(JSON.stringify(userKeys))
     }
  }, [alert, liveStuds]);
  //hook called when alert or liveStuds changes.
