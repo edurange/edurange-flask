@@ -1,27 +1,27 @@
 .edu-chatbox-closed {
   font-weight: 200;
-  color: whitesmoke;
+  color: white;
   position: fixed;
-  bottom: 4rem;
-  right: 4rem;
+  bottom: 0;
+  right: 2rem;
   overflow: hidden;
+  padding: 0 .5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
-  background-color: #33b077;
+  background-color: #2e9566;
   border-radius: 1rem 1rem 0 0;
-  width: 23rem;
-  height: 5rem;
+  min-width: 25vw;
+  height: 1.9rem;
+  transition-duration: .5s;
 }
 
-.type_here {
-  display: none;
-  border: 1px black solid;
-  border-radius: .3rem;
+.edu-chatbox-closed:hover, .edu-chatbox-closed:focus {
+  height: 2.5rem;
 }
 
 .edu-chatbox-closed p {
-  margin: 0;
+  margin-bottom: 5rem;
   padding: .2rem .5rem;
 }
 
@@ -29,17 +29,19 @@
 .edu-chatbox-open {
   font-weight: 200;
   position: fixed;
-  bottom: 4rem;
-  right: 4rem;
+  bottom: 0;
+  right: 2rem;
   overflow: hidden;
-  text-align: left;
+  padding: 0 .5em;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  border: 2px whitesmoke solid;
   background-color: whitesmoke;
-  border-radius: .3rem;
-  width:23rem;
-  height: 20rem;
+  outline: 2px #2e9566 solid;
+  border-radius: 1rem 1rem 0 0;
+  min-width: 25vw;
+  height: 45vh;
+  transition-duration: .5s;
 }
 
 .edu-chatbox-open p {
@@ -47,7 +49,20 @@
   padding: .2rem .5rem;
 }
 
-.edu-chatbox-open .type_here {
+.ClientSocket {
   margin-top: auto;
-  display: block;
+}
+
+.chat-input-box {
+  margin-right: .2rem;
+  border: 1px grey solid;
+}
+
+.student_chat_send {
+  border: 1px solid #2e9566;
+  transition-duration: .3s;
+}
+
+.student_chat_send:hover, .student_chat_send:focus {
+  background-color: #2e9566
 }

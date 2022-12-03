@@ -94,7 +94,7 @@ function ClientSocket(props) {
               />
               <button
                 type="submit"
-                className="btn btn-outline-success"
+                className="btn btn-outline-success student_chat_send"
               >
               Send
               </button>
