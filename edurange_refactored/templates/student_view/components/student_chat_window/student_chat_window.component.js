@@ -13,7 +13,10 @@ function StudentChatWindow({messages, chat_opened}) {                    //Curre
     //const chat = React.createRef();   
     
     useEffect(()=>{
-        setDisplayMessages(messages)
+        console.log("Student Chat Windows :: messages now:: : " + JSON.stringify(messages));
+        if(messages) {
+            setDisplayMessages(messages)
+        }
      }, [messages]);                       //Input entry for chat
 
     function getMessagesContent() {

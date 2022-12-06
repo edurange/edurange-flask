@@ -57,6 +57,8 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
+  var stream = fs.createWriteStream("logs/chat_server_logs.csv", {flags:'a'});
+
 
   for(let i in studentList) {
     let x_uid = (parseInt(i) + 1).toString()
@@ -64,6 +66,7 @@ io.on('connection', socket => {
       masterListChats[x_uid] = {
         messages: [],
       }
+      let json = JSON.stringify(masterListChats[x_uid]);
     }
 
     if(!masterLiveStuds[x_uid] || !masterLiveStuds[x_uid].live)  {
@@ -71,15 +74,15 @@ io.on('connection', socket => {
         live: false,
       }
     } else {
-      console.log("found previous" + masterLiveStuds[x_uid].live)
+      //console.log("found previous" + masterLiveStuds[x_uid].live)
     }
   }
 
   for(let i in studentList) {
     let x_uid = (parseInt(i) + 1).toString();
-    console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
+    //console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
   }
-  
+
 
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
@@ -143,6 +146,8 @@ io.on('connection', socket => {
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
 
+
+
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     
     masterListChats[room].messages.push({               
@@ -151,8 +156,21 @@ io.on('connection', socket => {
         to: _to,
     });
 
+    let currTime = new Date().toISOString() // Ask Aubrey about date formatting for logging
+    /*fs.appendFile('./chat_server_logs.csv', `${messageContents}, ${_from}, ${_to}, ${currTime}`, (err) => {
+      if(err) {
+        console.log(err);
+      }
+    });*/
+
+    
+    stream.write(`${messageContents}, ${_from}, ${_to}, ${currTime}\n`);
+    //stream.end();
+
    const intFrom = parseInt(_from);
    const intTo = parseInt(_to);
+
+    
 
    // #chat_post.createPost(intFrom, intTo, messageContents);
 

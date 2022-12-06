@@ -13,6 +13,7 @@ socket.onAny((event, ...args) => {
 function ClientSocket(props) {
   const [inputData, setInputData] = useState("");
   const [messages, setMessages] = useState();
+  const [val, useVal] = useState(0); 
   
   useEffect(() => {
     const uid = props.uid;
@@ -31,7 +32,9 @@ function ClientSocket(props) {
         from: _from,
       };
       newMessages.push(newMessage);
+      console.log("new message! messages now:: : " + JSON.stringify(messages));
       setMessages(newMessages);
+      
     });
 
     /*
@@ -42,10 +45,18 @@ function ClientSocket(props) {
 
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
-        event.preventDefault();
+        
+        console.log("enter pressed! messages now : " + JSON.stringify(messages));
         if(inputData) {
+          setVal(val = val + 1); 
+         
+          /*
+          event.preventDefault();
           socket.emit("send message", {messageContents: inputData, _to: "000", _from: uid});
           setInputData("");
+          */
+         onFormSubmit(event);
+          
         }
       }
     };
@@ -58,7 +69,7 @@ function ClientSocket(props) {
       document.removeEventListener("keydown", listener);
     };
 
-  });
+  }, [messages]);
 
   const onChange = (e) => {
     setInputData(e.target.value);
@@ -75,6 +86,7 @@ function ClientSocket(props) {
   return (
     <div className="ClientSocket">
     <StudentChatWindow 
+    
       chat_opened={props.chat_opened}
       messages={messages}  
       />
