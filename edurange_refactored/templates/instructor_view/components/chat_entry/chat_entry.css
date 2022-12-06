@@ -19,7 +19,7 @@
 }
 
 .fromSelf, .fromOther {
-    width: 45%;
+    padding: 0 1rem;
     border-radius: .5rem;
 }
 
@@ -34,4 +34,10 @@
 #fromOther {
     align-self: flex-end;
     padding-right: .5rem;
+}
+
+.chat_input_area {
+    width: 100%;
+    margin-right: 1rem;
+    padding-left: .5rem;
 }

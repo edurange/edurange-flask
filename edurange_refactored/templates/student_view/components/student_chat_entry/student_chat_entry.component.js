@@ -23,19 +23,18 @@ function StudentChatEntry({message, fromSelf, user}) {
     const [_user, setUser] = useState(user)
 
     // determine value of message div className
-    const messageType = _fromSelf ? 'fromSelf' : 'fromOther'; 
-    const messageTypeClass = _fromSelf ? ' small p-2 me-3 mb-1 text-white rounded-3 bg-primary' : ' small p-2 ms-3 mb-1 rounded-3'; 
-    const messageTypeDiv = _fromSelf ? 'd-flex flex-row justify-content-end mb-4 pt-1' : 'd-flex flex-row justify-content-start mb-4'; 
-    const messageTypeUserInfo = _fromSelf? 'small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end' : 'small ms-3 mb-3 rounded-3 text-muted'
+    const messageType = _fromSelf ? 'student_from_other' : 'student_from_self'; 
+    const messageTypeClass = _fromSelf ? ' student_from_other_name' : ' student_from_self_name'; 
+    const messageTypeDiv = _fromSelf ? 'student_from_other_div' : 'student_from_self_div'; 
         
     return (
       <div className={messageTypeDiv}>
         
-        <div className={messageType + messageTypeUserInfo} id={messageType}>
+        <div className={messageTypeClass}>
           {_user}
         </div>
         
-        <div className={messageType + messageTypeClass}>
+        <div className={messageType}>
           {_message}
         </div>
       </div>

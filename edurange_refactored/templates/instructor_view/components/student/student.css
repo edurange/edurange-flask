@@ -2,7 +2,41 @@
     color: goldenrod;
 }
 
+#studentList {
+    padding-right: 1rem;
+}
+
+.list-group-item {
+    color: rgb(60, 125, 125);
+    background-color: rgb(215, 255, 255);
+    border-radius: .3rem;
+    margin-top: .2rem;
+    margin-bottom: .2rem;
+    box-shadow: 1px 1px 3px skyblue;
+    border: none
+}
+
+.list-group-item:hover, .list-group-item:focus {
+    color: rgb(60, 125, 125);
+    background-color: rgb(215, 255, 255);
+    box-shadow: inset 1px 1px 3px skyblue;
+    border: none;
+}
+
 .list-group-item-secondary {
-    color: #383d41;
-    background-color: green;
+    color: rgb(155, 55, 155);
+    background-color: rgb(185, 185, 205);
+    box-shadow: 1px 1px 3px rgb(185, 165, 185);
+}
+
+.list-group-item-secondary:hover, .list-group-item-secondary:focus {
+    color: rgb(155, 55, 155) !important;
+    background-color: rgb(215, 215, 245) !important;
+    box-shadow: inset 1px 1px 3px rgb(185, 165, 185) !important;
+    border: none;
+}
+
+.selected {
+    background-color: rgb(247, 236, 144);
+    color: rgb(216, 155, 0);
 }
