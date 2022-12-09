@@ -3,7 +3,7 @@ import { render } from "less";
 import studentStates from '../../states.json';
 import { useState, useEffect } from "react";
 import Student from '../student/student.component';
-import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.json'
+import usernameList from '../../../../../data/tmp/chatnames.json'
  
  
  

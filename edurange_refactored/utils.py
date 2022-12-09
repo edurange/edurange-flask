@@ -402,7 +402,7 @@ def tempMaker(sId, i):
     ty = db_ses.query(Scenarios.description).filter(Scenarios.id == sId).first()
     ty = ty[0]
     description = getDescription(ty)
-    guide = getGuide(ty)
+    guide = None #getGuide(ty)
     questions = getQuestions(ty)
 
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sId).first()

@@ -5,7 +5,7 @@ import "./instructor_view.css";
 
 import ChatWindow from "../chat_window/chat_window.component";
 import StudentList from "../student_list/student_list.component";
-import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.json'
+import usernameList from '../../../../../data/tmp/chatnames.json'
 
 import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect } from 'react';
