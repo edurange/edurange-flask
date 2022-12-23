@@ -179,4 +179,4 @@ def bug_report():
 @blueprint.route("/instructor_sees_all/")
 @login_required
 def instructor_sees_all():
-    return render_template("public/instructor_sees_all.html")
+    return render_template("public/instructor_sees_all.html", uid=current_user.id)

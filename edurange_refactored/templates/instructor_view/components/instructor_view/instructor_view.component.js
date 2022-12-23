@@ -20,16 +20,22 @@ socket.onAny((event, ...args) => {
  
 let studentList = [];
 
-function InstructorView() {
+function InstructorView(props) {
     const [selectedStudent, setSelectedStudent] = useState();
     const [liveStuds, setLiveStuds] = useState();
     const [newMessage, setNewMessage] = useState(null);
     const [alert, setAlert] = useState();
+    //const [instructID, setInstructID] = useState(uid);
    
  useEffect(() => {
+  console.log("props.uid : " + props.uid)
+  //console.log("uid : " + this.props.uid)
+  
   const uid = "000";
   socket.auth = { uid } // .auth : uid sent during client-request in TCP handshake.
   socket.connect();
+
+  
 
   socket.on('connect', () => {
     console.log("instructor has connected.");
@@ -123,4 +129,4 @@ function InstructorView() {
 var e = document.getElementById('instructor_view');
 const root=createRoot(e);
 
-root.render(<InstructorView />);
+root.render(<InstructorView uid={e.attributes.uid.value}/>);
