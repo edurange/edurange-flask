@@ -7,15 +7,26 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
-//const chat_post = require("contents.py");
-
 app.use(cors());
-
 // create server
 const server = http.createServer(app);
 
-// gathering student user ID / username list
-// used for sockets joining room
+// create new instance of { Server } class
+const io = new Server(server, {
+    // CORS = cross-origin resource sharin. Allows server-client communication.
+    cors: {
+        // accept communication with this port --- DarkSeth temp fix.
+        origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
+                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
+                  "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
+                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
+                ],
+        // accept these types of HTTP requests
+        methods: ["GET", "POST"],
+    },
+});
+
+// gathering student user ID / username list, used for sockets joining room
 const fs = require('fs');
 let studentList;
 fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
@@ -27,24 +38,6 @@ fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, 
 let masterListChats = {};
 let masterLiveStuds = {};
 
-// create new instance of { Server } class
-const io = new Server(server, {
-    // CORS = cross-origin resource sharing
-    // allows server-client communication 
-    cors: {
-        // accept communication with this port
-        // DarkSeth temp fix.
-        origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
-                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
-                  "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
-                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
-                ],
-
-        // accept these types of HTTP requests
-        methods: ["GET", "POST"],
-    },
-});
-
 //create middleware
 io.use((socket, next) => {
   const uid = socket.handshake.auth.uid;
@@ -55,10 +48,12 @@ io.use((socket, next) => {
   next();
 });
 
-
 io.on('connection', socket => {
-  var stream = fs.createWriteStream("logs/chat_server_logs.csv", {flags:'a'});
 
+    // Error handler for middleware.
+  socket.on("connect_error", err => {
+    console.log("Connnection Error: no user id.")
+  });
 
   for(let i in studentList) {
     let x_uid = (parseInt(i) + 1).toString()
@@ -73,17 +68,10 @@ io.on('connection', socket => {
       masterLiveStuds[x_uid] = {
         live: false,
       }
-    } else {
-      //console.log("found previous" + masterLiveStuds[x_uid].live)
     }
   }
 
-  for(let i in studentList) {
-    let x_uid = (parseInt(i) + 1).toString();
-    //console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
-  }
-
-
+  // if a masterListChat entry for the uid exists, emit it to socket. Otherwise, create an empty entry. 
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
       prevChat = masterListChats[socket.uid].messages;
@@ -93,14 +81,10 @@ io.on('connection', socket => {
       socket.emit("instructor session retrieval", instructorPrevChat);
     }
   } else {
-    masterListChats[socket.uid] = {
+    masterListChats[socket.uid] = { 
       messages: [],
     }
   }
-  // Error handler for middleware.
-  socket.on("connect_error", err => {
-    console.log("Connnection Error: no user id.")
-  });
 
   // Sockets join rooms immediately after connecting. 
   socket.join(socket.uid); //students join their own room. 
@@ -112,26 +96,20 @@ io.on('connection', socket => {
     }
     socket.emit("live students", masterLiveStuds);
   }
-
+  //console.log(io.sockets.adapter.rooms); // This line outputs all rooms and members for debugging. 
   
-  //console.log(io.sockets.adapter.rooms);
-
-    // Traffic Alerts: Join, Leave, Message.
+  // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
     let alertString = {};
-    // timestamp for event
-    alertTime = new Date().toISOString() 
-    .replace('T', ' ')
-    .replace('Z', '');
-    // Sockets belonging to students create alerts for instructor
-    if (socket.uid!=="000") {
+    alertTime = new Date().toISOString() .replace('T', ' ').replace('Z', ''); // timestamp for event
+    if (socket.uid!=="000") { // Sockets belonging to students create alerts for instructor
       alertString = {
         uid: socket.uid,
         username: studentList[socket.uid-1], // (the first user's database ID is "2")
         id: studentList[socket.uid-1],
         type:  alertType,
         time: alertTime,
-        };
+      };
     }
     socket.to("000").emit("alert", alertString);  //emit alert.
   }
@@ -142,40 +120,16 @@ io.on('connection', socket => {
   }
   trafficAlert("studJoin");
 
-  //var msg_list = [];
+
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
 
-
-
-    var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
-    
+  var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     masterListChats[room].messages.push({               
       contents: messageContents,
       from: _from,
         to: _to,
     });
-
-    let currTime = new Date().toISOString() // Ask Aubrey about date formatting for logging
-    /*fs.appendFile('./chat_server_logs.csv', `${messageContents}, ${_from}, ${_to}, ${currTime}`, (err) => {
-      if(err) {
-        console.log(err);
-      }
-    });*/
-
-    
-    stream.write(`${messageContents}, ${_from}, ${_to}, ${currTime}\n`);
-    //stream.end();
-
-   const intFrom = parseInt(_from);
-   const intTo = parseInt(_to);
-
-    
-
-   // #chat_post.createPost(intFrom, intTo, messageContents);
-
-    msg_list = masterListChats[socket.uid].messages;
-
 
     // student messages alert instructor
     if(_from!=="000") {
