@@ -1,6 +1,7 @@
-var _path = require('path'); 
-const dotEnvPath = _path.resolve(process.cwd(), '.env');
-const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
+// Removed these 1/4/23.
+//var _path = require('path'); 
+//const dotEnvPath = _path.resolve(process.cwd(), '.env');
+//const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
 
 const express = require("express");
 const app = express();
@@ -27,7 +28,7 @@ const io = new Server(server, {
 });
 
 // gathering student user ID / username list, used for sockets joining room
-const fs = require('fs');
+const fs = require('fs'); // fs -- file system module.
 let studentList;
 fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
     if (err) throw err;
