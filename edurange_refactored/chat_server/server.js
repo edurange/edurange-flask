@@ -1,10 +1,16 @@
-// Removed these 1/4/23.
-//var _path = require('path'); 
-//const dotEnvPath = _path.resolve(process.cwd(), '.env');
-//const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
+// These are used to define our listening port in our dot env file. 
+var _path = require('path'); 
+const dotEnvPath = _path.resolve(process.cwd(), '.env');
+const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
+
+
+
+
 
 const express = require("express");
 const app = express();
+
+
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
@@ -14,7 +20,7 @@ const server = http.createServer(app);
 
 // create new instance of { Server } class
 const io = new Server(server, {
-    // CORS = cross-origin resource sharin. Allows server-client communication.
+    // CORS = cross-origin resource sharing. Allows server-client communication.
     cors: {
         // accept communication with this port --- DarkSeth temp fix.
         origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
@@ -137,6 +143,22 @@ io.on('connection', socket => {
       msg_list = masterListChats[socket.uid].messages;
       trafficAlert("message", {msg_list, room});
     }
+    
+    alertTime = parseInt(Math.floor(Date.now()/1000));
+    console.log(alertTime);
+
+    //practice post
+    fetch("https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000/database", {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "id": 78912 })
+    })
+    .then(response => response.json())
+    .then(response => console.log(JSON.stringify(response))) 
+
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
   
