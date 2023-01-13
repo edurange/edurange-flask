@@ -9,9 +9,9 @@ Ensure that traffic is allowed on the port in your firewall rules. (ingress and 
 Insert this rule in your ssh-configuration file within the block of other options for the host you’re SSHing into:
 LocalForward 127.0.0.1:3001 127.0.0.1:3001
 
-#### Server.js
+#### chat_server.js
 
-The server.js class utilizes the socket.io library to establish a node server. This gives clients the ability to connect to the server and emit messages. The server directs these to the intended client recipient.
+The chat_server.js class utilizes the socket.io library to establish a node server. This gives clients the ability to connect to the server and emit messages. The server directs these to the intended client recipient.
 
 	Constructor
 		The first 30 lines establish the server and its required features.  
@@ -27,7 +27,7 @@ The server.js class utilizes the socket.io library to establish a node server. T
 
 Node.js is a JavaScript runtime environment. It is built on Chrome's V8 JavaScript engine. This means the same engine is used in-browser and server-side, an essential feature which allows code to easily translate between the backend and frontend. 
 Node.js includes its own package manager, npm, and a series of web frameworks available to use like express (which we'll discuss more below.) 
-Node.js files, like server.js, can be run with the command: 
+Node.js files, like chat_server.js, can be run with the command: 
 	$ node <filename>
 This can be useful for debugging. 
 

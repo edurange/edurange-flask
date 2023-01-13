@@ -354,3 +354,5 @@ def gen_chat_names(scenario_id):
         return jsonify({id: adjectives[id] + nouns[id] for id in student_ids})
     return err, code
 
+ 
+
