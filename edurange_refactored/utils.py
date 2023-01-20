@@ -402,7 +402,7 @@ def tempMaker(sId, i):
     ty = db_ses.query(Scenarios.description).filter(Scenarios.id == sId).first()
     ty = ty[0]
     description = getDescription(ty)
-    guide = getGuide(ty)
+    #guide = getGuide(ty)
     questions = getQuestions(ty)
 
     sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sId).first()
@@ -418,7 +418,7 @@ def tempMaker(sId, i):
         username = "".join(e for e in username if e.isalnum())
         pw = getPass(sName, username)
 
-        return status, ownerName, description, ty, sName, username, pw, guide, questions
+        return status, ownerName, description, ty, sName, username, pw, questions
 
 
 def checkAnswer(scenario, qnum, sid, student_answer, uid):

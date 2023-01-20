@@ -36,7 +36,7 @@ const io = new Server(server, {
 // gathering student user ID / username list, used for sockets joining room
 const fs = require('fs'); // fs -- file system module.
 let studentList;
-fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
+fs.readFile(`${process.env.EDURANGE_ROOT}/data/tmp/chatnames.json`, (err, data) => {
     if (err) throw err;
     studentList = JSON.parse(data);
 });
@@ -148,7 +148,7 @@ io.on('connection', socket => {
     console.log(alertTime);
 
     //practice post
-    fetch("https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000/database", {
+    fetch("http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000/api/database", {
     method: 'POST',
     headers: {
     'Accept': 'application/json',
@@ -173,5 +173,5 @@ io.on('connection', socket => {
 
 });
 
-console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`)
+console.log(`server listening on port ${process.env.CHAT_SERVER_PORT}`)
 io.listen(process.env.CHAT_SERVER_PORT);

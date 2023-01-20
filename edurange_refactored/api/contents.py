@@ -76,6 +76,12 @@ def get_content(scenario_id):
         return content
     return err, code
 
+
+@blueprint.route("/database", methods=["POST"])
+@login_required
+def post_to_database():
+    print(request.form)
+
 @blueprint.route("/get_content_test/<scenario_id>", methods=["GET"])
 def get_content_test(scenario_id):
     """

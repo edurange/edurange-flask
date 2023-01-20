@@ -283,7 +283,7 @@ def notification():
 def student_scenario(i):
     if student_has_access(i):
         if scenario_exists(i):
-            status, owner, desc, s_type, s_name, u_name, pw, guide, questions = tempMaker(i, "stu")
+            status, owner, desc, s_type, s_name, u_name, pw, questions = tempMaker(i, "stu")
             # query = db_ses.query(User.id)\
             #    .filter(Responses.scenario_id == i).filter(Responses.user_id == User.id).all()
             uid = session.get("_user_id")
