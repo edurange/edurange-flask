@@ -77,10 +77,13 @@ def get_content(scenario_id):
     return err, code
 
 
-@blueprint.route("/database", methods=["POST"])
+@blueprint.route("/database", methods=["GET", "POST"])
 @login_required
 def post_to_database():
-    print(request.form)
+    if request.method == "POST":
+        print(request.form)
+        return json.dumps({"response from": "post request"})
+    return json.dumps({"hello": "world"})
 
 @blueprint.route("/get_content_test/<scenario_id>", methods=["GET"])
 def get_content_test(scenario_id):

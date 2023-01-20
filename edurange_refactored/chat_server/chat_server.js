@@ -148,16 +148,35 @@ io.on('connection', socket => {
     console.log(alertTime);
 
     //practice post
-    fetch("http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000/api/database", {
-    method: 'POST',
+
+  const postData = JSON.stringify({"hello": "world"});
+  const options = {
+    // hostname: 'localhost', // default 'localhost'
+    port: 5000,
+    path: '/api/database',
+    method: 'POST', // default 'GET'
     headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(postData),
     },
-    body: JSON.stringify({ "id": 78912 })
-    })
-    .then(response => response.json())
-    .then(response => console.log(JSON.stringify(response))) 
+  };
+  const req = http.request(options, (res) => {
+    console.log(`STATUS: ${res.statusCode}`);
+    console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+    res.setEncoding('utf8');
+    res.on('data', (chunk) => {
+      console.log(`BODY: ${chunk}`);
+    });
+    res.on('end', () => {
+      console.log('No more data in response.');
+    });
+  });
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  });
+  // Write data to request body
+  req.write(postData);
+  req.end();
 
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
