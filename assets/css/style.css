@@ -472,6 +472,67 @@ a.article:hover {
 	margin: auto;	/* center on page */
 }
 
+.dropdown-ssh_btn {
+  border: none;
+  background: none;
+  border-radius: 5px;
+  padding: .375rem .75rem;
+}
+
+.dropdown-ssh_btn:hover, .dropdown-ssh_btn:focus {
+  background-color: #dae0e5;
+}
+
+.dropdown-ssh_btn:active {
+  outline: 3px #e7e9ea solid !important;
+}
+
+.ssh-dropdown-menu {
+  display: none;
+}
+
+.ssh-dropdown-menu.show {
+  background-color: #ffffff;
+  border: 1px #d9d9d9 solid;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  min-width: 20rem;
+  position: absolute;
+  left: 35%;
+  top: 46px;
+  padding: 1rem 0;
+  z-index: 1500;
+}
+
+.ssh-dropdown-menu.show hr {
+  margin: 16px 0;
+}
+
+.ssh-dropdown-menu span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.ssh-dropdown-menu span:hover, #connection-dropdown span:focus {
+  background-color: #dae0e5;
+}
+
+.ssh-dropdown-menu button {
+  border: none;
+  background-color: #fff;
+}
+
+.ssh-dropdown-menu button:hover, .ssh-dropdown-menu button:focus {
+  background-color: #dae0e5
+}
+
+.ssh-dropdown-menu span b {
+  padding-right: 5px;
+}
+
 #right-aligned-dropdown-menu {
 	left: auto;
 	right: 0;
