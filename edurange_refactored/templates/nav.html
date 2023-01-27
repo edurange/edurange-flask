@@ -40,58 +40,20 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     #}
+
+    <script type="text/javascript">
+        function openSSHInfo() {
+            document.getElementById("connection-dropdown").classList.toggle("show");
+        }
+    </script>
     
     {% if status %} {# There is a scenario. #}
-    <div class="connection-details mx-auto order-0">
-        <div class="dropdown" style="margin-left: 10px;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <div class="connection-details">
+        <div class="dropdown-ssh">
+            <button class="dropdown-ssh_btn" type="button" onclick='openSSHInfo()'>
                 <i class="fa-solid fa-terminal"></i>
                 <span>Connection Details</span>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="center-aligned-dropdown-menu">
-                {% if status == "Starting" %}
-                <span class="dropdown-item">
-                    <b>Connection Information:</b> Scenario is starting. Please refresh.
-                </span>
-                {% endif %}
-                {% for container in add %}
-                    {% if not add[container] %} {# If some container not initialized. #}
-                        <span class="dropdown-item">
-                            <b>Connection Information:</b> Container not found, something went wrong
-                        </span>
-                    {% elif ':' not in add[container] %} {#  #}
-                        <span class="dropdown-item">
-                            <b>Connection Information:</b> Container address not found, is it running?
-                        </span> 
-                    {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
-                        {% if s_type == "Web_Fu" %}
-                            <button class="btn dropdown-item">
-                                <a target="_blank" href="https://{{add[container][:add[container].index(':')]}}:8443">
-                                    <b>Connection:</b> WebFu
-                                </a>
-                            </button>
-                        {% else %}
-
-                            <script>function showSSHConsole() {
-                                window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
-                            }
-                            </script>
-
-                            <span class="dropdown-item"><b>Username:</b> {{ u_name }}</span>
-                            <span class="dropdown-item" href="#"><b>Password:</b> {{ pw }}</span>
-                            <span class="dropdown-item" href="#"><b>Port:</b>     {{ add[container][add[container].index(':') + 1:] }}</span>
-                            <div class="dropdown-divider"></div>
-                            <button class="btn dropdown-item" id="copySSH">
-                                Copy SSH Command      <i class="fa-solid fa-clipboard"></i>
-                            </button> <!-- TODO clipboard logo -->
-                            <div class="dropdown-divider"></div>
-                            <button class="btn dropdown-item" id="openWebSSH" onClick="showSSHConsole()">
-                                Launch SSH in Browser <i class="fa-solid fa-terminal"></i>
-                            </button> <!-- TODO new tab logo -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </div>
         </div>
     </div>
     {% endif %}
@@ -144,7 +106,7 @@
             {% endif %}
             <li class="nav-item dropdown active">
                 {#<a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown" style="text-align: center;">#}
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="fa-solid fa-user"></i>
                     <span>Logged in as {{ current_user.username }}</span>
                 {#</a>#}
@@ -169,3 +131,52 @@
         {% endif %}
     <!--</div>-->
 </nav>
+
+<div class="ssh-dropdown-menu" id="connection-dropdown">
+    {% if status == "Starting" %}
+    <span class="connection-info">
+        <b>Connection Information:</b> Scenario is starting. Please refresh.
+    </span>
+    {% endif %}
+    {% for container in add %}
+        {% if not add[container] %} {# If some container not initialized. #}
+            <span class="connection-info">
+                <b>Connection Information:</b> Container not found, something went wrong
+            </span>
+        {% elif ':' not in add[container] %} {#  #}
+            <span class="connection-info">
+                <b>Connection Information:</b> Container address not found, is it running?
+            </span> 
+        {% elif add[container][add[container].index(':') + 1 :] != "HIDDEN" %}
+            {% if s_type == "Web_Fu" %}
+                <button class="connection-info">
+                    <a target="_blank" href="https://{{add[container][:add[container].index(':')]}}:8443">
+                        <b>Connection:</b> WebFu
+                    </a>
+                </button>
+            {% else %}
+            <script>
+                function copySSHCommand() {
+                    navigator.clipboard.writeText("ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}")
+                }
+                function showSSHConsole() {
+                    window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                }
+            </script>
+
+                <span class="connection-info"><b>Username:</b> {{ u_name }}</span><hr />
+                <span class="connection-info" href="#"><b>Password:</b> {{ pw }}</span><hr />
+                <span class="connection-info" href="#"><b>Port:</b>     {{ add[container][add[container].index(':') + 1:] }}</span><hr />
+                <!-- <div class="dropdown-divider"></div> -->
+                <button class="connection-info" id="copySSH" onclick="copySSHCommand()">
+                    Copy SSH Command      <i class="fa-solid fa-clipboard"></i>
+                </button> <!-- TODO clipboard logo -->
+                <!-- <div class="dropdown-divider"></div> -->
+                <hr />
+                <button class="connection-info" id="openWebSSH" onClick="showSSHConsole()">
+                    Launch SSH in Browser <i class="fa-solid fa-terminal"></i>
+                </button> <!-- TODO new tab logo -->
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
