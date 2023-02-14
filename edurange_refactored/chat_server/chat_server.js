@@ -3,10 +3,6 @@ var _path = require('path');
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
 const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
 
-
-
-
-
 const express = require("express");
 const app = express();
 
@@ -192,5 +188,6 @@ io.on('connection', socket => {
 
 });
 
+console.log(` . . . c h a t . . . `)
 console.log(`server listening on port ${process.env.CHAT_SERVER_PORT}`)
 io.listen(process.env.CHAT_SERVER_PORT);
