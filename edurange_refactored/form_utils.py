@@ -201,9 +201,10 @@ def process_scenarioResponse():
         # get attempt number
         att = getAttempt(sid)
         Responses.create(user_id=uid, scenario_id=sid, question=qnum, student_response=resp, points=score, attempt=att)
-
+        print(f"{scenario[0]}{uid}")
         # Add response line to log file 
         logfilename = f"logs/{scenario[0]}_responses.json"
+        unique_identifier = str(scenario[0])+"-"+str(uid)
         if not os.path.exists(logfilename):
             jsonarray = []
         else:
@@ -211,6 +212,7 @@ def process_scenarioResponse():
                 jsonarray = json.load(fp)
 
         d = dict()
+        d["unique_identifier"]=unique_identifier
         d["uid"] = uid
         d["sid"] = sid
         d["qnum"] = qnum
