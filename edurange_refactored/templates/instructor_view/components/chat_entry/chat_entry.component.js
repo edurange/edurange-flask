@@ -18,7 +18,7 @@ class ChatEntry extends React.Component {
                 <div className={messageType}>
                     {message}
                 </div>
-            </div>
+            </div> /* end display one chat entry */
         );
     }
 }
