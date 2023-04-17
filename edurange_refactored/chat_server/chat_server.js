@@ -100,7 +100,7 @@ io.on('connection', socket => {
     socket.emit("live students", masterLiveStuds);
   }
   //console.log(io.sockets.adapter.rooms); // This line outputs all rooms and members for debugging. 
-  
+  //
   // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
     let alertString = {};
