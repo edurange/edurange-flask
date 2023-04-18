@@ -96,6 +96,7 @@ io.on('connection', socket => {
     socket.join("000");
     for(let key in studentList) {
       socket.join(key);
+
     }
     socket.emit("live students", masterLiveStuds);
   }
