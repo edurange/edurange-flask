@@ -159,14 +159,19 @@
                     </a>
                 </button>
             {% else %}
-            <script>
-                function copySSHCommand() {
-                    navigator.clipboard.writeText("ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}")
-                }
-                function showSSHConsole() {
-                    window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
-                }
-            </script>
+                <script type="text/javascript">
+                    function copySSHCommand() {
+                        if (navigator.clipboard) {
+                            // navigator.clipboard needs HTTPS to work
+                            navigator.clipboard.writeText("ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}")
+                        } else {
+                            alert("ssh {{ u_name }}@{{ add[container][:add[container].index(':')]}} -p {{ add[container][add[container].index(':') + 1:] }}");
+                        }
+                    }
+                    function showSSHConsole() {
+                        window.open("http://{{ add[container][:add[container].index(':')]}}:5050/ssh/host/{{add[container][:add[container].index(':')]}}/{{ add[container][add[container].index(':') + 1:] }}")
+                    }
+                </script>
 
                 <span class="connection-info"><b>Username:</b> {{ u_name }}</span><hr />
                 <span class="connection-info" href="#"><b>Password:</b> {{ pw }}</span><hr />
