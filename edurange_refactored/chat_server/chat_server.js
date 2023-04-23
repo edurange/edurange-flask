@@ -89,7 +89,7 @@ io.on('connection', socket => {
     }
   }
 
-  // Sockets join rooms immediately after connecting. 
+  //  Sockets join rooms immediately after connecting. 
   socket.join(socket.uid); //students join their own room. 
  
   if(socket.uid=="000") { //instructors join everyone else's.
@@ -100,6 +100,8 @@ io.on('connection', socket => {
     }
     socket.emit("live students", masterLiveStuds);
   }
+
+
   //console.log(io.sockets.adapter.rooms); // This line outputs all rooms and members for debugging. 
   
   // Traffic Alerts: Join, Leave, Message.
