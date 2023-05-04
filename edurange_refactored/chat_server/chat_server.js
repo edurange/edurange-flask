@@ -14,7 +14,7 @@ app.use(cors());
 // create server
 const server = http.createServer(app);
 
-// create new instance of { Server } class
+// create new instance of { Server }  class
 const io = new Server(server, {
     // CORS = cross-origin resource sharing. Allows server-client communication.
     cors: {
