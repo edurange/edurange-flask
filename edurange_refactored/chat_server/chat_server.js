@@ -16,7 +16,7 @@ const server = http.createServer(app);
 
 // create new instance of { Server }  class
 const io = new Server(server, {
-    // CORS = cross-origin resource sharing. Allows server-client communication.
+    // CORS = cross-origin resource sharing.Allows server-client communication.
     cors: {
         // accept communication with this port --- DarkSeth temp fix.
         origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
