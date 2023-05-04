@@ -146,3 +146,18 @@ class BashHistory(UserMixin, SurrogatePK, Model):
     input = Column(db.String(250), nullable=False, unique=False)
     output = Column(db.String(10000), nullable=False, unique=False)
     prompt = Column(db.String(80), nullable=False, unique=False)
+
+
+class ChatHistory(UserMixin, SurrogatePK, Model):
+    """Chat Histories, associated with users and scenarios"""
+
+    __tablename__ = "chat_history"
+    
+    # We needs to know the scenario
+    scenario_id = reference_col("scenarios", nullable=False)
+    user_id = reference_col("users", nullable=False)
+
+    message = Column(db.String(10000), nullable=False, unique=False)
+    from_id = Column(db.String(10000), nullable=False, unique=False)
+    to_id = Column(db.String(10000), nullable=False, unique=False)
+    
