@@ -7,7 +7,7 @@ Why should you learn the command line?
 
 - You can script repetitive tasks. A GUI interface just doesn't have the option to loop.
 
-- Doing anything from a simple task of renaming a file, changing a user information and searching for files is faster and easier through command line once you are comfortable with it.
+- Doing anything from a simple task of renaming a file, changing user information and searching for files is faster and easier through command line once you are comfortable with it.
 
 - Scalability
 

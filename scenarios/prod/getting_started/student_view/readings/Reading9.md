@@ -1,7 +1,7 @@
 ## vim, Regular expresssions, and find
 ### vim
 
-vim is a program that is used to edit files, and will hopefully be your new best friend! There are different editors out there for example, nano and emacs. To create a file just type
+vim is a program that is used to edit files, and will hopefully be your new best friend! There are different editors out there, for example, nano and emacs. To create a file just type
 
 - `vim mynewfile.txt`
 
@@ -11,7 +11,7 @@ Or
 
 To edit a file that is already created it's the same procedure, just make sure not to misspell it or you'll create a new file with that spelling.
 
-Once you are in vim the main key strokes to editing a file are:
+Once you are in vim the main keystrokes to editing a file are:
 
 - `i` - This puts you in edit mode to type and delete text like you normally would
 
@@ -51,7 +51,7 @@ An example as given earlier:
 
 - `find . -type f -iname *spekter*`
 
-- What you see is the command find. The next `.` is telling us where we want to find. It's the path. The dot means, search in this location where I am at. We could also type in `/Documents` or a full path from the root. Where ever you need to search.
+- What you see is the command find. The next `.` is telling us where we want to find. It's the path. The dot means, search in this location where I am at. We could also type in `/Documents` or a full path from the root. Wherever you need to search.
 
 - The parameter `-type` is telling find that you specifically want to find a type of object, in this case, `f` stands for a regular file.
 

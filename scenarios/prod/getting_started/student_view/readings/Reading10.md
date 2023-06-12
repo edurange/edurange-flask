@@ -24,7 +24,7 @@ fortune gives you, well, a fortune! Go ahead give it a whirl!
 
 ### Piping
 
-Piping is a new concept but stick with me on this one. When you give input to a command it is considered a standard in (STDIN). In other words it is data that is fed to a program/command. Whereas when you see something printed out back to you it is using standard out (STDOUT). A pipe, also recognized as `|` is used when you want something that is a STDOUT to then be used as the STDIN. To understand this we will use a fun example.
+Piping is a new concept, but stick with me on this one. When you give input to a command it is considered a standard in (STDIN). In other words it is data that is fed to a program/command. Whereas when you see something printed out back to you it is using standard out (STDOUT). A pipe, also recognized as `|` is used when you want something that is a STDOUT to then be used as the STDIN. To understand this we will use a fun example.
 
 Remember fortune? If we just type fortune we get a fortune back. That fortune we get back is a STDOUT. But when we use cowsay we type something for the cow to say, which is STDIN. So we can use a pipe to take our fortune and have the cow say it!
 
