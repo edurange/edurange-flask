@@ -158,9 +158,7 @@ class ChatHistory(UserMixin, SurrogatePK, Model):
     
     # is there benefit to following the naming conventions
     user_id = reference_col("users", nullable=False)
-    from_id = Column(db.String(10000), nullable=False, unique=False)
-    
-    to_id = Column(db.String(10000), nullable=False, unique=False)
+    instructor_id = Column(db.String(10000), nullable=False, unique=False)
     
     timestamp = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     message = Column(db.String(10000), nullable=False, unique=False)
