@@ -32,8 +32,22 @@ mkdir logs
 
 if [ $# -eq 0 ];
 then
+
+	max_length=10  # Maximum number of characters allowed
+
+	read -rp "Please enter your database password:" dbpass
+
+	# Loop until valid input is provided
+	while [[ ${#input} -gt $max_length || ! "$input" =~ ^[[:alnum:]]+$ ]]; do
+	echo "Invalid input! Input should be alphanumeric and up to $max_length characters."
+	read -rp "Enter your input: " dbpass
+	done
+
+	echo "Valid input: $input"
+
 	echo -e "${YLW}Please enter your database password:${NC}"
 	read dbpass
+
 	echo -e "${YLW}Please enter your database name:${NC}"
 	read dbname
 	echo -e "${YLW}Please enter your Flask (web interface) username:${NC}"
