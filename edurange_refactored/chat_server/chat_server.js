@@ -1,5 +1,5 @@
 // These are used to define our listening port in our dot env file. 
-import postgres from 'postgres';
+var postgres = require('postgres')
 var _path = require('path'); 
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
 const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
