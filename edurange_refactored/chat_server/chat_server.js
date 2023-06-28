@@ -6,6 +6,13 @@ const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the po
 const express = require("express");
 const app = express();
 
+const sql = postgres('postgresql+psycopg2://postgres:babyshark@127.0.0.1:5432/flaskdb3', {
+  host                 : '',            // Postgres ip address[s] or domain name[s]
+  port                 : 5432,          // Postgres server port[s]
+  database             : '',            // Name of database to connect to
+  username             : '',            // Username of database user
+  password             : '',            // Password of database user
+})
 
 const http = require("http");
 const cors = require("cors");
