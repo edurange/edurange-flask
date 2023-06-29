@@ -53,10 +53,16 @@ def process_request(form):
 
 
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
-    sM = modScenarioForm(request.form)  # type2Form(request.form)  #
+    sM = modScenarioForm(request.form)
     if sM.validate_on_submit():
-        sid = sM.sid.data  
-        action = sM.mod_scenario.data 
+        sid = sM.sid.data  # Scenario Data
+        action = sM.mod_scenario.data # Action Selected : Start/Stop/Destroy
+
+        # Create Chatdatabase
+        # Grab scenario name from scenario
+        # Grab scenario group users from scenario groups
+        # Grab users from group_users
+
 
         return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[action].delay(sid)
     else:
