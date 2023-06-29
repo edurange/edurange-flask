@@ -154,10 +154,11 @@ class ChatHistory(UserMixin, SurrogatePK, Model):
     __tablename__ = "chat_history"
     
     scenario_id = reference_col("scenarios", nullable=False)
+    
     scenario_name = Column(db.String(40), unique=False, nullable=False)
     
-    # is there benefit to following the naming conventions
     user_id = reference_col("users", nullable=False)
+    user = relationship("User", backref="chat_history")
     instructor_id = Column(db.String(10000), nullable=False, unique=False)
     
     timestamp = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)

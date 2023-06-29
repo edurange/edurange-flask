@@ -55,8 +55,8 @@ def process_request(form):
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
     sM = modScenarioForm(request.form)  # type2Form(request.form)  #
     if sM.validate_on_submit():
-        sid = sM.sid.data  # string1.data  #
-        action = sM.mod_scenario.data  # string2.data  #
+        sid = sM.sid.data  
+        action = sM.mod_scenario.data 
 
         return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[action].delay(sid)
     else:
@@ -78,7 +78,9 @@ def process_groupMaker():  # Form to create a new group |  # GroupForm
     if gM.validate_on_submit():
         code = grc()
         name = gM.name.data
+        
         group = StudentGroups.create(name=name, owner_id=session.get('_user_id'), code=code)
+
         users = []
         size = gM.size.data
         if size == 0:
