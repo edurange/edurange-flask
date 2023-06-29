@@ -54,13 +54,28 @@ def process_request(form):
 
 def process_scenarioModder():  # Form submitted to create a scenario |  # makeScenarioForm
     sM = modScenarioForm(request.form)
+    db_ses = db.session
+
     if sM.validate_on_submit():
         sid = sM.sid.data  # Scenario Data
         action = sM.mod_scenario.data # Action Selected : Start/Stop/Destroy
 
         # Create Chatdatabase
+
         # Grab scenario name from scenario
+        scenario_name = db_ses.query(Scenarios.name).filter_by(id=sid)
+
+
+
+        '''
+gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
+group = db_ses.query(StudentGroups).filter(StudentGroups.id == gid).first()
+user = User.query.filter_by(username=uName).first()
+
+        
+        '''
         # Grab scenario group users from scenario groups
+        
         # Grab users from group_users
 
 
