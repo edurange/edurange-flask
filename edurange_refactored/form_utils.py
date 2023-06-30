@@ -63,19 +63,12 @@ def process_scenarioModder():  # Form submitted to create a scenario |  # makeSc
         # Create Chatdatabase
 
         # Grab scenario name from scenario
-        scenario_name = db_ses.query(Scenarios.name).filter_by(Scenarios.id == sid)
+        scenario_name = db_ses.query(Scenarios.name).filter_by(Scenarios.id == sid).first()
 
-
-
-        '''
-gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
-group = db_ses.query(StudentGroups).filter(StudentGroups.id == gid).first()
-user = User.query.filter_by(username=uName).first()
-
-        
-        '''
+        grp_id = db_ses.query(ScenarioGroups.group_id).filter_by(ScenarioGroups.scenario_id == sid).first()
         # Grab scenario group users from scenario groups
-        
+        grp_users = db_ses.query(GroupUsers).filter(GroupUsers.group_id == grp_id).all()
+
         # Grab users from group_users
 
 
