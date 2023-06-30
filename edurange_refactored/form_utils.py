@@ -63,7 +63,7 @@ def process_scenarioModder():  # Form submitted to create a scenario |  # makeSc
         # Create Chatdatabase
 
         # Grab scenario name from scenario
-        scenario_name = db_ses.query(ScenarioGroups.name).filter_by(sid == scenario_id)
+        scenario_name = db_ses.query(Scenarios.name).filter_by(Scenarios.id == sid)
 
 
 
