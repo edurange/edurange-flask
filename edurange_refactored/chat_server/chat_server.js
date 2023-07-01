@@ -7,7 +7,22 @@ const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the po
 const express = require("express");
 const app = express();
 
-const sql = postgres('postgresql+psycopg2://postgres:babyshark@127.0.0.1:5432/flaskdb3', {})
+const sql = postgres(`${process.env.DATABASE_URL}`, {})
+
+
+async function insertUser({ name }) {
+  const users = await sql`
+    insert into ChatHistory
+      (scenario_name)
+    values
+      (${ name })
+    returning scenario_name
+  `
+  // users = Result [{ name: "Murray", age: 68 }]
+  return users
+} 
+
+insertUser("Chasmine")
 
 const http = require("http");
 const cors = require("cors");

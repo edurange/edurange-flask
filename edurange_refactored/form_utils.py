@@ -60,18 +60,6 @@ def process_scenarioModder():  # Form submitted to create a scenario |  # makeSc
         sid = sM.sid.data  # Scenario Data
         action = sM.mod_scenario.data # Action Selected : Start/Stop/Destroy
 
-        # Create Chatdatabase
-
-        # Grab scenario name from scenario
-        scenario_name = db_ses.query(Scenarios.name).filter_by(Scenarios.id == sid).first()
-
-        grp_id = db_ses.query(ScenarioGroups.group_id).filter_by(ScenarioGroups.scenario_id == sid).first()
-        # Grab scenario group users from scenario groups
-        grp_users = db_ses.query(GroupUsers).filter(GroupUsers.group_id == grp_id).all()
-
-        # Grab users from group_users
-
-
         return {"Start": tasks.start, "Stop": tasks.stop, "Destroy": tasks.destroy}[action].delay(sid)
     else:
         flash("Failed to start scenario")
