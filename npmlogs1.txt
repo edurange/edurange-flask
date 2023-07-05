@@ -1,0 +1,1148 @@
+
+> edurange_refactored@1.0.0 start
+> concurrently -n "WEBPACK,FLASK,CELERY,FLOWER,WEBSSH,CHATSERVER" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold,bgYellow.bold" "npm run webpack-watch" "npm run flask-server" "celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG" "celery -A edurange_refactored.tasks -l DEBUG --broker=redis://localhost:6379/0 flower --port=5555" "node webssh2/app/index.js" "node edurange_refactored/chat_server/chat_server.js" "2"
+
+
+> edurange_refactored@1.0.0 start
+> concurrently -n "WEBPACK,FLASK,CELERY,FLOWER,WEBSSH,CHATSERVER" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold,bgYellow.bold" "npm run webpack-watch" "npm run flask-server" "celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG" "celery -A edurange_refactored.tasks -l DEBUG --broker=redis://localhost:6379/0 flower --port=5555" "node webssh2/app/index.js" "node edurange_refactored/chat_server/chat_server.js"
+
+[WEBSSH] WebSSH2 service reading config from: /home/m/edurange-flask/webssh2/app/config.json
+[WEBSSH] ephemeral_auth service reading config from: /home/m/edurange-flask/webssh2/app/config.json
+[CHATSERVER]  . . . c h a t . . . 
+[CHATSERVER] server listening on port 3001
+[CHATSERVER] (node:98990) UnhandledPromiseRejectionWarning: Error: UNDEFINED_VALUE: Undefined values are not allowed
+[CHATSERVER]     at handleValue (/home/m/edurange-flask/node_modules/postgres/cjs/src/types.js:83:20)
+[CHATSERVER]     at stringifyValue (/home/m/edurange-flask/node_modules/postgres/cjs/src/types.js:113:5)
+[CHATSERVER]     at stringify (/home/m/edurange-flask/node_modules/postgres/cjs/src/types.js:100:16)
+[CHATSERVER]     at build (/home/m/edurange-flask/node_modules/postgres/cjs/src/connection.js:222:20)
+[CHATSERVER]     at execute (/home/m/edurange-flask/node_modules/postgres/cjs/src/connection.js:166:7)
+[CHATSERVER]     at ReadyForQuery (/home/m/edurange-flask/node_modules/postgres/cjs/src/connection.js:536:7)
+[CHATSERVER]     at handle (/home/m/edurange-flask/node_modules/postgres/cjs/src/connection.js:473:6)
+[CHATSERVER]     at Socket.data (/home/m/edurange-flask/node_modules/postgres/cjs/src/connection.js:314:9)
+[CHATSERVER]     at Socket.emit (events.js:314:20)
+[CHATSERVER]     at addChunk (_stream_readable.js:297:12)
+[CHATSERVER]     at cachedError (/home/m/edurange-flask/node_modules/postgres/cjs/src/query.js:171:23)
+[CHATSERVER]     at new Query (/home/m/edurange-flask/node_modules/postgres/cjs/src/query.js:36:24)
+[CHATSERVER]     at sql (/home/m/edurange-flask/node_modules/postgres/cjs/src/index.js:111:11)
+[CHATSERVER]     at insertUser (/home/m/edurange-flask/edurange_refactored/chat_server/chat_server.js:14:26)
+[CHATSERVER] (node:98990) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 1)
+[CHATSERVER] (node:98990) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+[FLOWER] Usage: celery [OPTIONS] COMMAND [ARGS]...
+[FLOWER] Try 'celery --help' for help.
+[FLOWER] 
+[FLOWER] Error: No such option: -l
+[FLOWER] celery -A edurange_refactored.tasks -l DEBUG --broker=redis://localhost:6379/0 flower --port=5555 exited with code 2
+[WEBSSH] WebSSH2 service listening on 0.0.0.0:5050
+[FLASK] 
+[FLASK] > edurange_refactored@1.0.0 flask-server
+[FLASK] > flask run --host=0.0.0.0
+[FLASK] 
+[WEBPACK] 
+[WEBPACK] > edurange_refactored@1.0.0 webpack-watch
+[WEBPACK] > NODE_ENV=debug webpack --mode development --watch
+[WEBPACK] 
+[CELERY]  
+[CELERY]  -------------- celery@ma v5.2.7 (dawn-chorus)
+[CELERY] --- ***** ----- 
+[CELERY] -- ******* ---- Linux-5.19.0-46-generic-x86_64-with-glibc2.35 2023-07-03 15:01:52
+[CELERY] - *** --- * --- 
+[CELERY] - ** ---------- [config]
+[CELERY] - ** ---------- .> app:         edurange_refactored.tasks:0x7fed5a55e3e0
+[CELERY] - ** ---------- .> transport:   redis://localhost:6379/0
+[CELERY] - ** ---------- .> results:     redis://localhost:6379/0
+[CELERY] - *** --- * --- .> concurrency: 8 (prefork)
+[CELERY] -- ******* ---- .> task events: ON
+[CELERY] --- ***** ----- 
+[CELERY]  -------------- [queues]
+[CELERY]                 .> celery           exchange=celery(direct) key=celery
+[CELERY]                 
+[CELERY] 
+[CELERY] [tasks]
+[CELERY]   . celery.accumulate
+[CELERY]   . celery.backend_cleanup
+[CELERY]   . celery.chain
+[CELERY]   . celery.chord
+[CELERY]   . celery.chord_unlock
+[CELERY]   . celery.chunks
+[CELERY]   . celery.group
+[CELERY]   . celery.map
+[CELERY]   . celery.starmap
+[CELERY]   . edurange_refactored.tasks.CreateScenarioTask
+[CELERY]   . edurange_refactored.tasks.destroy
+[CELERY]   . edurange_refactored.tasks.scenarioCollectLogs
+[CELERY]   . edurange_refactored.tasks.scenarioTimeoutWarningEmail
+[CELERY]   . edurange_refactored.tasks.send_async_email
+[CELERY]   . edurange_refactored.tasks.start
+[CELERY]   . edurange_refactored.tasks.stop
+[CELERY]   . edurange_refactored.tasks.test_send_async_email
+[CELERY] 
+[FLASK]  * Serving Flask app 'autoapp.py' (lazy loading)
+[FLASK]  * Environment: production
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]    Use a production WSGI server instead.
+[FLASK]  * Debug mode: off
+[WEBPACK] 
+[WEBPACK] webpack is watching the files...
+[WEBPACK] 
+[FLASK]  * Running on all addresses (0.0.0.0)
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]  * Running on http://127.0.0.1:5000
+[FLASK]  * Running on http://10.20.68.69:5000 (Press CTRL+C to quit)
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/m/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/m/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:00] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:00] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:00] "GET /static/build/main_css.bundle.css HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:00] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 200 -
+[WEBPACK] Hash: e3703e2a7b06d7f0e5bf68b96e51fe50fef2306eea5cc6adb573b1b1f1b0
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: e3703e2a7b06d7f0e5bf
+[WEBPACK]     Time: 7356ms
+[WEBPACK]     Built at: 07/03/2023 3:02:00 PM
+[WEBPACK]                                           Asset      Size    Chunks             Chunk Names
+[WEBPACK]          5531dd3a7705ec68a6c5f5d02b25da6f.woff2   103 KiB            [emitted]  
+[WEBPACK]          be4dccbe54eea47a0ad5d7bb60a3c17d.woff2   151 KiB            [emitted]  
+[WEBPACK]          e42bcafcb7cc5002daa805140064bf40.woff2  23.5 KiB            [emitted]  
+[WEBPACK]          fontawesome/webfonts/fa-brands-400.ttf   177 KiB            [emitted]  
+[WEBPACK]         fontawesome/webfonts/fa-regular-400.ttf  58.8 KiB            [emitted]  
+[WEBPACK]           fontawesome/webfonts/fa-solid-900.ttf   381 KiB            [emitted]  
+[WEBPACK]     fontawesome/webfonts/fa-v4compatibility.ttf  9.85 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/2.png  29.5 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/3.png   235 KiB            [emitted]  
+[WEBPACK]     img/Metasploitable/m-h_example_cmd_line.png  65.5 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/RSA.png  64.8 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/cat_secret.png  8.13 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/decrypt.png  10.8 KiB            [emitted]  
+[WEBPACK]           img/Ssh_Inception/decryptpassword.png  9.41 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep-f.png  10.3 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep_f.png  13.1 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/image1.png   688 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/key.png   543 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/keys.png   536 KiB            [emitted]  
+[WEBPACK]                  img/Ssh_Inception/man_nmap.png  61.2 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/man_ssh.png  61.4 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/nat.png   801 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/nmap.png  7.96 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/nmap_ln.png   9.5 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd-L.png  9.95 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd_L.png  13.3 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/rsa_search.png  10.5 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/secret.png   793 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/vim_secret.png   8.5 KiB            [emitted]  
+[WEBPACK]                                 img/booting.png  5.02 KiB            [emitted]  
+[WEBPACK]                                img/building.png  5.65 KiB            [emitted]  
+[WEBPACK]                                 img/favicon.ico    15 KiB            [emitted]  
+[WEBPACK]                                 img/started.png  7.39 KiB            [emitted]  
+[WEBPACK]                                 img/stopped.png  7.69 KiB            [emitted]  
+[WEBPACK]                                img/stopping.png  5.55 KiB            [emitted]  
+[WEBPACK]                             main_css.bundle.css   347 KiB  main_css  [emitted]  main_css
+[WEBPACK]                              main_css.bundle.js  8.19 KiB  main_css  [emitted]  main_css
+[WEBPACK]                               main_js.bundle.js  1.74 MiB   main_js  [emitted]  main_js
+[WEBPACK]     Entrypoint main_js = main_js.bundle.js
+[WEBPACK]     Entrypoint main_css = main_css.bundle.css main_css.bundle.js
+[WEBPACK]     [0] multi ./node_modules/bootstrap/dist/css/bootstrap.css ./assets/fontawesome/css/all.css ./assets/css/style.css 52 bytes {main_css} [built]
+[WEBPACK]     [./assets/css/style.css] 343 bytes {main_css} [built]
+[WEBPACK]     [./assets/fontawesome/css/all.css] 343 bytes {main_css} [built]
+[WEBPACK]     [./assets/img sync recursive .*] ./assets/img sync .* 972 bytes {main_js} [built]
+[WEBPACK]     [./assets/img/Getting_Started/2.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Getting_Started/3.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Metasploitable/m-h_example_cmd_line.png] 87 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/RSA.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/cat_secret.png] 76 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decrypt.png] 73 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decryptpassword.png] 81 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/grep-f.png] 72 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/js/main.js] 443 bytes {main_js} [built]
+[WEBPACK]     [./assets/js/plugins.js] 9.38 KiB {main_js} [built]
+[WEBPACK]     [./assets/js/script.js] 36 bytes {main_js} [built]
+[WEBPACK]         + 29 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/css/style.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/css/style.css] 8.99 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 1 hidden module
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/fontawesome/css/all.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.ttf] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.ttf] 83 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.ttf] 81 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.ttf] 87 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.woff2] 6.27 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/fontawesome/css/all.css] 153 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 2 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!node_modules/bootstrap/dist/css/bootstrap.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: 68b96e51fe50fef2306e
+[WEBPACK]     Time: 8814ms
+[WEBPACK]     Built at: 07/03/2023 3:02:01 PM
+[WEBPACK]                           Asset      Size            Chunks             Chunk Names
+[WEBPACK]     student_scenario.bundle.css   6.3 KiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]      student_scenario.bundle.js  1.28 MiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]     Entrypoint student_scenario = student_scenario.bundle.css student_scenario.bundle.js
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {student_scenario} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {student_scenario} [built]
+[WEBPACK]     [../utils/outstide-alerter.js] ./edurange_refactored/templates/student_view/utils/outstide-alerter.js 4.95 KiB {student_scenario} [built]
+[WEBPACK]         + 71 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/chatbox/chatbox.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/client_socket/client_socket.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/guide-section/guide-section.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/question/question.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/reading/reading.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/scenario/scenario.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_entry/student_chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_window/student_chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/topic-list/topic-list.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: ea5cc6adb573b1b1f1b0
+[WEBPACK]     Time: 8813ms
+[WEBPACK]     Built at: 07/03/2023 3:02:01 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.65 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [0] fs (ignored) 15 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 107 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {instructor_view} [built]
+[WEBPACK]     [../states.json] ./edurange_refactored/templates/instructor_view/states.json 14.3 KiB {instructor_view} [built]
+[WEBPACK]         + 57 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_entry/chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_window/chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/instructor_view/instructor_view.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/student/student.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:02] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:02] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:02] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:02] "GET /static/build/img/favicon.ico HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:47] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:47] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:47] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:47] "GET /static/build/img/started.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:48] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:48] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:48] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "GET /static/build/img/building.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:02:56] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[CELERY] 
+[CELERY] [0m[1mInitializing the backend...[0m
+[CELERY] 
+[CELERY] [0m[1mInitializing provider plugins...[0m
+[CELERY] - Finding latest version of kreuzwerker/docker...
+[WEBPACK] Hash: cdc36856f610af96e966
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: cdc36856f610af96e966
+[WEBPACK]     Time: 22ms
+[WEBPACK]     Built at: 07/03/2023 3:02:56 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.65 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 122 bytes {instructor_view} [built]
+[WEBPACK]         + 61 hidden modules
+[CELERY] - Installing kreuzwerker/docker v3.0.2...
+[CELERY] - Installed kreuzwerker/docker v3.0.2 (self-signed, key ID [0m[1mBD080C4571C6104C[0m[0m)
+[CELERY] 
+[CELERY] Partner and community providers are signed by their developers.
+[CELERY] If you'd like to know more about provider signing, you can read about it here:
+[CELERY] https://www.terraform.io/docs/cli/plugins/signing.html
+[CELERY] 
+[CELERY] Terraform has created a lock file [1m.terraform.lock.hcl[0m to record the provider
+[CELERY] selections it made above. Include this file in your version control repository
+[CELERY] so that Terraform can guarantee to make the same selections by default when
+[CELERY] you run "terraform init" in the future.[0m
+[CELERY] 
+[CELERY] [0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[CELERY] [0m[32m
+[CELERY] You may now begin working with Terraform. Try running "terraform plan" to see
+[CELERY] any changes that are required for your infrastructure. All Terraform commands
+[CELERY] should now work.
+[CELERY] 
+[CELERY] If you ever set or change modules or backend configuration for Terraform,
+[CELERY] rerun this command to reinitialize your working directory. If you forget, other
+[CELERY] commands will detect it and remind you to do so if necessary.[0m
+[CELERY] 
+[CELERY] Terraform used the selected providers to generate the following execution
+[CELERY] plan. Resource actions are indicated with the following symbols:
+[CELERY]   [32m+[0m create
+[CELERY] [0m
+[CELERY] Terraform will perform the following actions:
+[CELERY] 
+[CELERY] [1m  # docker_network.Candlelight_NAT[0m will be created[0m[0m
+[CELERY] [0m  [32m+[0m[0m resource "docker_network" "Candlelight_NAT" {
+[CELERY]       [32m+[0m [0m[1m[0mdriver[0m[0m      = "bridge"
+[CELERY]       [32m+[0m [0m[1m[0mid[0m[0m          = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0minternal[0m[0m    = false
+[CELERY]       [32m+[0m [0m[1m[0mipam_driver[0m[0m = "default"
+[CELERY]       [32m+[0m [0m[1m[0mname[0m[0m        = "Candlelight_NAT"
+[CELERY]       [32m+[0m [0m[1m[0moptions[0m[0m     = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mscope[0m[0m       = (known after apply)
+[CELERY] 
+[CELERY]       [32m+[0m [0mipam_config {
+[CELERY]           [32m+[0m [0m[1m[0msubnet[0m[0m = "13.0.1.0/27"
+[CELERY]         }
+[CELERY]     }
+[CELERY] 
+[CELERY] [1m  # docker_network.Candlelight_PLAYER[0m will be created[0m[0m
+[CELERY] [0m  [32m+[0m[0m resource "docker_network" "Candlelight_PLAYER" {
+[CELERY]       [32m+[0m [0m[1m[0mdriver[0m[0m      = "bridge"
+[CELERY]       [32m+[0m [0m[1m[0mid[0m[0m          = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0minternal[0m[0m    = true
+[CELERY]       [32m+[0m [0m[1m[0mipam_driver[0m[0m = "default"
+[CELERY]       [32m+[0m [0m[1m[0mname[0m[0m        = "Candlelight_PLAYER"
+[CELERY]       [32m+[0m [0m[1m[0moptions[0m[0m     = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mscope[0m[0m       = (known after apply)
+[CELERY] 
+[CELERY]       [32m+[0m [0mipam_config {
+[CELERY]           [32m+[0m [0m[1m[0msubnet[0m[0m = "13.0.0.0/27"
+[CELERY]         }
+[CELERY]     }
+[CELERY] 
+[CELERY] [0m[1mPlan:[0m 2 to add, 0 to change, 0 to destroy.
+[0m[90m
+[CELERY] ─────────────────────────────────────────────────────────────────────────────[0m
+[CELERY] 
+[CELERY] Saved the plan to: network
+[CELERY] 
+[CELERY] To perform exactly these actions, run the following command to apply:
+[CELERY]     terraform apply "network"
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:01] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:01] "GET /static/build/img/stopped.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:03] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:03] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:03] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:03] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:03] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[CELERY] [0m[1mdocker_network.Candlelight_PLAYER: Creating...[0m[0m
+[CELERY] [0m[1mdocker_network.Candlelight_NAT: Creating...[0m[0m
+[CELERY] [0m[1mdocker_network.Candlelight_NAT: Creation complete after 3s [id=ec64fcc95457cced88acf72289a4dbedb7d17e2c19024c848145249e55e3906b][0m
+[CELERY] [0m[1mdocker_network.Candlelight_PLAYER: Creation complete after 3s [id=ee3e36e4703e3a85e3e3aae1ae51be8e3aae92857463bdff67818491b136ed46][0m
+[CELERY] [0m[1m[32m
+[CELERY] Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+[0m127.0.0.1 - - [03/Jul/2023 15:03:05] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:05] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:05] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:05] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:05] "GET /static/build/img/booting.png HTTP/1.1" 200 -
+[CELERY] [0m[1mdocker_network.Candlelight_NAT: Refreshing state... [id=ec64fcc95457cced88acf72289a4dbedb7d17e2c19024c848145249e55e3906b][0m
+[CELERY] [0m[1mdocker_network.Candlelight_PLAYER: Refreshing state... [id=ee3e36e4703e3a85e3e3aae1ae51be8e3aae92857463bdff67818491b136ed46][0m
+[CELERY] 
+[CELERY] Terraform used the selected providers to generate the following execution
+[CELERY] plan. Resource actions are indicated with the following symbols:
+[CELERY]   [32m+[0m create
+[CELERY] [0m
+[CELERY] Terraform will perform the following actions:
+[CELERY] 
+[CELERY] [1m  # docker_container.Candlelight_nat[0m will be created[0m[0m
+[CELERY] [0m  [32m+[0m[0m resource "docker_container" "Candlelight_nat" {
+[CELERY]       [32m+[0m [0m[1m[0mattach[0m[0m                                      = false
+[CELERY]       [32m+[0m [0m[1m[0mbridge[0m[0m                                      = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mcommand[0m[0m                                     = [
+[CELERY]           [32m+[0m [0m"/usr/sbin/sshd",
+[CELERY]           [32m+[0m [0m"-D",
+[CELERY]         ]
+[CELERY]       [32m+[0m [0m[1m[0mcontainer_logs[0m[0m                              = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mcontainer_read_refresh_timeout_milliseconds[0m[0m = 15000
+[CELERY]       [32m+[0m [0m[1m[0mentrypoint[0m[0m                                  = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0menv[0m[0m                                         = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mexit_code[0m[0m                                   = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mhostname[0m[0m                                    = "NAT"
+[CELERY]       [32m+[0m [0m[1m[0mid[0m[0m                                          = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mimage[0m[0m                                       = "edurange2/ubuntu-sshd:16.04"
+[CELERY]       [32m+[0m [0m[1m[0minit[0m[0m                                        = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mipc_mode[0m[0m                                    = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mlog_driver[0m[0m                                  = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mlogs[0m[0m                                        = false
+[CELERY]       [32m+[0m [0m[1m[0mmust_run[0m[0m                                    = true
+[CELERY]       [32m+[0m [0m[1m[0mname[0m[0m                                        = "Candlelight_nat"
+[CELERY]       [32m+[0m [0m[1m[0mnetwork_data[0m[0m                                = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mread_only[0m[0m                                   = false
+[CELERY]       [32m+[0m [0m[1m[0mremove_volumes[0m[0m                              = true
+[CELERY]       [32m+[0m [0m[1m[0mrestart[0m[0m                                     = "always"
+[CELERY]       [32m+[0m [0m[1m[0mrm[0m[0m                                          = false
+[CELERY]       [32m+[0m [0m[1m[0mruntime[0m[0m                                     = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0msecurity_opts[0m[0m                               = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mshm_size[0m[0m                                    = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mstart[0m[0m                                       = true
+[CELERY]       [32m+[0m [0m[1m[0mstdin_open[0m[0m                                  = false
+[CELERY]       [32m+[0m [0m[1m[0mstop_signal[0m[0m                                 = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mstop_timeout[0m[0m                                = (known after apply)
+[CELERY]       [32m+[0m [0m[1m[0mtty[0m[0m                                         = false
+[CELERY]       [32m+[0m [0m[1m[0mwait[0m[0m                                        = false
+[CELERY]       [32m+[0m [0m[1m[0mwait_timeout[0m[0m                                = 60
+[CELERY] 
+[CELERY]       [32m+[0m [0mcapabilities {
+[CELERY]           [32m+[0m [0m[1m[0madd[0m[0m  = [
+[CELERY]               [32m+[0m [0m"NET_ADMIN",
+[CELERY]               [32m+[0m [0m"SYS_PTRACE",
+[CELERY]             ]
+[CELERY]           [32m+[0m [0m[1m[0mdrop[0m[0m = []
+[CELERY]         }
+[CELERY] 
+[CELERY]       [32m+[0m [0mhealthcheck {
+[CELERY]           [32m+[0m [0m[1m[0minterval[0m[0m     = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0mretries[0m[0m      = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0mstart_period[0m[0m = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0mtest[0m[0m         = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0mtimeout[0m[0m      = (known after apply)
+[CELERY]         }
+[CELERY] 
+[CELERY]       [32m+[0m [0mlabels {
+[CELERY]           [32m+[0m [0m[1m[0mlabel[0m[0m = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0mvalue[0m[0m = (known after apply)
+[CELERY]         }
+[CELERY] 
+[CELERY]       [32m+[0m [0mnetworks_advanced {
+[CELERY]           [32m+[0m [0m[1m[0maliases[0m[0m      = []
+[CELERY]           [32m+[0m [0m[1m[0mipv4_address[0m[0m = "13.0.0.2"
+[CELERY]           [32m+[0m [0m[1m[0mname[0m[0m         = "Candlelight_PLAYER"
+[CELERY]         }
+[CELERY]       [32m+[0m [0mnetworks_advanced {
+[CELERY]           [32m+[0m [0m[1m[0maliases[0m[0m      = []
+[CELERY]           [32m+[0m [0m[1m[0mipv4_address[0m[0m = "13.0.1.2"
+[CELERY]           [32m+[0m [0m[1m[0mname[0m[0m         = "Candlelight_NAT"
+[CELERY]         }
+[CELERY] 
+[CELERY]       [32m+[0m [0mports {
+[CELERY]           [32m+[0m [0m[1m[0mexternal[0m[0m = (known after apply)
+[CELERY]           [32m+[0m [0m[1m[0minternal[0m[0m = 22
+[CELERY]           [32m+[0m [0m[1m[0mip[0m[0m       = "0.0.0.0"
+[CELERY]           [32m+[0m [0m[1m[0mprotocol[0m[0m = "tcp"
+[CELERY]         }
+[CELERY]     }
+[CELERY] 
+[CELERY] [0m[1mPlan:[0m 1 to add, 0 to change, 0 to destroy.
+[0m[0m
+[CELERY] [1mChanges to Outputs:[0m[0m
+[CELERY]   [32m+[0m [0m[1m[0mCandlelight_nat[0m[0m = [
+[CELERY]       [32m+[0m [0m{
+[CELERY]           [32m+[0m [0mip_address_public = (known after apply)
+[CELERY]           [32m+[0m [0mname              = "Candlelight_nat"
+[CELERY]         },
+[CELERY]     ]
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Creating...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'file'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Provisioning with 'remote-exec'...[0m[0m
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mConnecting to remote host via SSH...
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Host: 0.0.0.0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  User: root
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Password: true
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Private key: false
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Certificate: false
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  SSH Agent: true
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Checking Host Key: false
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m  Target Platform: unix
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mConnected!
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/ttylog
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/root
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /var/log/annotator
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/root/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 755 /usr/local/src
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/ttylog
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/analyze.py /usr/local/src/ttylog/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/start_ttylog.sh /usr/local/src/ttylog/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/ttylog /usr/local/src/ttylog/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/makeTsv.py /usr/local/src/ttylog/makeTsv.py
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/milestone-lbl.pl /usr/local/src/ttylog/milestone-lbl.pl
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mv /home/ubuntu/intervention.py /usr/local/src/ttylog/intervention.py
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/start_ttylog.sh
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/ttylog
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/analyze.py
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/makeTsv.py
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/intervention.py
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/ttylog/milestone-lbl.pl
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/DecentLitteruser1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/DecentLitteruser1/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser1/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser1.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser1.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(root) NOPASSWD: /bin/kill'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(root) NOPASSWD: /bin/kill
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser1/ttylog.DecentLitteruser1.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv /var/log/annotator/annotate.DecentLitteruser1.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser1.*.csv /var/log/annotator/annotate.DecentLitteruser1.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser1.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser1.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/DecentLitteruser2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/DecentLitteruser2/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser2/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser2.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser2.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(root) NOPASSWD: /bin/kill'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(root) NOPASSWD: /bin/kill
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser2/ttylog.DecentLitteruser2.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv /var/log/annotator/annotate.DecentLitteruser2.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser2.*.csv /var/log/annotator/annotate.DecentLitteruser2.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser2.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser2.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/DecentLitteruser3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/DecentLitteruser3/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser3/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser3.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser3.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(root) NOPASSWD: /bin/kill'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(root) NOPASSWD: /bin/kill
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser3/ttylog.DecentLitteruser3.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv /var/log/annotator/annotate.DecentLitteruser3.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser3.*.csv /var/log/annotator/annotate.DecentLitteruser3.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser3.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser3.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/DecentLitteruser4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/DecentLitteruser4/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser4/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser4.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser4.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(root) NOPASSWD: /bin/kill'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(root) NOPASSWD: /bin/kill
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser4/ttylog.DecentLitteruser4.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv /var/log/annotator/annotate.DecentLitteruser4.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser4.*.csv /var/log/annotator/annotate.DecentLitteruser4.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser4.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser4.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p /usr/local/src/logs/DecentLitteruser5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch /usr/local/src/logs/DecentLitteruser5/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 777 /usr/local/src/logs/DecentLitteruser5/.cli.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /usr/local/src/logs/analyze_cont/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/mkdir -p /var/log/annotator/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/cat /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser5.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/touch /var/log/annotator/annotate.DecentLitteruser5.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/local/src/ttylog/ttylog *
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(root) NOPASSWD: /bin/kill'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(root) NOPASSWD: /bin/kill
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/tee /usr/local/src/logs/count.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m++ hostname
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/count.NAT
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /bin/chmod ugo+rw /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/analyze.py /usr/local/src/logs/DecentLitteruser5/ttylog.DecentLitteruser5.* /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv /var/log/annotator/annotate.DecentLitteruser5.*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/perl /usr/local/src/ttylog/milestone-lbl.pl /var/log/milestones/milestone_file /usr/local/src/logs/analyze_cont/analyze.DecentLitteruser5.*.csv /var/log/annotator/annotate.DecentLitteruser5.*
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'DecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser5.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ sudo 'EDITOR=tee -a' visudo
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5 ALL=(ALL) NOPASSWD: /usr/bin/python3 /usr/local/src/ttylog/intervention.py /var/log/annotator/annotate.DecentLitteruser5.* /var/log/milestones/milestone_file /var/log/milestones/milestone_messages
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ grep -q 'ForceCommand /usr/local/src/ttylog/start_ttylog.sh' /etc/ssh/sshd_config
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'ForceCommand /usr/local/src/ttylog/start_ttylog.sh'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'cat /var/log/annotator/* > /usr/local/src/merged_logs.csv'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'zip -r /usr/local/src/raw_logs /usr/local/src/logs /var/log/annotator'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/mergeLogs.sh
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod +x /usr/local/src/zipRawLogs.sh
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ service ssh reload
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m * Reloading OpenBSD Secure Shell server's configuration sshd       [40G
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m[34G[ OK ]
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ service cron start
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m * Starting periodic command scheduler cron       [40G
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m[34G[ OK ]
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser1  memory  memlimit/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser2  memory  memlimit/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser3  memory  memlimit/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser4  memory  memlimit/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0mDecentLitteruser5  memory  memlimit/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ bash /home/ubuntu/setup_home DecentLitteruser1 szc6dr7i 6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ player=DecentLitteruser1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ super_secret=szc6dr7i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ follow_me_filename=6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ studentDIR=/home/DecentLitteruser1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageLoc=($studentDIR/i/b/e/j/l/s/v/ $studentDIR/i/a/g/kitty/m/q/w/ $studentDIR/i/c/e/h/k/ $studentDIR/i/a/e/kitty/ $studentDIR/i/z/g/j/l/o/w/ $studentDIR/i/d/f/kitty/k/n/t/)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageName=(002edurange.jpg edurange001.gif edurange3.GIF 4edurange.jpeg edurange006weeeeeee.png edurange5meow.JPG)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p '/home/DecentLitteruser1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch '/home/DecentLitteruser1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!/6KfvtAS1'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser1/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser1/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser1/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser1/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/toLearn/cat.jpg /home/ubuntu/toLearn/dog.jpg /home/DecentLitteruser1/toLearn/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser1/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/stuff/3dprintedbox.txt /home/ubuntu/stuff/3leggedcat.txt /home/ubuntu/stuff/iamanimage2.txt /home/ubuntu/stuff/iamanimage3.txt /home/ubuntu/stuff/imtxt.txt /home/ubuntu/stuff/mysong.txt /home/DecentLitteruser1/stuff/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'SECRET CODE: szc6dr7i'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser1/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0meuismod. Maecenas urna sem, congue et libero nec, viverra condimentum ante. Praesent bibendum nulla ut sapien volutpat tincidunt. Sed sed nibh id ante maximus dignissim. Sed congue egestas lacinia. Duis non finibus arcu, a viverra mauris. Nunc ac felis ac turpis congue faucibus.'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 7625837645734265487236549367527365827634587623485763982576489237645832765489762385497632
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Fighting evil by moonlight\nWinning love by daylight\nNever running from a real fight\nShe is the one named Sailor Moon\nShe will never turn her back on a friend\nShe is always there to defend\nShe is the one on whom we depend'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser1/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser1/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser1/editme
+[CELERY] 
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/002edurange.jpg /home/DecentLitteruser1/i/b/e/j/l/s/v/002edurange.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/4edurange.jpeg /home/DecentLitteruser1/i/a/g/kitty/m/q/w/edurange001.gif
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange001.gif /home/DecentLitteruser1/i/c/e/h/k/edurange3.GIF
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange006weeeeeee.png /home/DecentLitteruser1/i/a/e/kitty/4edurange.jpeg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange3.GIF /home/DecentLitteruser1/i/z/g/j/l/o/w/edurange006weeeeeee.png
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange5meow.JPG /home/DecentLitteruser1/i/d/f/kitty/k/n/t/edurange5meow.JPG
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=6
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser1/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser1/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser1:DecentLitteruser1 /home/DecentLitteruser1/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 660 /home/DecentLitteruser1/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ find /home/DecentLitteruser1 -type d -print0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ xargs -0 chmod +x
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ bash /home/ubuntu/setup_home DecentLitteruser2 szc6dr7i 6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ player=DecentLitteruser2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ super_secret=szc6dr7i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ follow_me_filename=6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ studentDIR=/home/DecentLitteruser2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageLoc=($studentDIR/i/b/e/j/l/s/v/ $studentDIR/i/a/g/kitty/m/q/w/ $studentDIR/i/c/e/h/k/ $studentDIR/i/a/e/kitty/ $studentDIR/i/z/g/j/l/o/w/ $studentDIR/i/d/f/kitty/k/n/t/)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageName=(002edurange.jpg edurange001.gif edurange3.GIF 4edurange.jpeg edurange006weeeeeee.png edurange5meow.JPG)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p '/home/DecentLitteruser2/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch '/home/DecentLitteruser2/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!/6KfvtAS1'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser2/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser2/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser2/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser2/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/toLearn/cat.jpg /home/ubuntu/toLearn/dog.jpg /home/DecentLitteruser2/toLearn/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser2/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/stuff/3dprintedbox.txt /home/ubuntu/stuff/3leggedcat.txt /home/ubuntu/stuff/iamanimage2.txt /home/ubuntu/stuff/iamanimage3.txt /home/ubuntu/stuff/imtxt.txt /home/ubuntu/stuff/mysong.txt /home/DecentLitteruser2/stuff/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'SECRET CODE: szc6dr7i'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser2/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0meuismod. Maecenas urna sem, congue et libero nec, viverra condimentum ante. Praesent bibendum nulla ut sapien volutpat tincidunt. Sed sed nibh id ante maximus dignissim. Sed congue egestas lacinia. Duis non finibus arcu, a viverra mauris. Nunc ac felis ac turpis congue faucibus.'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 7625837645734265487236549367527365827634587623485763982576489237645832765489762385497632
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Fighting evil by moonlight\nWinning love by daylight\nNever running from a real fight\nShe is the one named Sailor Moon\nShe will never turn her back on a friend\nShe is always there to defend\nShe is the one on whom we depend'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser2/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser2/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser2/editme
+[CELERY] 
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/002edurange.jpg /home/DecentLitteruser2/i/b/e/j/l/s/v/002edurange.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/4edurange.jpeg /home/DecentLitteruser2/i/a/g/kitty/m/q/w/edurange001.gif
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange001.gif /home/DecentLitteruser2/i/c/e/h/k/edurange3.GIF
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange006weeeeeee.png /home/DecentLitteruser2/i/a/e/kitty/4edurange.jpeg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange3.GIF /home/DecentLitteruser2/i/z/g/j/l/o/w/edurange006weeeeeee.png
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange5meow.JPG /home/DecentLitteruser2/i/d/f/kitty/k/n/t/edurange5meow.JPG
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=6
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser2/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser2/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser2:DecentLitteruser2 /home/DecentLitteruser2/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 660 /home/DecentLitteruser2/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ find /home/DecentLitteruser2 -type d -print0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ xargs -0 chmod +x
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ bash /home/ubuntu/setup_home DecentLitteruser3 szc6dr7i 6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ player=DecentLitteruser3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ super_secret=szc6dr7i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ follow_me_filename=6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ studentDIR=/home/DecentLitteruser3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageLoc=($studentDIR/i/b/e/j/l/s/v/ $studentDIR/i/a/g/kitty/m/q/w/ $studentDIR/i/c/e/h/k/ $studentDIR/i/a/e/kitty/ $studentDIR/i/z/g/j/l/o/w/ $studentDIR/i/d/f/kitty/k/n/t/)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageName=(002edurange.jpg edurange001.gif edurange3.GIF 4edurange.jpeg edurange006weeeeeee.png edurange5meow.JPG)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p '/home/DecentLitteruser3/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch '/home/DecentLitteruser3/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!/6KfvtAS1'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser3/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser3/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser3/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser3/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/toLearn/cat.jpg /home/ubuntu/toLearn/dog.jpg /home/DecentLitteruser3/toLearn/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser3/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/stuff/3dprintedbox.txt /home/ubuntu/stuff/3leggedcat.txt /home/ubuntu/stuff/iamanimage2.txt /home/ubuntu/stuff/iamanimage3.txt /home/ubuntu/stuff/imtxt.txt /home/ubuntu/stuff/mysong.txt /home/DecentLitteruser3/stuff/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'SECRET CODE: szc6dr7i'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser3/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0meuismod. Maecenas urna sem, congue et libero nec, viverra condimentum ante. Praesent bibendum nulla ut sapien volutpat tincidunt. Sed sed nibh id ante maximus dignissim. Sed congue egestas lacinia. Duis non finibus arcu, a viverra mauris. Nunc ac felis ac turpis congue faucibus.'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 7625837645734265487236549367527365827634587623485763982576489237645832765489762385497632
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Fighting evil by moonlight\nWinning love by daylight\nNever running from a real fight\nShe is the one named Sailor Moon\nShe will never turn her back on a friend\nShe is always there to defend\nShe is the one on whom we depend'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser3/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser3/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser3/editme
+[CELERY] 
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/002edurange.jpg /home/DecentLitteruser3/i/b/e/j/l/s/v/002edurange.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/4edurange.jpeg /home/DecentLitteruser3/i/a/g/kitty/m/q/w/edurange001.gif
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange001.gif /home/DecentLitteruser3/i/c/e/h/k/edurange3.GIF
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange006weeeeeee.png /home/DecentLitteruser3/i/a/e/kitty/4edurange.jpeg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange3.GIF /home/DecentLitteruser3/i/z/g/j/l/o/w/edurange006weeeeeee.png
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange5meow.JPG /home/DecentLitteruser3/i/d/f/kitty/k/n/t/edurange5meow.JPG
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=6
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser3/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser3/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser3:DecentLitteruser3 /home/DecentLitteruser3/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 660 /home/DecentLitteruser3/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ find /home/DecentLitteruser3 -type d -print0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ xargs -0 chmod +x
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ bash /home/ubuntu/setup_home DecentLitteruser4 szc6dr7i 6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ player=DecentLitteruser4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ super_secret=szc6dr7i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ follow_me_filename=6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ studentDIR=/home/DecentLitteruser4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageLoc=($studentDIR/i/b/e/j/l/s/v/ $studentDIR/i/a/g/kitty/m/q/w/ $studentDIR/i/c/e/h/k/ $studentDIR/i/a/e/kitty/ $studentDIR/i/z/g/j/l/o/w/ $studentDIR/i/d/f/kitty/k/n/t/)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageName=(002edurange.jpg edurange001.gif edurange3.GIF 4edurange.jpeg edurange006weeeeeee.png edurange5meow.JPG)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p '/home/DecentLitteruser4/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch '/home/DecentLitteruser4/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!/6KfvtAS1'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser4/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser4/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser4/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser4/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/toLearn/cat.jpg /home/ubuntu/toLearn/dog.jpg /home/DecentLitteruser4/toLearn/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser4/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/stuff/3dprintedbox.txt /home/ubuntu/stuff/3leggedcat.txt /home/ubuntu/stuff/iamanimage2.txt /home/ubuntu/stuff/iamanimage3.txt /home/ubuntu/stuff/imtxt.txt /home/ubuntu/stuff/mysong.txt /home/DecentLitteruser4/stuff/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'SECRET CODE: szc6dr7i'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser4/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0meuismod. Maecenas urna sem, congue et libero nec, viverra condimentum ante. Praesent bibendum nulla ut sapien volutpat tincidunt. Sed sed nibh id ante maximus dignissim. Sed congue egestas lacinia. Duis non finibus arcu, a viverra mauris. Nunc ac felis ac turpis congue faucibus.'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 7625837645734265487236549367527365827634587623485763982576489237645832765489762385497632
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Fighting evil by moonlight\nWinning love by daylight\nNever running from a real fight\nShe is the one named Sailor Moon\nShe will never turn her back on a friend\nShe is always there to defend\nShe is the one on whom we depend'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser4/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser4/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser4/editme
+[CELERY] 
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/002edurange.jpg /home/DecentLitteruser4/i/b/e/j/l/s/v/002edurange.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/4edurange.jpeg /home/DecentLitteruser4/i/a/g/kitty/m/q/w/edurange001.gif
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange001.gif /home/DecentLitteruser4/i/c/e/h/k/edurange3.GIF
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange006weeeeeee.png /home/DecentLitteruser4/i/a/e/kitty/4edurange.jpeg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange3.GIF /home/DecentLitteruser4/i/z/g/j/l/o/w/edurange006weeeeeee.png
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange5meow.JPG /home/DecentLitteruser4/i/d/f/kitty/k/n/t/edurange5meow.JPG
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=6
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser4/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser4/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser4:DecentLitteruser4 /home/DecentLitteruser4/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 660 /home/DecentLitteruser4/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ find /home/DecentLitteruser4 -type d -print0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ xargs -0 chmod +x
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ bash /home/ubuntu/setup_home DecentLitteruser5 szc6dr7i 6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ player=DecentLitteruser5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ super_secret=szc6dr7i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ follow_me_filename=6KfvtAS1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ studentDIR=/home/DecentLitteruser5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageLoc=($studentDIR/i/b/e/j/l/s/v/ $studentDIR/i/a/g/kitty/m/q/w/ $studentDIR/i/c/e/h/k/ $studentDIR/i/a/e/kitty/ $studentDIR/i/z/g/j/l/o/w/ $studentDIR/i/d/f/kitty/k/n/t/)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ imageName=(002edurange.jpg edurange001.gif edurange3.GIF 4edurange.jpeg edurange006weeeeeee.png edurange5meow.JPG)
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir -p '/home/DecentLitteruser5/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ touch '/home/DecentLitteruser5/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!/6KfvtAS1'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser5/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser5/followMe
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 //home/DecentLitteruser5/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser5/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/toLearn/cat.jpg /home/ubuntu/toLearn/dog.jpg /home/DecentLitteruser5/toLearn/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser5/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/stuff/3dprintedbox.txt /home/ubuntu/stuff/3leggedcat.txt /home/ubuntu/stuff/iamanimage2.txt /home/ubuntu/stuff/iamanimage3.txt /home/ubuntu/stuff/imtxt.txt /home/ubuntu/stuff/mysong.txt /home/DecentLitteruser5/stuff/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'SECRET CODE: szc6dr7i'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser5/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0meuismod. Maecenas urna sem, congue et libero nec, viverra condimentum ante. Praesent bibendum nulla ut sapien volutpat tincidunt. Sed sed nibh id ante maximus dignissim. Sed congue egestas lacinia. Duis non finibus arcu, a viverra mauris. Nunc ac felis ac turpis congue faucibus.'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 7625837645734265487236549367527365827634587623485763982576489237645832765489762385497632
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Fighting evil by moonlight\nWinning love by daylight\nNever running from a real fight\nShe is the one named Sailor Moon\nShe will never turn her back on a friend\nShe is always there to defend\nShe is the one on whom we depend'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser5/textfiles
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser5/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo -e 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/editme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 660 /home/DecentLitteruser5/editme
+[CELERY] 
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/002edurange.jpg /home/DecentLitteruser5/i/b/e/j/l/s/v/002edurange.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=1
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/4edurange.jpeg /home/DecentLitteruser5/i/a/g/kitty/m/q/w/edurange001.gif
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=2
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange001.gif /home/DecentLitteruser5/i/c/e/h/k/edurange3.GIF
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=3
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange006weeeeeee.png /home/DecentLitteruser5/i/a/e/kitty/4edurange.jpeg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=4
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange3.GIF /home/DecentLitteruser5/i/z/g/j/l/o/w/edurange006weeeeeee.png
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=5
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ for filename in '/home/ubuntu/images/*'
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/images/edurange5meow.JPG /home/DecentLitteruser5/i/d/f/kitty/k/n/t/edurange5meow.JPG
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ counter=6
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod -R 440 /home/DecentLitteruser5/i
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /home/DecentLitteruser5/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chown -R DecentLitteruser5:DecentLitteruser5 /home/DecentLitteruser5/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 660 /home/DecentLitteruser5/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ find /home/DecentLitteruser5 -type d -print0
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ xargs -0 chmod +x
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ read line
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /usr/special/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ mkdir /usr/special/secrets
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/final-mission/U348bdks8cowFJS8dJF3hHDFj.jpg /usr/special/secrets/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cp /home/ubuntu/final-mission/.donthackme /usr/special/secrets/
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 666 /usr/special/secrets/U348bdks8cowFJS8dJF3hHDFj.jpg
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ chmod 666 /usr/special/secrets/.donthackme
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /images
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/install
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/setup_home
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/stuff
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/toLearn
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/images
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ rm -rf /home/ubuntu/final-mission
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ cat
+[CELERY] [0m[1mdocker_container.Candlelight_nat (remote-exec):[0m [0m+ echo 'cat /etc/motd'
+[CELERY] [0m[1mdocker_container.Candlelight_nat: Creation complete after 5s [id=b8c2c44338f8ac2f0d067e93a3760f8bb07bf5737c5baccf49b4e2f54048e79a][0m
+[CELERY] [0m[1m[32m
+[CELERY] Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[CELERY] [0m[0m[1m[32m
+[CELERY] Outputs:
+[CELERY] 
+[CELERY] [0mCandlelight_nat = [
+[CELERY]   {
+[CELERY]     "ip_address_public" = "localhost:32782"
+[CELERY]     "name" = "Candlelight_nat"
+[CELERY]   },
+[CELERY] ]
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:15] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [03/Jul/2023 15:03:25] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[CELERY] 
+[CELERY] worker: Hitting Ctrl+C again will terminate all running tasks!
+[CELERY] 
+[CELERY] worker: Warm shutdown (MainProcess)
+[WEBSSH] node webssh2/app/index.js exited with code SIGINT
+[CHATSERVER] node edurange_refactored/chat_server/chat_server.js exited with code SIGINT
+[WEBPACK] npm run webpack-watch exited with code SIGINT
+[CELERY] 
+[CELERY] worker: Cold shutdown (MainProcess)
+[FLASK] npm run flask-server exited with code SIGINT
+[CELERY] celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG exited with code SIGINT

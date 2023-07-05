@@ -49,7 +49,7 @@ const io = new Server(server, {
 // gathering student user ID / username list, used for sockets joining room
 const fs = require('fs'); // fs -- file system module.
 let studentList;
-fs.readFile(`~/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
+fs.readFile(`/home/m/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
     if (err) throw err;
     studentList = JSON.parse(data);
 });
