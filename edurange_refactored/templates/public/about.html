@@ -1,60 +1,25 @@
-
 {% extends "layout.html" %}
-
 {% block content %}
-<div class="container">
-    <h1 class="mt-5">About</h1>
-    <div class="row">
-      <p class="lead">Teaching cybersecurity or computer networking in the classroom? Our suite of exercises can help supplement your lectures, labs, and other activities. EDURange provides rapid feedback to students and faculty, aiding in the assessment of student learning. By providing interactive, competitive exercises, it enhances the quality of instructional material while increasing active learning for students.
-      </p>
-    </div>
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='build/about_page.bundle.css') }}"
+    />
+<main class="about_page">
+    <div id="about_page">
 </div>
-
-
-<button type="button" class="btn btn-success">Success</button>
-
-<div class="dropdown">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-    Dropdown button
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Link 1</a></li>
-    <li><a class="dropdown-item" href="#">Link 2</a></li>
-    <li><a class="dropdown-item" href="#">Link 3</a></li>
-  </ul>
-</div>
-
-<button data-bs-toggle="collapse" data-bs-target="#demo">Collapsible</button>
-
-<div id="demo" class="collapse">
-Lorem ipsum dolor text....
-</div>
-
-<div class="container-fluid p-5 bg-primary text-white text-center">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p>
-</div>
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Column 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 3</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-  </div>
-</div>
+</main>
 
 {% endblock %}
 
+{% block  js %}
+<!-- development React scripts !!Replace with production scripts (below) for release!! -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
+<!-- production React scripts -->
+<!-- <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
+
+<script src="/static/build/about_page.bundle.js"></script>
+{% endblock %}
