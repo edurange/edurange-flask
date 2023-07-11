@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+   <link
+           rel="stylesheet"
+           type="text/css"
+           href="{{ url_for('static', filename='build/accountmgmt.bundle.css') }}"
+   />
+<main class="student">
+ <div id="accountmgmt"></div>
+</div>
+</main>
+
+
+{% endblock %}
+
+
+{% block  js %}
+<script src="/static/build/accountmgmt.bundle.js"></script>
+{% endblock %}
+
