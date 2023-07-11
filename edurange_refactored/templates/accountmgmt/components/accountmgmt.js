@@ -25,7 +25,7 @@ var e = document.getElementById("accountmgmt"); // The id assigned in html file.
 const root=createRoot(e);
 
 
-root.render(<accountmgmt/>);
+root.render(<Accountmgmt/>);
 
 
 
