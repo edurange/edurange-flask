@@ -94,7 +94,7 @@ def student():
     )
 
     return render_template(
-        "dashboard/student.html",
+        "dashboard/student_dashboard.html",
         userInfo=userInfo,
         groups=groups,
         scenarioTable=scenarioTable,
