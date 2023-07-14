@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='build/student_dashboard.bundle.css') }}"
+    />
+<main class="student_dashboard">
+  <div id="student_dashboard" userInfo={{userInfo}} groups={{groups}} scenarioTable="{{scenarioTable}}"></div>
+</div>
+</main>
+
+{% endblock %}
+
+{% block  js %}
+<!-- development React scripts !!Replace with production scripts (below) for release!! -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<script src="/static/build/student_dashboard.bundle.js"></script>
+{% endblock %}
