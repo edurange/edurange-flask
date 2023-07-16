@@ -85,7 +85,7 @@ module.exports = [
   }
 
   },
-<<<<<<< HEAD
+
   {
     context: path.join(__dirname, '/edurange_refactored/templates/instr_create_scenario/components/'),
     entry: {
@@ -134,15 +134,9 @@ module.exports = [
     }
   },
  
-
-
-
-  {
-=======
   
 	{
 		
->>>>>>> 556276b9b54dde0377a874d418ea8d6f88f2c2e5
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
       student_scenario: './scenario/scenario.component',

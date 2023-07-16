@@ -20,9 +20,11 @@ const pool = new pg.Pool({
   host: process.env.HOST_EXTERN_ADDRESS,
   user: 'postgres',
   password: process.env.PASSWORD,
-  database: 'flaskdb3',
+  database: 'dbname',
   port: '5432'
 });
+
+
 
 
 pool.query('SELECT * FROM SCENARIOS', (err, result) => {
@@ -210,12 +212,16 @@ io.on('connection', socket => {
   
 
 
-  const group_id = ''
-  pool.query('SELECT * FROM SCENARIO_GROUPS', (err, result) => {
+  const query_params = {
+    selectionquery: 'SELECT socket.sid FROM SCENARIO_GROUPS WHERE socket.sid = scenario_id',
+    sid: socket.sid,
+  };
+  pool.query(query_params.selectionquery, [query_params.sid], (err, result) => {
     if (err) {
       console.error('Error executing query', err);
     } else {
-      group_id = "todo"
+      group_id = result;
+      print("loves it")
     }
   });
 
