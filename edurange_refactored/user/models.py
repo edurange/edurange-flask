@@ -153,14 +153,19 @@ class ChatHistory(UserMixin, SurrogatePK, Model):
 
     __tablename__ = "chat_history"
     
-    scenario_id = reference_col("scenarios", nullable=False)
+    sid = reference_col("scenarios", nullable=False)
+    scenario = relationship("Scenarios", backref="scenario_groups")
     
-    scenario_name = Column(db.String(40), unique=False, nullable=False)
+    gid = reference_col("groups", nullable=False)
+    group = relationship("StudentGroups", backref="chat_history", viewonly=True)
     
-    user_id = reference_col("users", nullable=False)
+    sender = reference_col("users", nullable=False)
     user = relationship("User", backref="chat_history")
-    instructor_id = Column(db.String(10000), nullable=False, unique=False)
+
+    recipient = reference_col("users", nullable=False)
+    user = relationship("User", backref="chat_history")
     
     timestamp = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
-    message = Column(db.String(10000), nullable=False, unique=False)
+    
+    message_contents = Column(db.String(10000), nullable=False, unique=False)
     
