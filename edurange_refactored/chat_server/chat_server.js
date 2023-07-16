@@ -1,15 +1,47 @@
 // These are used to define our listening port in our dot env file. 
-var postgres = require('postgres')
+//var postgres = require('postgres')
 var _path = require('path'); 
 const dotEnvPath = _path.resolve(process.cwd(), '.env');
 const dotenv = require('dotenv').config({ path: dotEnvPath }); //grabbing the port number from the .env file
 
+
 const express = require("express");
 const app = express();
 
-const sql = postgres(`${process.env.DATABASE_URL}`, {})
+// first irun npm install pg
+const pg = require('pg')
+
+// Pool objects use environment variables
+// for connection information
 
 
+
+host_addr = process.env.HOST_EXTERN_ADDRESS
+
+
+// TO DO: Change .env file to vibe with this better
+const pool = new pg.Pool({
+  host: process.env.HOST_EXTERN_ADDRESS,
+  user: 'postgres',
+  password: process.env.PASSWORD,
+  database: 'flaskdb3',
+  port: '5432'
+});
+
+pool.query('SELECT * FROM SCENARIOS', (err, result) => {
+  if (err) {
+    console.error('Error executing query', err);
+  } else {
+    console.log('Query result:', result.rows);
+  }
+});
+
+const client = new pg.Client()
+
+
+//const sql = postgres(`${process.env.DATABASE_URL}`, {})
+
+/*
 async function insertUser({ name }) {
   const users = await sql`
     insert into ChatHistory
@@ -23,11 +55,15 @@ async function insertUser({ name }) {
 } 
 
 insertUser("Chasmine")
+*/
+
+
 
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 app.use(cors());
+
 // create server
 const server = http.createServer(app);
 
