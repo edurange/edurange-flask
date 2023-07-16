@@ -1,22 +1,41 @@
 {
-	"containers": {
-		"name" : "nat",
-		"files": [{
-			"global_files": [
-			],
-			"system_files": [
-				"install",
-				"motd_nat",
-				"cleanup_globals"
-			],
-			"user_files": [
-				"setup_home",
-				"stuff",
-				"images",
-				"toLearn",
-				"final-mission",
-				"milestones.txt"
-			]
-		}]
-	}
+    "containers":  
+    [
+        {
+            "name" : "nat",
+            "files":[
+                {
+                    "global_files": [
+                    ],
+                    "system_files": [
+                        "install",
+                        "motd_nat",
+                        "cleanup_globals"
+                    ],
+                    "user_files": [
+                        "setup_home",
+                        "stuff",
+                        "images",
+                        "toLearn",
+                        "final-mission",
+                        "milestones.txt"
+                    ]
+                }
+            ]
+        },
+        {
+            "name" : "gateway",
+            "files":[
+                {
+                    "global_files": [
+                    ],
+                    "system_files": [
+                    ],
+                    "user_files": [
+                        "milestones.txt"
+                    ]
+                }
+            ]
+        }
+    ]
 }
