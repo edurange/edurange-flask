@@ -14,12 +14,8 @@ const pg = require('pg')
 // Pool objects use environment variables
 // for connection information
 
-
-
-host_addr = process.env.HOST_EXTERN_ADDRESS
-
-
 // TO DO: Change .env file to vibe with this better
+// make it default: use PGHOST, PGUSER, PGPASSWORD, PGDATABASE, and PGPORT
 const pool = new pg.Pool({
   host: process.env.HOST_EXTERN_ADDRESS,
   user: 'postgres',
@@ -27,6 +23,7 @@ const pool = new pg.Pool({
   database: 'flaskdb3',
   port: '5432'
 });
+
 
 pool.query('SELECT * FROM SCENARIOS', (err, result) => {
   if (err) {
@@ -97,13 +94,23 @@ let masterLiveStuds = {};
 //create middleware
 io.use((socket, next) => {
   const uid = socket.handshake.auth.uid;
+  const sid = socket.handshake.auth.sid;
+
   if(!uid) {
     return next(new Error("no user ID"));
   }
   socket.uid = uid;
+
+  if(!sid) {
+    return next(new Error("no scenario ID"));
+  }
+  socket.sid = sid;
   next();
 });
 
+
+// When a new student/instructor joins, they need to  
+//
 io.on('connection', socket => {
 
     // Error handler for middleware.
@@ -199,6 +206,62 @@ io.on('connection', socket => {
     alertTime = parseInt(Math.floor(Date.now()/1000));
     console.log(alertTime);
 
+    console.log('++++++++++++++++++++++++++++++++++++++++++')
+  
+
+
+  const group_id = ''
+  pool.query('SELECT * FROM SCENARIO_GROUPS', (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+    } else {
+      group_id = "todo"
+    }
+  });
+
+    const chatDB_rowEntry = {
+      sender: _from,
+      recipient:_to,
+      message_contents: messageContents,
+      timestamp: alertTime,
+      sid: socket.sid
+      //gid: ....
+    }
+
+    const query = 'INSERT INTO chat_history (sender, recipient, message_contents, timestamp, sid, gid) VALUES ($1, $2 ,$3, $4, $5, $6)';
+    pool.query(query, chatDB_rowEntry, (err, result) => {
+      if (err) {
+        console.error('Error executing query', err);
+      } else {
+        console.log('Query result:', result.rows);
+      }
+    });
+
+
+
+    io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
+  });
+  
+  socket.on("disconnect", () => {
+    trafficAlert("studLeave");
+    if(socket.uid=="000") {
+      io.emit("instructor disconnected");
+    } else {
+      masterLiveStuds[socket.uid] = { live: false }
+    }
+  });
+
+});
+
+console.log(` . . . c h a t . . . `)
+console.log(`server listening on port ${process.env.CHAT_SERVER_PORT}`)
+io.listen(process.env.CHAT_SERVER_PORT);
+
+
+
+
+
+    /*
     //practice post
 
   const postData = JSON.stringify({"hello": "world"});
@@ -230,20 +293,6 @@ io.on('connection', socket => {
   req.write(postData);
   req.end();
 
-    io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
-  });
+  */
+
   
-  socket.on("disconnect", () => {
-    trafficAlert("studLeave");
-    if(socket.uid=="000") {
-      io.emit("instructor disconnected");
-    } else {
-      masterLiveStuds[socket.uid] = { live: false }
-    }
-  });
-
-});
-
-console.log(` . . . c h a t . . . `)
-console.log(`server listening on port ${process.env.CHAT_SERVER_PORT}`)
-io.listen(process.env.CHAT_SERVER_PORT);

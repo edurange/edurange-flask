@@ -56,6 +56,7 @@ class StudentScenario extends React.Component {
         <Chatbox 
           className='chatbox'
           uid={this.props.uid}
+          sid={this.props.scenarioId}
         />
           
       </div /* student-view */>           

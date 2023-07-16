@@ -27,7 +27,7 @@ class Chatbox extends React.Component {
             <OutsideAlerter callback={this.closeChat}>
                 <div className={ this.state.open ? 'edu-chatbox-open' : 'edu-chatbox-closed' } onClick={this.openChat}>
                     <p>instructor chat</p>
-                    <ClientSocket uid={this.props.uid} chat_opened={this.state.open}/>
+                    <ClientSocket sid= {this.props.sid} uid={this.props.uid} chat_opened={this.state.open}/>
                 </div>
             </OutsideAlerter>
         );
