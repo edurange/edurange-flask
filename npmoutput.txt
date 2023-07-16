@@ -1,0 +1,1074 @@
+
+> edurange_refactored@1.0.0 start
+> concurrently -n "WEBPACK,FLASK,CELERY,FLOWER,WEBSSH,CHATSERVER" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold,bgYellow.bold" "npm run webpack-watch" "npm run flask-server" "celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG" "celery -A edurange_refactored.tasks -l DEBUG --broker=redis://localhost:6379/0 flower --port=5555" "node webssh2/app/index.js" "node edurange_refactored/chat_server/server.js"
+
+[WEBSSH] WebSSH2 service reading config from: /home/hallo/edurange-flask/webssh2/app/config.json
+[WEBSSH] ephemeral_auth service reading config from: /home/hallo/edurange-flask/webssh2/app/config.json
+[FLOWER] Usage: celery [OPTIONS] COMMAND [ARGS]...
+[FLOWER] Try 'celery --help' for help.
+[FLOWER] 
+[FLOWER] Error: No such option: -l
+[CHATSERVER] sever listening on port 3001
+[FLOWER] celery -A edurange_refactored.tasks -l DEBUG --broker=redis://localhost:6379/0 flower --port=5555 exited with code 2
+[CHATSERVER] events.js:291
+[CHATSERVER]       throw er; // Unhandled 'error' event
+[CHATSERVER]       ^
+[CHATSERVER] 
+[CHATSERVER] Error: listen EADDRINUSE: address already in use :::3001
+[CHATSERVER]     at Server.setupListenHandle [as _listen2] (net.js:1310:16)
+[CHATSERVER]     at listenInCluster (net.js:1358:12)
+[CHATSERVER]     at Server.listen (net.js:1444:7)
+[CHATSERVER]     at Server.attach (/home/hallo/edurange-flask/node_modules/socket.io/dist/index.js:167:17)
+[CHATSERVER]     at Server.listen (/home/hallo/edurange-flask/node_modules/socket.io/dist/index.js:140:21)
+[CHATSERVER]     at Object.<anonymous> (/home/hallo/edurange-flask/edurange_refactored/chat_server/server.js:200:4)
+[CHATSERVER]     at Module._compile (internal/modules/cjs/loader.js:999:30)
+[CHATSERVER]     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+[CHATSERVER]     at Module.load (internal/modules/cjs/loader.js:863:32)
+[CHATSERVER]     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+[CHATSERVER] Emitted 'error' event on Server instance at:
+[CHATSERVER]     at emitErrorNT (net.js:1337:8)
+[CHATSERVER]     at processTicksAndRejections (internal/process/task_queues.js:84:21) {
+[CHATSERVER]   code: 'EADDRINUSE',
+[CHATSERVER]   errno: 'EADDRINUSE',
+[CHATSERVER]   syscall: 'listen',
+[CHATSERVER]   address: '::',
+[CHATSERVER]   port: 3001
+[CHATSERVER] }
+[CHATSERVER] node edurange_refactored/chat_server/server.js exited with code 1
+[WEBSSH] WebSSH2 service listening on 0.0.0.0:5050
+[FLASK] 
+[FLASK] > edurange_refactored@1.0.0 flask-server
+[FLASK] > flask run --host=0.0.0.0
+[FLASK] 
+[WEBPACK] 
+[WEBPACK] > edurange_refactored@1.0.0 webpack-watch
+[WEBPACK] > NODE_ENV=debug webpack --mode development --watch
+[WEBPACK] 
+[FLASK]  * Serving Flask app 'autoapp.py' (lazy loading)
+[FLASK]  * Environment: production
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]    Use a production WSGI server instead.
+[FLASK]  * Debug mode: off
+[CELERY]  
+[CELERY]  -------------- celery@williumshatner v5.2.7 (dawn-chorus)
+[CELERY] --- ***** ----- 
+[CELERY] -- ******* ---- Linux-5.19.0-1026-gcp-x86_64-with-glibc2.35 2023-07-05 16:56:05
+[CELERY] - *** --- * --- 
+[CELERY] - ** ---------- [config]
+[CELERY] - ** ---------- .> app:         edurange_refactored.tasks:0x7f1ad536fb80
+[CELERY] - ** ---------- .> transport:   redis://localhost:6379/0
+[CELERY] - ** ---------- .> results:     redis://localhost:6379/0
+[CELERY] - *** --- * --- .> concurrency: 4 (prefork)
+[CELERY] -- ******* ---- .> task events: ON
+[CELERY] --- ***** ----- 
+[CELERY]  -------------- [queues]
+[CELERY]                 .> celery           exchange=celery(direct) key=celery
+[CELERY]                 
+[CELERY] 
+[CELERY] [tasks]
+[CELERY]   . celery.accumulate
+[CELERY]   . celery.backend_cleanup
+[CELERY]   . celery.chain
+[CELERY]   . celery.chord
+[CELERY]   . celery.chord_unlock
+[CELERY]   . celery.chunks
+[CELERY]   . celery.group
+[CELERY]   . celery.map
+[CELERY]   . celery.starmap
+[CELERY]   . edurange_refactored.tasks.CreateScenarioTask
+[CELERY]   . edurange_refactored.tasks.destroy
+[CELERY]   . edurange_refactored.tasks.scenarioCollectLogs
+[CELERY]   . edurange_refactored.tasks.scenarioTimeoutWarningEmail
+[CELERY]   . edurange_refactored.tasks.send_async_email
+[CELERY]   . edurange_refactored.tasks.start
+[CELERY]   . edurange_refactored.tasks.stop
+[CELERY]   . edurange_refactored.tasks.test_send_async_email
+[CELERY] 
+[WEBPACK] 
+[WEBPACK] webpack is watching the files...
+[WEBPACK] 
+[FLASK]  * Running on all addresses (0.0.0.0)
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]  * Running on http://127.0.0.1:5000
+[FLASK]  * Running on http://10.182.0.2:5000 (Press CTRL+C to quit)
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/hallo/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/hallo/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[WEBPACK] Hash: 5f5e74806bb69a04c58997e45216e10747f886e206b9e2e5e55e753aa832
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: 5f5e74806bb69a04c589
+[WEBPACK]     Time: 11647ms
+[WEBPACK]     Built at: 07/05/2023 4:56:17 PM
+[WEBPACK]                                           Asset      Size    Chunks             Chunk Names
+[WEBPACK]          5531dd3a7705ec68a6c5f5d02b25da6f.woff2   103 KiB            [emitted]  
+[WEBPACK]          be4dccbe54eea47a0ad5d7bb60a3c17d.woff2   151 KiB            [emitted]  
+[WEBPACK]          e42bcafcb7cc5002daa805140064bf40.woff2  23.5 KiB            [emitted]  
+[WEBPACK]          fontawesome/webfonts/fa-brands-400.ttf   177 KiB            [emitted]  
+[WEBPACK]         fontawesome/webfonts/fa-regular-400.ttf  58.8 KiB            [emitted]  
+[WEBPACK]           fontawesome/webfonts/fa-solid-900.ttf   381 KiB            [emitted]  
+[WEBPACK]     fontawesome/webfonts/fa-v4compatibility.ttf  9.85 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/2.png  29.5 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/3.png   235 KiB            [emitted]  
+[WEBPACK]     img/Metasploitable/m-h_example_cmd_line.png  65.5 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/RSA.png  64.8 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/cat_secret.png  8.13 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/decrypt.png  10.8 KiB            [emitted]  
+[WEBPACK]           img/Ssh_Inception/decryptpassword.png  9.41 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep-f.png  10.3 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep_f.png  13.1 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/image1.png   688 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/key.png   543 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/keys.png   536 KiB            [emitted]  
+[WEBPACK]                  img/Ssh_Inception/man_nmap.png  61.2 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/man_ssh.png  61.4 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/nat.png   801 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/nmap.png  7.96 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/nmap_ln.png   9.5 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd-L.png  9.95 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd_L.png  13.3 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/rsa_search.png  10.5 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/secret.png   793 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/vim_secret.png   8.5 KiB            [emitted]  
+[WEBPACK]                                 img/booting.png  5.02 KiB            [emitted]  
+[WEBPACK]                                img/building.png  5.65 KiB            [emitted]  
+[WEBPACK]                                 img/favicon.ico    15 KiB            [emitted]  
+[WEBPACK]                                 img/started.png  7.39 KiB            [emitted]  
+[WEBPACK]                                 img/stopped.png  7.69 KiB            [emitted]  
+[WEBPACK]                                img/stopping.png  5.55 KiB            [emitted]  
+[WEBPACK]                             main_css.bundle.css   348 KiB  main_css  [emitted]  main_css
+[WEBPACK]                              main_css.bundle.js  8.22 KiB  main_css  [emitted]  main_css
+[WEBPACK]                               main_js.bundle.js  1.72 MiB   main_js  [emitted]  main_js
+[WEBPACK]     Entrypoint main_js = main_js.bundle.js
+[WEBPACK]     Entrypoint main_css = main_css.bundle.css main_css.bundle.js
+[WEBPACK]     [0] multi ./node_modules/bootstrap/dist/css/bootstrap.css ./assets/fontawesome/css/all.css ./assets/css/style.css 52 bytes {main_css} [built]
+[WEBPACK]     [./assets/css/style.css] 347 bytes {main_css} [built]
+[WEBPACK]     [./assets/fontawesome/css/all.css] 347 bytes {main_css} [built]
+[WEBPACK]     [./assets/img sync recursive .*] ./assets/img sync .* 972 bytes {main_js} [built]
+[WEBPACK]     [./assets/img/Getting_Started/2.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Getting_Started/3.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Metasploitable/m-h_example_cmd_line.png] 87 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/RSA.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/cat_secret.png] 76 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decrypt.png] 73 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decryptpassword.png] 81 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/grep-f.png] 72 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/js/main.js] 443 bytes {main_js} [built]
+[WEBPACK]     [./assets/js/plugins.js] 9.38 KiB {main_js} [built]
+[WEBPACK]     [./assets/js/script.js] 36 bytes {main_js} [built]
+[WEBPACK]         + 29 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/css/style.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/css/style.css] 10.1 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 1 hidden module
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/fontawesome/css/all.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.ttf] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.ttf] 83 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.ttf] 81 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.ttf] 87 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.woff2] 6.27 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/fontawesome/css/all.css] 153 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 2 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!node_modules/bootstrap/dist/css/bootstrap.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: 97e45216e10747f886e2
+[WEBPACK]     Time: 13590ms
+[WEBPACK]     Built at: 07/05/2023 4:56:19 PM
+[WEBPACK]                           Asset      Size            Chunks             Chunk Names
+[WEBPACK]     student_scenario.bundle.css   6.3 KiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]      student_scenario.bundle.js  1.29 MiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]     Entrypoint student_scenario = student_scenario.bundle.css student_scenario.bundle.js
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {student_scenario} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {student_scenario} [built]
+[WEBPACK]     [../utils/outstide-alerter.js] ./edurange_refactored/templates/student_view/utils/outstide-alerter.js 4.95 KiB {student_scenario} [built]
+[WEBPACK]         + 72 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/chatbox/chatbox.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/client_socket/client_socket.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/guide-section/guide-section.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/question/question.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/reading/reading.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/scenario/scenario.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_entry/student_chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_window/student_chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/topic-list/topic-list.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: 06b9e2e5e55e753aa832
+[WEBPACK]     Time: 13596ms
+[WEBPACK]     Built at: 07/05/2023 4:56:19 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [0] fs (ignored) 15 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 165 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {instructor_view} [built]
+[WEBPACK]     [../states.json] ./edurange_refactored/templates/instructor_view/states.json 14.3 KiB {instructor_view} [built]
+[WEBPACK]         + 58 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_entry/chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_window/chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/instructor_view/instructor_view.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/student/student.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:08] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:08] "GET /favicon.ico HTTP/1.1" 404 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:20] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:26] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:39] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:57:48] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 16:58:02] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:00:29] "POST / HTTP/1.1" 400 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:16] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:17] "GET /static/build/main_css.bundle.css HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:17] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:27] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:35] "POST / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:36] "POST / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:36] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:36] "GET /static/build/main_js.bundle.js HTTP/1.1" 206 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:37] "GET /static/build/main_js.bundle.js HTTP/1.1" 206 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:42] "GET /static/build/img/favicon.ico HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:51] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:51] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:51] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:57] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:57] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:03:57] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:03] "POST / HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:03] "GET / HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:03] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:04] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:09] "GET /dashboard/admin HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:10] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:10] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:20] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:20] "GET /static/build/img/stopped.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:20] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:20] "GET /static/build/img/started.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:26] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:29] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:30] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:30] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:30] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:30] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:33] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:33] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:33] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:34] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:39] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:44] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:50] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:54] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:04:59] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:04] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:17] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:17] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:17] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:18] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:23] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:24] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:28] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:33] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:36] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:37] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:37] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:37] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:37] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:39] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:39] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:39] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:44] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:45] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:45] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:45] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:45] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:49] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:49] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:05:49] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:14] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[WEBPACK] Hash: cd8823fca8c4a293e0e3
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: cd8823fca8c4a293e0e3
+[WEBPACK]     Time: 43ms
+[WEBPACK]     Built at: 07/05/2023 5:06:14 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 158 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:14] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:15] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:15] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:19] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:19] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:19] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:20] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:24] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:24] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:25] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:25] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:25] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] [2023-07-05 17:06:26,663] ERROR in app: Exception on /dashboard/scenarios/3 [GET]
+[FLASK] Traceback (most recent call last):
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 2073, in wsgi_app
+[FLASK]     response = self.full_dispatch_request()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1519, in full_dispatch_request
+[FLASK]     rv = self.handle_user_exception(e)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1517, in full_dispatch_request
+[FLASK]     rv = self.dispatch_request()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1503, in dispatch_request
+[FLASK]     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/user/views.py", line 450, in scenariosInfo
+[FLASK]     status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(sId, "ins")
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/utils.py", line 406, in tempMaker
+[FLASK]     questions = getQuestions(ty)
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/utils.py", line 377, in getQuestions
+[FLASK]     document = yaml.full_load(yml)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/__init__.py", line 105, in full_load
+[FLASK]     return load(stream, FullLoader)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/__init__.py", line 81, in load
+[FLASK]     return loader.get_single_data()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/constructor.py", line 49, in get_single_data
+[FLASK]     node = self.get_single_node()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 36, in get_single_node
+[FLASK]     document = self.compose_document()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 55, in compose_document
+[FLASK]     node = self.compose_node(None, None)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 82, in compose_node
+[FLASK]     node = self.compose_sequence_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+[FLASK]     node.value.append(self.compose_node(node, index))
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 84, in compose_node
+[FLASK]     node = self.compose_mapping_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+[FLASK]     item_value = self.compose_node(node, item_key)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 82, in compose_node
+[FLASK]     node = self.compose_sequence_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 110, in compose_sequence_node
+[FLASK]     while not self.check_event(SequenceEndEvent):
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/parser.py", line 98, in check_event
+[FLASK]     self.current_event = self.state()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/parser.py", line 392, in parse_block_sequence_entry
+[FLASK]     raise ParserError("while parsing a block collection", self.marks[-1],
+[FLASK] yaml.parser.ParserError: while parsing a block collection
+[FLASK]   in "./scenarios/prod/ransomware/questions.yml", line 5, column 5
+[FLASK] expected <block end>, but found '?'
+[FLASK]   in "./scenarios/prod/ransomware/questions.yml", line 6, column 5
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:26] "GET /dashboard/scenarios/3 HTTP/1.1" 500 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:27] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:27] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] [2023-07-05 17:06:34,608] ERROR in app: Exception on /dashboard/scenarios/3 [GET]
+[FLASK] Traceback (most recent call last):
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 2073, in wsgi_app
+[FLASK]     response = self.full_dispatch_request()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1519, in full_dispatch_request
+[FLASK]     rv = self.handle_user_exception(e)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1517, in full_dispatch_request
+[FLASK]     rv = self.dispatch_request()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/flask/app.py", line 1503, in dispatch_request
+[FLASK]     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/user/views.py", line 450, in scenariosInfo
+[FLASK]     status, owner, bTime, desc, s_type, s_name, guide, questions = tempMaker(sId, "ins")
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/utils.py", line 406, in tempMaker
+[FLASK]     questions = getQuestions(ty)
+[FLASK]   File "/home/hallo/edurange-flask/edurange_refactored/utils.py", line 377, in getQuestions
+[FLASK]     document = yaml.full_load(yml)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/__init__.py", line 105, in full_load
+[FLASK]     return load(stream, FullLoader)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/__init__.py", line 81, in load
+[FLASK]     return loader.get_single_data()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/constructor.py", line 49, in get_single_data
+[FLASK]     node = self.get_single_node()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 36, in get_single_node
+[FLASK]     document = self.compose_document()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 55, in compose_document
+[FLASK]     node = self.compose_node(None, None)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 82, in compose_node
+[FLASK]     node = self.compose_sequence_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+[FLASK]     node.value.append(self.compose_node(node, index))
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 84, in compose_node
+[FLASK]     node = self.compose_mapping_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+[FLASK]     item_value = self.compose_node(node, item_key)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 82, in compose_node
+[FLASK]     node = self.compose_sequence_node(anchor)
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/composer.py", line 110, in compose_sequence_node
+[FLASK]     while not self.check_event(SequenceEndEvent):
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/parser.py", line 98, in check_event
+[FLASK]     self.current_event = self.state()
+[FLASK]   File "/home/hallo/.local/lib/python3.10/site-packages/yaml/parser.py", line 392, in parse_block_sequence_entry
+[FLASK]     raise ParserError("while parsing a block collection", self.marks[-1],
+[FLASK] yaml.parser.ParserError: while parsing a block collection
+[FLASK]   in "./scenarios/prod/ransomware/questions.yml", line 5, column 5
+[FLASK] expected <block end>, but found '?'
+[FLASK]   in "./scenarios/prod/ransomware/questions.yml", line 6, column 5
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:34] "GET /dashboard/scenarios/3 HTTP/1.1" 500 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:34] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:34] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:35] "GET /static/build/img/favicon.ico HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:41] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:44] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:44] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:44] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:55] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:55] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:56] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:56] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:56] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:06:56] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:01] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:01] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:01] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:02] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:17] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:17] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[WEBPACK] Hash: a8a79c6852a97778cf02
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: a8a79c6852a97778cf02
+[WEBPACK]     Time: 40ms
+[WEBPACK]     Built at: 07/05/2023 5:07:17 PM
+[WEBPACK]                         Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      + 1 hidden asset
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 162 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:17] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:18] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:18] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:18] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:18] "GET /static/build/img/building.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:23] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:23] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:24] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:24] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:24] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:24] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:28] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:28] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:28] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:29] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:32] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:32] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:32] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:33] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:34] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:35] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:35] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:35] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:35] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:41] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:45] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:46] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:47] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:47] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:57] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[WEBPACK] Hash: ca13459eda31764d44d8
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: ca13459eda31764d44d8
+[WEBPACK]     Time: 47ms
+[WEBPACK]     Built at: 07/05/2023 5:07:58 PM
+[WEBPACK]                         Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      + 1 hidden asset
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 172 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /static/build/img/building.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:07:58] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:05] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:09] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:18] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:24] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:28] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:29] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:29] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[WEBPACK] Hash: 2c5f303f69b34251cb35
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: 2c5f303f69b34251cb35
+[WEBPACK]     Time: 33ms
+[WEBPACK]     Built at: 07/05/2023 5:08:53 PM
+[WEBPACK]                         Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      + 1 hidden asset
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 167 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /static/build/img/building.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:53] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:59] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:08:59] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:00] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:00] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:00] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:00] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:04] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:04] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:04] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:04] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:07] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:07] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:07] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:08] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:12] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:12] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:12] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:13] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:13] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:17] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:18] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:18] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[WEBPACK] Hash: 2c8e5903784b4a96df5f
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: 2c8e5903784b4a96df5f
+[WEBPACK]     Time: 35ms
+[WEBPACK]     Built at: 07/05/2023 5:09:38 PM
+[WEBPACK]                         Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      + 1 hidden asset
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 152 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /static/build/img/building.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:38] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:44] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:48] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:50] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:50] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:51] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:51] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:51] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:53] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:54] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:54] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:54] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:54] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:58] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:58] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:58] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:59] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:09:59] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:01] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:01] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:02] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:02] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:02] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:05] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:05] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:06] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:06] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:06] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:08] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:09] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:09] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:09] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:09] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:13] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:14] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:14] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:15] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:15] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:17] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:17] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:17] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:17] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:17] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:20] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:20] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:20] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:21] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:21] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:23] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:23] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:24] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:24] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:29] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:34] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:39] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:44] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:50] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:10:54] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:04] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:24] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:34] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:11:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:12:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:13:15] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[CELERY] 
+[CELERY] worker: Hitting Ctrl+C again will terminate all running tasks!
+[CELERY] 
+[CELERY] worker: Warm shutdown (MainProcess)
+[WEBSSH] node webssh2/app/index.js exited with code SIGINT
+[WEBPACK] npm run webpack-watch exited with code SIGINT
+[CELERY] 
+[CELERY] worker: Cold shutdown (MainProcess)
+[FLASK] npm run flask-server exited with code SIGINT
+[CELERY] celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG exited with code SIGINT
+
+> edurange_refactored@1.0.0 start
+> concurrently -n "WEBPACK,FLASK,CELERY,FLOWER,WEBSSH,CHATSERVER" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgRed.bold,bgCyan.bold,bgYellow.bold" "npm run webpack-watch" "npm run flask-server" "celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG" "celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555" "node webssh2/app/index.js" "node edurange_refactored/chat_server/server.js"
+
+[WEBSSH] WebSSH2 service reading config from: /home/hallo/edurange-flask/webssh2/app/config.json
+[CHATSERVER] sever listening on port 3001
+[WEBSSH] ephemeral_auth service reading config from: /home/hallo/edurange-flask/webssh2/app/config.json
+[FLASK] 
+[FLASK] > edurange_refactored@1.0.0 flask-server
+[FLASK] > flask run --host=0.0.0.0
+[FLASK] 
+[WEBSSH] WebSSH2 service listening on 0.0.0.0:5050
+[WEBPACK] 
+[WEBPACK] > edurange_refactored@1.0.0 webpack-watch
+[WEBPACK] > NODE_ENV=debug webpack --mode development --watch
+[WEBPACK] 
+[FLASK]  * Serving Flask app 'autoapp.py' (lazy loading)
+[FLASK]  * Environment: production
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]    Use a production WSGI server instead.
+[FLASK]  * Debug mode: off
+[FLOWER] [I 230705 17:13:51 command:152] Visit me at http://localhost:5555
+[FLOWER] [I 230705 17:13:51 command:159] Broker: redis://localhost:6379/0
+[FLOWER] [I 230705 17:13:51 command:160] Registered tasks: 
+[FLOWER]     ['celery.accumulate',
+[FLOWER]      'celery.backend_cleanup',
+[FLOWER]      'celery.chain',
+[FLOWER]      'celery.chord',
+[FLOWER]      'celery.chord_unlock',
+[FLOWER]      'celery.chunks',
+[FLOWER]      'celery.group',
+[FLOWER]      'celery.map',
+[FLOWER]      'celery.starmap',
+[FLOWER]      'edurange_refactored.tasks.CreateScenarioTask',
+[FLOWER]      'edurange_refactored.tasks.destroy',
+[FLOWER]      'edurange_refactored.tasks.scenarioCollectLogs',
+[FLOWER]      'edurange_refactored.tasks.scenarioTimeoutWarningEmail',
+[FLOWER]      'edurange_refactored.tasks.send_async_email',
+[FLOWER]      'edurange_refactored.tasks.start',
+[FLOWER]      'edurange_refactored.tasks.stop',
+[FLOWER]      'edurange_refactored.tasks.test_send_async_email']
+[FLOWER] [I 230705 17:13:51 mixins:228] Connected to redis://localhost:6379/0
+[CELERY]  
+[CELERY]  -------------- celery@williumshatner v5.2.7 (dawn-chorus)
+[CELERY] --- ***** ----- 
+[CELERY] -- ******* ---- Linux-5.19.0-1026-gcp-x86_64-with-glibc2.35 2023-07-05 17:13:51
+[CELERY] - *** --- * --- 
+[CELERY] - ** ---------- [config]
+[CELERY] - ** ---------- .> app:         edurange_refactored.tasks:0x7f0be2b6fb80
+[CELERY] - ** ---------- .> transport:   redis://localhost:6379/0
+[CELERY] - ** ---------- .> results:     redis://localhost:6379/0
+[CELERY] - *** --- * --- .> concurrency: 4 (prefork)
+[CELERY] -- ******* ---- .> task events: ON
+[CELERY] --- ***** ----- 
+[CELERY]  -------------- [queues]
+[CELERY]                 .> celery           exchange=celery(direct) key=celery
+[CELERY]                 
+[CELERY] 
+[CELERY] [tasks]
+[CELERY]   . celery.accumulate
+[CELERY]   . celery.backend_cleanup
+[CELERY]   . celery.chain
+[CELERY]   . celery.chord
+[CELERY]   . celery.chord_unlock
+[CELERY]   . celery.chunks
+[CELERY]   . celery.group
+[CELERY]   . celery.map
+[CELERY]   . celery.starmap
+[CELERY]   . edurange_refactored.tasks.CreateScenarioTask
+[CELERY]   . edurange_refactored.tasks.destroy
+[CELERY]   . edurange_refactored.tasks.scenarioCollectLogs
+[CELERY]   . edurange_refactored.tasks.scenarioTimeoutWarningEmail
+[CELERY]   . edurange_refactored.tasks.send_async_email
+[CELERY]   . edurange_refactored.tasks.start
+[CELERY]   . edurange_refactored.tasks.stop
+[CELERY]   . edurange_refactored.tasks.test_send_async_email
+[CELERY] 
+[FLASK]  * Running on all addresses (0.0.0.0)
+[FLASK]    WARNING: This is a development server. Do not use it in a production deployment.
+[FLASK]  * Running on http://127.0.0.1:5000
+[FLASK]  * Running on http://10.182.0.2:5000 (Press CTRL+C to quit)
+[WEBPACK] 
+[WEBPACK] webpack is watching the files...
+[WEBPACK] 
+[FLOWER] /home/hallo/.local/lib/python3.10/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@williumshatner.
+[FLOWER] Please make sure you give each node a unique nodename using
+[FLOWER] the celery worker `-n` option.
+[FLOWER]   warnings.warn(DuplicateNodenameWarning(
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/hallo/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[WEBPACK] [BABEL] Note: The code generator has deoptimised the styling of /home/hallo/edurange-flask/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+[WEBPACK] Hash: f47b957e95d1fc717f58a2d37dda7a5fc4804628e022c811aaf9b1a854f5
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: f47b957e95d1fc717f58
+[WEBPACK]     Time: 11761ms
+[WEBPACK]     Built at: 07/05/2023 5:14:04 PM
+[WEBPACK]                                           Asset      Size    Chunks             Chunk Names
+[WEBPACK]          5531dd3a7705ec68a6c5f5d02b25da6f.woff2   103 KiB            [emitted]  
+[WEBPACK]          be4dccbe54eea47a0ad5d7bb60a3c17d.woff2   151 KiB            [emitted]  
+[WEBPACK]          e42bcafcb7cc5002daa805140064bf40.woff2  23.5 KiB            [emitted]  
+[WEBPACK]          fontawesome/webfonts/fa-brands-400.ttf   177 KiB            [emitted]  
+[WEBPACK]         fontawesome/webfonts/fa-regular-400.ttf  58.8 KiB            [emitted]  
+[WEBPACK]           fontawesome/webfonts/fa-solid-900.ttf   381 KiB            [emitted]  
+[WEBPACK]     fontawesome/webfonts/fa-v4compatibility.ttf  9.85 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/2.png  29.5 KiB            [emitted]  
+[WEBPACK]                       img/Getting_Started/3.png   235 KiB            [emitted]  
+[WEBPACK]     img/Metasploitable/m-h_example_cmd_line.png  65.5 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/RSA.png  64.8 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/cat_secret.png  8.13 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/decrypt.png  10.8 KiB            [emitted]  
+[WEBPACK]           img/Ssh_Inception/decryptpassword.png  9.41 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep-f.png  10.3 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/grep_f.png  13.1 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/image1.png   688 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/key.png   543 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/keys.png   536 KiB            [emitted]  
+[WEBPACK]                  img/Ssh_Inception/man_nmap.png  61.2 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/man_ssh.png  61.4 KiB            [emitted]  
+[WEBPACK]                       img/Ssh_Inception/nat.png   801 KiB            [emitted]  
+[WEBPACK]                      img/Ssh_Inception/nmap.png  7.96 KiB            [emitted]  
+[WEBPACK]                   img/Ssh_Inception/nmap_ln.png   9.5 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd-L.png  9.95 KiB            [emitted]  
+[WEBPACK]                     img/Ssh_Inception/pwd_L.png  13.3 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/rsa_search.png  10.5 KiB            [emitted]  
+[WEBPACK]                    img/Ssh_Inception/secret.png   793 KiB            [emitted]  
+[WEBPACK]                img/Ssh_Inception/vim_secret.png   8.5 KiB            [emitted]  
+[WEBPACK]                                 img/booting.png  5.02 KiB            [emitted]  
+[WEBPACK]                                img/building.png  5.65 KiB            [emitted]  
+[WEBPACK]                                 img/favicon.ico    15 KiB            [emitted]  
+[WEBPACK]                                 img/started.png  7.39 KiB            [emitted]  
+[WEBPACK]                                 img/stopped.png  7.69 KiB            [emitted]  
+[WEBPACK]                                img/stopping.png  5.55 KiB            [emitted]  
+[WEBPACK]                             main_css.bundle.css   348 KiB  main_css  [emitted]  main_css
+[WEBPACK]                              main_css.bundle.js  8.22 KiB  main_css  [emitted]  main_css
+[WEBPACK]                               main_js.bundle.js  1.72 MiB   main_js  [emitted]  main_js
+[WEBPACK]     Entrypoint main_js = main_js.bundle.js
+[WEBPACK]     Entrypoint main_css = main_css.bundle.css main_css.bundle.js
+[WEBPACK]     [0] multi ./node_modules/bootstrap/dist/css/bootstrap.css ./assets/fontawesome/css/all.css ./assets/css/style.css 52 bytes {main_css} [built]
+[WEBPACK]     [./assets/css/style.css] 347 bytes {main_css} [built]
+[WEBPACK]     [./assets/fontawesome/css/all.css] 347 bytes {main_css} [built]
+[WEBPACK]     [./assets/img sync recursive .*] ./assets/img sync .* 972 bytes {main_js} [built]
+[WEBPACK]     [./assets/img/Getting_Started/2.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Getting_Started/3.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Metasploitable/m-h_example_cmd_line.png] 87 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/RSA.png] 69 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/cat_secret.png] 76 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decrypt.png] 73 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/decryptpassword.png] 81 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/img/Ssh_Inception/grep-f.png] 72 bytes {main_js} [optional] [built]
+[WEBPACK]     [./assets/js/main.js] 443 bytes {main_js} [built]
+[WEBPACK]     [./assets/js/plugins.js] 9.38 KiB {main_js} [built]
+[WEBPACK]     [./assets/js/script.js] 36 bytes {main_js} [built]
+[WEBPACK]         + 29 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/css/style.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/css/style.css] 10.1 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 1 hidden module
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!assets/fontawesome/css/all.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.ttf] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-brands-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.ttf] 83 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-regular-400.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.ttf] 81 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-solid-900.woff2] 82 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.ttf] 87 bytes {mini-css-extract-plugin} [built]
+[WEBPACK]         [./assets/fontawesome/webfonts/fa-v4compatibility.woff2] 6.27 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]         [./node_modules/css-loader/dist/cjs.js!./assets/fontawesome/css/all.css] 153 KiB {mini-css-extract-plugin} [built]
+[WEBPACK]             + 2 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!node_modules/bootstrap/dist/css/bootstrap.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: a2d37dda7a5fc4804628
+[WEBPACK]     Time: 13704ms
+[WEBPACK]     Built at: 07/05/2023 5:14:06 PM
+[WEBPACK]                           Asset      Size            Chunks             Chunk Names
+[WEBPACK]     student_scenario.bundle.css   6.3 KiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]      student_scenario.bundle.js  1.29 MiB  student_scenario  [emitted]  student_scenario
+[WEBPACK]     Entrypoint student_scenario = student_scenario.bundle.css student_scenario.bundle.js
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {student_scenario} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {student_scenario} [built]
+[WEBPACK]     [../utils/outstide-alerter.js] ./edurange_refactored/templates/student_view/utils/outstide-alerter.js 4.95 KiB {student_scenario} [built]
+[WEBPACK]         + 72 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/chatbox/chatbox.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/client_socket/client_socket.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/guide-section/guide-section.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/question/question.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/reading/reading.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/scenario/scenario.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_entry/student_chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/student_chat_window/student_chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/student_view/components/topic-list/topic-list.styles.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK] Child
+[WEBPACK]     Hash: e022c811aaf9b1a854f5
+[WEBPACK]     Time: 13713ms
+[WEBPACK]     Built at: 07/05/2023 5:14:06 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [0] fs (ignored) 15 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 152 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 861 bytes {instructor_view} [built]
+[WEBPACK]     [../../../../node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 553 bytes {instructor_view} [built]
+[WEBPACK]     [../states.json] ./edurange_refactored/templates/instructor_view/states.json 14.3 KiB {instructor_view} [built]
+[WEBPACK]         + 58 hidden modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_entry/chat_entry.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/chat_window/chat_window.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/instructor_view/instructor_view.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[WEBPACK]     Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!edurange_refactored/templates/instructor_view/components/student/student.css:
+[WEBPACK]         Entrypoint mini-css-extract-plugin = *
+[WEBPACK]            2 modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:11] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:17] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:18] "GET /static/build/main_css.bundle.css HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:21] "GET /static/build/img/started.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:22] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:28] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:29] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:35] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:35] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:35] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:35] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:35] "GET /static/build/img/stopped.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:41] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:46] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:47] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:47] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:14:47] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:06] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:16] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:26] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:36] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:15:46] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:16:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:15] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:33] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:36] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:41] "GET /dashboard/catalog?Submit=New+Scenario HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:41] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:41] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:42] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:59] "POST /dashboard/make_scenario HTTP/1.1" 302 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:59] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:17:59] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[WEBPACK] Hash: 33b903ceab56087998f9
+[WEBPACK] Version: webpack 4.46.0
+[WEBPACK] Child
+[WEBPACK]     Hash: 33b903ceab56087998f9
+[WEBPACK]     Time: 90ms
+[WEBPACK]     Built at: 07/05/2023 5:17:59 PM
+[WEBPACK]                          Asset      Size           Chunks             Chunk Names
+[WEBPACK]     instructor_view.bundle.css  2.36 KiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]      instructor_view.bundle.js  1.66 MiB  instructor_view  [emitted]  instructor_view
+[WEBPACK]     Entrypoint instructor_view = instructor_view.bundle.css instructor_view.bundle.js
+[WEBPACK]     [../../../../data/tmp/chatnames.json] ./data/tmp/chatnames.json 156 bytes {instructor_view} [built]
+[WEBPACK]         + 62 hidden modules
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:00] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:00] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:00] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:00] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:00] "GET /static/build/img/building.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:05] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:15] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:26] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:36] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:46] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:50] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:18:56] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:06] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:16] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:26] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:36] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:46] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:50] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:19:56] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:20:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:20:06] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:20:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:21:15] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:06] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:16] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:26] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:36] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:46] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:50] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:22:56] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:06] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:16] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:35] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:35] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:43] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:43] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:44] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:44] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:44] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:44] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:49] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:50] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:50] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:51] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:51] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:51] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:53] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:54] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:54] "GET /static/build/img/stopped.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:54] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:23:54] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:04] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:10] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:20] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:24] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:34] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:42] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:43] "GET /static/build/main_css.bundle.css HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:45] "GET /static/build/main_js.bundle.js HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:45] "GET /static/build/img/started.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:24:48] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:00] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:05] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:11] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:14] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:15] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:16] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:16] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:16] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:16] "GET /static/build/be4dccbe54eea47a0ad5d7bb60a3c17d.woff2 HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:19] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:19] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:20] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:20] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:20] "GET /static/build/img/stopped.png HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:23] "POST /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:23] "GET /static/build/main_css.bundle.css HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:23] "GET /static/build/img/started.png HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:24] "GET /static/build/main_js.bundle.js HTTP/1.1" 304 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:30] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:34] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:40] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:44] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:49] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[FLASK] 127.0.0.1 - - [05/Jul/2023 17:25:54] "GET /dashboard/scenarios HTTP/1.1" 200 -
+[CELERY] 
+[CELERY] worker: Hitting Ctrl+C again will terminate all running tasks!
+[CELERY] 
+[CELERY] worker: Warm shutdown (MainProcess)
+[WEBPACK] npm run webpack-watch exited with code SIGINT
+[WEBSSH] node webssh2/app/index.js exited with code SIGINT
+[CHATSERVER] node edurange_refactored/chat_server/server.js exited with code SIGINT
+[FLOWER] celery -A edurange_refactored.tasks --broker=redis://localhost:6379/0 flower --port=5555 exited with code SIGINT
+[CELERY] 
+[CELERY] worker: Cold shutdown (MainProcess)
+[FLASK] npm run flask-server exited with code SIGINT
+[CELERY] celery -A edurange_refactored.tasks worker -B -E -f celery.log -l DEBUG exited with code SIGINT

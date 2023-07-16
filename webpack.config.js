@@ -85,6 +85,7 @@ module.exports = [
   }
 
   },
+<<<<<<< HEAD
   {
     context: path.join(__dirname, '/edurange_refactored/templates/instr_create_scenario/components/'),
     entry: {
@@ -137,6 +138,11 @@ module.exports = [
 
 
   {
+=======
+  
+	{
+		
+>>>>>>> 556276b9b54dde0377a874d418ea8d6f88f2c2e5
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
       student_scenario: './scenario/scenario.component',
@@ -183,9 +189,9 @@ module.exports = [
     }
   },
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/about_components/'),
+    context: path.join(__dirname, '/edurange_refactored/templates/instructor_view/components/'),
     entry: {
-      about_component: './about_component',
+      instructor_view: './instructor_view/instructor_view.component',
     },
     output: {
       chunkFilename: "[id].js",
@@ -194,8 +200,7 @@ module.exports = [
       publicPath: "/static/build/",
       library: "lib",
       libraryTarget: "var"
- 
- 
+
     },
     resolve: {
       extensions: [".js", ".jsx", ".css"]
@@ -205,7 +210,7 @@ module.exports = [
     ],
     module: {
       rules: [
-        {
+        { 
           test: /\.?js(x)?$/,
           use: {
             loader: "babel-loader",
@@ -228,11 +233,11 @@ module.exports = [
         }
       ]
     }
-  }, 
+  },
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/instructor_view/components/'),
+    context: path.join(__dirname, '/edurange_refactored/templates/student_dashboard/components/'),
     entry: {
-      instructor_view: './instructor_view/instructor_view.component',
+      student_dashboard: './student_dashboard/student_dashboard',
     },
     output: {
       chunkFilename: "[id].js",
