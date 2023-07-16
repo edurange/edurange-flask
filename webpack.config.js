@@ -86,6 +86,57 @@ module.exports = [
 
   },
   {
+    context: path.join(__dirname, '/edurange_refactored/templates/instr_create_scenario/components/'),
+    entry: {
+      create_scenario: './create_scenario/create_scenario',
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+ 
+ 
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.?js(x)?$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
+        }
+      ]
+    }
+  },
+ 
+
+
+
+  {
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
       student_scenario: './scenario/scenario.component',
