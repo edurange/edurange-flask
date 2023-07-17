@@ -20,13 +20,13 @@ const pool = new pg.Pool({
   host: process.env.HOST_EXTERN_ADDRESS,
   user: 'postgres',
   password: process.env.PASSWORD,
-  database: 'dbname',
+  database: 'flaskdb3',
   port: '5432'
 });
 
 
 
-
+/*
 pool.query('SELECT * FROM SCENARIOS', (err, result) => {
   if (err) {
     console.error('Error executing query', err);
@@ -34,6 +34,7 @@ pool.query('SELECT * FROM SCENARIOS', (err, result) => {
     console.log('Query result:', result.rows);
   }
 });
+*/
 
 const client = new pg.Client()
 
@@ -84,7 +85,7 @@ const io = new Server(server, {
 // gathering student user ID / username list, used for sockets joining room
 const fs = require('fs'); // fs -- file system module.
 let studentList;
-fs.readFile(`/home/miranda/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
+fs.readFile(`/home/m/edurange-flask/data/tmp/chatnames.json`, (err, data) => {
     if (err) throw err;
     studentList = JSON.parse(data);
 });
@@ -114,6 +115,8 @@ io.use((socket, next) => {
 // When a new student/instructor joins, they need to  
 //
 io.on('connection', socket => {
+
+  console.log("Hello! I'm here.")
 
     // Error handler for middleware.
   socket.on("connect_error", err => {

@@ -35,15 +35,6 @@ then
 
 	max_length=10  # Maximum number of characters allowed
 
-	read -rp "Please enter your database password:" dbpass
-
-	# Loop until valid input is provided
-	while [[ ${#input} -gt $max_length || ! "$input" =~ ^[[:alnum:]]+$ ]]; do
-	echo "Invalid input! Input should be alphanumeric and up to $max_length characters."
-	read -rp "Enter your input: " dbpass
-	done
-
-	echo "Valid input: $input"
 
 	echo -e "${YLW}Please enter your database password:${NC}"
 	read dbpass
@@ -62,11 +53,14 @@ then
 	secretKey=$(cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-20} | head -n 1)
 	cp ./.env.example ./.env
 	sed -i "s/namefoo/${dbname}/" .env
+	sed -i "s/pg_placeholder_db/${dbname}/" .env
 	sed -i "s/passwordfoo/${dbpass}/" .env
+	sed -i "s/pg_placeholder_pass/${dbpass}/" .env
 	sed -i "s/Administrator/${flaskUser}/" .env
 	sed -i "s/flaskpass/${flaskPass}/" .env
 	sed -i "s/not-so-secret/${secretKey}/" .env
 	sed -i "s/localhost/${hostAddress}/" .env
+	sed -i "s/pg_placeholder_host/${hostAddress}/" .env
 	sed -i "s/change-me/${rootPass}/" .env
 elif [ $1 = "auto" ];
 then
