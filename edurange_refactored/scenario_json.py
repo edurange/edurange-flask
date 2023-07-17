@@ -111,7 +111,7 @@ def adjust_network(address, name):
 
 def write_resource(address, name, s_type,
                    c_name, usernames, passwords,
-                   s_files, g_files, u_files, flags):
+                   s_files, g_files, u_files, flags, c_names):
     # Generate a list of strings of commands for adding users
 
     template_folder = "../../../scenarios/prod/" + s_type + "/"
@@ -130,6 +130,9 @@ def write_resource(address, name, s_type,
                "milestone-lbl.pl", "intervention.py"] + u_files
     # Generate a list of commands to move files, and run them if needed
     execs = build_execute_files(s_files, g_files, u_files, flags)
+    if c_name == "gateway":
+        host_names = '\\n'.join(name for name in c_names)
+        execs += "\",\n\"echo '" + host_names + "' > /usr/local/src/ttylog/host_names.txt"
 
     host = os.getenv('HOST_EXTERN_ADDRESS', 'localhost')
     # Make sure the container has a known template

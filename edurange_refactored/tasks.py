@@ -186,7 +186,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
             find_and_copy_template(s_type, c)
             write_resource(
                 address, name, s_type, c_names[i], usernames, passwords,
-                s_files[i], g_files[i], u_files[i], flags
+                s_files[i], g_files[i], u_files[i], flags, c_names
             )
 
         scenario.update(
