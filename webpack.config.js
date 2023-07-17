@@ -85,56 +85,54 @@ module.exports = [
   }
 
   },
-
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/instr_create_scenario/components/'),
+    context: path.join(__dirname, '/edurange_refactored/templates/student_dashboard/components/'),
     entry: {
-      create_scenario: './create_scenario/create_scenario',
+      student_dashboard: './student_dashboard/student_dashboard',
     },
-    output: {
-      chunkFilename: "[id].js",
-      filename: "[name].bundle.js",
-      path: path.join(__dirname, "edurange_refactored", "static", "build"),
-      publicPath: "/static/build/",
-      library: "lib",
-      libraryTarget: "var"
- 
- 
-    },
-    resolve: {
-      extensions: [".js", ".jsx", ".css"]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-    ],
-    module: {
-      rules: [
-        {
-          test: /\.?js(x)?$/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react']
-            }
-          },
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                hmr: debug,
-              },
-            },
-            'css-loader',
-          ],
-        }
-      ]
-    }
-  },
- 
-  
+   output: {
+     chunkFilename: "[id].js",
+     filename: "[name].bundle.js",
+     path: path.join(__dirname, "edurange_refactored", "static", "build"),
+     publicPath: "/static/build/",
+     library: "lib",
+     libraryTarget: "var"
+
+
+   },
+   resolve: {
+     extensions: [".js", ".jsx", ".css"]
+   },
+   plugins: [
+     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+   ],
+   module: {
+     rules: [
+       {
+         test: /\.?js(x)?$/,
+         use: {
+           loader: "babel-loader",
+           options: {
+             presets: ['@babel/preset-env', '@babel/preset-react']
+           }
+         },
+       },
+       {
+         test: /\.css$/,
+         use: [
+           {
+             loader: MiniCssExtractPlugin.loader,
+             options: {
+               hmr: debug,
+             },
+           },
+           'css-loader',
+         ],
+       }
+     ]
+   }
+ },
+
 	{
 		
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
@@ -227,11 +225,11 @@ module.exports = [
         }
       ]
     }
-  },
+  },  
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/student_dashboard/components/'),
+    context: path.join(__dirname, '/edurange_refactored/templates/instr_create_scenario/components/'),
     entry: {
-      student_dashboard: './student_dashboard/student_dashboard',
+      create_scenario: './create_scenario/create_scenario',
     },
     output: {
       chunkFilename: "[id].js",
@@ -273,5 +271,5 @@ module.exports = [
         }
       ]
     }
-  },
+  }
 ];
