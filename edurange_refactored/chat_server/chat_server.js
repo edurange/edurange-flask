@@ -112,16 +112,14 @@ io.use((socket, next) => {
 });
 
 
-// When a new student/instructor joins, they need to  
-//
 io.on('connection', socket => {
-
-  console.log("Hello! I'm here.")
 
     // Error handler for middleware.
   socket.on("connect_error", err => {
     console.log("Connnection Error: no user id.")
   });
+
+  // TODO write a query to pull each entry with this sid and uid, organize by time stamp, and add to master list chats
 
   for(let i in studentList) {
     let x_uid = (parseInt(i) + 1).toString()
@@ -167,7 +165,7 @@ io.on('connection', socket => {
   }
 
 
-  //console.log(io.sockets.adapter.rooms); // This line outputs all rooms and members for debugging. 
+  console.log(io.sockets.adapter.rooms); // This line outputs all rooms and members for debugging. 
   
   // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
