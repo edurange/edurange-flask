@@ -700,7 +700,6 @@ if __name__ == "__main__":
     exit_flag = False
     known_prompts = []
     current_line_prompt = ''
-    user_name = ''
 
     ttylog_lines_from_file, ttylog_bytes_read = get_ttylog_lines_from_file(ttylog, ttylog_seek_pointer)
     ttylog_seek_pointer += ttylog_bytes_read
@@ -731,11 +730,10 @@ if __name__ == "__main__":
         #Same line is 'User prompt is test@intro')
         p = re.compile(r'^User prompt is ')
         if p.match(line):
-            user_initial_prompt = (line.split()[-1]).casefold()
+            user_initial_prompt = (line.split()[-1])
             known_prompts.append(user_initial_prompt)
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
-            node_name = user_initial_prompt.split('@')[-1]
-            user_name = user_initial_prompt.split('@')[0]
+            node_name = line.split('@')[-1]
             root_prompt = 'root@' + node_name
             is_current_prompt_root = False
             continue
@@ -775,9 +773,8 @@ if __name__ == "__main__":
                 tline = rexp.sub('', line)
                 line = tline
 
-            command_pattern_user_prompt = re.compile("{}@.*:.*?\$".format(user_name.casefold()))
+            command_pattern_user_prompt = re.compile("{}@.*:.*?\$".format(user_initial_prompt.split('@')[0].casefold()))
             command_pattern_root_prompt = re.compile("{}:.*?".format(root_prompt.casefold()))
-
             tstampre = re.compile(";\d{9}")
 
             # Check if there is a prompt
@@ -812,12 +809,14 @@ if __name__ == "__main__":
                     if command_pattern_root_prompt.search(line.casefold()):
                         left_hash_part, right_hash_part = line.split('#',1)
                         current_line_prompt = left_hash_part
+                        node_name = left_hash_part.split('@')[-1].split(':')[0]
                         current_working_directory = left_hash_part.split(':',1)[-1]
                         current_working_directory = current_working_directory.replace('~', root_home_dir ,1)
                         line = right_hash_part[1:]
                     else:
                         left_dollar_part, right_dollar_part = line.split('$',1)
                         current_line_prompt = left_dollar_part
+                        node_name = left_dollar_part.split('@')[-1].split(':')[0]
                         current_working_directory = left_dollar_part.split(':',1)[-1]
                         current_working_directory = current_working_directory.replace('~', ttylog_sessions[current_session_id]['home_dir'] ,1)
                         line = right_dollar_part[1:]
