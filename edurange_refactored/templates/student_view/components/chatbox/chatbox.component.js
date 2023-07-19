@@ -8,17 +8,26 @@ class Chatbox extends React.Component {
         this.state = {
             open: false,
         }
+        console.log("hello");
     }
 
     openChat = () => {
+
+        console.log("hello");
         this.setState({
             open: true,
         });
+
+        console.log("hello");
     }
     closeChat = () => {
+
+        console.log("hello");
         this.setState({
             open: false,
         });
+
+        console.log("hello");
     }
 
     render() {
@@ -27,7 +36,7 @@ class Chatbox extends React.Component {
             <OutsideAlerter callback={this.closeChat}>
                 <div className={ this.state.open ? 'edu-chatbox-open' : 'edu-chatbox-closed' } onClick={this.openChat}>
                     <p>instructor chat</p>
-                    <ClientSocket uid={this.props.uid} chat_opened={this.state.open}/>
+                    <ClientSocket uid={this.props.uid} sid={this.props.sid} chat_opened={this.state.open}/>
                 </div>
             </OutsideAlerter>
         );
