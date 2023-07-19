@@ -699,10 +699,11 @@ if __name__ == "__main__":
     ttylog_lines_read_next = []
     exit_flag = False
     known_prompts = []
-    current_line_prompt = ''
+    host_pattern = ''
 
     ttylog_lines_from_file, ttylog_bytes_read = get_ttylog_lines_from_file(ttylog, ttylog_seek_pointer)
     ttylog_seek_pointer += ttylog_bytes_read
+
 
     for count, line in enumerate(ttylog_lines_from_file):
 
@@ -731,7 +732,6 @@ if __name__ == "__main__":
         p = re.compile(r'^User prompt is ')
         if p.match(line):
             user_initial_prompt = (line.split()[-1])
-            known_prompts.append(user_initial_prompt)
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
             node_name = line.split('@')[-1]
             root_prompt = 'root@' + node_name
@@ -746,6 +746,19 @@ if __name__ == "__main__":
             break_counter = count + 1
             ttylog_lines_from_file = ttylog_lines_from_file[break_counter:]
             break
+
+    # read a list of possible node names for the current scenario and populate
+    # the list of known_prompts, and construct a regex pattern for possible hosts
+    nodes = []
+    try:
+        file = open('/usr/local/src/ttylog/host_names.txt', 'r')
+        nodes = file.read().splitlines()
+        host_pattern = '(' + '|'.join(n for n in nodes) + ')'
+        for node in nodes:
+            known_prompts.append(user_initial_prompt.split('@')[0] + '@' + node)
+    except FileNotFoundError as e:
+        print('File /usr/local/src/ttylog/host_names.txt not found', file=sys.stderr)
+        known_prompts.append(user_initial_prompt)
 
     while True:
 
@@ -773,16 +786,14 @@ if __name__ == "__main__":
                 tline = rexp.sub('', line)
                 line = tline
 
-            command_pattern_user_prompt = re.compile("{}@.*:.*?\$".format(user_initial_prompt.split('@')[0].casefold()))
+            command_pattern_user_prompt = re.compile("{user}@{host}:.*?".format(user=user_initial_prompt.split('@')[0].casefold(), host=host_pattern))
             command_pattern_root_prompt = re.compile("{}:.*?".format(root_prompt.casefold()))
             tstampre = re.compile(";\d{9}")
-
             # Check if there is a prompt
             res = command_pattern_user_prompt.search(line.casefold())
             if (res or command_pattern_root_prompt.search(line.casefold())):
                 if (res):
                     user_prompt = res.group(0).split(':')[0]
-                    known_prompts.append(user_prompt)
                 else:
                     user_prompt = root_prompt
                 prompt = True
