@@ -40,7 +40,6 @@ class StudentScenario extends React.Component {
         const { Sections, Readings, Questions } = this.state.content.StudentGuide;
         return (
        <div className="student_view">
-        <h1>Hello</h1>
         <TopicList 
           currentSection={this.state.currentSection} 
           sections={Sections} 
