@@ -53,11 +53,7 @@ const pg = require('pg')
 // TO DO: Change .env file to vibe with this better
 // make it default: use PGHOST, PGUSER, PGPASSWORD, PGDATABASE, and PGPORT
 const pool = new pg.Pool({
-  host: process.env.HOST_EXTERN_ADDRESS,
-  user: 'postgres',
-  password: 'mommy',
-  database: 'debbie',
-  port: '5432'
+  connectionString: process.env.DATABASE_URL
 });
 
 
@@ -118,6 +114,7 @@ io.on('connection', socket => {
     } else {
       instructorPrevChat = masterListChats;
       socket.emit("instructor session retrieval", instructorPrevChat);
+      socket.emit("group session retrieval00");
     }
   } else {
     masterListChats[socket.uid] = {
@@ -173,25 +170,7 @@ io.on('connection', socket => {
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
 
-    /*
-    const chatDB_rowEntry = {
-      sender: _from,
-      recipient:_to,
-      message_contents: messageContents,
-      timestamp: alertTime,
-      sid: socket.sid
-      //gid: ....
-    }
-    */
-
     const chatDB_rowEntry = [_from,_to,messageContents, alertTime, socket.sid]
-
-    chatDB_rowEntry.forEach((value) => {
-      console.log(value.toString());
-    });
-    
-    console.log("ChatDB ROW ENTRY: " + chatDB_rowEntry.toString())
-
     const query = 'INSERT INTO chat_history (sender, recipient, message_contents, timestamp, sid) VALUES ($1, $2 ,$3, $4, $5)';
     pool.query(query, chatDB_rowEntry, (err, result) => {
       if (err) {
@@ -239,6 +218,37 @@ io.on('connection', socket => {
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
   
+  socket.on("send group message", ({messageContents, _from}) => {
+
+    const chatDB_rowEntry = [_from ,messageContents, alertTime, socket.sid]
+    const query = 'INSERT INTO group_chat_history (sender, message_contents, timestamp, sid) VALUES ($1, $2 ,$3, $4)';
+    pool.query(query, chatDB_rowEntry, (err, result) => {
+      if (err) {
+        console.error('Error executing query', err);
+      } else {
+        console.log('Query result:', result.rows);
+      }
+    });
+    
+    // to do - new master list?
+    masterListChats[room].messages.push({               
+      contents: messageContents,
+      from: _from,
+    });
+
+    msg_list = masterListChats[socket.uid].messages;
+    
+    // student messages alert instructor
+    if(_from!=="000") {
+      msg_list = masterListChats[socket.uid].messages;
+      trafficAlert("message", {msg_list, room});
+    }
+
+    io.emit("new group message", {messageContents, _from}); // all group members sent message
+  });
+  
+
+
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
     if(socket.uid=="000") {
