@@ -372,7 +372,7 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, k
             ttylog_lines_to_decode = ttylog_lines_read_next[::]
             ttylog_lines_read_next = []
             return ttylog_lines_to_decode, ttylog_lines_read_next
-        elif (p for p in known_prompts if line.casefold().find(p) > -1):
+        elif any(p.casefold() in line.casefold() for p in known_prompts):
             no_of_prompts_in_ttylog_read_next += 1
             # Break the loop of no_of_prompts >= 2
             if no_of_prompts_in_ttylog_read_next >= 2:
