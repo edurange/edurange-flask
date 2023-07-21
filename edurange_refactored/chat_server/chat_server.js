@@ -7,9 +7,9 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
-//const chat_post = require("contents.py");
 
 app.use(cors());
+
 // create server
 const server = http.createServer(app);
 
@@ -80,30 +80,23 @@ io.use((socket, next) => {
 
 
 io.on('connection', socket => {
-  var stream = fs.createWriteStream("logs/chat_server_logs.csv", {flags:'a'});
-
 
   for(let i in studentList) {
+    
     let x_uid = (parseInt(i) + 1).toString()
+    
+    // 
     if(!masterListChats[x_uid] || !masterListChats[x_uid].messages)  {
       masterListChats[x_uid] = {
         messages: [],
       }
-      let json = JSON.stringify(masterListChats[x_uid]);
     }
 
     if(!masterLiveStuds[x_uid] || !masterLiveStuds[x_uid].live)  {
       masterLiveStuds[x_uid] = {
         live: false,
       }
-    } else {
-      //console.log("found previous" + masterLiveStuds[x_uid].live)
     }
-  }
-
-  for(let i in studentList) {
-    let x_uid = (parseInt(i) + 1).toString();
-    //console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
   }
 
 
@@ -114,7 +107,6 @@ io.on('connection', socket => {
     } else {
       instructorPrevChat = masterListChats;
       socket.emit("instructor session retrieval", instructorPrevChat);
-      socket.emit("group session retrieval00");
     }
   } else {
     masterListChats[socket.uid] = {
@@ -136,9 +128,6 @@ io.on('connection', socket => {
     }
     socket.emit("live students", masterLiveStuds);
   }
-
-  //COMMENT OUT AGAIN
-  //console.log(io.sockets.adapter.rooms);
 
     // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
@@ -166,10 +155,13 @@ io.on('connection', socket => {
   }
   trafficAlert("studJoin");
 
+
+  //var msg_list = [];
+  
   //var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
-
+/*
     const chatDB_rowEntry = [_from,_to,messageContents, alertTime, socket.sid]
     const query = 'INSERT INTO chat_history (sender, recipient, message_contents, timestamp, sid) VALUES ($1, $2 ,$3, $4, $5)';
     pool.query(query, chatDB_rowEntry, (err, result) => {
@@ -179,8 +171,7 @@ io.on('connection', socket => {
         console.log('Query result:', result.rows);
       }
     });
-
-
+    */
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     
     masterListChats[room].messages.push({               
@@ -189,6 +180,7 @@ io.on('connection', socket => {
         to: _to,
     });
 
+
     let currTime = new Date().toISOString() // Ask Aubrey about date formatting for logging
     /*fs.appendFile('./chat_server_logs.csv', `${messageContents}, ${_from}, ${_to}, ${currTime}`, (err) => {
       if(err) {
@@ -196,16 +188,8 @@ io.on('connection', socket => {
       }
     });*/
 
-    
-    stream.write(`${messageContents}, ${_from}, ${_to}, ${currTime}\n`);
-    //stream.end();
 
-   const intFrom = parseInt(_from);
-   const intTo = parseInt(_to);
 
-    
-
-   // #chat_post.createPost(intFrom, intTo, messageContents);
 
     msg_list = masterListChats[socket.uid].messages;
 
@@ -230,8 +214,9 @@ io.on('connection', socket => {
       }
     });
     
+    
     // to do - new master list?
-    masterListChats[room].messages.push({               
+    masterListChats[socket.uid].messages.push({               
       contents: messageContents,
       from: _from,
     });
@@ -241,6 +226,7 @@ io.on('connection', socket => {
     // student messages alert instructor
     if(_from!=="000") {
       msg_list = masterListChats[socket.uid].messages;
+      room = socket.uid
       trafficAlert("message", {msg_list, room});
     }
 
@@ -260,5 +246,5 @@ io.on('connection', socket => {
 
 });
 
-console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`)
+console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`);
 io.listen(process.env.CHAT_SERVER_PORT);
