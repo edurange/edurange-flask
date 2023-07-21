@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """User views."""
 import os
+import json
+from datetime import datetime
 
 from flask import (
     Blueprint,
@@ -261,22 +263,38 @@ def instructor():
 
     return redirect(url_for("dashboard.instructor"))
 
-
 @blueprint.route("/notification", methods=["GET", "POST"])
 @login_required
 def notification():
     if request.method == "POST":
         process_request(request.form)
 
-    notificationList = Notification.query.all()
+    notifications_raw = Notification.query.all()
+    notifications_serialized = []
+
+    for notif in notifications_raw:
+        notif_serialized = {}
+        for key, value in notif.__dict__.items():
+            if key != '_sa_instance_state':
+                if isinstance(value, datetime):
+                    value = value.isoformat()
+                notif_serialized[key] = value
+        notifications_serialized.append(notif_serialized)
+    
+    for index, notif in enumerate(notifications_serialized):
+        for key, value in notif.items():
+            var_name = f'var{index}_{key}'
+            locals()[var_name] = value
+
     deleteNotify = notifyDeleteForm()
+
+    json_export = json.dumps(notifications_serialized)
 
     return render_template(
         "dashboard/notification.html",
-        notifications=notificationList,
+        notifications=json_export,
         deleteNotify=deleteNotify
     )
-
 
 @blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required
