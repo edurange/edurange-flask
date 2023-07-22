@@ -25,6 +25,7 @@ fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, 
 //dictionary of chat sessions
 let masterListChats = {};
 let masterLiveStuds = {};
+let groupChat = []
 
 // create new instance of { Server } class
 const io = new Server(server, {
@@ -102,10 +103,10 @@ io.on('connection', socket => {
 
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
-      prevChat = masterListChats[socket.uid].messages;
-      console.log(`Prev chat for student#${socket.uid}: ${JSON.stringify(prevChat)}`)
+      prevChat = groupChat.messages;
+      console.log(`Prev chat for student#${socket.uid}: ${JSON.stringify(groupChat)}`)
       socket.emit("student session retrieval",prevChat);
-      socket.emit("group session retrieval", prevChat);
+      socket.emit("group session retrieval", groupChat);
     } else {
       instructorPrevChat = masterListChats;
       socket.emit("instructor session retrieval", instructorPrevChat);
@@ -117,7 +118,7 @@ io.on('connection', socket => {
   }
   // Error handler for middleware.
   socket.on("connect_error", err => {
-    console.log("Connnection Error: no user id.")
+    console.log("Connnection Error: missing user id or scenario id.")
   });
 
   // Sockets join rooms immediately after connecting. 
@@ -236,12 +237,15 @@ io.on('connection', socket => {
       try {
         const _uname = await getUsername()
         if(_uname) {
-
-          masterListChats[socket.uid].messages.push({               
+          groupChat.push({               
             contents: messageContents,
             from: _from,
             uname: _uname,
           });
+          console.log(`-------------- masterListChats[${socket.uid}] ----------------`)
+          console.log(`-------------- ${JSON.stringify(groupChat)}----------------`)
+          console.log();
+
           io.emit("new group message", {messageContents, _from, _uname})
         } else {
           console.log("No uname found.")

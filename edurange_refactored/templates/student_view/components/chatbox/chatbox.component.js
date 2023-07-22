@@ -11,22 +11,14 @@ class Chatbox extends React.Component {
     }
 
     openChat = () => {
-
-        console.log("hello");
         this.setState({
             open: true,
         });
-
-        console.log("hello");
     }
     closeChat = () => {
-
-        console.log("hello");
         this.setState({
             open: false,
         });
-
-        console.log("hello");
     }
 
     render() {
@@ -43,8 +35,3 @@ class Chatbox extends React.Component {
 }
 
 export default Chatbox;
-
-
-/*
-
-*/
