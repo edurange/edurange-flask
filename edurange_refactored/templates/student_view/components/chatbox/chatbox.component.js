@@ -8,7 +8,6 @@ class Chatbox extends React.Component {
         this.state = {
             open: false,
         }
-        console.log("hello");
     }
 
     openChat = () => {

@@ -103,7 +103,9 @@ io.on('connection', socket => {
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
       prevChat = masterListChats[socket.uid].messages;
+      console.log(`Prev chat for student#${socket.uid}: ${JSON.stringify(prevChat)}`)
       socket.emit("student session retrieval",prevChat);
+      socket.emit("group session retrieval", prevChat);
     } else {
       instructorPrevChat = masterListChats;
       socket.emit("instructor session retrieval", instructorPrevChat);
@@ -180,17 +182,6 @@ io.on('connection', socket => {
         to: _to,
     });
 
-
-    let currTime = new Date().toISOString() // Ask Aubrey about date formatting for logging
-    /*fs.appendFile('./chat_server_logs.csv', `${messageContents}, ${_from}, ${_to}, ${currTime}`, (err) => {
-      if(err) {
-        console.log(err);
-      }
-    });*/
-
-
-
-
     msg_list = masterListChats[socket.uid].messages;
 
 
@@ -212,22 +203,6 @@ io.on('connection', socket => {
       }
     });
 
-/*
-    const uname_query = 'SELECT username FROM users WHERE id=$1';
-    const users_name = ''
-    pool.query(uname_query, [_from], (err, result) => {
-    if (err) {
-        console.error('Error executing query', err);
-    } else {
-      users_name=result.rows[0].username
-    }
-    });
-
-
-    console.log(`-------------------- uid: ${socket.uid}--------------------`)
-    console.log(users_name)
-    console.log('-----------------------------------------------------------')
-*/
     async function getUsername() {
       try {
         const uname_query = 'SELECT username FROM users WHERE id=$1';
@@ -246,17 +221,11 @@ io.on('connection', socket => {
       return;
     }
 
-    // to do - new master list?
-    masterListChats[socket.uid].messages.push({               
-      contents: messageContents,
-      from: _from,
-    });
 
     msg_list = masterListChats[socket.uid].messages;
     
     // student messages alert instructor
     if(_from!=="000") {
-      msg_list = masterListChats[socket.uid].messages;
       room = socket.uid
       trafficAlert("message", {msg_list, room});
     }
@@ -267,6 +236,12 @@ io.on('connection', socket => {
       try {
         const _uname = await getUsername()
         if(_uname) {
+
+          masterListChats[socket.uid].messages.push({               
+            contents: messageContents,
+            from: _from,
+            uname: _uname,
+          });
           io.emit("new group message", {messageContents, _from, _uname})
         } else {
           console.log("No uname found.")
@@ -277,6 +252,7 @@ io.on('connection', socket => {
     }
 
     queryThenEmit()
+
   });
   
 
