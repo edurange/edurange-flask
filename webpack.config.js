@@ -103,7 +103,9 @@ module.exports = [
     },
     resolve: {
       extensions: [".js", ".jsx", ".css"]
+      
     },
+    
     plugins: [
       new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
     ],

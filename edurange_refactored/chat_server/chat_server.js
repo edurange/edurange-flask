@@ -209,12 +209,43 @@ io.on('connection', socket => {
     pool.query(query, chatDB_rowEntry, (err, result) => {
       if (err) {
         console.error('Error executing query', err);
-      } else {
-        console.log('Query result:', result.rows);
       }
     });
-    
-    
+
+/*
+    const uname_query = 'SELECT username FROM users WHERE id=$1';
+    const users_name = ''
+    pool.query(uname_query, [_from], (err, result) => {
+    if (err) {
+        console.error('Error executing query', err);
+    } else {
+      users_name=result.rows[0].username
+    }
+    });
+
+
+    console.log(`-------------------- uid: ${socket.uid}--------------------`)
+    console.log(users_name)
+    console.log('-----------------------------------------------------------')
+*/
+    async function getUsername() {
+      try {
+        const uname_query = 'SELECT username FROM users WHERE id=$1';
+        const result = await pool.query(uname_query, [_from]);
+
+        if (result.rows.length > 0) {
+          const users_name = result.rows[0].username;
+          console.log(`Username: ${users_name}`);
+          return users_name;
+        } else {
+          console.log('User not found.');
+        }
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+      return;
+    }
+
     // to do - new master list?
     masterListChats[socket.uid].messages.push({               
       contents: messageContents,
@@ -230,7 +261,22 @@ io.on('connection', socket => {
       trafficAlert("message", {msg_list, room});
     }
 
-    io.emit("new group message", {messageContents, _from}); // all group members sent message
+    //io.emit("new group message", {messageContents, _from}); // all group members sent message
+
+    async function queryThenEmit() {
+      try {
+        const _uname = await getUsername()
+        if(_uname) {
+          io.emit("new group message", {messageContents, _from, _uname})
+        } else {
+          console.log("No uname found.")
+        }
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    queryThenEmit()
   });
   
 
