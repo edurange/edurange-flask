@@ -38,6 +38,8 @@ const io = new Server(server, {
                   "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
                   "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
                   "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
+                  "https://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
+                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
                 ],
 
         // accept these types of HTTP requests
@@ -104,7 +106,7 @@ io.on('connection', socket => {
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
       prevChat = groupChat.messages;
-      console.log(`Prev chat for student#${socket.uid}: ${JSON.stringify(groupChat)}`)
+
       socket.emit("student session retrieval",prevChat);
       socket.emit("group session retrieval", groupChat);
     } else {
@@ -211,7 +213,6 @@ io.on('connection', socket => {
 
         if (result.rows.length > 0) {
           const users_name = result.rows[0].username;
-          console.log(`Username: ${users_name}`);
           return users_name;
         } else {
           console.log('User not found.');
@@ -242,10 +243,6 @@ io.on('connection', socket => {
             from: _from,
             uname: _uname,
           });
-          console.log(`-------------- masterListChats[${socket.uid}] ----------------`)
-          console.log(`-------------- ${JSON.stringify(groupChat)}----------------`)
-          console.log();
-
           io.emit("new group message", {messageContents, _from, _uname})
         } else {
           console.log("No uname found.")
