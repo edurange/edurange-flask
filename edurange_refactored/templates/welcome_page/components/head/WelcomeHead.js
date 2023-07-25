@@ -3,27 +3,28 @@ import { Navbar, Nav, Container, Col, Row } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './WelcomeHead.css';
-import eduRangeLogo from './../img/logo_menu.png'
-// import './unified.css';
 
 export const WelcomeContext = React.createContext();
 
 function WelcomeHead() {
     return (
-        <div>
+        <div className='pucs-frame-tester'>
+
+        <div className='pucs-header-main'>
+            WelcomeHead.js says hello
             <Navbar expand="lg" className='nb'>
                 <Container fluid>
                     <Row style={{width:"100%"}}>
 
                         <Col xs={1}>
-                            <Navbar.Brand href="#home">
+                            {/* <Navbar.Brand href="#home">
                                 <img src={eduRangeLogo}
                                 width="auto"
                                 height="auto"
                                 className="d-flex align-top"
                                 alt="./5.jpeg"
                                 />
-                            </Navbar.Brand>
+                            </Navbar.Brand> */}
                         </Col>
         
                         <Col xs={{ span: 10}}>
@@ -43,6 +44,7 @@ function WelcomeHead() {
 
             
         </div>
+    </div>
     );
 }
 

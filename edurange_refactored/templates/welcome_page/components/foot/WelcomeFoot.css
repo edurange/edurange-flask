@@ -1,0 +1,13 @@
+
+.pucs-frame-tester{
+    display: flex;
+    flex-direction: column;
+}
+
+.pucs-footer-main{
+    margin-top: auto; /* Push the element to the bottom of the parent */
+  /* Optionally, you can add some styling to the div */
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: center;
+}

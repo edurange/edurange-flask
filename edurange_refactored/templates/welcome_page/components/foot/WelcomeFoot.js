@@ -1,17 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import { Navbar, Nav, Container, Col, Row } from 'react-bootstrap';
 
-import eduRangeLogo from './../img/logo_menu.png'
-
 import 'bootstrap/dist/css/bootstrap.css';
 import './WelcomeFoot.css';
-// import './unified.css';
 
 export const WelcomeContext = React.createContext();
 
 function WelcomeFoot() {
     return (
-        <div>
+        <div className='pucs-frame-tester'>
+        <div className='pucs-footer-main'>
+            WelcomeFoot.js says hello
             <Navbar expand="lg" className='nb'>
                 <Container fluid>
                     <Row style={{width:"100%"}}>
@@ -28,6 +27,7 @@ function WelcomeFoot() {
                     </Row>
                 </Container>
             </Navbar>
+        </div>
         </div>
     );
 }

@@ -41,6 +41,7 @@
     "path": "^0.12.7",
     "popper.js": "^1.15.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "redis": "^3.0.2",
     "serve-favicon": "^2.5.0",

@@ -1,0 +1,8 @@
+
+.pucs-header-main{
+    margin-bottom: auto; /* Push the element to the top of the parent */
+  /* Optionally, you can add some styling to the div */
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: center;
+}
