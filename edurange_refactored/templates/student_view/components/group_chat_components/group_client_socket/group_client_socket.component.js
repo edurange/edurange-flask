@@ -9,7 +9,7 @@ const socket = io(`${window.location.hostname}:3001`, {autoConnect: false});
 
 // catch-all listener for development phase
 socket.onAny((event, ...args) => {
-  //console.log(event, args);
+  console.log(event, args);
 });
 
 function GroupClientSocket(props) {
@@ -71,19 +71,23 @@ function GroupClientSocket(props) {
       setInputData("");
     }
   };
-
+/*
   function printSomething() {
     console.log(`${JSON.stringify(messages)}`);
   }
-  
+ 
   // Call the function every 2 seconds (2000 milliseconds)
   setInterval(printSomething, 2000);
-
+*/
 
   return (
     <div className="GroupClientSocket">
     <HookTester
       messages={messages}
+    />
+    <GroupChatWindow
+      _messages={messages}
+      user_id={props.uid}
     />
         <div className='chat-input-area'>
           <form onSubmit={onFormSubmit} autoComplete="off">
