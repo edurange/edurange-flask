@@ -1,19 +1,13 @@
 {% extends "layout.html" %}
+
 {% block content %}
-   <link
-           rel="stylesheet"
-           type="text/css"
-           href="{{ url_for('static', filename='build/Notification.bundle.css') }}"
-   />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/Notification.bundle.css') }}" />
 <main class="notification-class">
- <div id="notification-page" notifications="{{notifications}}"></div>
-</div>
+    <div id="notification-page" notifications="{{notifications}}">
+    </div>
 </main>
-
-
 {% endblock %}
 
-
-{% block  js %}
+{% block js %}
 <script src="/static/build/Notification.bundle.js"></script>
 {% endblock %}

@@ -266,34 +266,26 @@ def instructor():
 @blueprint.route("/notification", methods=["GET", "POST"])
 @login_required
 def notification():
-    if request.method == "POST":
-        process_request(request.form)
-
-    notifications_raw = Notification.query.all()
-    notifications_serialized = []
-
-    for notif in notifications_raw:
-        notif_serialized = {}
-        for key, value in notif.__dict__.items():
-            if key != '_sa_instance_state':
-                if isinstance(value, datetime):
-                    value = value.isoformat()
-                notif_serialized[key] = value
-        notifications_serialized.append(notif_serialized)
     
-    for index, notif in enumerate(notifications_serialized):
-        for key, value in notif.items():
-            var_name = f'var{index}_{key}'
-            locals()[var_name] = value
+    # if request.method == "POST": process_request(request.form)
+    notifications_raw = Notification.query.all()
+    
+    notifications_processed = []
+    for notif in notifications_raw:
+        notif_serialized = {
+            "id": notif.id,
+            "date": notif.date.isoformat(),
+            "detail": notif.detail
+        }
+        notifications_processed.append(notif_serialized)
 
-    deleteNotify = notifyDeleteForm()
-
-    json_export = json.dumps(notifications_serialized)
+    # deleteNotify = notifyDeleteForm()
+    notifications_export = json.dumps(notifications_processed)
 
     return render_template(
         "dashboard/notification.html",
-        notifications=json_export,
-        deleteNotify=deleteNotify
+        notifications=notifications_export
+        # deleteNotify=deleteNotify
     )
 
 @blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])

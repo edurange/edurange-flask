@@ -1,0 +1,353 @@
+@import url(https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Oswald:wght@200;300;400;500;600;700&display=swap);
+.edu-question {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 75%;
+  padding: 1rem;
+  margin: 1rem 0;
+  margin-right: 1rem;
+  box-shadow: 1px 2px 5px 1px lightgray;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.edu-submission-traits {
+  font-size:75%;
+  width:100%;
+  flex-wrap: wrap;
+  align-content: space-between;
+  display:inline-flex;
+  align-items: center;
+}
+
+.edu-submission-traits p {
+  margin-bottom: 0;
+}
+
+.edu-submission-points {
+  border-radius: 5px;
+  font-family: 'Open Sans';
+  font-size: 1.33em;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.edu-submission-state {
+  margin-left: auto;
+  padding: .25rem .5rem;
+  font-family: 'Open Sans';
+  font-size: 1.2em;
+  color: rgba(128,128,128,0.7);
+  border-radius: .3rem;
+}
+
+ .completed, .correct {
+  color: rgba(0,128,0,0.7);
+}
+
+.incorrect {
+  color: rgba(255,0,0,0.7);
+}
+
+.edu-submission-state i {
+  padding: 0px 0px 0px 4px;
+}
+
+
+.edu-question-text {
+  padding: 5px;
+  border-radius: 5px;
+  white-space: pre-line;
+  vertical-align: bottom;
+}
+
+.edu-answer {
+  box-sizing: border-box;
+  resize: none;
+  border-radius: 4px;
+  border: 1px solid lightgray;
+  width: 100%;
+  padding: .5rem;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  font-family: 'Open Sans';
+  font-size: 125%;
+  margin-right: .5rem;
+}
+
+.edu-submit {
+  color: white;
+  padding: 10px 1em;
+  text-decoration: none;
+  cursor: pointer;
+  color: #555;
+  transition-duration: 0s;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #2e9566;
+  border: 1px rgba(46, 149, 102, .3) solid;
+  align-self: flex-start;
+  font-size: 115%;
+  margin-left: 4px;
+}
+
+.edu-submit:hover {
+  background-color: #2e9566;
+  color: white;
+}
+
+.edu-submit:active {
+  box-shadow: 0 0 lightgray;
+  transform: translate(1px, 2px);
+}
+
+.edu-answer-area form {
+  display: flex;
+  flex-direction: row;
+  font-size: 75%;
+
+}
+.edu-reading {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 1rem 0;
+  margin-right: 1rem;
+  box-shadow: 1px 2px 5px 1px lightgray;
+  background-color: white;
+  border-radius: 5px;
+} 
+
+.edu-reading h2 { 
+  padding-bottom: .6rem;
+  margin-bottom: 1.33rem;
+  border-bottom: 1px rgb(225, 225, 225) solid;
+}
+
+code {
+  background-color: #f2f2f2;
+  font-family: 'IBM Plex Mono';
+  color: rgba(200, 25, 200);
+  font-size: 90%;
+  border-radius: 3px;
+  padding: 0 .1rem;
+}
+
+pre {
+  background-color: rgb(68, 68, 68);
+  border-radius: .5rem;
+  padding: .5rem 0;
+  padding-left: 1rem;
+  border: 5px solid darkgrey;
+}
+
+pre code {
+  background-color: initial;
+  color: rgba(122, 227, 122);
+}
+.student-scenario-section {
+    flex: 0 0 75%;
+    overflow: scroll;
+    padding: 0 .5rem;
+}
+
+@media (max-width: 800px) {
+    .student-scenario-section {
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+}
+.edu-topic-list {
+  margin-right: .5rem;
+  margin-left: .5rem;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 1 25%;
+  max-width: 250px;
+  min-width: 175px;
+  font-family: 'Open Sans';
+  overflow: scroll;
+  padding-right: .5rem;
+  padding-left: .5rem;
+}
+
+.edu-topic-list ul {
+  list-style: none;
+  padding: 0;
+  margin-top: .1rem;
+  flex: 0 1 95%;
+}
+
+.edu-topic-list ul li {
+  padding-bottom: .75rem;
+}
+
+#topic {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 4rem;
+  transition-duration: .3s;
+  border-radius: 5px;
+  border: 1px rgba(46, 149, 102, .3) solid;
+  background-color: #f8f9fa;
+  color: #555;
+  box-shadow: 1px 1px 2px #2e9566;
+}
+
+#topic:hover, #topic:focus {
+  background-color: #2e9566;
+  color: white !important;
+  box-shadow: initial;
+  cursor: pointer;
+}
+
+#topic-current {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 4rem;
+  transition-duration: .3s;
+  border-radius: 5px;
+  border: 1px rgba(46, 149, 102, .3) solid;
+  background-color: #2e9566;
+  color: white;
+  box-shadow: initial;
+}
+
+#topic-current:hover, #topic-current:focus {
+  cursor: pointer;
+}
+
+#topicNumber {
+  margin: 0 .75rem;
+  font-weight: bolder;
+}
+.edu-chatbox-closed {
+  font-weight: 200;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  right: 2rem;
+  overflow: hidden;
+  padding: 0 .5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #2e9566;
+  border-radius: 1rem 1rem 0 0;
+  min-width: 25vw;
+  height: 1.9rem;
+  transition-duration: .5s;
+}
+
+.edu-chatbox-closed:hover, .edu-chatbox-closed:focus {
+  height: 2.5rem;
+}
+
+.edu-chatbox-closed p {
+  margin-bottom: 5rem;
+  padding: .2rem .5rem;
+}
+
+
+.edu-chatbox-open {
+  font-weight: 200;
+  position: fixed;
+  bottom: 0;
+  right: 2rem;
+  overflow: hidden;
+  padding: 0 .5em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  outline: 2px #2e9566 solid;
+  border-radius: 1rem 1rem 0 0;
+  min-width: 25vw;
+  height: 45vh;
+  transition-duration: .5s;
+}
+
+.edu-chatbox-open p {
+  margin: 0;
+  padding: .2rem .5rem;
+}
+
+.ClientSocket {
+  margin-top: auto;
+}
+
+.chat-input-box {
+  margin-right: .2rem;
+  border: 1px grey solid;
+}
+
+.student_chat_send {
+  border: 1px solid #2e9566;
+  transition-duration: .3s;
+}
+
+.student_chat_send:hover, .student_chat_send:focus {
+  background-color: #2e9566
+}
+#studentChatWindow {
+    max-height: 30vh;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.student_from_other {
+    background-color: rgba(0, 125, 0, .5);
+    align-self: flex-start;
+    padding: 0 .5rem;
+}
+
+.student_from_self {
+    background-color: rgba(0, 200, 200, .5);
+    padding: 0 .5rem;
+    align-self: flex-end;
+}
+
+.student_from_self, .student_from_other {
+    border-radius: .5rem;
+}
+
+.userID {
+    font-size: 75%;
+}
+
+.student_from_self_div, .student_from_other_div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    overflow: contain;
+}
+
+.student_from_self_name {
+    text-align: right;
+}
+
+.student_from_other_name {
+    text-align: left;
+}
+
+html {
+    height: 100vh;
+}
+
+.student {
+    background: rgb(235, 240, 232);
+    font-family: 'Open Sans';
+    width: 100vw;
+}
+
+.student_view {
+    padding-right: 1rem;
+    display: flex;
+    height: 90vh;
+}

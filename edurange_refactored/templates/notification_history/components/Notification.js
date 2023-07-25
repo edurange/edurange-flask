@@ -1,75 +1,49 @@
-import './Notification.css';
 import { createRoot } from 'react-dom/client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import './Notification.css';
+// import './unified.css';
 
 function Notification(props) {
-  const notif_json = JSON.parse(props.notifications, (key, value) => {
-    if (typeof value === 'number') {
-      return value.toString();
-    }
-    return value;
-  });
 
-  const notifCount = Object.keys(notif_json).length;
+    const notifs_obj = JSON.parse(props.notifications, (key, value) => {
+        if (typeof value === 'number') {return value.toString();}
+        return value;
+    });
 
-  const myNotifs = [];
+    function buildNotificationTable() {
+        return Object.keys(notifs_obj).map((notifKey) => {
+          const notif = notifs_obj[notifKey];
+          return (
+            <tr key={notif.id} className='pucs-table-base'>
+              <td className='pucs-table-cell'>{notif.id}</td>
+              <td className='pucs-table-cell'>{notif.date}</td>
+              <td className='pucs-table-cell'>{notif.detail}</td>
+            </tr>
+          );
+        });
+      };
+    const notifications_built = buildNotificationTable();
 
-  for (let i = 0; i < notifCount; i++) {
-    const notif_id = notif_json[i].id;
-    const notif_timeStamp = notif_json[i].date;
-    const notif_content = notif_json[i].detail;
-    myNotifs.push([notif_id, notif_timeStamp, notif_content]);
-  };
-
-  console.log(myNotifs);
-
-  const buildNotificationTable = (input) => {
-    return input.map((item, index) => (
-      <tr key={index}>
-        <td>{item[0]}</td>
-        <td>{item[1]}</td>
-        <td>{item[2]}</td>
-      </tr>
-    ));
-  };
-
-  const notifTemp = buildNotificationTable(myNotifs);
-
-  return (
-    <div id="notification-page">
-      <form method="POST">
-        {/* {{ deleteNotify.csrf_token }}  idk what this does... */}
-        <input
-          name="clearButton"
-          className="btn btn-dark"
-          type="submit"
-          value="Clear all notifications"
-        />
-      </form>
-      <p></p>
-      <table className="table">
-        <caption>Table of Notification history</caption>
-        <thead className="thead-dark">
-          <tr>
-            <th data-sort="string" scope="col">
-              Notification ID
-            </th>
-            <th data-sort="string" scope="col">
-              Time Stamp
-            </th>
-            <th data-sort="float" data-sort-default="desc" scope="col">
-              Message
-            </th>
-          </tr>
-        </thead>
-        <tbody>{notifTemp}</tbody>
-      </table>
+    return (
+    <div className='main-frame'>
+      <div id="notification-page">
+        <table >
+          <caption>Table of Notification history</caption>
+          <thead className='pucs-table-head'>
+            <tr>
+              <th className='pucs-table-cell'>Notification ID</th>
+              <th className='pucs-table-cell'>Time Stamp</th>
+              <th className='pucs-table-cell'>Message</th>
+            </tr>
+          </thead>
+          <tbody>{notifications_built}</tbody>
+        </table>
+      </div>
     </div>
-  );
-}
+    );
+};
 
 export default Notification;
-
 const e = document.getElementById('notification-page');
-const root=createRoot(e);
+const root = createRoot(e);
 root.render(<Notification notifications={e.attributes.notifications.value} />);
