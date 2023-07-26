@@ -11,7 +11,7 @@ function GroupChatEntry(props) {
 
     // determine value of message div className
     const messageType = _fromSelf ? 'student_from_other' : 'student_from_self'; 
-    const messageTypeClass = _fromSelf ? ' student_from_other_name' : ' student_from_self_name'; 
+    const messageTypeClass = _fromSelf ? 'chat_message student_from_other_name' : 'chat_message student_from_self_name'; 
     const messageTypeDiv = _fromSelf ? 'student_from_other_div' : 'student_from_self_div';               //Current user
         
     return (

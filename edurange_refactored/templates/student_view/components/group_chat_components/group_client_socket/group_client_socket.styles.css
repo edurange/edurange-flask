@@ -1,0 +1,29 @@
+.input-group.mb-3 {
+    /*background-color: black;*/
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px; /* Add padding as needed */
+  }
+
+  .chat_closed {
+    opacity: 0;
+  }
+
+  .chat_open {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: .75s;
+  }
+
+  .group_chat_window {
+    overflow-y: auto;
+    background-color: grey;
+    scrollbar-width: none;
+  }
+
+  .group_chat_window::-webkit-scrollbar  {
+    width: 0;
+    background: transparent;
+  }

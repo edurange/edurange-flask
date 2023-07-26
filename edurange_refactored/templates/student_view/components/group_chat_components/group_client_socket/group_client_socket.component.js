@@ -4,6 +4,7 @@ import GroupChatWindow from '../group_chat_window/group_chat_window.component';
 import HookTester from '../hook_tester/hook_tester';
 import { io } from 'socket.io-client';
 import "./group_client_socket.styles.css"
+//import "../../chatbox/chatbox.styles.css"
 
 const socket = io(`${window.location.hostname}:3001`, {autoConnect: false});
 
@@ -79,33 +80,38 @@ function GroupClientSocket(props) {
   // Call the function every 2 seconds (2000 milliseconds)
   setInterval(printSomething, 2000);
 */
+  const chatOpened = () => {
+    ret = props.chat_opened ? "input-group mb-3" : "chat_closed"
+    return ret;
+  }
 
   return (
     <div className="GroupClientSocket">
-    <HookTester
-      messages={messages}
-    />
-    <GroupChatWindow
-      _messages={messages}
-      user_id={props.uid}
-    />
-        <div className='chat-input-area'>
+      <div className="group_chat_window">
+        <GroupChatWindow
+          _messages={messages}
+          user_id={props.uid}
+        />
+      </div>
+          <div className='chat-input-area'>
           <form onSubmit={onFormSubmit} autoComplete="off">
-            <div className="input-group mb-3">
-              <input
-                type="text"
-                className="form-control chat-input-box"
-                autoComplete="off"
-                onChange={onChange}
-                value={inputData}
-              />
-              <button
-                type="submit"
-                className="btn btn-outline-success group_chat_send"
-              >
-                Send
-              </button>
-            </div>
+          
+              <div className={`input-group mb-3 ${props.chat_opened ? "chat_open" : "chat_closed"}`}>
+                <input
+                  type="text"
+                  className="form-control chat-input-box"
+                  autoComplete="off"
+                  onChange={onChange}
+                  value={inputData}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-outline-success group_chat_send"
+                >
+                  Send
+                </button>
+              </div>
+            
           </form>
         </div>
 
