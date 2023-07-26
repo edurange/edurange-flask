@@ -22,11 +22,8 @@
 }
 
 .student_from_self_div, .student_from_other_div {
-    display: flex;
-    flex-direction: column;
     margin-bottom: 1rem;
     overflow: contain;
-    overflow-anchor: auto;
 }
 
 .student_from_self_name {

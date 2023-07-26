@@ -1,15 +1,5 @@
 #groupChatWindow {
-    max-height: 30vh;
-    overflow: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    overflow-anchor: none;
-    overflow-y: auto;
-    scrollbar-width: none;
 }
-
-
-#groupChatWindow ::-webkit-scrollbar  {
-    width: 0;
-    background: transparent;
-  }

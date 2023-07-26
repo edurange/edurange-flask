@@ -1,10 +1,31 @@
+.GroupClientSocket {
+  height: inherit;
+  display: grid;
+}
+
+.group_chat_window {
+  height: 40vh;
+  overflow-y: auto;
+}
+
 .input-group.mb-3 {
-    /*background-color: black;*/
+    height: 10vh;
+    /*background-color: black;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 10px; /* Add padding as needed */
+    padding: 10px; Add padding as needed */
+    display: grid;
+    position: relative;
+  }
+
+  .input-form {
+    font: inherit;
+  }
+
+  .btn.btn-outline-success.group_chat_send {
+    opacity: 0;
   }
 
   .chat_closed {
@@ -15,15 +36,4 @@
     opacity: 1;
     transition-property: opacity;
     transition-duration: .75s;
-  }
-
-  .group_chat_window {
-    overflow-y: auto;
-    background-color: grey;
-    scrollbar-width: none;
-  }
-
-  .group_chat_window::-webkit-scrollbar  {
-    width: 0;
-    background: transparent;
   }

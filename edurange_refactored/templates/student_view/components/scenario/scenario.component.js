@@ -66,7 +66,6 @@ class StudentScenario extends React.Component {
       }
     }
 }
-
 var e = document.getElementById('student_scenario');
 var root = createRoot(e);
 root.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} uid={e.attributes.uid.value} />);

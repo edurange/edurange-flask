@@ -91,12 +91,11 @@ function GroupClientSocket(props) {
         <GroupChatWindow
           _messages={messages}
           user_id={props.uid}
+          className="group_chat_window"
         />
-      </div>
-          <div className='chat-input-area'>
-          <form onSubmit={onFormSubmit} autoComplete="off">
-          
-              <div className={`input-group mb-3 ${props.chat_opened ? "chat_open" : "chat_closed"}`}>
+        </div>
+        <div className={`input-group mb-3 ${props.chat_opened ? "chat_open" : "chat_closed"}`}>
+          <form onSubmit={onFormSubmit} autoComplete="off" className="input_form">
                 <input
                   type="text"
                   className="form-control chat-input-box"
@@ -110,13 +109,9 @@ function GroupClientSocket(props) {
                 >
                   Send
                 </button>
-              </div>
-            
           </form>
         </div>
-
     </div>
   );
 }
-
 export default GroupClientSocket;
