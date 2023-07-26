@@ -14,8 +14,17 @@ import GroupChatEntry from "../group_chat_entry/group_chat_entry.component";
 
 function GroupChatWindow(props) {   
 
+    const [time, setTime] = useState(new Date());
+    const [msg, setMsg] = useState(props._messages)
+
     useEffect(() => {
-        console.log(props._messages[props._messages.length - 1])
+      const interval = setInterval(() => {
+        setTime(new Date());
+      }, 1000);
+  
+      setMsg(props._messages);
+      
+      return () => clearInterval(interval);
     }, []);
 
     function getMessagesContent() {
