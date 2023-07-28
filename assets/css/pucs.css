@@ -76,27 +76,17 @@ body, html {
 .pucs-trim-warning-invert{border: solid 3px var(--warning);}
 .pucs-trim-warning{border: solid 3px black;}
 
-
-
-
-.main-frame{
-    /* background-color: rgb(221, 215, 255); */
-    padding: 2.5% 5%;
-}
-
 .my-table{
     background-color: var(--normal-blue);
     border-left: 2px solid var(--deep-blue);
     border-right: 1px solid var(--deep-blue);
     border-top: 2px solid var(--deep-blue);
     border-bottom: 1px solid var(--deep-blue);
-    border-radius: 30px;
 }
 
 .pucs-table-top {
     background-color: rgb(0, 233, 12);
     color: rgb(38, 0, 255);
-    border-radius: 15%;
 
 }
 
@@ -106,7 +96,6 @@ body, html {
     border-right: 1px solid var(--deep-blue);
     border-top: 2px solid var(--deep-blue);
     border-bottom: 1px solid var(--deep-blue);
-    border-radius: 30px;
 }
 .pucs-table-head{
     background-color: var(--normal-green);
@@ -115,7 +104,6 @@ body, html {
 .pucs-table-col{border-right: 1px solid var(--deep-blue);}
 .pucs-table-cell{
     padding: 5px 15px;
-    border-radius: 15%;
-    background-color: rgb(199, 0, 33);
+    /* background-color: rgb(199, 0, 33); */
 }
 

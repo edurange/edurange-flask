@@ -94,8 +94,8 @@ input[type="radio"], input[type="checkbox"]:not(.option) {
 
 
 table, th, td {
-  border: 1px solid black;
-  border-radius: 15%;
+  /* border: 1px solid black; */
+  /* border-radius: 15%; */
 }
 th {
   cursor: pointer;

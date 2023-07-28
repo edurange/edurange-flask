@@ -17,7 +17,7 @@ from jwt.exceptions import JWTDecodeError
 
 from edurange_refactored.extensions import bcrypt, login_manager
 from edurange_refactored.public.forms import (
-    LoginForm,
+    LoginForm,LoginFormSister,
     RequestResetPasswordForm,
     RestorePasswordForm,
 )
@@ -54,10 +54,10 @@ def home():
             flash_errors(form)
     return render_template("public/home.html", form=form)
 
-@blueprint.route("/home_sister", methods=["GET", "POST"])
+@blueprint.route("/home_sister/", methods=["GET", "POST"])
 def home_sister():
     """Home page."""
-    form = LoginForm(request.form)
+    form = LoginFormSister(request.form)
     current_app.logger.info("Hello from the home_sister page!") #--
     # Handle logging in
     if request.method == "POST":
