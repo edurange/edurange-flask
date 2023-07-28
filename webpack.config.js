@@ -25,10 +25,10 @@ module.exports = [
     main_js: './assets/js/main',
     main_css: [
       // path.join(__dirname, 'node_modules', 'font-awesome', 'css', 'font-awesome.css'),
-      path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
+      // path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
       // path.join(__dirname, 'assets', 'fontawesome', 'css', 'all.css'),
       // path.join(__dirname, 'assets', 'fontawesome', 'webfonts'),
-      // path.join(__dirname, 'assets', 'css', 'style.css'),
+      path.join(__dirname, 'assets', 'css', 'style.css'),
       path.join(__dirname, 'assets', 'css', 'pucs.css'),
     ],
   },
@@ -132,52 +132,6 @@ module.exports = [
       ]
     }
   },
-
-{
-   context: path.join(__dirname, '/edurange_refactored/templates/welcome_page/components/main/'),
-   entry: {
-     Welcome: './Welcome'
-   },
-   output: {
-     chunkFilename: "[id].js",
-     filename: "[name].bundle.js",
-     path: path.join(__dirname, "edurange_refactored", "static", "build"),
-     publicPath: "/static/build/",
-     library: "lib",
-     libraryTarget: "var"
-   },
-   resolve: {
-     extensions: [".js", ".jsx", ".css"]
-   },
-   plugins: [
-     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-   ],
-   module: {
-     rules: [
-       {
-         test: /\.?js(x)?$/,
-         use: {
-           loader: "babel-loader",
-           options: {
-             presets: ['@babel/preset-env', '@babel/preset-react']
-           }
-         },
-       },
-       {
-         test: /\.css$/,
-         use: [
-           {
-             loader: MiniCssExtractPlugin.loader,
-             options: {
-               hmr: debug,
-             },
-           },
-           'css-loader',
-         ],
-       }
-     ]
-   }
- },
   {
     context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
     entry: {

@@ -38,10 +38,13 @@ of style hierarchy (and reverse in terms of evaluation order).*/
     --danger: red;
 }
 
-body{
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: 'Share Tech Mono', monospace;
-    background-color: var(--muted-blue);
-}
+    min-height: 100vh;
+  }
 
 .pucs-text-primary{color: var(--deep-blue);}
 .pucs-text-primary-invert{color: var(--muted-blue);}

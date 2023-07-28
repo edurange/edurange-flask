@@ -66,6 +66,7 @@ def home_sister():
         flash("You are logged in.", "success")
         redirect_url = url_for("public.home_sister")
         return redirect(redirect_url)
+        return ("Good job dude!")
         # else:
         #     flash_errors(form)
     # return render_template("public/home_sister.html", form=form)

@@ -8,6 +8,7 @@ import ChildComponent6 from './ChildComponent6';
 import LoginFromNav from './components/login_from_nav/LoginFromNav';
 import Welcome from '../welcome_page/components/main/Welcome';
 import './MainFrame.css';
+// import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
 
 function MainFrame() {
     const [activeTab, setActiveTab] = useState(1);
@@ -16,9 +17,7 @@ function MainFrame() {
     // const MainFrameContext = React.createContext();
 
     return (
-
         <div id='master'>
-            <div className='app-container'>
                 {/* <MainFrameContext.Provider value={{ activeTab, setDesiredTab }}> */}
                 <div id='master-tabs'>
                     <div uid={0} onClick={() => setDesiredTab(1)} className={activeTab === 1 ? "tabs active-tab" : "tabs inactive-tab"}><div className='tab-label'>INTRO</div></div>
@@ -30,16 +29,15 @@ function MainFrame() {
                     <div uid={6} onClick={() => setDesiredTab(7)} className={activeTab === 7 ? "tabs active-tab" : "tabs inactive-tab"}><div className='tab-label'>LOGIN</div></div>
                 </div>
 
-                <section className={activeTab === 1 ? "active-page" : "hide"}> <Welcome/></section>
-                <section className={activeTab === 2 ? "active-page" : "hide"}> <ChildComponent2/></section>
-                <section className={activeTab === 3 ? "active-page" : "hide"}> <ChildComponent3/></section>
-                <section className={activeTab === 4 ? "active-page" : "hide"}> <ChildComponent4/></section>
-                <section className={activeTab === 5 ? "active-page" : "hide"}> <ChildComponent5/></section>
-                <section className={activeTab === 6 ? "active-page" : "hide"}> <ChildComponent6/></section>
-                <section className={activeTab === 7 ? "active-page" : "hide"}> <LoginFromNav/></section>
+                <section className={activeTab === 1 ? "active-page universal-page-container" : "hide"}> <Welcome/></section>
+                <section className={activeTab === 2 ? "active-page universal-page-container" : "hide"}> <ChildComponent2/></section>
+                <section className={activeTab === 3 ? "active-page universal-page-container" : "hide"}> <ChildComponent3/></section>
+                <section className={activeTab === 4 ? "active-page universal-page-container" : "hide"}> <ChildComponent4/></section>
+                <section className={activeTab === 5 ? "active-page universal-page-container" : "hide"}> <ChildComponent5/></section>
+                <section className={activeTab === 6 ? "active-page universal-page-container" : "hide"}> <ChildComponent6/></section>
+                <section className={activeTab === 7 ? "active-page universal-page-container" : "hide"}> <LoginFromNav/></section>
                 {/* </MainFrameContext.Provider> */}
             </div>
-        </div>
     );
 }
 

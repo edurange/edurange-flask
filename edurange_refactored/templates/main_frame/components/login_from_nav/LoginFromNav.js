@@ -11,8 +11,7 @@ function LoginFromNav() {
   };
 
   return (
-    <div className='universal-tab-container'>
-      <div className='universal-tab-child'>
+      <div className='universal-page-child'>
         <div className='login-container'>
 
         <h2>Enter your credentials</h2>
@@ -29,7 +28,6 @@ function LoginFromNav() {
           </form>
         </div>
       </div>
-    </div>
   );
 }
 
