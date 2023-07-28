@@ -65,7 +65,6 @@ blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
 )
 
-
 @blueprint.route("/")
 @login_required
 def student():

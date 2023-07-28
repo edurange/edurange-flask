@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+
+    <link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}">
+    <title>
+        {% block page_title %}
+            Edurange_Refactored
+        {% endblock %}
+    </title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}"/>
+    <meta name="author" content="{% block meta_author %}{% endblock %}"/>
+
+    <!-- Mobile viewport optimized: h5bp.com/viewport -->
+    <meta name="viewport" content="width=device-width"/>
+
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='build/main_css.bundle.css') }}"
+    />
+
+    {% block css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% block body %}
+    {% with role=get_role() %}
+        {% with nav=navigation(role) %}
+            {% with form=form if role is none %} <!-- None role == not logged in, push the login form -->
+                {% include "nav.html" %}
+            {% endwith %}
+
+
+        {% include "sidebar.html" %}
+        {% endwith %}
+        <header>{% block header %}{% endblock %}</header>
+
+        <main role="main">
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+            <div class="row" id="flashed">
+                <div class="col-md-12">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="z-index: 2;">
+                        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+                        {{ message }}
+                    </div><!-- end .alert -->
+                    {% endfor %}
+                </div><!-- end col-md -->
+            </div><!-- end row -->
+            {% endif %} {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    {% endwith %}
+    {% include "footer.html" %}
+
+<!-- JavaScript at the bottom for fast page loading -->
+    <script src="{{ url_for('static', filename='build/main_js.bundle.js') }}"></script>
+
+    {#
+    <script type="text/javascript">
+      /* autohide sidebar */
+       $(window).click(function(e)
+       {
+            var sidebarDiv = $("#sidebar");
+            var navButton = $("#toggleSidebar");
+
+            if (navButton.is(e.target)) {
+                if (sidebarDiv.css("display") == "none") {
+                    sidebarDiv.show(); //"0.1s");
+                }
+                else {
+                    sidebarDiv.hide(); //"0.1s");
+                }
+            }
+            else if (!sidebarDiv.is(e.target) && e.target.tagName.toLowerCase() !== 'a') {
+                sidebarDiv.hide(); //"0.1");
+            }
+       });
+    </script>
+    #}
+    {% block js %}
+
+    {% endblock %}
+    {#
+    <script type="text/javascript">
+      /* Store sidebar state in client session storage upon page reload/redirect */
+      $(window).on("unload", function() {
+        if ($("#sidebar").css("display") === "none") {
+            sessionStorage.setItem("sidebar", "false");
+        }
+        else {
+            sessionStorage.setItem("sidebar", 'true');
+        }
+      });
+    </script>
+    #}
+
+    {# sidebar related #}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                document.getElementById('edu-sidebar').style.display = 'block';
+    
+                $('#edu-sidenav-toggler').on('click', function () {
+                    $('#edu-sidebar').toggleClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
+
+            });
+
+        </script>
+
+<!-- end scripts -->
+{% endblock %}
+</body>
+</html>

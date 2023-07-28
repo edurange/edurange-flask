@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root');
 
-function LoginFromWelcome() {
+function LoginFromNav() {
   const [isOpen, setIsOpen] = useState(true);
 
   const closeModal = () => {
@@ -12,7 +12,7 @@ function LoginFromWelcome() {
 
   return (
     <div className='universal-tab-container'>
-      <div className='centerized-container'>
+      <div className='universal-tab-child'>
         <div className='login-container'>
 
         <h2>Enter your credentials</h2>
@@ -33,4 +33,4 @@ function LoginFromWelcome() {
   );
 }
 
-export default LoginFromWelcome;
+export default LoginFromNav;

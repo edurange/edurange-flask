@@ -87,6 +87,52 @@ module.exports = [
 
   },
 
+  {
+    context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
+    entry: {
+      MainFrame: './MainFrame'
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.?js(x)?$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
+        }
+      ]
+    }
+  },
+
 {
    context: path.join(__dirname, '/edurange_refactored/templates/welcome_page/components/main/'),
    entry: {
@@ -132,56 +178,6 @@ module.exports = [
      ]
    }
  },
-
-
-
-
-  {
-    context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
-    entry: {
-      main_entry: './main_entry', // This points to our main_entry.js file
-    },
-    output: {
-      chunkFilename: "[id].js",
-      filename: "[name].bundle.js",
-      path: path.join(__dirname, "edurange_refactored", "static", "build"),
-      publicPath: "/static/build/",
-      library: "[name]", // Name of the exported library
-      libraryTarget: "umd" // The type of export
-    },
-    resolve: {
-      extensions: [".js", ".jsx", ".css"]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-    ],
-    module: {
-      rules: [
-        {
-          test: /\.?js(x)?$/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react']
-            }
-          },
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                hmr: debug,
-              },
-            },
-            'css-loader',
-          ],
-        }
-      ]
-    }
-  },
-
   {
     context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
     entry: {

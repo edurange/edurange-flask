@@ -7,10 +7,6 @@
 html {
   overflow-y: scroll;
 }
-
-body {
-  padding-top: 50px;
-}
 button {
   background-color:#2e9566;
   min-width: 2em;
@@ -596,5 +592,5 @@ a.article:hover {
 
   }
 }
-
-/* End Navbar related style */
+/* 
+End Navbar related style */

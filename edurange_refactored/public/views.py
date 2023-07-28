@@ -9,6 +9,7 @@ from flask import (
     request,
     session,
     url_for,
+    send_file
 )
 from flask_login import current_user, login_required, login_user, logout_user
 from jwt import JWT
@@ -52,6 +53,23 @@ def home():
         else:
             flash_errors(form)
     return render_template("public/home.html", form=form)
+
+@blueprint.route("/home_sister", methods=["GET", "POST"])
+def home_sister():
+    """Home page."""
+    form = LoginForm(request.form)
+    current_app.logger.info("Hello from the home_sister page!") #--
+    # Handle logging in
+    if request.method == "POST":
+        # if form.validate_on_submit():
+        login_user(form.user)
+        flash("You are logged in.", "success")
+        redirect_url = url_for("public.home_sister")
+        return redirect(redirect_url)
+        # else:
+        #     flash_errors(form)
+    # return render_template("public/home_sister.html", form=form)
+    return send_file("templates/public/home_sister.html")
 
 
 @blueprint.route("/reset/", methods=["GET", "POST"])
