@@ -61,16 +61,20 @@ def home_sister():
     current_app.logger.info("Hello from the home_sister page!") #--
     # Handle logging in
     if request.method == "POST":
-        # if form.validate_on_submit():
-        login_user(form.user)
-        flash("You are logged in.", "success")
-        redirect_url = url_for("public.home_sister")
-        return redirect(redirect_url)
-        return ("Good job dude!")
-        # else:
-        #     flash_errors(form)
+        if form.validate_on_submit():
+            # return render_template("public/home.html", form=form)
+            # return ("Good job dude!")
+            # login_user(form.user)
+            flash("You are logged in.", "success")
+            redirect_url = url_for("public.home_sister")
+            return redirect(redirect_url)
+        else:
+            flash_errors(form)
     # return render_template("public/home_sister.html", form=form)
-    return send_file("templates/public/home_sister.html")
+
+    # raise Exception("Test Exception")
+
+    return render_template("public/home_sister.html", form=form)
 
 
 @blueprint.route("/reset/", methods=["GET", "POST"])
