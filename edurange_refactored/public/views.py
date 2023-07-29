@@ -9,7 +9,8 @@ from flask import (
     request,
     session,
     url_for,
-    send_file
+    jsonify
+
 )
 from flask_login import current_user, login_required, login_user, logout_user
 from jwt import JWT
@@ -37,7 +38,6 @@ def load_user(user_id):
     """Load user by ID."""
     return User.get_by_id(int(user_id))
 
-
 @blueprint.route("/", methods=["GET", "POST"])
 def home():
     """Home page."""
@@ -56,26 +56,22 @@ def home():
 
 @blueprint.route("/home_sister/", methods=["GET", "POST"])
 def home_sister():
-    """Home page."""
-    form = LoginFormSister(request.form)
-    current_app.logger.info("Hello from the home_sister page!") #--
-    # Handle logging in
+
+    form = LoginFormSister()
     if request.method == "POST":
         if form.validate_on_submit():
-            # return render_template("public/home.html", form=form)
-            # return ("Good job dude!")
-            # login_user(form.user)
-            flash("You are logged in.", "success")
-            redirect_url = url_for("public.home_sister")
-            return redirect(redirect_url)
-        else:
-            flash_errors(form)
-    # return render_template("public/home_sister.html", form=form)
 
-    # raise Exception("Test Exception")
+            login_user(form.user)
+            return jsonify({
+                "message": "Login successful!",
+                "yopass": form.password.data,
+                "yonam": form.username.data
+            })
+        else: return jsonify({"message": "Login failed."})
 
     return render_template("public/home_sister.html", form=form)
 
+    # raise Exception("Test Exception")
 
 @blueprint.route("/reset/", methods=["GET", "POST"])
 def reset_password():

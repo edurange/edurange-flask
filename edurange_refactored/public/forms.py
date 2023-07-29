@@ -50,37 +50,27 @@ class LoginForm(FlaskForm):
         return True
 
 class LoginFormSister(FlaskForm):
-    """Login form."""
 
     username = StringField("Username", validators=[DataRequired()])
-    csrf_token = StringField("csrf_token", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
-        """Create instance."""
         super(LoginFormSister, self).__init__(*args, **kwargs)
         self.user = None
-    
-    
 
     def validate(self):
-        """Validate the form."""
         initial_validation = super(LoginFormSister, self).validate()
-        # if not initial_validation:
-        #     return False
+        if not initial_validation:
+            return False
 
-        # self.user = User.query.filter_by(username=self.username.data).first()
-        # if not self.user:
-        #     self.username.errors.append("Unknown username")
-        #     return False
-
-        # if not self.user.check_password(self.password.data):
-        #     self.password.errors.append("Invalid password")
-        #     return False
-
-        # if not self.user.active:
-        #     self.username.errors.append("User not activated")
-        #     return False
+        self.user = User.query.filter_by(username=self.username.data).first()
+        
+        if not self.user \
+        or not self.user.check_password(self.password.data) \
+        or not self.user.active:
+            self.username.errors.append("Invalid Credentials")
+            self.password.errors.append("Invalid Credentials")
+            return False
         return True
 
 class RequestResetPasswordForm(FlaskForm):

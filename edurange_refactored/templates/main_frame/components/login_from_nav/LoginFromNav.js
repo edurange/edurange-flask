@@ -73,12 +73,11 @@
           'X-CSRFToken': csrfToken,
         },
         body: JSON.stringify({
-          csrf_token: csrfToken,
           username: username,
           password: password,
         }),
       });
-
+      console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok.');
       }
