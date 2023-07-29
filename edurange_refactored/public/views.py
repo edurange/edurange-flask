@@ -63,11 +63,9 @@ def home_sister():
 
             login_user(form.user)
             return jsonify({
-                "message": "Login successful!",
-                "yopass": form.password.data,
-                "yonam": form.username.data
+                "login_success": "true",
             })
-        else: return jsonify({"message": "Login failed."})
+        else: return jsonify({"login_succes": "false"})
 
     return render_template("public/home_sister.html", form=form)
 

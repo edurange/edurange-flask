@@ -1,123 +1,73 @@
-// import React, { useState, useEffect } from 'react';
+"use strict";
+import React, { useState, useEffect, useContext } from 'react';
+import { MainFrameContext } from '../../MainFrame';
 
-// async function LoginFromNav() {
 
-//   // useEffect(() => {
-//   const csrfTokenInput = document.querySelector('#csrf_token');
-//     // if (csrfTokenInput) {
-//   const csrfToken = csrfTokenInput.value;
-//       console.log('CSRF Token:', csrfToken);
-//   // }
-//   // }, []);
 
-//   async function sendPostRequest(username, password) {
-//     try {
-//       const response = await fetch('http://127.0.0.1:8008/home_sister', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'X-CSRFToken': csrfToken,
-//         },
-//         body: JSON.stringify({
-//           csrf_token: csrfToken,
-//           username: username,
-//           password: password,
-//         }),
-//       });
+function LoginFromNav(props) {
 
-//       if (!response.ok) {
-//         throw new Error('Network response was not ok.');
-//       }
+  const {
+    activeTab_state,update_chosenTab_status,
+    login_state, update_login_status,
+    update_csrfToken_status,csrfToken_state
+  } = useContext(MainFrameContext);
 
-//       const data = await response.json();
-//       console.log(data);
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   }
-  
+  async function sendPostRequest(username, password, csrfToken_state) {
 
-  // function sendPostRequest(username, password) {
-  //   fetch('http://127.0.0.1:8008/home_sister', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'X-CSRFToken': csrfToken,
-  //     },
-  //     body: JSON.stringify({
-  //       csrf_token: csrfToken,
-  //       username: username,
-  //       password: password,
-  //     }),
-  //   })
-  //     .then(response => console.log(response))
-  //     // .then(data => console.log(data))
-  //     .catch(error => console.error('Error:', error));
-  // }
-
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   const usernameInput = event.target.elements.username.value;
-  //   const passwordInput = event.target.elements.password.value;
-  //   sendPostRequest(usernameInput, passwordInput);
-  // };
-
-  import React, { useState, useEffect } from 'react';
-
-  async function sendPostRequest(username, password, csrfToken) {
     try {
       const response = await fetch('http://127.0.0.1:8008/home_sister', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
+          'X-CSRFToken': csrfToken_state,
         },
         body: JSON.stringify({
           username: username,
           password: password,
         }),
       });
-      console.log(response)
-      if (!response.ok) {
-        throw new Error('Network response was not ok.');
-      }
 
-      const data = response;
-      console.log(data);
+      if (!response.ok) { throw new Error('Login failure.'); }
+
+      const data = await response.json();
+
+      if (data.login_success === "true") {
+        console.log("Login success!");
+        update_login_status(1);
+        update_chosenTab_status(2);
+      }
+      else { console.log('Login failure.'); };
+
     } catch (error) {
       console.error('Error:', error);
     }
   }
 
-function LoginFromNav() {
-  const [csrfToken, setCsrfToken] = useState(null);
-
   useEffect(() => {
-    const fetchCsrfToken = async () => {
+    const fetch_csrfToken = async () => {
       try {
         const csrfTokenInput = document.querySelector('#csrf_token');
         if (csrfTokenInput) {
           const token = csrfTokenInput.value;
-          console.log('CSRF Token:', token);
-          setCsrfToken(token);
+          update_csrfToken_status(token);
         }
       } catch (error) {
         console.error('Error fetching CSRF token:', error);
       }
     };
 
-    fetchCsrfToken();
+    fetch_csrfToken();
   }, []);
 
   const handleSubmit = event => {
     event.preventDefault();
     const usernameInput = event.target.elements.username.value;
     const passwordInput = event.target.elements.password.value;
-    sendPostRequest(usernameInput, passwordInput, csrfToken);
+    sendPostRequest(usernameInput, passwordInput, csrfToken_state);
   };
   return (
-    <div className='universal-tab-parent'>
-      <div className='universal-tab-container'>
+    <div className='universal-page-parent'>
+      <div className='universal-page-child'>
         <div className='login-container'>
           <h2>Enter your credentials</h2>
           <form onSubmit={handleSubmit}>
