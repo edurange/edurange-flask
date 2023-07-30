@@ -4,9 +4,11 @@ import React from 'react';
 
 const OptionsMenu = () => {
     return (
-        <div className='universal-page-parent'>
-            <div className='universal-page-child'>
-                Come back later.  We're going to have so many amazing options, dude.
+        <div className='universal-content-outer'>
+            <div className='universal-content-mid'>
+                <div className='universal-content-inner'>
+                    Come back later.  We're going to have so many amazing options, dude.
+                </div>
             </div>
         </div>
     );

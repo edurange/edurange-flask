@@ -1,0 +1,18 @@
+ 
+.exo-sidenav-frame {
+    width: 100vw;
+    height: 100vh;
+}
+
+.exo-sidenav-body {
+    margin:0;
+    padding:0;
+    height:100%;
+    width: 100%;
+}
+
+.exo-sidenav-menu {
+    height:100%;
+    width:30%;
+    background-color: #2F4050
+}

@@ -4,22 +4,22 @@
 
 /* universal */
 
-html {
+/* html {
   overflow-y: scroll;
-}
-button {
+} */
+/* button {
   background-color:#2e9566;
   min-width: 2em;
   min-height: 1em;
   border: solid 2px black;
-}
-section {
+} */
+/* section {
   overflow: auto;
-}
-
+} */
+/* 
 textarea {
   resize: vertical;
-}
+} */
 
 .container-narrow{
   margin: 0 auto;
@@ -216,7 +216,7 @@ a:focus {
 
 .navbar {
     padding: 15px 10px;
-    background: #fff;
+    background: #ff2121;
     border: none;
     border-radius: 0;
     margin-bottom: 40px;

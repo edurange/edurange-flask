@@ -1,0 +1,62 @@
+.exo-hamburger-outer {
+    background-color: var(--strong-green);
+    color: var(--deep-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.8em;
+    width: 2.8em;
+    min-height: 2.8em;
+    min-width: 2.8em;
+    max-height: 2.8em;
+    max-width: 2.8em;
+}
+
+.exo-hamburger-outer:hover {
+    background-color: var(--muted-green);
+}
+
+.exo-hamburger-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.exo-hamburger-inner img {
+    max-width: 50%;
+    max-height: 50%;
+    object-fit: contain;
+}
+
+.exo-nav-tabs {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-left: 1px solid rgb(107, 107, 107);
+    background-color: rgb(123, 138, 144);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--deep-purple);
+}
+
+.exo-nav-active-tab {
+    background-color: rgb(40, 191, 255);
+}
+
+.exo-nav-tab-label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.exo-nav-inactive-tab:hover {
+    color: rgb(40, 191, 255);
+    box-shadow: 0 8px 2px -2px rgb(40, 191, 255);
+    background-color: rgb(66, 66, 66);
+}

@@ -84,9 +84,53 @@ module.exports = [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ["@babel/preset-env"], cacheDirectory: true } },
     ],
   }
+},
 
-  },
-
+  // {
+  //   context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
+  //   entry: {
+  //     MainFrame: './MainFrame'
+  //   },
+  //   output: {
+  //     chunkFilename: "[id].js",
+  //     filename: "[name].bundle.js",
+  //     path: path.join(__dirname, "edurange_refactored", "static", "build"),
+  //     publicPath: "/static/build/",
+  //     library: "lib",
+  //     libraryTarget: "var"
+  //   },
+  //   resolve: {
+  //     extensions: [".js", ".jsx", ".css"]
+  //   },
+  //   plugins: [
+  //     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+  //   ],
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.?js(x)?$/,
+  //         use: {
+  //           loader: "babel-loader",
+  //           options: {
+  //             presets: ['@babel/preset-env', '@babel/preset-react']
+  //           }
+  //         },
+  //       },
+  //       {
+  //         test: /\.css$/,
+  //         use: [
+  //           {
+  //             loader: MiniCssExtractPlugin.loader,
+  //             options: {
+  //               hmr: debug,
+  //             },
+  //           },
+  //           'css-loader',
+  //         ],
+  //       }
+  //     ]
+  //   }
+  // },
   {
     context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
     entry: {
@@ -128,10 +172,15 @@ module.exports = [
             },
             'css-loader',
           ],
+        },
+        {
+          test: /\.(ttf|eot|svg|png|jpe?g|gif|ico)(\?.*)?$/i,
+          loader: `file-loader?name=[path][name].[ext]`
         }
       ]
     }
   },
+  
   {
     context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
     entry: {
