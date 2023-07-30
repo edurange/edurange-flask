@@ -15,7 +15,7 @@ import FrameFoot from './components/foot/FrameFoot';
 
 
 import './MainFrame.css';
-import SideNav2 from './components/sidenav/SideNav2';
+import SideNav from './components/sidenav/SideNav';
 
 export const MainFrameContext = React.createContext();
 
@@ -40,8 +40,6 @@ function MainFrame() {
     useEffect(() =>  {set_login_state(new_login_status);}, [new_login_status]); 
 ///////////////////////////////////////////////
 
-    // const conditionalRender = (() => { return login_state === 0 ? <LoginFromNav/> : <Welcome/>; })();
-
     return (
         <div id='edurange-appframe'>
     
@@ -54,14 +52,14 @@ function MainFrame() {
 
                 <FrameHead/>
                 <div id='edurange-content'>
-                    <SideNav2/>
+                    <SideNav/>
                     <div className='universal-content-outer'>
                         <div className='universal-content-mid'>
                             <section className={activeTab_state === 1 ? "active-page" : "hide"}> <Welcome/></section>
                             <section className={activeTab_state === 2 ? "active-page" : "hide"}> <DashBoard_sister/></section>
                             <section className={activeTab_state === 3 ? "active-page" : "hide"}> <Scenarios_sister/></section>
                             <section className={activeTab_state === 4 ? "active-page" : "hide"}> <Notification/></section>
-                            <section className={activeTab_state === 5 ? "active-page" : "hide"}> <SideNav2/></section>
+                            <section className={activeTab_state === 5 ? "active-page" : "hide"}> <Documents/></section>
                             <section className={activeTab_state === 6 ? "active-page" : "hide"}> <OptionsMenu/></section>
                             <section className={activeTab_state === 7 ? "active-page" : "hide"}> <LoginFromNav/></section>
                         </div>

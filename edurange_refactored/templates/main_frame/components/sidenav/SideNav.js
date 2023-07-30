@@ -2,21 +2,36 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import hamburger from '../../../../static/build/img/hamburger.png';
+import { NavData_logged_in, NavData_logged_out } from './NavData';
+
+import './SideNav.css'
 
 function SideNav () {
 
-return (
+    const   {   activeTab_state,  update_tabChoice_status,
+                login_state 
+            } = useContext(MainFrameContext);
 
-    <div>
-        <div className="exo-sidenav-frame">
-            <a href="#" className="exo-dropnav-item">Item1</a>
-            <a href="#" className="exo-dropnav-item">Item2</a>
-            <a href="#" className="exo-dropnav-item">Item3</a>
-            <a href="#" className="exo-dropnav-item">Item4</a>
-            <a href="#" className="exo-dropnav-item">Item5</a>
+    const navDataToShow = login_state === 1 ? NavData_logged_in : NavData_logged_out;
+
+    return (
+
+        <div className='exo-sidenav-frame'>
+            <div className="exo-sidenav-body">
+                <div className='exo-sidenav-menu'>
+                    <ul className='exo-sidenav-list'>
+                        {navDataToShow.map((val,key) => {
+                            return (
+                                <li key={key} className='exo-sidenav-row' onClick={()=> {update_tabChoice_status(val.link)}}> 
+                                    <div id='exo-sidenav-icon'>{val.icon}</div>
+                                    <div id='exo-sidenav-title'>{val.title}</div>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>    
+            </div>
         </div>
-    </div>
-)    
+    );
 
-} export default SideNav;
+}; export default SideNav;
