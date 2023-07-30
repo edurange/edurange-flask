@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
 import { NavData_logged_in, NavData_logged_out } from './NavData';
 
-import './SideNav.css'
+import './../../MainFrame.css'
 
 function SideNav () {
 

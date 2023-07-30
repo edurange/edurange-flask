@@ -1,5 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
 .hide {
     display: none;
 }
@@ -11,6 +54,7 @@
     height: 100%;
     width: 100%;
 }
+
 #edurange-appframe {
     font-family: 'Share Tech Mono', monospace;
     background-color: var(--deep-purple);
@@ -21,6 +65,7 @@
     left: 0;
     right: 0;
 }
+
 .universal-content-outer {
     width: 100%;
     height: 100%;
@@ -28,8 +73,9 @@
     justify-items: center;
     justify-content: center;
     align-items: center;
-    
+
 }
+
 .universal-content-mid {
     width: 100%;
     height: 100%;
@@ -37,24 +83,29 @@
     justify-items: center;
     justify-content: center;
     align-items: center;
-    padding:3% 6%;
     overflow: inherit;
+    padding-left: 0;
 }
-.universal-content-inner{
+
+.universal-content-inner {
     width: 100%;
     height: 100%;
     overflow: inherit;
 }
+
 .login-container {
     display: block;
 }
-body,html {
+
+body, html {
     height: 100%;
     background-color: rgb(0, 0, 0);
 }
-.light-text{
+
+.light-text {
     color: white;
 }
+
 #edurange-navhead {
     background-color: chartreuse;
     display: flex;
@@ -67,7 +118,8 @@ body,html {
     height: 2.8em;
     z-index: -1000;
 }
-#edurange-content{
+
+#edurange-content {
     position: absolute;
     top: 2.8em;
     left: 0;
@@ -75,7 +127,8 @@ body,html {
     bottom: 2em;
     overflow-y: auto;
 }
-#edurange-navfoot{
+
+#edurange-navfoot {
     flex: 5;
     background-color: rgb(123, 138, 144);
     position: fixed;
@@ -86,4 +139,86 @@ body,html {
     color: var(--deep-purple);
     text-align: center;
     z-index: 1000;
+}
+
+.exo-sidenav-frame {
+    position: fixed;
+    left: calc(-1*(14%));
+    width: calc(2.8em + 14%);
+    max-width: calc(2.8em + 14%);
+    background-color: #2F4050;
+    z-index: 1000;
+    transition: left 0.3s ease;
+}
+
+.exo-sidenav-frame.show_sidenav {
+    left: 0;
+}
+
+.exo-sidenav-frame.show~.universal-content-mid {
+    padding-left: 300px;
+}
+
+.exo-sidenav-body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: fit-content;
+
+}
+
+.exo-sidenav-menu {
+    height: auto;
+    width: 100%;
+    height: fit-content;
+}
+
+.exo-sidenav-list {
+    padding: 0;
+    width: 100%;
+}
+
+.exo-sidenav-list .exo-sidenav-row {
+    flex-direction: row-reverse; /* Reverse the order */
+    width: 100%;
+    height: 3em;
+    background-color: #48627b;
+    list-style-type: none;
+    margin: 0%;
+    display: flex;
+    /* flex-direction: row; */
+    color: white;
+    justify-content: center;
+    align-items: center;
+
+}
+.exo-sidenav-frame.show_sidenav .exo-sidenav-row {
+    flex-direction: row; /* Restore the original order */
+}
+.exo-sidenav-row #exo-sidenav-icon {
+    display: grid;
+    place-items:initial;
+    flex: 0;
+    padding-right: 1em;
+}
+.exo-sidenav-row.show_sidenav #exo-sidenav-icon{
+    padding-left: 0;
+    flex: 14%
+}
+.exo-sidenav-frame.show_sidenav .exo-sidenav-row #exo-sidenav-icon {
+    flex: 2.8em; /* Restore the original size */
+    padding-left: 1em;
+
+}
+.exo-sidenav-frame.show_sidenav .exo-sidenav-row #exo-sidenav-title {
+    visibility: visible; /* Show the title */
+}
+.exo-sidenav-row #exo-sidenav-title {
+    flex: 70%;
+    visibility: hidden;
+}
+
+.exo-sidenav-list .exo-sidenav-row:hover {
+    cursor: pointer;
+    background-color: #3b5165;
 }
