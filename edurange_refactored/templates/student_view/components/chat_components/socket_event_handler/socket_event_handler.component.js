@@ -5,7 +5,7 @@ import "./socket_event_handler.styles.css"
 import MessageWindow from '../message_window/message_window.component';"../message_window/message_window.component";
 import EntryField from "../entry_field/entry_field.component";
 
-const socket = io(`${window.location.hostname}:3001`, {autoconnect: false});
+const socket = io(`${window.location.hostname}:3001`, {autoconnect: false}, {transports: ["websocket"]});
 console.log(window.location.hostname)
 // Testing Only:
 // catch-all listener for development phase
@@ -26,6 +26,9 @@ function SocketEventHandler(props) {
 
         socket.auth = { uid, sid, is_instructor};
         socket.connect();
+        return () => {
+          socket.disconnect();
+        };
     }, [props.uid, props.sid]); // This hook is called when props passed. 
 
 

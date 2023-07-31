@@ -34,7 +34,7 @@ class Chatbox extends React.Component {
                     </div>
 
                     <div className="socket_container" >
-                        <SocketEventHandler uid={this.props.uid} sid={this.props.sid} chat_opened={this.state.open}/>
+                        <GroupClientSocket uid={this.props.uid} sid={this.props.sid} chat_opened={this.state.open}/>
                     </div>
                 </div>
             </OutsideAlerter>

@@ -24,10 +24,17 @@ const io = new Server(server, {
     cors: {
         // Websocket might be using ports 443 and 80 for traffic
         // To Do: Figure out appropriate Cors Rules
-        origin: ["http://localhost:5000", "*", "http://localhost:443", "http://localhost:80","http://localhost:3001","https://localhost:5000", "https://localhost:443", "https://localhost:80","https://localhost:3001",],
-        transports: ['websocket', 'polling'],
+        origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
+        "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
+        "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
+        "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
+        "https://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
+        "http://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
+      ],
+    transports: ["websocket"],
     },
-    allowEIO3: true,
+    //allowEIO3: true,
+    //allowEIO4: true,
 });
 
 // Middleware. This is information passed during the initial handshake. 
