@@ -3,6 +3,7 @@
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
 import { NavData_logged_in, NavData_logged_out } from './NavData';
+import { Link } from 'react-router-dom';
 
 import './../../MainFrame.css'
 
@@ -22,10 +23,16 @@ function SideNav () {
                     <ul className='exo-sidenav-list'>
                         {navDataToShow.map((val,key) => {
                             return (
-                                <li key={key} className='exo-sidenav-row' onClick={()=> {update_tabChoice_status(val.link)}}> 
-                                    <div id='exo-sidenav-icon'>{val.icon}</div>
-                                    <div id='exo-sidenav-title'>{val.title}</div>
-                                </li>
+                                // <li key={key} className='exo-sidenav-row' onClick={()=> {update_tabChoice_status(val.link)}}> 
+                                //     <div id='exo-sidenav-icon'>{val.icon}</div>
+                                //     <div id='exo-sidenav-title'>{val.title}</div>
+                                // </li>
+                                <Link to={val.path} key={key}> {/* Use the Link component here */}
+                                    <li className='exo-sidenav-row' onClick={() => { update_tabChoice_status(val.link) }}>
+                                        <div id='exo-sidenav-icon'>{val.icon}</div>
+                                        <div id='exo-sidenav-title'>{val.title}</div>
+                                    </li>
+                                </Link>
                             );
                         })}
                     </ul>

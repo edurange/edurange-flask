@@ -2,7 +2,6 @@
 
 import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Welcome from './Welcome';
 import DashBoard_sister from './DashBoard_sister';
 import Scenarios_sister from './Scenarios_sister';
@@ -40,37 +39,37 @@ function MainFrame() {
     useEffect(() =>  {set_login_state(new_login_status);}, [new_login_status]); 
 ///////////////////////////////////////////////
 
-return (
-    <div id='edurange-appframe'>
-      <MainFrameContext.Provider value={{
+    return (
+        <div id='edurange-appframe'>
+    
+            <MainFrameContext.Provider value={{
                 activeTab_state,    update_tabChoice_status,
                 login_state,        update_login_status,
                 csrfToken_state,    update_csrfToken_status,
                 connectIP, connectPort, loginRoute
             }}>
-        <FrameHead />
-        <Router>
-          <div id='edurange-content'>
-            <SideNav />
-            <div className='universal-content-outer'>
-              <div className='universal-content-mid'>
-                <Routes>
-                  <Route path="/home_sister/" element={<Welcome />} />
-                  <Route path="/home_sister/dashboard" element={<DashBoard_sister />} />
-                  <Route path="/home_sister/scenarios" element={<Scenarios_sister />} />
-                  <Route path="/home_sister/notifications" element={<Notification />} />
-                  <Route path="/home_sister/about" element={<Documents />} />
-                  <Route path="/home_sister/options" element={<OptionsMenu />} />
-                  <Route path="/home_sister/login" element={<LoginFromNav />} />
-                </Routes>
-              </div>
-            </div>
-          </div>
-        </Router>
-        <FrameFoot />
-      </MainFrameContext.Provider>
-    </div>
-  );
+
+                <FrameHead/>
+                <div id='edurange-content'>
+                    <SideNav/>
+                    <div className='universal-content-outer'>
+                        <div className='universal-content-mid'>
+                            <section className={activeTab_state === 1 ? "active-page" : "hide"}> <Welcome/></section>
+                            <section className={activeTab_state === 2 ? "active-page" : "hide"}> <DashBoard_sister/></section>
+                            <section className={activeTab_state === 3 ? "active-page" : "hide"}> <Scenarios_sister/></section>
+                            <section className={activeTab_state === 4 ? "active-page" : "hide"}> <Notification/></section>
+                            <section className={activeTab_state === 5 ? "active-page" : "hide"}> <Documents/></section>
+                            <section className={activeTab_state === 6 ? "active-page" : "hide"}> <OptionsMenu/></section>
+                            <section className={activeTab_state === 7 ? "active-page" : "hide"}> <LoginFromNav/></section>
+                        </div>
+                    </div>
+                </div>
+                <FrameFoot/>
+
+            </MainFrameContext.Provider>
+
+        </div>
+    );
 }
 
 export default MainFrame;
