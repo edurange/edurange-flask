@@ -2,7 +2,8 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import { NavData_logged_in, NavData_logged_out } from './NavData';
+import { NavData_admin_logged_in, NavData_instructor_logged_in, NavData_student_logged_in, NavData_logged_out } from './NavData';
+
 import { Link } from 'react-router-dom';
 
 import './../../MainFrame.css'
@@ -13,7 +14,7 @@ function SideNav () {
                 login_state 
             } = useContext(MainFrameContext);
 
-    const navDataToShow = login_state === 1 ? NavData_logged_in : NavData_logged_out;
+    const navDataToShow = login_state === 1 ? NavData_admin_logged_in : NavData_logged_out; // needs update for permissions!  ***************
 
     return (
 
@@ -23,11 +24,7 @@ function SideNav () {
                     <ul className='exo-sidenav-list'>
                         {navDataToShow.map((val,key) => {
                             return (
-                                // <li key={key} className='exo-sidenav-row' onClick={()=> {update_tabChoice_status(val.link)}}> 
-                                //     <div id='exo-sidenav-icon'>{val.icon}</div>
-                                //     <div id='exo-sidenav-title'>{val.title}</div>
-                                // </li>
-                                <Link to={val.path} key={key}> {/* Use the Link component here */}
+                                <Link to={val.path} key={key}>
                                     <li className='exo-sidenav-row' onClick={() => { update_tabChoice_status(val.link) }}>
                                         <div id='exo-sidenav-icon'>{val.icon}</div>
                                         <div id='exo-sidenav-title'>{val.title}</div>

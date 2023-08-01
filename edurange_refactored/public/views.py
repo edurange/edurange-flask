@@ -54,22 +54,22 @@ def home():
             flash_errors(form)
     return render_template("public/home.html", form=form)
 
-@blueprint.route("/home_sister/", defaults={'path': ''}, methods=["GET"])
-@blueprint.route("/home_sister/<path:path>")
-def catch_all(path):
-    form = LoginForm(request.form)
-    return render_template("public/home_sister.html", form=form)
+# @blueprint.route("/home_sister/", defaults={'path': ''}, methods=["GET"])
+# @blueprint.route("/home_sister/<path:path>")
+# def catch_all(path):
+#     form = LoginForm(request.form)
+#     return render_template("public/home_sister.html", form=form)
 
-@blueprint.route("/home_sister/login", methods=["POST"])
-def login_sister():
-    form = LoginFormSister()
-    if form.validate_on_submit():
-        login_user(form.user)
-        return jsonify({
-            "login_success": "true",
-        })
-    else:
-        return jsonify({"login_success": "false"})
+# @blueprint.route("/home_sister/login", methods=["POST"])
+# def login_sister():
+#     form = LoginFormSister()
+#     if form.validate_on_submit():
+#         login_user(form.user)
+#         return jsonify({
+#             "login_success": "true",
+#         })
+#     else:
+#         return jsonify({"login_success": "false"})
 
 @blueprint.route("/reset/", methods=["GET", "POST"])
 def reset_password():

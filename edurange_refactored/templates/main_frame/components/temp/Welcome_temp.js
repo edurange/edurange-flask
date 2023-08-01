@@ -1,5 +1,5 @@
 import React from 'react';
-function Welcome() {
+function Welcome_temp() {
     return (
         <div className='universal-page-parent'>
             <div className='universal-page-child'>
@@ -9,4 +9,4 @@ function Welcome() {
     );
 };
 
-export default Welcome;
+export default Welcome_temp;

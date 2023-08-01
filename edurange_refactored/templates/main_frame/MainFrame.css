@@ -73,7 +73,6 @@ table {
     justify-items: center;
     justify-content: center;
     align-items: center;
-
 }
 
 .universal-content-mid {
@@ -84,13 +83,18 @@ table {
     justify-content: center;
     align-items: center;
     overflow: inherit;
-    padding-left: 0;
+    /* padding-left: 0; */
+    padding: 3% 5%;
 }
 
 .universal-content-inner {
     width: 100%;
     height: 100%;
     overflow: inherit;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 .login-container {

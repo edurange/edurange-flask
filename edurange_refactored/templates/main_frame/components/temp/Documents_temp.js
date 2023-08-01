@@ -2,7 +2,7 @@ import React from 'react';
 
 // import pic5 from '/static/build/img/5.jpeg'
 
-const Documents = () => {
+const Documents_temp = () => {
     return (
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
@@ -18,4 +18,4 @@ const Documents = () => {
     );
 }
 
-export default Documents;
+export default Documents_temp;

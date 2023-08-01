@@ -1,84 +1,84 @@
 
-import React from "react";
 import { edurange_icons } from "../../edurange_icons";
 
-export const NavData_logged_in = [
-    
-
-{
+const home_nav = {
     title: "Home",
-    icon: edurange_icons.home_icon, 
-    link: 1,
+    icon: edurange_icons.home_icon,
     path: `/home_sister`
-},
-{
-    title: "Dashboard",
-    icon: edurange_icons.computer_monitor_icon, 
-    link: 2,
-    path: `/dashboard/`
-},
-{
-    title: "Scenarios",
-    icon: edurange_icons.chess_knight_icon, 
-    link: 3,
-    path: `/dashboard/scenarios`
-},
-{
-    title: "Notifications",
-    icon: edurange_icons.bell_icon, 
-    link: 4,
-    path: `/dashboard/notification_history`
-},
-{
-    title: "Docs",
-    icon: edurange_icons.book_icon, 
-    link: 5,
-    path: `/home_sister/about`
-},
-{
-    title: "Options",
-    icon: edurange_icons.gear_icon, 
-    link: 6,
-    path: `/home_sister/options`
-},
-{
-    title: "Account",
-    icon: edurange_icons.user_icon, 
-    link: 7,
-    path: `/dashboard/accountmgmt`
-},
-{
-    title: "Logout",
-    icon: edurange_icons.user_x_icon, 
-    link: 7,
-    path: `/home_sister/logout`
-},
-]
-
-export const NavData_logged_out = [
-
-    {
-        title: "Home",
-        icon: edurange_icons.home_icon, 
-        link: 1,
-        path: `/home_sister`
-    },
-    {
-        title: "Docs",
-        icon: edurange_icons.book_icon, 
-        link: 5,
-        path: `/home_sister/about`
-    },
-    {
-        title: "Options",
-        icon: edurange_icons.gear_icon, 
-        link: 6,
-        path: `/home_sister/options`
-    },
-    {
-        title: "Login",
-        icon: edurange_icons.user_check_icon, 
-        link: 7,
+}
+const login_nav = {
+    title: "Login",
+        icon: edurange_icons.user_check_icon,
         path: `/home_sister/login`
-    },
-    ]
+}
+const logout_nav = {
+    title: "Logout",
+    icon: edurange_icons.user_x_icon,
+    path: `/home_sister/logout`
+}
+const options_nav = {
+    title: "Options",
+    icon: edurange_icons.gear_icon,
+    path: `/home_sister/options`
+}
+const admin_nav = {
+    title: "Admin",
+    icon: edurange_icons.gear_icon,
+    path: `/home_sister/admin`
+}
+const instructor_nav = {
+    title: "Instructor",
+    icon: edurange_icons.gear_icon,
+    path: `/home_sister/instructor`
+}
+const info_home_nav = {
+    title: "Info",
+    icon: edurange_icons.book_icon,
+    path: `/home_sister/info`
+}
+const docs_nav = {
+    title: "Docs",
+    icon: edurange_icons.book_icon,
+    path: `/home_sister/info/docs`
+}
+const about_nav = {
+    title: "About",
+    icon: edurange_icons.book_icon,
+    path: `/home_sister/info/about`
+}
+const contact_nav = {
+    title: "Contact",
+    icon: edurange_icons.book_icon,
+    path: `/home_sister/info/contact`
+}
+const dashboard_nav = {
+    title: "Dashboard",
+    icon: edurange_icons.home_icon,
+    path: `/home_sister/dashboard`
+}
+const account_nav = {
+    title: "Account",
+    icon: edurange_icons.user_icon,
+    path: `/dashboard/account`
+}
+const scenarios_nav = {
+    title: "Scenarios",
+    icon: edurange_icons.chess_knight_icon,
+    path: `/dashboard/scenarios`
+}
+const notifications_nav = {
+    title: "Notifications",
+    icon: edurange_icons.bell_icon,
+    path: `/dashboard/notifications`
+}
+
+
+
+
+
+
+export const NavData_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
+export const NavData_instructor_logged_in = [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
+export const NavData_admin_logged_in =      [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
+export const NavData_logged_out =           [ home_nav, docs_nav, options_nav, login_nav]
+
