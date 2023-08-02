@@ -747,16 +747,16 @@ if __name__ == "__main__":
             ttylog_lines_from_file = ttylog_lines_from_file[break_counter:]
             break
 
-    # read a list of possible node names for the current scenario and populate
-    # the list of known_prompts, and construct a regex pattern for possible hosts
+    # populate the list of known_prompts, and construct a regex pattern for possible hosts
     nodes = []
     try:
-        file = open('/usr/local/src/ttylog/host_names.txt', 'r')
+        file = open('/usr/local/src/ttylog/host_names', 'r')
         nodes = file.read().splitlines()
+        file.close()
         host_pattern = '(' + '|'.join(n for n in nodes) + ')'
         for node in nodes:
             known_prompts.append(user_initial_prompt.split('@')[0] + '@' + node)
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         print('File /usr/local/src/ttylog/host_names.txt not found', file=sys.stderr)
         known_prompts.append(user_initial_prompt)
 

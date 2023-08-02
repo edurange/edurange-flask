@@ -215,6 +215,12 @@ def start(self, sid):
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
         name = "".join(e for e in name if e.isalnum())
+        # there is probably a better way to identify the starting container
+        # this assumes that scenario.json lists the start as first element
+        c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(scenario.description.lower(), logger)
+        gateway = name + "_gateway"
+        start = name + "_" + c_names[0]
+        start_ip = scenario.subnet.split('.')[0] + '.0.0.2'
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             NotifyCapture("Failed to start scenario " + name + ": Invalid Status")
@@ -225,6 +231,7 @@ def start(self, sid):
             os.chdir("./data/tmp/" + name)
             os.system("terraform apply network")
             os.system("terraform apply --auto-approve")
+            os.system("../../../shell_scripts/scenario_movekeys {} {} {}".format(gateway, start, start_ip))
             os.chdir("../../..")
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
