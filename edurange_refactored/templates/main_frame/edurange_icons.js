@@ -1,19 +1,38 @@
 
 import React from "react";
 
-import { FaHouseChimney } from "react-icons/fa6";
-import { FaAddressCard } from "react-icons/fa6";
-import { FaFileLines } from "react-icons/fa6";
-import { FaChessKnight } from "react-icons/fa6";
-import { FaDisplay } from "react-icons/fa6";
-import { FaCircleUser } from "react-icons/fa6";
-import { FaUserXmark } from "react-icons/fa6";
-import { FaUserCheck } from "react-icons/fa6";
-import { FaGear } from "react-icons/fa6";
-import { FaBell } from "react-icons/fa6";
-import { FaBook } from "react-icons/fa6";
-import { FaUniversalAccess } from "react-icons/fa6";
-import { FaCircleQuestion } from "react-icons/fa6";
+// import Icon Object references from the react-icon "font-awesome 6" library
+// (import and use the variables from this file, rather than importing icons directly.  
+// if you need more icons, import/add them from here!  https://react-icons.github.io/react-icons/
+
+// usage example in React:  
+//
+//  import { edurange_icons } from "path/to/this/file/edurange_icons.js";
+//  
+//  MyComponent(){
+//
+//    return (
+//      <div>{edurange_icons.bell_icon}</div>
+//    );
+//  } 
+//  export default MyComponent;
+
+import FaHouseChimney,
+ FaAddressCard,
+ FaFileLines,
+ FaChessKnight,
+ FaDisplay,
+ FaCircleUser,
+ FaUserXmark,
+ FaUserCheck,
+ FaGear,
+ FaBell,
+ FaBook,
+ FaUniversalAccess,
+ FaCircleQuestion,
+ FaBars from "react-icons/fa6";
+
+// assign to specific vars to use appwide. (use these instead of importing directly)
 
 export const edurange_icons = {
     accessibility_icon : <FaUniversalAccess/>,
@@ -28,9 +47,11 @@ export const edurange_icons = {
     user_x_icon : <FaUserXmark />,
     user_check_icon : <FaUserCheck />,
     computer_monitor_icon : <FaDisplay />,
-    questionmark_icon : <FaCircleQuestion/>
+    questionmark_icon : <FaCircleQuestion/>,
+    hamburger_icon: <FaBars/>
 }
 
+// good icons for web development that are not yet in use
 
 // import { FaBell } from "react-icons/fa6";
 // import { FaChartBar } from "react-icons/fa6";
@@ -62,4 +83,3 @@ export const edurange_icons = {
 // const carbon_copy_icon = <FontAwesomeIcon icon={FaRegCopy} />
 // const toggle_off_icon = <FontAwesomeIcon icon={FaToggleOff} />
 // const toggle_on_icon = <FontAwesomeIcon icon={FaToggleOn} />
-// const chess_knight_icon = <FontAwesomeIcon icon={FaChessKnight} />

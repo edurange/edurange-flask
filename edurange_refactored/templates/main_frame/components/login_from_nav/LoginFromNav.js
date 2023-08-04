@@ -1,5 +1,5 @@
 "use strict";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
 
 function LoginFromNav(props) {
@@ -40,7 +40,6 @@ function LoginFromNav(props) {
           'csrf_token_sister': csrfToken_state
         },
         body: JSON.stringify({
-          // csrf_token_sister: csrfToken_state,
           username: username_input,
           password: password_input,
         }),
@@ -59,21 +58,6 @@ function LoginFromNav(props) {
 
     } catch (error) {console.error('Error:', error);}
   }
-
-  // useEffect(() => {
-  // const fetch_csrfToken = async () => {
-  //   try {
-  //     const metaTag = document.querySelector('meta[name="csrf-token_sister"]');
-  //     if (metaTag) {
-  //       const token = metaTag.content;
-  //       update_csrfToken_status(token);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching CSRF token:', error);
-  //   }
-  // };
-  // fetch_csrfToken();
-  // }, []);
 
   const handleSubmit = event => {
     event.preventDefault();

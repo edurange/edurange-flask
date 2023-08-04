@@ -23,15 +23,15 @@ skeleton_key_dict = {}
 
 def get_user(input_name):
 
-    user = User.query.filter_by(username=input_name, email="dummy@dum.com").first()
+    user = User.query.filter_by(username=input_name).first()
 
     user_info = {
         # "id": user.id,
         "username": user.username,
         "email": user.email,
-        "pwh": user.password.decode('utf-8'),
+        # "pwh": user.password.decode('utf-8'),
         "created_at": user.created_at,
-        "is_active": user.active,
+        "active": user.active,
         "is_admin": user.is_admin,
         "is_instructor": user.is_instructor,
     }
@@ -48,7 +48,7 @@ def get_users():
             "email": user.email,
             # "pwh": user.password.decode('utf-8'),
             "created_at": user.created_at,
-            "is_active": user.active,
+            "active": user.active,
             "is_admin": user.is_admin,
             "is_instructor": user.is_instructor,
         }
@@ -133,6 +133,7 @@ def get_student_responses():
 def get_instructor_data():
 
     instructor_all_info = [ 
+    get_user('exo'),
     get_users(),
     get_groups(),
     get_group_users(),

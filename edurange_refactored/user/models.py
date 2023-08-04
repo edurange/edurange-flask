@@ -79,8 +79,7 @@ class User(UserMixin, SurrogatePK, Model):
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return f"<User({self.username!r})>, <Email({self.email!r})>"
-
+        return f"<User({self.username!r})>"
 
 
 class Scenarios(UserMixin, SurrogatePK, Model):

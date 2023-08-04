@@ -4,6 +4,8 @@ import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+
+// ultimately a better import system might be needed but this is okay for now.
 import Welcome_temp from './components/temp/Welcome_temp';
 import DashBoard_temp from './components/temp/Dashboard_temp'
 import Scenarios_temp from './components/temp/Scenarios_temp';
@@ -21,6 +23,7 @@ import Contact_temp from './components/temp/Contact_temp';
 import Account_temp from './components/temp/Account_temp';
 import SideNav from './components/sidenav/SideNav';
 
+import '../../../assets/css/pucs.css'
 import './MainFrame.css';
 
 export const MainFrameContext = React.createContext();
@@ -50,17 +53,15 @@ function MainFrame() {
 useEffect(() => {
   const fetch_csrfToken = async () => {
     try {
-      const metaTag = document.querySelector('meta[name="csrf-token_sister"]');
-      if (metaTag) {
-        const token = metaTag.content;
-        update_csrfToken_status(token);
-      }
+      const metaTag = document.querySelector('meta[name="csrf_token_sister"]');
+      if (metaTag) {set_csrfToken_state (metaTag.content);}
     } catch (error) {
       console.error('Error fetching CSRF token:', error);
     }
   };
   fetch_csrfToken();
-  }, []);
+}, []);
+// console.log(csrfToken_state);   // for debug
 
 return (
     <div id='edurange-appframe'>

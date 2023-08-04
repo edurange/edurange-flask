@@ -1,10 +1,64 @@
 
 
-/* 'pucs.css' serves as the development 'style.css' file.  
-To switch between them, do so in the webpack.config.js
+/* 'pucs.css' serves as the NEW 'style.css' file.  
+currently, both are being packed up by webpack and applied,
+but pucs.css is loaded afterward, so any styles that are defined from here out will be from a fresh start.
+
 Both styles.css and pucs.css represent the Project Unified Custom Styling (PUCS) 
 which sits above bootstrap styles and below component specific styling in terms
-of style hierarchy (and reverse in terms of evaluation order).*/
+of style hierarchy (and reverse in terms of evaluation order), however, only styles.css applies to legacy,
+and only pucs.css applies to edurange-react*/
+
+/*  RESET ALL PREDEFINED STYLING FROM BOOTSTRAP, FONTAWESOME, AND LEGACY EDURANGE
+    http://meyerweb.com/eric/tools/css/reset/ 
+    v2.0 | 20110126
+    License: none (public domain)
+
+START STYLE RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* END STYLE RESET */
 
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 

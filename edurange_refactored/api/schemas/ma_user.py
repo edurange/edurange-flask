@@ -4,7 +4,7 @@ from edurange_refactored.extensions import db, bcrypt
 from flask_marshmallow import Marshmallow
 from marshmallow import validate, ValidationError, validates_schema
 from marshmallow.fields import String
-from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses, Notification
+from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Notification
 
 ma = Marshmallow()
 db_ses = db.session

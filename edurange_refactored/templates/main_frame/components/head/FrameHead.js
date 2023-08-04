@@ -1,10 +1,10 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import hamburger from '../../../../static/build/img/hamburger.png';
 import './FrameHead.css';
 import { FaBell } from "react-icons/fa6";
-import SideNav from '../sidenav/SideNav';
+import { edurange_icons } from "../../edurange_icons";
+
 
 const FrameHead = () => {
   
@@ -23,7 +23,8 @@ const FrameHead = () => {
         <div id='edurange-navhead'>
             <div className='exo-hamburger-outer' onClick={toggle_sideNav}>
                 <div className='exo-hamburger-inner'>
-                    <img src={hamburger} alt="[X]"/>
+                    {edurange_icons.hamburger_icon}
+                    {/* X */}
                 </div>
             </div>
             <div uid={0} onClick={() => update_tabChoice_status(1)} className={activeTab_state === 1 ? "exo-nav-tabs exo-nav-active-tab" : "exo-nav-tabs exo-nav-inactive-tab"}><div className='exo-nav-tab-label'>HOME</div></div>

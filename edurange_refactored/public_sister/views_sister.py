@@ -36,8 +36,8 @@ blueprint_routing_sister = Blueprint('public_sister', __name__)
 
 @blueprint_routing_sister.before_request
 def ensure_csrf_token():
-    if 'csrf_token' not in session:
-        session['csrf_token'] = secrets.token_hex(32)
+    if 'csrf_token_sister' not in session:
+        session['csrf_token_sister'] = secrets.token_hex(32)
 
 @blueprint_routing_sister.errorhandler(ValidationError)
 def handle_marshmallow_error(err):
@@ -48,14 +48,16 @@ def login_sister():
 
     data = request.json
     csrf_token_client = request.headers.get('csrf_token_sister')
-    csrf_token_server = session['csrf_token']
+    csrf_token_server = session['csrf_token_sister']
 
     if csrf_token_client != csrf_token_server:
-        return jsonify({"error": f"invalid request"}), 400
+        return jsonify({"error": f"invalid request (client {csrf_token_client} vs server {csrf_token_server})"}), 400 ########## DEV ONLY!!! 
+        # return jsonify({"error": f"invalid request"}), 400 ######### Use in production!!
 
     validation_schema = LoginSchema()  # instantiate validation schema
     validated_data = validation_schema.load(data) # runs data through validator, returns error if bad
     validated_user = validation_schema.dump(vars(User.query.filter_by(username=validated_data["username"]).first()) ) # retrieve schema-designated data and format it
+    del validated_user["password"]
     return jsonify(validated_user)
 
 
@@ -63,8 +65,7 @@ def login_sister():
 @blueprint_routing_sister.route("/home_sister/<path:path>")
 def catch_all(path):
     form = LoginForm(request.form)
-    return render_template("public/home_sister.html",csrf_token_sister=session['csrf_token'])
+    return render_template("public/home_sister.html",csrf_token_sister=session['csrf_token_sister'])
 
-@blueprint_routing_sister.route("/home_sister/skeletonkey", methods=['GET', 'POST'])
-def skeletonkey():
-    return jsonify( views_sister_dbTester.get_instructor_data() )
+@blueprint_routing_sister.route("/home_sister/skeletonkey", methods=['GET', 'POST']) ########## DEV ONLY!!! 
+def skeletonkey(): return jsonify( views_sister_dbTester.get_instructor_data() ) ########## DEV ONLY!!! 

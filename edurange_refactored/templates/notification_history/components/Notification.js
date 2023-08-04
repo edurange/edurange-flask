@@ -1,10 +1,12 @@
-import { createRoot } from 'react-dom/client';
 import React from 'react';
 import './Notification.css';
 
-// import './unified.css';
-
 function Notification(props) {
+
+    // the follow code was written to generate the data with the legacy system
+    // and has been disabled temporarily.
+    // 
+    // soon, the notifications array from the db will be handed down from the react entrypoint parent.
 
     // const notifs_obj = JSON.parse(props.notifications, (key, value) => {
     //     if (typeof value === 'number') {return value.toString();}
@@ -39,6 +41,7 @@ function Notification(props) {
                                     <th className='pucs-table-cell'>Message</th>
                                 </tr>
                             </thead>
+                            Temporarily Disabled for Dev
                             {/* <tbody>{notifications_built}</tbody> */}
                         </table>
                     </div>
@@ -49,6 +52,3 @@ function Notification(props) {
 };
 
 export default Notification;
-// const e = document.getElementById('notification-page');
-// const root = createRoot(e);
-// root.render(<Notification notifications={e.attributes.notifications.value} />);

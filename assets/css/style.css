@@ -21,6 +21,61 @@ textarea {
   resize: vertical;
 } */
 
+/*  RESET ALL PREDEFINED STYLING FROM BOOTSTRAP AND FONTAWESOME
+    http://meyerweb.com/eric/tools/css/reset/ 
+    v2.0 | 20110126
+    License: none (public domain)
+
+START STYLE RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* END STYLE RESET */
+
+
+
+/* BEGIN CUSTOM STYLES */
+
 .container-narrow{
   margin: 0 auto;
   max-width: 700px;
@@ -44,9 +99,8 @@ textarea {
   font-size: 16px;
   height: auto;
   padding: 10px;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
+
 }
 
 /* footer */
@@ -92,11 +146,6 @@ input[type="radio"], input[type="checkbox"]:not(.option) {
   transform: scale(2);
 }
 
-
-table, th, td {
-  /* border: 1px solid black; */
-  /* border-radius: 15%; */
-}
 th {
   cursor: pointer;
 }
@@ -170,10 +219,6 @@ th.fit button:focus {
   padding: 5px 5px;
 }
 
-.edu-navbar-left-elt {
-  /*padding-left: 15px;*/
-}
-
 #edu-navbar-right-elt {
   padding-right: 5px;
   align-items: center;
@@ -204,12 +249,9 @@ th.fit button:focus {
   }
 }
 
-
-
 a,
 a:hover,
 a:focus {
-    /*color: inherit;*/
     text-decoration: none;
     transition: all 0.3s;
 }
@@ -253,14 +295,12 @@ a:focus {
 }
 
 #edu-sidebar {
-	  /*padding-top: 175px;*/
     width: 250px;
     position: fixed;
     top: 47px;
     left: 0;
     height: 100vh;
     z-index: 999;
-    /*background: #7386D5;*/
 	  background: #509b79;
     color: #fff;
     transition: all 0.3s;
@@ -274,7 +314,6 @@ a:focus {
 #edu-sidebar .sidebar-header {
     padding: 20px;
     padding-top: 75px; /* how thick is the navbar? */
-    /*background: #6d7fcc;*/
 	 background: #2e9566;
 }
 
@@ -303,7 +342,6 @@ a:focus {
 #edu-sidebar ul li.active>a,
 a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example the account dropdown */
     color: #fff;
-    /*background: #6d7fcc;*/
 	background: #2e9566;
 }
 
@@ -314,18 +352,13 @@ a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example 
           color: inherit;
          }
 
-
-
-
 #sidebar {
-	  /*padding-top: 175px;*/
     width: 250px;
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     z-index: 999;
-    /*background: #7386D5;*/
 	  background: #509b79;
     color: #fff;
     transition: all 0.3s;
@@ -338,7 +371,6 @@ a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example 
 #sidebar .sidebar-header {
     padding: 20px;
     padding-top: 75px; /* how thick is the navbar? */
-    /*background: #6d7fcc;*/
 	 background: #2e9566;
 }
 
@@ -359,7 +391,6 @@ a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example 
 }
 
 #sidebar ul li a:hover {
-    /*color: #7386D5;*/
 	color: #509b79;
     background: #fff;
 }
@@ -367,7 +398,6 @@ a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example the account dropdown */
     color: #fff;
-    /*background: #6d7fcc;*/
 	background: #2e9566;
 }
 
@@ -377,10 +407,6 @@ a[aria-expanded="true"] { /* makes any a[aria-expanded=true] green, for example 
          a:focus {
           color: inherit;
          }
-
-.mCSB_container {
-  /*top: 75px;*/
-}
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -397,7 +423,6 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    /*background: #6d7fcc;*/
 	background: #2e9566;
 }
 
@@ -426,17 +451,13 @@ ul.sidebar-bottom-button a {
     margin-bottom: 5px;
 }
 
-
-
 a.download {
     background: #fff;
-    /*color: #7386D5;*/
 	color: #509b79;
 }
 
 a.article,
 a.article:hover {
-    /*background: #6d7fcc !important;*/
 	background: #2e9566 !important;
     color: #fff !important;
 }
@@ -457,8 +478,6 @@ a.article:hover {
 	min-width: 100%;
 	transform: translate(-50%, 0) !important;
 }
-
-
 
 #right-aligned-dropdown-menu {
 	left: auto;
@@ -565,11 +584,9 @@ a.article:hover {
   margin-left: 0;
   }
   #content {
-      /*width: calc(100% - 250px);*/
       width: 100%;
   }
   #content.active {
-      /*width: calc(100% - 250px);*/
       width: 100%;
   }
   #sidebarCollapse span {

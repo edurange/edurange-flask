@@ -13,124 +13,75 @@ const ProductionPlugins = [
   })
 ]
 
-
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 
 module.exports = [
-{
-  // configuration
-  context: __dirname,
-  entry: {
-    main_js: './assets/js/main',
-    main_css: [
-      // path.join(__dirname, 'node_modules', 'font-awesome', 'css', 'font-awesome.css'),
-      // path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
-      // path.join(__dirname, 'assets', 'fontawesome', 'css', 'all.css'),
-      // path.join(__dirname, 'assets', 'fontawesome', 'webfonts'),
-      path.join(__dirname, 'assets', 'css', 'style.css'),
-      path.join(__dirname, 'assets', 'css', 'pucs.css'),
-    ],
-  },
-  mode: debug,
-  output: {
-    chunkFilename: "[id].js",
-    filename: "[name].bundle.js",
-    path: path.join(__dirname, "edurange_refactored", "static", "build"),
-    publicPath: "/static/build/",
-    library: "lib",
-    libraryTarget: "var"
-  },
-  resolve: {
-    extensions: [".js", ".jsx", ".css"]
-  },
-  devtool: debug ? "eval-source-map" : false,
-  plugins: [
-    new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-    new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery" })
-  ].concat(debug ? [] : ProductionPlugins),
-  module: {
-    rules: [
-      {
-        test: /\.less$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: debug,
+  {
+    // configuration
+    context: __dirname,
+    entry: {
+      main_js: './assets/js/main',
+      main_css: [
+        path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
+        path.join(__dirname, 'assets', 'fontawesome', 'css', 'all.css'),
+        path.join(__dirname, 'assets', 'css', 'style.css'),
+        path.join(__dirname, 'assets', 'css', 'pucs.css'),
+      ],
+    },
+    mode: debug,
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    devtool: debug ? "eval-source-map" : false,
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+      new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery" })
+    ].concat(debug ? [] : ProductionPlugins),
+    module: {
+      rules: [
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
             },
-          },
-          'css-loader!less-loader',
-        ],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: debug,
+            'css-loader!less-loader',
+          ],
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
             },
-          },
-          'css-loader',
-        ],
-      },
-      { test: /\.html$/, loader: 'raw-loader' },
-      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
-      {
-        test: /\.(ttf|eot|svg|png|jpe?g|gif|ico)(\?.*)?$/i,
-        loader: `file-loader?context=${rootAssetPath}&name=[path][name].[ext]`
-      },
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ["@babel/preset-env"], cacheDirectory: true } },
-    ],
-  }
-},
-
-  // {
-  //   context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
-  //   entry: {
-  //     MainFrame: './MainFrame'
-  //   },
-  //   output: {
-  //     chunkFilename: "[id].js",
-  //     filename: "[name].bundle.js",
-  //     path: path.join(__dirname, "edurange_refactored", "static", "build"),
-  //     publicPath: "/static/build/",
-  //     library: "lib",
-  //     libraryTarget: "var"
-  //   },
-  //   resolve: {
-  //     extensions: [".js", ".jsx", ".css"]
-  //   },
-  //   plugins: [
-  //     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-  //   ],
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.?js(x)?$/,
-  //         use: {
-  //           loader: "babel-loader",
-  //           options: {
-  //             presets: ['@babel/preset-env', '@babel/preset-react']
-  //           }
-  //         },
-  //       },
-  //       {
-  //         test: /\.css$/,
-  //         use: [
-  //           {
-  //             loader: MiniCssExtractPlugin.loader,
-  //             options: {
-  //               hmr: debug,
-  //             },
-  //           },
-  //           'css-loader',
-  //         ],
-  //       }
-  //     ]
-  //   }
-  // },
+            'css-loader',
+          ],
+        },
+        { test: /\.html$/, loader: 'raw-loader' },
+        { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
+        {
+          test: /\.(ttf|eot|svg|png|jpe?g|gif|ico)(\?.*)?$/i,
+          loader: `file-loader?context=${rootAssetPath}&name=[path][name].[ext]`
+        },
+        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ["@babel/preset-env"], cacheDirectory: true } },
+      ],
+    }
+  },
   {
     context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
     entry: {
@@ -180,7 +131,7 @@ module.exports = [
       ]
     }
   },
-  
+
   {
     context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
     entry: {
@@ -193,8 +144,8 @@ module.exports = [
       publicPath: "/static/build/",
       library: "lib",
       libraryTarget: "var"
- 
- 
+
+
     },
     resolve: {
       extensions: [".js", ".jsx", ".css"]
@@ -228,62 +179,53 @@ module.exports = [
       ]
     }
   },
- 
- 
- 
-
-
-
   {
-   context: path.join(__dirname, '/edurange_refactored/templates/accountmgmt/components/'),
-   entry: {
-     accountmgmt: './accountmgmt',
-   },
-   output: {
-     chunkFilename: "[id].js",
-     filename: "[name].bundle.js",
-     path: path.join(__dirname, "edurange_refactored", "static", "build"),
-     publicPath: "/static/build/",
-     library: "lib",
-     libraryTarget: "var"
+    context: path.join(__dirname, '/edurange_refactored/templates/accountmgmt/components/'),
+    entry: {
+      accountmgmt: './accountmgmt',
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.?js(x)?$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
+        }
+      ]
+    }
+  },
+  {
 
-
-   },
-   resolve: {
-     extensions: [".js", ".jsx", ".css"]
-   },
-   plugins: [
-     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-   ],
-   module: {
-     rules: [
-       {
-         test: /\.?js(x)?$/,
-         use: {
-           loader: "babel-loader",
-           options: {
-             presets: ['@babel/preset-env', '@babel/preset-react']
-           }
-         },
-       },
-       {
-         test: /\.css$/,
-         use: [
-           {
-             loader: MiniCssExtractPlugin.loader,
-             options: {
-               hmr: debug,
-             },
-           },
-           'css-loader',
-         ],
-       }
-     ]
-   }
- },
-
-	{
-		
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
     entry: {
       student_scenario: './scenario/scenario.component',
@@ -305,7 +247,7 @@ module.exports = [
     ],
     module: {
       rules: [
-        { 
+        {
           test: /\.?js(x)?$/,
           use: {
             loader: "babel-loader",
@@ -351,7 +293,7 @@ module.exports = [
     ],
     module: {
       rules: [
-        { 
+        {
           test: /\.?js(x)?$/,
           use: {
             loader: "babel-loader",

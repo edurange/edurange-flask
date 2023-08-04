@@ -51,18 +51,15 @@ def register_jinja_filters(app):
     app.jinja_env.globals.update(Iid=Iid)
     app.jinja_env.globals.update(get_role=get_role)
 
-
 def register_extensions(app):
     """Register Flask extensions."""
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
 
-
 #####
-    # csrf_protect.init_app(app) # THIS APPWIDE CSRF DISABLED FOR DEV -> IMPLEMENTED ELSEWHERE IN ROUTES - WILL NEED TO FIX
+    csrf_protect.init_app(app) # THIS APPWIDE CSRF DISABLED FOR DEV -> IMPLEMENTED ELSEWHERE IN ROUTES - WILL NEED TO FIX
 #####
-
 
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
@@ -78,9 +75,6 @@ def register_blueprints(app):
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(tutorials.views.blueprint)
     app.register_blueprint(blueprint_routing_sister)
-    # app.register_blueprint(sister.views.blueprint)
-
-    # test
     app.register_blueprint(api.contents.blueprint)
 
     return None
