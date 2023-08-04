@@ -3,7 +3,6 @@
 import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
 import Welcome_temp from './components/temp/Welcome_temp';
 import DashBoard_temp from './components/temp/Dashboard_temp'
 import Scenarios_temp from './components/temp/Scenarios_temp';
@@ -19,9 +18,10 @@ import Instructor_temp from './components/temp/Instructor_temp';
 import About_temp from './components/temp/About_temp';
 import Contact_temp from './components/temp/Contact_temp';
 import Account_temp from './components/temp/Account_temp';
-import SideNav from './components/sidenav/SideNav';
+
 
 import './MainFrame.css';
+import SideNav from './components/sidenav/SideNav';
 
 export const MainFrameContext = React.createContext();
 
@@ -44,36 +44,20 @@ function MainFrame() {
     useEffect(() =>  {set_activeTab_state(new_tabChoice_status);}, [new_tabChoice_status]); 
     useEffect(() =>  {set_csrfToken_state(new_csrfToken_status);}, [new_csrfToken_status]); 
     useEffect(() =>  {set_login_state(new_login_status);}, [new_login_status]); 
-
-/////////////////////////////////////////////
-
-useEffect(() => {
-  const fetch_csrfToken = async () => {
-    try {
-      const metaTag = document.querySelector('meta[name="csrf-token_sister"]');
-      if (metaTag) {
-        const token = metaTag.content;
-        update_csrfToken_status(token);
-      }
-    } catch (error) {
-      console.error('Error fetching CSRF token:', error);
-    }
-  };
-  fetch_csrfToken();
-  }, []);
+///////////////////////////////////////////////
 
 return (
     <div id='edurange-appframe'>
       <MainFrameContext.Provider value={{
                 activeTab_state,    update_tabChoice_status,
                 login_state,        update_login_status,
-                csrfToken_state,
+                csrfToken_state,    update_csrfToken_status,
                 connectIP, connectPort, loginRoute
             }}>
         <FrameHead />
         <Router>
           <div id='edurange-content'>
-            <SideNav testData='test_1' />
+            <SideNav />
             <div className='universal-content-outer'>
               <div className='universal-content-mid'>
                 <Routes>

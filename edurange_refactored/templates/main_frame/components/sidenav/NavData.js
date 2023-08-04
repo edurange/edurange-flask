@@ -51,9 +51,14 @@ const contact_nav = {
     icon: edurange_icons.book_icon,
     path: `/home_sister/info/contact`
 }
+const help_nav = {
+    title: "Help",
+    icon: edurange_icons.questionmark_icon,
+    path: `/home_sister/info/help`
+}
 const dashboard_nav = {
     title: "Dashboard",
-    icon: edurange_icons.home_icon,
+    icon: edurange_icons.computer_monitor_icon,
     path: `/home_sister/dashboard`
 }
 const account_nav = {
@@ -77,8 +82,8 @@ const notifications_nav = {
 
 
 
-export const NavData_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
-export const NavData_instructor_logged_in = [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
-export const NavData_admin_logged_in =      [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav ]
-export const NavData_logged_out =           [ home_nav, docs_nav, options_nav, login_nav]
+export const NavData_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
+export const NavData_instructor_logged_in = [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
+export const NavData_admin_logged_in =      [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
+export const NavData_logged_out =           [ home_nav, docs_nav, options_nav, login_nav, help_nav ]
 

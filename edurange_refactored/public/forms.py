@@ -21,6 +21,8 @@ oct_data = helper.get_data()
 class LoginForm(FlaskForm):
     """Login form."""
 
+    # username = ""
+    # password = ""
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
 

@@ -7,7 +7,7 @@
         <link rel="stylesheet"type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet"type="text/css" href="/static/build/main_css.bundle.css"/>
         <link rel="stylesheet"type="text/css" href="/static/build/MainFrame.bundle.css"/>
-        <input type="hidden" id="csrf_token" value="{{ form.csrf_token._value() }}" />
+        <meta name="csrf-token_sister" content="{{ csrf_token_sister }}">
     </head>
     <body>    
         <div id="react-entry-id"></div><!-- this is the new initial React entrypoint and foundation component for Edurange, replacing layout.html  -->

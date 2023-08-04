@@ -37,9 +37,10 @@ function LoginFromNav(props) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken_state,
+          'csrf_token_sister': csrfToken_state
         },
         body: JSON.stringify({
+          // csrf_token_sister: csrfToken_state,
           username: username_input,
           password: password_input,
         }),
@@ -59,18 +60,20 @@ function LoginFromNav(props) {
     } catch (error) {console.error('Error:', error);}
   }
 
-  useEffect(() => {
-    const fetch_csrfToken = async () => {
-      try {
-        const csrfTokenInput = document.querySelector('#csrf_token');
-        if (csrfTokenInput) {
-          const token = csrfTokenInput.value;
-          update_csrfToken_status(token);
-        }
-      } catch (error) {console.error('Error fetching CSRF token:', error);}
-    };
-    fetch_csrfToken();
-  }, []);
+  // useEffect(() => {
+  // const fetch_csrfToken = async () => {
+  //   try {
+  //     const metaTag = document.querySelector('meta[name="csrf-token_sister"]');
+  //     if (metaTag) {
+  //       const token = metaTag.content;
+  //       update_csrfToken_status(token);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching CSRF token:', error);
+  //   }
+  // };
+  // fetch_csrfToken();
+  // }, []);
 
   const handleSubmit = event => {
     event.preventDefault();

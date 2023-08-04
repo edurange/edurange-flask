@@ -13,6 +13,7 @@ import { FaGear } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa6";
 import { FaBook } from "react-icons/fa6";
 import { FaUniversalAccess } from "react-icons/fa6";
+import { FaCircleQuestion } from "react-icons/fa6";
 
 export const edurange_icons = {
     accessibility_icon : <FaUniversalAccess/>,
@@ -27,6 +28,7 @@ export const edurange_icons = {
     user_x_icon : <FaUserXmark />,
     user_check_icon : <FaUserCheck />,
     computer_monitor_icon : <FaDisplay />,
+    questionmark_icon : <FaCircleQuestion/>
 }
 
 

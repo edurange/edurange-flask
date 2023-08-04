@@ -8,9 +8,9 @@ const Documents_temp = () => {
             <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
                     <a href='https://github.com/edurange/edurange-flask/wiki'>
-                        <h3>
+                        <h1>
                             Official eduRange wiki
-                        </h3>
+                        </h1>
                     </a>
                 </div>
             </div>

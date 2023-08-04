@@ -47,11 +47,10 @@ class GroupUsers(UserMixin, SurrogatePK, Model):
     group = relationship("StudentGroups", backref="group_users", viewonly=True)
 
 
-class User(UserMixin, SurrogatePK, Model):
+class User_sister(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = "users"
-
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     password = Column(db.LargeBinary(128), nullable=True)   # hashed

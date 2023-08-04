@@ -18,9 +18,8 @@ from jwt.exceptions import JWTDecodeError
 
 from edurange_refactored.extensions import bcrypt, login_manager
 from edurange_refactored.public.forms import (
-    LoginForm,LoginFormSister,
-    RequestResetPasswordForm,
-    RestorePasswordForm,
+    LoginForm, RequestResetPasswordForm,
+    RestorePasswordForm
 )
 from edurange_refactored.tasks import test_send_async_email
 from edurange_refactored.user.forms import RegisterForm
@@ -53,23 +52,6 @@ def home():
         else:
             flash_errors(form)
     return render_template("public/home.html", form=form)
-
-# @blueprint.route("/home_sister/", defaults={'path': ''}, methods=["GET"])
-# @blueprint.route("/home_sister/<path:path>")
-# def catch_all(path):
-#     form = LoginForm(request.form)
-#     return render_template("public/home_sister.html", form=form)
-
-# @blueprint.route("/home_sister/login", methods=["POST"])
-# def login_sister():
-#     form = LoginFormSister()
-#     if form.validate_on_submit():
-#         login_user(form.user)
-#         return jsonify({
-#             "login_success": "true",
-#         })
-#     else:
-#         return jsonify({"login_success": "false"})
 
 @blueprint.route("/reset/", methods=["GET", "POST"])
 def reset_password():
