@@ -17,20 +17,22 @@ import React from "react";
 //  } 
 //  export default MyComponent;
 
-import FaHouseChimney,
- FaAddressCard,
- FaFileLines,
- FaChessKnight,
- FaDisplay,
- FaCircleUser,
- FaUserXmark,
- FaUserCheck,
- FaGear,
- FaBell,
- FaBook,
- FaUniversalAccess,
- FaCircleQuestion,
- FaBars from "react-icons/fa6";
+import {
+    FaHouseChimney,
+    FaAddressCard,
+    FaFileLines,
+    FaChessKnight,
+    FaDisplay,
+    FaCircleUser,
+    FaUserXmark,
+    FaUserCheck,
+    FaGear,
+    FaBell,
+    FaBook,
+    FaUniversalAccess,
+    FaCircleQuestion,
+    FaBars
+} from "react-icons/fa6";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
 
