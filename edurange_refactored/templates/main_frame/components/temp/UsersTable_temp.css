@@ -1,0 +1,37 @@
+.users-table {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 5%;
+    /* margin: 0% 5%; */
+}
+
+.table-header, .table-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+    /* padding: 0.5rem; */
+}
+
+.table-header {
+    background-color: #a6a1ff;
+    font-weight: bold;
+    color: black;
+}
+
+.table-row {
+    background-color: #a6a1ff;
+    border: 1px solid #e0e0e0;
+    color: black;
+    border-radius: 5px;
+    /* transition: background-color 0.3s ease; */
+}
+
+.table-row:hover {
+    background-color: #a6a1ff;
+    color: black;
+}
+.temp-divvy{
+    padding:25% 10% 10% 10%;
+}

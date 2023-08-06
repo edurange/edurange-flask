@@ -44,11 +44,14 @@ function MainFrame() {
     const [login_state, set_login_state] = useState(0);
     const [new_login_status, update_login_status] = useState(0);
 
+    const [session_userInfo_state, set_session_userInfo_state] = useState({});
+    const [session_instructorData_state, set_session_instructorData_state] = useState({});
+
     useEffect(() =>  {set_activeTab_state(new_tabChoice_status);}, [new_tabChoice_status]); 
     useEffect(() =>  {set_csrfToken_state(new_csrfToken_status);}, [new_csrfToken_status]); 
     useEffect(() =>  {set_login_state(new_login_status);}, [new_login_status]); 
-
 /////////////////////////////////////////////
+
 
 useEffect(() => {
   const fetch_csrfToken = async () => {
@@ -69,7 +72,9 @@ return (
                 activeTab_state,    update_tabChoice_status,
                 login_state,        update_login_status,
                 csrfToken_state,
-                connectIP, connectPort, loginRoute
+                connectIP, connectPort, loginRoute,
+                session_userInfo_state, set_session_userInfo_state,
+                session_instructorData_state, set_session_instructorData_state,
             }}>
         <FrameHead />
         <Router>

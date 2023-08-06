@@ -58,7 +58,7 @@ def register_extensions(app):
     db.init_app(app)
 
 #####
-    csrf_protect.init_app(app) # THIS APPWIDE CSRF DISABLED FOR DEV -> IMPLEMENTED ELSEWHERE IN ROUTES - WILL NEED TO FIX
+    # csrf_protect.init_app(app) # THIS APPWIDE CSRF DISABLED FOR DEV -> IMPLEMENTED ELSEWHERE IN ROUTES - WILL NEED TO FIX
 #####
 
     login_manager.init_app(app)

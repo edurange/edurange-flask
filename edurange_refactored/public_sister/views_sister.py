@@ -23,8 +23,7 @@ from edurange_refactored.public.forms import LoginForm
 from edurange_refactored.utils import TokenHelper
 from edurange_refactored.extensions import db
 from marshmallow import ValidationError
-
-from edurange_refactored.public_sister import views_sister_dbTester
+import edurange_refactored.public_sister.views_sister_dbHelper as dbHelper
 
 jwtToken = JWT()
 helper = TokenHelper()
@@ -51,14 +50,19 @@ def login_sister():
     csrf_token_server = session['csrf_token_sister']
 
     if csrf_token_client != csrf_token_server:
-        return jsonify({"error": f"invalid request (client {csrf_token_client} vs server {csrf_token_server})"}), 400 ########## DEV ONLY!!! 
-        # return jsonify({"error": f"invalid request"}), 400 ######### Use in production!!
+        # return jsonify({"error": f"invalid request (client {csrf_token_client} vs server {csrf_token_server})"}), 400 ########## DEV ONLY!!! 
+        return jsonify({"error": f"invalid request"}), 400 ######### Use in production!!
 
     validation_schema = LoginSchema()  # instantiate validation schema
     validated_data = validation_schema.load(data) # runs data through validator, returns error if bad
     validated_user = validation_schema.dump(vars(User.query.filter_by(username=validated_data["username"]).first()) ) # retrieve schema-designated data and format it
     del validated_user["password"]
-    return jsonify(validated_user)
+    final_return = {
+        "user": validated_user,
+    }
+    if validated_user["is_instructor"]: final_return["instructor_data"] = dbHelper.get_instructor_data()
+
+    return jsonify(final_return)
 
 
 @blueprint_routing_sister.route("/home_sister/", defaults={'path': ''}, methods=["GET"])
@@ -68,4 +72,4 @@ def catch_all(path):
     return render_template("public/home_sister.html",csrf_token_sister=session['csrf_token_sister'])
 
 @blueprint_routing_sister.route("/home_sister/skeletonkey", methods=['GET', 'POST']) ########## DEV ONLY!!! 
-def skeletonkey(): return jsonify( views_sister_dbTester.get_instructor_data() ) ########## DEV ONLY!!! 
+def skeletonkey(): return jsonify( dbHelper.get_instructor_data() ) ########## DEV ONLY!!! 

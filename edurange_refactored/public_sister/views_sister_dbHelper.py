@@ -132,8 +132,7 @@ def get_student_responses():
 
 def get_instructor_data():
 
-    instructor_all_info = [ 
-    get_user('exo'),
+    instructor_all_info = [
     get_users(),
     get_groups(),
     get_group_users(),
