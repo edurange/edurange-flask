@@ -2,10 +2,8 @@
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
 import * as loginHelper from './loginHelper';
-import UsersTable_temp from '../temp/UsersTable_temp';
-import UserGroupTable_temp from '../temp/UserGroupsTable_temp';
-import ScenariosTable_temp from '../temp/ScenariosTable_temp';
-import '../temp/UsersTable_temp.css'
+
+import DevTable from '../temp/DevTable';
 
 
 function LoginFromNav(props) {
@@ -28,22 +26,7 @@ function LoginFromNav(props) {
 /////////////////////////////////////////////
 
   if (login_state === 1) {return (
-    <div className='universal-content-parent'>
-    <div className='universal-content-child'>
-      <div className='login-container'>
-
-        <h2 className='light-text'>YOU ARE ALREADY LOGGED IN!</h2>
-        <div className='temp-divvy'>
-          <UsersTable_temp/>
-          USERS
-          <UserGroupTable_temp/>
-          GROUPS
-          <ScenariosTable_temp/>
-          SCENARIOS
-        </div>
-      </div>
-    </div>
-  </div>
+    <DevTable/>
   )};
 
   
@@ -86,8 +69,8 @@ function LoginFromNav(props) {
   };
   return (
 
-    <div className='universal-content-parent'>
-      <div className='universal-content-child'>
+    <div className='universal-page-parent'>
+      <div className='universal-page-child'>
 
 
         <div className='login-container'>

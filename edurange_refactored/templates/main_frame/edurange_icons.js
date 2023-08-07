@@ -31,7 +31,9 @@ import {
     FaBook,
     FaUniversalAccess,
     FaCircleQuestion,
-    FaBars
+    FaBars,
+    FaTerminal,
+    FaEye
 } from "react-icons/fa6";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
@@ -50,7 +52,9 @@ export const edurange_icons = {
     user_check_icon : <FaUserCheck />,
     computer_monitor_icon : <FaDisplay />,
     questionmark_icon : <FaCircleQuestion/>,
-    hamburger_icon: <FaBars/>
+    hamburger_icon: <FaBars/>,
+    terminal_prompt_icon: <FaTerminal/>,
+    eye_icon: <FaEye/>
 }
 
 // good icons for web development that are not yet in use

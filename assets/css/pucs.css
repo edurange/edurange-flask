@@ -100,6 +100,11 @@ body, html {
     min-height: 100vh;
   }
 
+a {
+    text-decoration: none;
+}
+
+
 .pucs-text-primary{color: var(--deep-blue);}
 .pucs-text-primary-invert{color: var(--muted-blue);}
 .pucs-text-alt{color: var(--deep-orange);}

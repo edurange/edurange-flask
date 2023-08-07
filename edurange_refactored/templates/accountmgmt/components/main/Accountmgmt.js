@@ -1,7 +1,8 @@
 import "./Accountmgmt.css";
 import {createRoot} from 'react-dom/client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ChangeEmailForm from "../email-form/ChangeEmailForm";
+import { MainFrameContext } from "../../../main_frame/MainFrame";
 
 // main component
 function Accountmgmt(props) {
@@ -15,7 +16,10 @@ function Accountmgmt(props) {
     activeTab_state,  update_tabChoice_status,
     login_state,      update_login_status,
     csrfToken_state,  update_csrfToken_status,
-    connectIP, connectPort, loginRoute, userInfo_state
+    connectIP, connectPort, loginRoute, session_userInfo_state,
+    session_instructorInfo_state,
+} = useContext(MainFrameContext);
+
 
 
 //     user={e.attributes.user.value}
@@ -24,7 +28,6 @@ function Accountmgmt(props) {
 //     is_admin={e.attributes.is_admin.value}
 //     is_instructor={e.attributes.is_instructor.value}
 
-  } = useContext(MainFrameContext);
 
 /////////////////////////////////////////////
 
@@ -32,8 +35,8 @@ function Accountmgmt(props) {
     
     // helper functions (in scope of Accountmgmt)
     function parseUserType (input) {
-        if (userInfo_state.role === "Administrator") {return <h2 className="mb-0 ml-auto pr-1">Admin</h2>;}
-        else if (userInfo_state.role === "Instructor") {return <h2 className="mb-0 ml-auto pr-1">Instructor</h2>;}
+        if (session_userInfo_state.role === "Administrator") {return <h2 className="mb-0 ml-auto pr-1">Admin</h2>;}
+        else if (session_userInfo_state.role === "Instructor") {return <h2 className="mb-0 ml-auto pr-1">Instructor</h2>;}
         else  {return <h2 className="mb-0 ml-auto pr-1">Student</h2>;};
     };
     // function parseGroupLabel(input) {
@@ -64,21 +67,21 @@ return (
                     <div className="col-sm-6">
                         <dl className="row mb-0">
                             <dt className="col-sm-3"> Name </dt>
-                            <dd className="col-sm-9"> {userInfo_state.username} </dd>
+                            <dd className="col-sm-9"> {session_userInfo_state.username} </dd>
                         </dl>
                         <dl className="row mb-0">
                             <dt className="col-sm-3"> Email </dt>
-                            <dd className="col-sm-9"> {userInfo_state.email} </dd>
+                            <dd className="col-sm-9"> {session_userInfo_state.email} </dd>
                         </dl>
                     </div>
                     <div className="col-sm-6">
                         {/* <dl className="row mb-0"> */}
-                            {/* <dt className="col-sm-4"> {userInfo_state.label} </dt> */}
+                            {/* <dt className="col-sm-4"> {session_userInfo_state.label} </dt> */}
                             {/* {tempLabel} */}
                         {/* </dl> */}
                         <dl className="row mb-0">
                             <dt className="col-sm-4"> Created At </dt>
-                            <dd className="col-sm-8"> {userInfo_state.created_at} </dd>
+                            <dd className="col-sm-8"> {session_userInfo_state.created_at} </dd>
                         </dl>
                     </div>
                 </div>

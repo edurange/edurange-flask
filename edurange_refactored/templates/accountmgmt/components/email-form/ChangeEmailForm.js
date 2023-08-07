@@ -54,7 +54,7 @@ function ChangeEmailForm() {
                 />
             </div>
 
-            <button type="submit" name="update" value="email" class="btn btn-dark">Submit</button>
+            <button type="submit" name="update" value="email" className="btn btn-dark">Submit</button>
         </form>
     );
 };

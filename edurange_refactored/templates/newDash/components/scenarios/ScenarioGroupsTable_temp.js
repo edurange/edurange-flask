@@ -1,6 +1,6 @@
 
 import React, {useContext} from 'react';
-import { MainFrameContext } from '../../MainFrame';
+import { MainFrameContext } from '../../../main_frame/MainFrame'
 //HOOKS//////////////////////////////////////
 
   // hook declarations:
@@ -9,11 +9,11 @@ import { MainFrameContext } from '../../MainFrame';
   
   /////////////////////////////////////////////
   
-  function UserGroupTable_temp() {
+  function ScenarioGroupsTable_temp() {
     
-    const { instructorData_state } = useContext(MainFrameContext);
+    const { session_instructorData_state } = useContext(MainFrameContext);
 
-    const tempData = instructorData_state.userGroups || [];  // assign to extant array OR empty (avoids undefined error)
+    const tempData = session_instructorData_state.userGroups || [];  // assign to extant array OR empty (avoids undefined error)
 
     return (
         <table>
@@ -44,4 +44,4 @@ import { MainFrameContext } from '../../MainFrame';
     );
 }
 
-export default UserGroupTable_temp;
+export default ScenarioGroupsTable_temp;

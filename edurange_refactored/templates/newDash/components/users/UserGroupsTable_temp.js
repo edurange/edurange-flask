@@ -1,6 +1,6 @@
 
 import React, {useContext} from 'react';
-import { MainFrameContext } from '../../MainFrame';
+import { MainFrameContext } from '../../../main_frame/MainFrame'
 
 import './UsersTable_temp.css';
 

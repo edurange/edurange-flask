@@ -1,17 +1,15 @@
 import React from 'react';
 
-// import pic6 from '/static/build/img/6.jpeg'
-
-const About_temp = () => {
+const About = () => {
     return (
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
-                    Come back later.  We're going to have so many amazing options, dude.
+                    About.js placeholder text
                 </div>
             </div>
         </div>
     );
 }
 
-export default About_temp;
+export default About;

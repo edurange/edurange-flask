@@ -1,17 +1,15 @@
 import React from 'react';
 
-// import pic6 from '/static/build/img/6.jpeg'
-
-const Info_temp = () => {
+const Contact = () => {
     return (
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
-                    Come back later.  We're going to have so many amazing options, dude.
+                    Contact.js placeholder text
                 </div>
             </div>
         </div>
     );
 }
 
-export default Info_temp;
+export default Contact;

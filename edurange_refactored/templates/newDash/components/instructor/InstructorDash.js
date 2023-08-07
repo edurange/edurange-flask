@@ -2,7 +2,7 @@ import React from 'react';
 
 // import pic6 from '/static/build/img/6.jpeg'
 
-const DashBoard_temp = () => {
+const InstructorDash = () => {
     return (
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
@@ -14,4 +14,4 @@ const DashBoard_temp = () => {
     );
 }
 
-export default DashBoard_temp;
+export default InstructorDash;

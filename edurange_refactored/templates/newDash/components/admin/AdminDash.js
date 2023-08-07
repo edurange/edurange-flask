@@ -2,7 +2,7 @@ import React from 'react';
 
 // import pic6 from '/static/build/img/6.jpeg'
 
-const Admin_temp = () => {
+const AdminDash = () => {
     return (
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
@@ -14,4 +14,4 @@ const Admin_temp = () => {
     );
 }
 
-export default Admin_temp;
+export default AdminDash;

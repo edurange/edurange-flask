@@ -1,7 +1,7 @@
 import React from 'react';
-import './Notification.css';
+import './Notifications.css';
 
-function Notification(props) {
+function Notifications(props) {
 
     // the follow code was written to generate the data with the legacy system
     // and has been disabled temporarily.
@@ -41,7 +41,7 @@ function Notification(props) {
                                     <th className='pucs-table-cell'>Message</th>
                                 </tr>
                             </thead>
-                            Temporarily Disabled for Dev
+                            {/* Temporarily Disabled for Dev */}
                             {/* <tbody>{notifications_built}</tbody> */}
                         </table>
                     </div>
@@ -51,4 +51,4 @@ function Notification(props) {
     );
 };
 
-export default Notification;
+export default Notifications;

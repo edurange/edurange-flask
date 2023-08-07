@@ -1,35 +1,36 @@
 "use strict";
 
-import {createRoot} from 'react-dom/client';
 import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 // ultimately a better import system might be needed but this is okay for now.
-import Welcome_temp from './components/temp/Welcome_temp';
-import DashBoard_temp from './components/temp/Dashboard_temp'
-import Scenarios_temp from './components/temp/Scenarios_temp';
-import Notification from '../notification_history/components/Notification';
-import Documents_temp from './components/temp/Documents_temp';
-import Options_temp from './components/temp/Options_temp';
+import OptionsMenu from '../options/OptionsMenu';
 import LoginFromNav from './components/login_from_nav/LoginFromNav';
 import FrameHead from './components/head/FrameHead';
 import FrameFoot from './components/foot/FrameFoot';
 import Logout_temp from './components/temp/Logout_temp';
-import Admin_temp from './components/temp/Admin_temp';
-import Instructor_temp from './components/temp/Instructor_temp';
-import About_temp from './components/temp/About_temp';
-import Contact_temp from './components/temp/Contact_temp';
-import Account_temp from './components/temp/Account_temp';
 import SideNav from './components/sidenav/SideNav';
-
+import NewDash from '../newDash/components/main/NewDash';
+import InfoHome from '../info/main/InfoHome';
 import '../../../assets/css/pucs.css'
 import './MainFrame.css';
+import EduRangeHome from './components/home/EduRangeHome';
+import DashHome from '../newDash/components/main/DashHome';
+import Scenarios from '../newDash/components/scenarios/Scenarios'
+import Accountmgmt from '../accountmgmt/components/main/Accountmgmt';
+import SSHconnect from './components/sshConnect/SSHconnect';
+import DevTable from './components/temp/DevTable';
+import AdminDash from '../newDash/components/admin/AdminDash';
+import InstructorDash from '../newDash/components/instructor/InstructorDash';
+import InfoRouter from '../info/main/InfoRouter';
+
+// import DevTable from './components/temp/DevTable';
 
 export const MainFrameContext = React.createContext();
 
 function MainFrame() {
-
+  
     const connectIP = "127.0.0.1";
     const connectPort = "8008";
     const loginRoute = "/home_sister/login"
@@ -76,32 +77,24 @@ return (
                 session_userInfo_state, set_session_userInfo_state,
                 session_instructorData_state, set_session_instructorData_state,
             }}>
-        <FrameHead />
-        <Router>
+          <FrameHead />
           <div id='edurange-content'>
             <SideNav testData='test_1' />
             <div className='universal-content-outer'>
               <div className='universal-content-mid'>
-                <Routes>
-                  <Route path="/home_sister/" element={<Welcome_temp />} />
-                  <Route path="/home_sister/login" element={<LoginFromNav />} />
-                  <Route path="/home_sister/logout" element={<Logout_temp />} />
-                  <Route path="/home_sister/options" element={<Options_temp />} />
-                  <Route path="/home_sister/admin" element={<Admin_temp />} />
-                  <Route path="/home_sister/instructor" element={<Instructor_temp />} />
-                  <Route path="/home_sister/info/" element={<About_temp />} />
-                  <Route path="/home_sister/info/about" element={<About_temp />} />
-                  <Route path="/home_sister/info/docs" element={<Documents_temp />} />
-                  <Route path="/home_sister/info/contact" element={<Contact_temp />} />
-                  <Route path="/home_sister/dashboard" element={<DashBoard_temp />} />
-                  <Route path="/home_sister/dashboard/account" element={<Account_temp />} />
-                  <Route path="/home_sister/dashboard/scenarios" element={<Scenarios_temp />} />
-                  <Route path="/home_sister/dashboard/notifications" element={<Notification />} />
-                </Routes>
+                <div className='universal-content-inner'>
+                  <Routes>
+                    <Route path="/home_sister/" element={<EduRangeHome />} />
+                    <Route path="/home_sister/login" element={<LoginFromNav />} />
+                    <Route path="/home_sister/logout" element={<Logout_temp />} />
+                    <Route path="/home_sister/options" element={<OptionsMenu />} />
+                    <Route path="/home_sister/dashboard/*" element={<NewDash />} />
+                    <Route path="/home_sister/info/*" element={<InfoRouter />} />
+                  </Routes>
+                </div>
               </div>
             </div>
           </div>
-        </Router>
         <FrameFoot />
       </MainFrameContext.Provider>
     </div>
@@ -109,9 +102,9 @@ return (
 }
 
 export default MainFrame;
-const entryPoint = document.getElementById('react-entry-id');
-const root=createRoot(entryPoint);
-root.render(<MainFrame/>);
+// const entryPoint = document.getElementById('react-entry-id');
+// const root=createRoot(entryPoint);
+// root.render(<MainFrame/>);
 
     // The state hooks in this component are paired so one can act as a trigger for the other w/ useEffect
     // which can help prevent some render problems and allow for increased flexibility in how to handle
@@ -131,3 +124,19 @@ root.render(<MainFrame/>);
     //   *set_* functions should never be passed as props or context
 
     //   please stick to this naming & usage convention for ease of readability and development
+
+    // <Route path="/home_sister/dashboard" element={<NewDash />} />
+    //                 <Route path="/home_sister/dashboard/account" element={<ActMan />} />
+    //                 <Route path="/home_sister/dashboard/scenarios" element={<Scenarios />} />
+    //                 <Route path="/home_sister/dashboard/notifications" element={<Notification />} />
+    //                 <Route path="/home_sister/dashboard/ssh" element={<SshConnect_temp />} />
+    //                 <Route path="/home_sister/devtable" element={<DevTable />} />
+
+
+       {/* <Route path="/home_sister/dashboard/scenarios/*" element={<Scenarios />} />
+                    <Route path="/home_sister/dashboard/account/*" element={<Accountmgmt />} />
+                    <Route path="/home_sister/dashboard/notifications" element={<Notification />} />
+                    <Route path="/home_sister/dashboard/ssh" element={<SSHconnect />} />
+                    <Route path="/home_sister/dashboard/devtable" element={<DevTable />} />
+                    <Route path="/home_sister/dashboard/admin/*" element={<AdminDash />} />
+                    <Route path="/home_sister/dashboard/instructor/*" element={<InstructorDash />} /> */}
