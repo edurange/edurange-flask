@@ -180,7 +180,7 @@ module.exports = [
       ]
     }
   },
-
+  // this was removed to stop an error but it may be required by the legacy app...
   // {
   //   context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
   //   entry: {

@@ -1,10 +1,8 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import * as loginHelper from './loginHelper';
-
-import DevTable from '../temp/DevTable';
-
+import { recombobulate } from '../../../../scripts/routing/loginHelper';
+import DashRouter from '../../../newDash/components/main/DashRouter';
 
 function LoginFromNav(props) {
   
@@ -26,7 +24,7 @@ function LoginFromNav(props) {
 /////////////////////////////////////////////
 
   if (login_state === 1) {return (
-    <DevTable/>
+    <DashRouter/>
   )};
 
   
@@ -51,7 +49,7 @@ function LoginFromNav(props) {
 
       if (data.user) {
         console.log("Login success!");
-        const betterData = loginHelper.recombobulate(data);
+        const betterData = recombobulate(data);
         console.log("recombobulated data from LoginFromNav",betterData)
         set_session_instructorData_state(betterData)
         update_login_status(1);

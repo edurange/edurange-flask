@@ -1,21 +1,7 @@
 
 import React from "react";
 
-// import Icon Object references from the react-icon "font-awesome 6" library
-// (import and use the variables from this file, rather than importing icons directly.  
-// if you need more icons, import/add them from here!  https://react-icons.github.io/react-icons/
-
-// usage example in React:  
-//
-//  import { edurange_icons } from "path/to/this/file/edurange_icons.js";
-//  
-//  MyComponent(){
-//
-//    return (
-//      <div>{edurange_icons.bell_icon}</div>
-//    );
-//  } 
-//  export default MyComponent;
+// see notes at end for convention / use / more icons
 
 import {
     FaHouseChimney,
@@ -33,7 +19,10 @@ import {
     FaCircleQuestion,
     FaBars,
     FaTerminal,
-    FaEye
+    FaEye,
+    FaPeopleGroup,
+    FaChess,
+    FaPerson
 } from "react-icons/fa6";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
@@ -47,19 +36,38 @@ export const edurange_icons = {
     book_icon : <FaBook/>,
     identity_icon : <FaAddressCard />,
     chess_knight_icon : <FaChessKnight />,
-    user_icon : <FaCircleUser />,
+    account_icon : <FaCircleUser />,
     user_x_icon : <FaUserXmark />,
     user_check_icon : <FaUserCheck />,
     computer_monitor_icon : <FaDisplay />,
     questionmark_icon : <FaCircleQuestion/>,
     hamburger_icon: <FaBars/>,
     terminal_prompt_icon: <FaTerminal/>,
-    eye_icon: <FaEye/>
+    eye_icon: <FaEye/>,
+    userGroup_icon: <FaPeopleGroup/>,
+    scenarioGroup_icon: <FaChess/>,
+    user_icon: <FaPerson/>,
 }
 
-// good icons for web development that are not yet in use
+// import Icon Object references from the react-icon "font-awesome 6" library
+// (import and use the variables from this file, rather than importing icons directly.  
+// if you need more icons, import/add them from here!  https://react-icons.github.io/react-icons/
 
-// import { FaBell } from "react-icons/fa6";
+// usage example in React:  
+//
+//  import { edurange_icons } from "path/to/this/file/edurange_icons.js";
+//  
+//  MyComponent(){
+//
+//    return (
+//      <div>{edurange_icons.bell_icon}</div>
+//    );
+//  } 
+//  export default MyComponent;
+
+
+// below are some good icons for web development that are not yet in use
+
 // import { FaChartBar } from "react-icons/fa6";
 // import { FaCheck } from "react-icons/fa6";
 // import { FaChevronRight } from "react-icons/fa6";
@@ -69,7 +77,6 @@ export const edurange_icons = {
 // import { FaClipboardCheck } from "react-icons/fa6";
 // import { FaCommentDots } from "react-icons/fa6";
 // import { FaFolderTree } from "react-icons/fa6";
-// import { FaGear } from "react-icons/fa6";
 // import { FaDungeon } from "react-icons/fa6";
 // import { FaPencil } from "react-icons/fa6";
 // import { FaRegCopy } from "react-icons/fa6";

@@ -1,14 +1,13 @@
 import React from 'react';
-import NewDash from '../main/NewDash';
-import ScenarioGroupsTable_temp from './ScenarioGroupsTable_temp';
+import ScenariosTable from './ScenariosTable';
 import '../main/NewDash.css'
-const Scenarios_temp = () => {
+function Scenarios () {
     return (
         <div>
-            <div className='dash-placard' >Scenarios</div>
-            <ScenarioGroupsTable_temp/>
+            <div className='newdash-content-placard' >Scenarios</div>
+            <ScenariosTable/>
         </div>
     );
 }
 
-export default Scenarios_temp;
+export default Scenarios;

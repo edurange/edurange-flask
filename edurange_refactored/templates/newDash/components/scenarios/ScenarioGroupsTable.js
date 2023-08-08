@@ -1,6 +1,8 @@
 
 import React, {useContext} from 'react';
 import { MainFrameContext } from '../../../main_frame/MainFrame'
+import '../main/NewDash.css'
+
 //HOOKS//////////////////////////////////////
 
   // hook declarations:
@@ -9,7 +11,7 @@ import { MainFrameContext } from '../../../main_frame/MainFrame'
   
   /////////////////////////////////////////////
   
-  function ScenarioGroupsTable_temp() {
+  function ScenarioGroupsTable() {
     
     const { session_instructorData_state } = useContext(MainFrameContext);
 
@@ -44,4 +46,4 @@ import { MainFrameContext } from '../../../main_frame/MainFrame'
     );
 }
 
-export default ScenarioGroupsTable_temp;
+export default ScenarioGroupsTable;

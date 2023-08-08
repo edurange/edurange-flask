@@ -2,7 +2,7 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import { SideNav_admin_logged_in, SideNav_instructor_logged_in, SideNav_student_logged_in, SideNav_logged_out } from '../../../../scripts/routing/NavData';
+import { SideNav_admin_logged_in, SideNav_instructor_logged_in, SideNav_student_logged_in, SideNav_logged_out } from '../../../../scripts/routing/NavItemsData';
 
 import { Link } from 'react-router-dom';
 
@@ -11,9 +11,7 @@ import './SideNav.css'
 
 function SideNav () {
 
-    const   {   activeTab_state,  update_tabChoice_status,
-                login_state 
-            } = useContext(MainFrameContext);
+    const   { login_state } = useContext(MainFrameContext);
 
     const navDataToShow = login_state === 1 ? SideNav_admin_logged_in : SideNav_logged_out; // needs update for permissions!  ***************
 
@@ -26,13 +24,13 @@ function SideNav () {
                         {navDataToShow.map((val,key) => {
                             return (
                                 <Link to={val.path} key={key}>
-                                <li className='exo-sidenav-row'>
+                                    <li className='exo-sidenav-row'>
                                         <div id='exo-sidenav-icon'>{val.icon}</div>
                                         <div id='exo-sidenav-title'>{val.title}</div>
                                     </li>
                                 </Link>
                             );
-                        })}
+                        })};
                     </ul>
                 </div>    
             </div>

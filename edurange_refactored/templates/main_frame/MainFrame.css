@@ -57,7 +57,7 @@ table {
 
 #edurange-appframe {
     font-family: 'Share Tech Mono', monospace;
-    background-color: rgb(14, 0, 33);
+    background-color: rgb(7, 0, 17);
     color: aliceblue;
     position: fixed;
     top: 0;
@@ -83,8 +83,6 @@ table {
     justify-items: center;
     justify-content: center;
     align-items: center;
-    overflow:auto  ;
-    
 }
 
 .universal-content-inner {
@@ -97,10 +95,7 @@ table {
     justify-content: center;
     align-items: center;
     display: flex;
-    padding: 2% 4%;
     contain: content;
-    overflow: auto;
-
 }
 
 
@@ -136,20 +131,10 @@ body, html {
 
 #edurange-content {
     position: absolute;
-    top: 5%;
-    left: 0;
-    right: 0;
-    bottom: 3.8%;
+    top: 6.3dvh;
+    left: 3.6dvh;
+    right: 3.5dvh;
+    bottom: 4.3dvh;
 }
 
-#edurange-navfoot {
-    background-color: rgb(123, 138, 144);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4%;
-    color: var(--deep-purple);
-    text-align: center;
-    z-index: 1000;
-}
+

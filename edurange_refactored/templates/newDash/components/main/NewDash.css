@@ -13,6 +13,15 @@
     border-color:  rgb(78, 11, 36);
     padding-left: 9px;
     contain: content;    
+    box-sizing: border-box;
+}
+.newdash-frame-carpet{
+    background-color: rgb(12, 20, 44);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    /* border-left: 1px solid rgb(7, 11, 24); */
 }
 .newdash-infopane-frame {
     display: flex;
@@ -22,33 +31,47 @@
     border-left: 1px solid rgb(112, 73, 19);
     border-color:  rgb(78, 11, 36);
     padding:4% 6%;
-    color: rgb(225, 243, 255);
+    color: var(--muted-aqua);
 }
 .newdash-infopane-content {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
+.newdash-content-placard{
+    font-size: 10dvh;
+    margin-bottom: 3%;
+    color: var(--muted-aqua);
+
+}
 .newdash-sidebar-frame{
     display: flex;
     width: 100%;
-    min-width: 20dvh;
+    min-width: 240px;
     max-width: 30dvh;
     background-color: rgb(12, 20, 44);
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
+    flex-direction: column;
+    padding: 1.5% 0.8%;
 }
 
-.dash-placard{
-    font-size: 10dvh;
-    margin-bottom: 5%;
-    
-}
-.newdash-frame-carpet{
-    background-color: rgb(12, 20, 44);
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
+.newdash-sidebar-row {
     display: flex;
-    /* border-left: 1px solid rgb(7, 11, 24); */
+    align-items: center; 
+    padding: 10px 15px;  
+    cursor: pointer;   
+    height: 28px;  
+    transition: background-color 0.2s;
+    color: var(--muted-aqua);
+}
+.newdash-sidebar-row:hover {
+    color: rgb(255, 207, 87);
+}
+
+.newdash-sidebar-row:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+#newdash-sidebar-icon {
+    margin-right: 10px;
 }

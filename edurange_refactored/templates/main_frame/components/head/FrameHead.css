@@ -5,9 +5,7 @@
     align-items: center;
     justify-content: center;
 }
-a{
-    color: rgb(255, 223, 154);
-}
+
 .exo-hamburger-outer:hover {
     background-color: var(--muted-green);
 }
@@ -19,11 +17,12 @@ a{
     top: 0;
     left: 0;
     right: 0;
-    height: 5.4dvh;
+    height: 6.3dvh;
     z-index: 1000;
-    justify-content:space-between ;
+    justify-content: right ;
 }
 #edurange-navhead-buttonbar{
+    margin-right: 40px;
     width:auto;
     display: flex;
     flex-direction: row;
@@ -32,15 +31,25 @@ a{
     align-items: center;
     align-content: center;
 }
+.topnav-icon-box:hover{
+    color: var(--muted-aqua);
+}
 .topnav-icon-box{
+    color: var(--muted-orange);
+
     margin-right: 4px;
 }
 .topnav-label-box{
+    color: rgb(228, 176, 91) ;
 }
+.topnav-label-box:hover{
+    color: var(--muted-aqua);
+}
+
 
 .topnav-button-panes{
     display:flex;
-    padding: 0 16px;
+    padding: 0 15px;
 }
 
 .exo-nav-tabs {

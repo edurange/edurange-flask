@@ -2,17 +2,17 @@
 import React, {useContext} from 'react';
 import { MainFrameContext } from '../../../main_frame/MainFrame'
 
-import './UsersTable_temp.css';
+import '../main/NewDash.css'
 
-function UserGroupsTable_temp() {
+function UserGroupsTable() {
 
   const { session_instructorData_state } = useContext(MainFrameContext);
 
     const tempData = session_instructorData_state.userGroups || [];  
 
     return (
-        <div className="users-table">
-            <div className="table-header">
+        <div className="newdash-datatable-frame">
+            <div className="newdash-datatable-header">
                 <div>Group Code</div>
                 <div>Group ID</div>
                 <div>is_hidden</div>
@@ -38,4 +38,4 @@ function UserGroupsTable_temp() {
     );
 }
 
-export default UserGroupsTable_temp;
+export default UserGroupsTable;

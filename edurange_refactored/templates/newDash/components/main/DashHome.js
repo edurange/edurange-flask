@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './NewDash.css';
 import { MainFrameContext } from '../../../main_frame/MainFrame';
-import { DashSideNav_admin_logged_in, DashSideNav_student_logged_in, DashSideNav_logged_out } from '../../../../scripts/routing/NavData';
+import { DashSideNav_admin_logged_in, DashSideNav_student_logged_in, DashSideNav_logged_out } from '../../../../scripts/ui/navItemsData';
 function DashHome (    ) {
 
-    const   {   activeTab_state,  update_tabChoice_status,
-        login_state 
-    } = useContext(MainFrameContext);
+    const   { login_state } = useContext(MainFrameContext);
     
     const dataType = Object.freeze({
         USERS: 0,

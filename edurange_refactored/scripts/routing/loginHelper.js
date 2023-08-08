@@ -1,9 +1,7 @@
 // import React from 'react'
 import { nanoid } from 'nanoid'
 
-
-
-// this process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
+// the 'recombobulate' process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
 // useful structure for the frontend, consisting of object arrays.
 
 // all of these classes are going in arrays where their ID aligns with their array index.
@@ -24,17 +22,30 @@ import { nanoid } from 'nanoid'
 
 // ?? operator will assign 'none' if value is nullish (undefined, null) but otherwise preserves falsy values like 0
 
+
+const formatDate = (inputDate) => {
+    const dateToprocess = new Date(inputDate) ?? new Date('Dec 25, -0001');
+    const month = String(dateToprocess.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(dateToprocess.getDate()).padStart(2, '0');
+    const year = String(dateToprocess.getFullYear()).slice(-2); // Get the last 2 characters of the year
+    const hours = String(dateToprocess.getHours()).padStart(2, '0');
+    const minutes = String(dateToprocess.getMinutes()).padStart(2, '0');
+    
+    return `${month}/${day}/${year} ${hours}:${minutes}`;
+};
+
+
 class UserShell {
     constructor(input = {}) {
-        this.username = input.username ?? 'none';
-        this.email = input.email ?? 'none';
-        this.created_at = input.created_at ?? 'none';
         this.id = input.id ?? 'none';
-        // this.id = input.id ? nanoid(8) : 'none'; // assigns unique (sessionlong) id if user exists, otherwise 'none'
+        this.username = input.username ?? 'none';
         this.role = (input.username) ? assignUserRole(input) : 'none'; // assigns role if user exists, otherwise 'none'
         this.is_active = input.active || false;
+        this.email = input.email ?? 'none';
+        // this.id = input.id ? nanoid(8) : 'none'; // assigns unique (sessionlong) id if user exists, otherwise 'none'
         this.userGroups_memberOf = input.userGroups_memberOf ?? [];
         this.scenarios_memberOf = input.scenarios_memberOf ?? [];
+        this.created_at = formatDate(input.created_at) ?? 'none';
     };
 };
 class UserGroupShell {
@@ -50,14 +61,14 @@ class UserGroupShell {
 };
 class ScenarioShell {
     constructor(input = {}) {
-        this.created_at = input.scenario_created_at ?? 'none';
-        this.description = input.scenario_description ?? 'none';
         this.id = input.scenario_id ?? 'none';
         this.name = input.scenario_name ?? 'none';
+        this.description = input.scenario_description ?? 'none';
         this.ownerID = input.scenario_owner_id ?? 'none';
         this.status = input.scenario_status ?? 'none';
         this.studentGroup_members = input.studentGroup_members ?? [];
         this.scenarioGroups_memberOf = input.scenarioGroups_memberOf ?? [];
+        this.created_at = formatDate(input.scenario_created_at) ?? 'none';
     };
 };
 class ScenarioGroupShell {

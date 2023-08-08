@@ -3,29 +3,17 @@
 import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-
-// ultimately a better import system might be needed but this is okay for now.
 import OptionsMenu from '../options/OptionsMenu';
 import LoginFromNav from './components/login_from_nav/LoginFromNav';
 import FrameHead from './components/head/FrameHead';
-import FrameFoot from './components/foot/FrameFoot';
 import Logout_temp from './components/temp/Logout_temp';
-import SideNav from './components/sidenav/SideNav';
-import NewDash from '../newDash/components/main/NewDash';
-import InfoHome from '../info/main/InfoHome';
+import DashRouter from '../newDash/components/main/DashRouter';
+import EduRangeHome from './components/home/EduRangeHome';
+import InfoRouter from '../info/main/InfoRouter';
+import FrameFoot from './components/foot/FrameFoot';
+
 import '../../../assets/css/pucs.css'
 import './MainFrame.css';
-import EduRangeHome from './components/home/EduRangeHome';
-import DashHome from '../newDash/components/main/DashHome';
-import Scenarios from '../newDash/components/scenarios/Scenarios'
-import Accountmgmt from '../accountmgmt/components/main/Accountmgmt';
-import SSHconnect from './components/sshConnect/SSHconnect';
-import DevTable from './components/temp/DevTable';
-import AdminDash from '../newDash/components/admin/AdminDash';
-import InstructorDash from '../newDash/components/instructor/InstructorDash';
-import InfoRouter from '../info/main/InfoRouter';
-
-// import DevTable from './components/temp/DevTable';
 
 export const MainFrameContext = React.createContext();
 
@@ -79,7 +67,6 @@ return (
             }}>
           <FrameHead />
           <div id='edurange-content'>
-            <SideNav testData='test_1' />
             <div className='universal-content-outer'>
               <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
@@ -88,7 +75,7 @@ return (
                     <Route path="/home_sister/login" element={<LoginFromNav />} />
                     <Route path="/home_sister/logout" element={<Logout_temp />} />
                     <Route path="/home_sister/options" element={<OptionsMenu />} />
-                    <Route path="/home_sister/dashboard/*" element={<NewDash />} />
+                    <Route path="/home_sister/dashboard/*" element={<DashRouter />} />
                     <Route path="/home_sister/info/*" element={<InfoRouter />} />
                   </Routes>
                 </div>
@@ -125,7 +112,7 @@ export default MainFrame;
 
     //   please stick to this naming & usage convention for ease of readability and development
 
-    // <Route path="/home_sister/dashboard" element={<NewDash />} />
+    // <Route path="/home_sister/dashboard" element={<DashRouter />} />
     //                 <Route path="/home_sister/dashboard/account" element={<ActMan />} />
     //                 <Route path="/home_sister/dashboard/scenarios" element={<Scenarios />} />
     //                 <Route path="/home_sister/dashboard/notifications" element={<Notification />} />
