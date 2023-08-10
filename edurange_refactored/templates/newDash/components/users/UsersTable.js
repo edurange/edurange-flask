@@ -3,7 +3,7 @@ import React, {useContext} from 'react';
 import { MainFrameContext } from '../../../main_frame/MainFrame';
 
 import '../main/NewDash.css'
-import '../main/Tables.css'
+import '../main/tables.css'
 
 function UsersTable() {
     const { session_instructorData_state } = useContext(MainFrameContext);

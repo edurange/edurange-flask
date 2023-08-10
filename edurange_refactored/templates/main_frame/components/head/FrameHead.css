@@ -35,12 +35,12 @@
     color: var(--muted-aqua);
 }
 .topnav-icon-box{
-    color: var(--muted-orange);
-
+    color: rgb(255, 209, 136) ;
+    font-size: 15px;
     margin-right: 4px;
 }
 .topnav-label-box{
-    color: rgb(228, 176, 91) ;
+    color: rgb(210, 160, 81) ;
 }
 .topnav-label-box:hover{
     color: var(--muted-aqua);

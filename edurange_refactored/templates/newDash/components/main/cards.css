@@ -1,0 +1,154 @@
+.newdash-itemcard-frame {
+    display: flex;
+    flex-direction: column;
+    color: var(--muted-orange);
+    background-color: rgb(12, 20, 44);
+    width: 100%;
+    border: 1px solid rgb(135, 96, 12);
+    border-top: 0;
+
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+
+    box-sizing: border-box;
+    contain: content;
+    height:100%;
+    position: relative;
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.newdash-itemcard-frame-carpet {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column ;
+    align-items: flex-start;
+    background-color: rgb(12, 20, 44);
+    box-sizing: border-box;
+    contain: content;
+    position: absolute;
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    top: 0;
+}
+.newdash-itemcard-placard-frame{
+    display: flex;
+    flex-direction: row;
+    min-height: 25%;
+    max-height: 35%;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 8%;
+    box-sizing: border-box;
+    contain: content;
+}
+.newdash-itemcard-placard-image-section {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+    width: 25%;
+    max-width: 25%;
+    min-width: 100px;
+    aspect-ratio: 1;
+    margin-right: 6%;
+}
+.newdash-itemcard-placard-meta-section {
+    
+    min-height: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+}
+.newdash-itemcard-placard-image {
+    
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 20dvh;
+    filter: invert(78%) sepia(39%) saturate(419%) hue-rotate(358deg) brightness(88%) contrast(87%);
+    box-sizing: border-box;
+    
+}
+
+.newdash-itemcard-placard-meta-frame {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: space-evenly;
+    justify-items: flex-start;
+}
+.newdash-itemcard-placard-meta-item {
+    
+    display: flex;
+    /* padding: 1% 0; */
+    line-height: 1.5;
+}
+
+.newdash-itemcard-placard-image-filter{
+    filter: invert(78%) sepia(39%) saturate(419%) hue-rotate(358deg) brightness(88%) contrast(87%);
+}
+.newdash-itemcard-content-frame{
+    contain: content;
+    max-width: 100%;
+    max-height: 69%;
+    height: 100%;
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:0; 
+    left: 0;
+    right: 0;
+    top: 32%;
+}
+.newdash-itemcard-content-main{
+    max-width: 100%;
+    display: flex;
+    width: 100%;
+    min-height: 0;
+    position: relative;
+    bottom: 0px; 
+    left: 0;
+    right: 0;
+    top: 0px;
+    line-height: 1.35;
+}
+.newdash-itemcard-content-main-text{
+    padding: 3% 4%;
+    background-color: rgba(0, 0, 0, 0.412);
+    overflow-y: auto;
+    color: rgba(255, 188, 80, 0.943);
+    width: 100%; 
+    max-height: 100%;
+    overflow: scroll ;
+    margin: 0 3%;
+    margin-bottom: 3%;
+    border-radius: 8px;
+    position: relative;
+    bottom: 0px; 
+    left: 0;
+    right: 0;
+    top: 0px;
+}
+.newdash-itemcard-content-footer {
+}
+

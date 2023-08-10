@@ -20,6 +20,7 @@ import UserGroups from '../users/UserGroups';
 import ScenarioGroups from '../scenarios/ScenarioGroups';
 import DashNotifications from '../notifications/components/DashNotifications';
 import Account from '../account/Account';
+import ScenarioCard from '../scenarios/ScenarioCard';
 
 function DashRouter (    ) {
 
@@ -63,6 +64,7 @@ function DashRouter (    ) {
                                 <Route path="/users" element={<Users />} />
                                 <Route path="/userGroups" element={<UserGroups />} />
                                 <Route path="/scenarios" element={<Scenarios />} />
+                                <Route path="/scenarios/:uid" element={<ScenarioCard />} />
                                 <Route path="/scenarioGroups" element={<ScenarioGroups />} />
                                 <Route path="/notifications" element={<DashNotifications />} />
                                 <Route path="/ssh" element={<SSHmodal />} />

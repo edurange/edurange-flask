@@ -35,20 +35,20 @@ const formatDate = (inputDate) => {
 };
 
 
-class UserShell {
+export class UserShell {
     constructor(input = {}) {
         this.id = input.id ?? 'none';
+        this.uid = nanoid(5);
         this.username = input.username ?? 'none';
         this.role = (input.username) ? assignUserRole(input) : 'none'; // assigns role if user exists, otherwise 'none'
         this.is_active = input.active || false;
         this.email = input.email ?? 'none';
-        // this.id = input.id ? nanoid(8) : 'none'; // assigns unique (sessionlong) id if user exists, otherwise 'none'
         this.userGroups_memberOf = input.userGroups_memberOf ?? [];
         this.scenarios_memberOf = input.scenarios_memberOf ?? [];
         this.created_at = formatDate(input.created_at) ?? 'none';
     };
 };
-class UserGroupShell {
+export class UserGroupShell {
     constructor(input = {}) {
         this.code = input.code ?? 'none';
         this.id = input.id ?? 'none';
@@ -59,9 +59,10 @@ class UserGroupShell {
         this.scenarios_memberOf = input.scenario_memberOf ?? [];
     };
 };
-class ScenarioShell {
+export class ScenarioShell {
     constructor(input = {}) {
         this.id = input.scenario_id ?? 'none';
+        this.uid = nanoid(5);
         this.name = input.scenario_name ?? 'none';
         this.description = input.scenario_description ?? 'none';
         this.ownerID = input.scenario_owner_id ?? 'none';
@@ -71,7 +72,7 @@ class ScenarioShell {
         this.created_at = formatDate(input.scenario_created_at) ?? 'none';
     };
 };
-class ScenarioGroupShell {
+export class ScenarioGroupShell {
     constructor(input = {}) {
         this.id = input.scenario_group_id ?? "none";
         this.studentGroup_members = input.studentGroup_members ?? [];

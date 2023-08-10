@@ -1,18 +1,9 @@
 .newdash-datatable-frame {
-    /* display: grid; */
     width: 100%;
-    border: 1px solid  rgb(78, 11, 36);
+    border: 1px solid  rgb(135, 96, 12);
     border-radius: 15px;
-    background-color: rgb(12, 20, 44);
+    box-sizing: border-box;
 
-}
-
-.table-row {
-    text-align: left;
-    white-space: nowrap;
-    display: flex;
-    /* align-items: center; */
-    grid-auto-flow: column;
 }
 
 .newdash-datatable-header {
@@ -22,11 +13,14 @@
     background-color: rgb(12, 20, 44);
     contain: content;
     border-radius: 15px 15px 0 0;
-    border-bottom: 1px solid  rgb(78, 11, 36);
-
+}
+.table-row {
+    text-align: left;
+    white-space: nowrap;
+    display: flex;
+    grid-auto-flow: column;
 }
 .table-cell-item{
-    /* min-width: 25px; */
     contain: content;
     width: 100%;
     overflow-x: auto;
@@ -35,39 +29,33 @@
 .table-user-id{
     max-width: 18px;
     min-width: 18px;
-    /* left:0; */
 }
 .table-username{
     max-width: 111px;
     min-width: 111px;
-    /* left: 55dvh; */
 }
 .table-email{
     max-width: 244px;
     min-width: 244px;
-    /* left: 80dvh; */
 }
 .table-created{
     max-width: 155px;
     min-width: 155px;
-    /* left: 80dvh; */
 }
 .table-role{
-    max-width: 122px;
-    min-width: 122px;
-    /* left: 80dvh; */
+    max-width: 155px;
+    min-width: 155px;
 }
 .table-owner{
     max-width: 60px;
     min-width: 60px;
-    /* left: 80dvh; */
 }
 .table-active{
     max-width: 60px;
     min-width: 60px;
-    /* left: 80dvh; */
 }
 .table-scenario-name{
     max-width: 180px;
     min-width: 180px;
 }
+
