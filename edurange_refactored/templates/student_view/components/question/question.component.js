@@ -120,6 +120,40 @@ class Question extends React.Component {
     );
   }
 
+  QuestionFormat=(theQuestion) => {
+    const question = theQuestion;
+    const inputFormStuff = 
+        (<div className='edu-answer-area'>
+        <form
+          // POST answer and GET new state
+          onSubmit={this.onSubmit}
+          // Don't show the autocomplete menu which collects answers for all questions
+          autoComplete="off"
+        >
+            <input
+              type='text'
+              className="edu-answer"
+              name='edu-answer'
+              id='name-input'
+              onChange={this.onChange}
+            />
+        </form>
+      </div>);
+  
+    if (question.Type != "Multi String") {
+      return inputFormStuff;
+    
+    
+    }
+  
+    else {
+      return question.Answers.map((answer, index) => (<div key={index}> {inputFormStuff}</div>));
+    }
+
+  }
+
+
+
   render() {
     const {question} = this.props;
     return (
@@ -129,22 +163,8 @@ class Question extends React.Component {
               {this.renderSubmissionState()}
             </div>
             <p className="edu-question-text">{question.Text}</p>
-            <div className='edu-answer-area'>
-            <form
-              // POST answer and GET new state
-              onSubmit={this.onSubmit}
-              // Don't show the autocomplete menu which collects answers for all questions
-              autoComplete="off"
-            >
-            <input
-              type='text'
-              className="edu-answer"
-              name='edu-answer'
-              id='name-input'
-              onChange={this.onChange}
-            />
-              <button className='edu-submit' type="submit"><i className="fa-solid fa-check" /></button>
-            </form>
+            <div className='edu-answer-area-holder'>
+              <p className='QuestionFormat'>{this.QuestionFormat(question)}</p>
             </div>
         </div>
     );
