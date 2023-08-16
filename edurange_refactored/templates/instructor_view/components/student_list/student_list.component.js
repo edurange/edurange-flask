@@ -4,6 +4,11 @@ import studentStates from '../../states.json';
 import { useState, useEffect } from "react";
 import Student from '../student/student.component';
 import usernameList from '../../../../../../edurange-flask/data/tmp/chatnames.json'
+
+import Button from 'react-bootstrap/Button';
+
+
+
 var i = 0;
 /* list of dummy events */
 function StudentList({returnSelectedUser, alert, liveStuds}) {
@@ -155,9 +160,12 @@ useEffect(()=>{
                   />
              )
          })}
+         <Button>uhhhhhhhhhhhh</Button>
      </div>
  )
 }
+
+
 export default StudentList;
 
 

@@ -168,7 +168,7 @@
                 "Points": 15
             },
             "Question6": {
-                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter each filename separately.",
+                "Text": "What are the filenames (with extensions) of the six image files hidden in your home directory that contain edurange in the name? Please enter them in order from first to last, seperated by spaces. For example: 'filename1.jpg filename2.gif filename3.png'",
                 "Type": "Multi String",
                 "Options": [],
                 "Answers": [

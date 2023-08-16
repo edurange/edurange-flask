@@ -142,10 +142,7 @@ class Question extends React.Component {
   
     if (question.Type != "Multi String") {
       return inputFormStuff;
-    
-    
     }
-  
     else {
       return question.Answers.map((answer, index) => (<div key={index}> {inputFormStuff}</div>));
     }
