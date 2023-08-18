@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+.e {
+    background-color: rgb(129, 220, 176);
+    border-radius: 50px;
+    border-width: 3px;
+    border-color: black;
+    color: black;
+    font-family: 'Barriecito', cursive;
+    font-size: 32px;
+}
+.m {
+    background-color: rgb(255, 245, 153);
+    border-radius: 50px;
+    border-width: 3px;
+    border-color: black;
+    color: rgb(0, 0, 0);
+    font-family: 'Barriecito', cursive;
+    font-size: 32px;
+}
+.h {
+    background-color: rgb(249, 97, 97);
+    border-radius: 50px;
+    border-width: 3px;
+    border-color: black;
+    color: black;
+    font-family: 'Barriecito', cursive;
+    font-size: 32px;
+}

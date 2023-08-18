@@ -120,6 +120,37 @@ class Question extends React.Component {
     );
   }
 
+<<<<<<< HEAD
+=======
+  QuestionFormat=(theQuestion) => {
+    const question = theQuestion;
+    const inputFormStuff = 
+        (<div className='edu-answer-area'>
+        <form
+          // POST answer and GET new state
+          onSubmit={this.onSubmit}
+          // Don't show the autocomplete menu which collects answers for all questions
+          autoComplete="off"
+        >
+            <input
+              type='text'
+              className="edu-answer"
+              name='edu-answer'
+              id='name-input'
+              onChange={this.onChange}
+            />
+        </form>
+      </div>);
+  
+    if (question.Type != "Multi String") {
+      return inputFormStuff;
+    }
+    else {
+      return question.Answers.map((answer, index) => (<div key={index}> {inputFormStuff}</div>));
+    }
+  }
+
+>>>>>>> b01f31d8 (Developed layout and interaction response utility for scenario name selection page.)
   render() {
     const {question} = this.props;
     return (
