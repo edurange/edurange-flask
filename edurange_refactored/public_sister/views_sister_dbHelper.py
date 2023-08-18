@@ -1,10 +1,11 @@
 
 
+
+# probably not for production, but useful for dev copypasta
+
 from flask import Blueprint
 
 from flask_login import current_user, login_required, login_user, logout_user
-from jwt import JWT
-from jwt.exceptions import JWTDecodeError
 from flask import (
     Blueprint,
     render_template,
@@ -26,10 +27,10 @@ def get_user(input_name):
     user = User.query.filter_by(username=input_name).first()
 
     user_info = {
-        # "id": user.id,
+        "id": user.id,
         "username": user.username,
         "email": user.email,
-        # "pwh": user.password.decode('utf-8'),
+        # "pwh": user.password.decode('utf-8'),  # this shouldn't be returned to the user
         "created_at": user.created_at,
         "active": user.active,
         "is_admin": user.is_admin,
@@ -46,7 +47,7 @@ def get_users():
             "id": user.id,
             "username": user.username,
             "email": user.email,
-            # "pwh": user.password.decode('utf-8'),
+            # "pwh": user.password.decode('utf-8'), # this shouldn't be returned to the user
             "created_at": user.created_at,
             "active": user.active,
             "is_admin": user.is_admin,

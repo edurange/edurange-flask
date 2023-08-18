@@ -5,7 +5,7 @@ from flask_marshmallow import Marshmallow
 from marshmallow import validate, ValidationError, validates_schema
 from marshmallow.fields import String
 from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Notification
-
+from flask_login import login_user
 ma = Marshmallow()
 db_ses = db.session
 
@@ -30,6 +30,8 @@ class LoginSchema(ma.SQLAlchemyAutoSchema):
 
         if not user or not bcrypt.check_password_hash(user.password, password_plain_input):
             raise ValidationError("invalid credentials")
+        # login_user(user)
+
     class Meta:
         model = User
-        exclude = ["id"]
+        # exclude = ["id"]

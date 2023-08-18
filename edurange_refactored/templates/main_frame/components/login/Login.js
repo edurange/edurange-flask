@@ -1,41 +1,39 @@
 "use strict";
 import React, { useContext } from 'react';
 import { MainFrameContext } from '../../MainFrame';
-import { recombobulate } from '../../../../scripts/routing/loginHelper';
-import DashRouter from '../../../newDash/components/main/DashRouter';
+import { useNavigate } from 'react-router-dom';
+import { buildInstructorData } from '../../../../modules/instructor/buildInstructorData';
 
-function LoginFromNav(props) {
+function Login(props) {
   
   
 //HOOKS//////////////////////////////////////
 
   // hook declarations:
-
   // imported props:
   const {
-    activeTab_state,  update_tabChoice_status,
-    login_state,      update_login_status,
-    csrfToken_state,  update_csrfToken_status,
     connectIP, connectPort, loginRoute,
-    session_userInfo_state, set_session_userInfo_state,
-    session_instructorData_state, set_session_instructorData_state
+    session_csrfToken_state,
+    set_session_userData_state,
+    set_session_instructorData_state,
+    jwt_authenticated_state,
+    set_jwt_authenticated_state
+    
   } = useContext(MainFrameContext);
 
-/////////////////////////////////////////////
+  const navigate = useNavigate();
 
-  if (login_state === 1) {return (
-    <DashRouter/>
-  )};
-
+  if (jwt_authenticated_state === true) {navigate('/home_sister/dashboard/');}
   
-  async function sendLoginRequest(username_input, password_input, csrfToken_state) {
+  async function sendLoginRequest(username_input, password_input) {
 
     try {
       const response = await fetch(`http://${connectIP}:${connectPort}${loginRoute}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'csrf_token_sister': csrfToken_state
+          'X-CSRFToken': session_csrfToken_state,
+
         },
         body: JSON.stringify({
           username: username_input,
@@ -45,14 +43,15 @@ function LoginFromNav(props) {
 
       if (!response.ok) { throw new Error('Login failure.'); }
 
-      const data = await response.json();
-
-      if (data.user) {
+      const responseData = await response.json();
+      if (responseData.user) {
         console.log("Login success!");
-        const betterData = recombobulate(data);
-        console.log("recombobulated data from LoginFromNav",betterData)
-        set_session_instructorData_state(betterData)
-        update_login_status(1);
+        console.log("Login responseData: ",responseData);
+        const tempInstructorData = buildInstructorData(responseData);
+        set_session_instructorData_state(tempInstructorData);
+        set_session_userData_state(responseData.user);
+        set_jwt_authenticated_state(true);
+        navigate('/home_sister/dashboard/');
       }
       else { console.log('Login failure.'); };
 
@@ -63,18 +62,22 @@ function LoginFromNav(props) {
     event.preventDefault();
     const usernameInput = event.target.elements.username.value;
     const passwordInput = event.target.elements.password.value;
-    sendLoginRequest(usernameInput, passwordInput, csrfToken_state);
-  };
+    sendLoginRequest(usernameInput, passwordInput);
+  };  
+
   return (
 
     <div className='universal-page-parent'>
       <div className='universal-page-child'>
 
 
-        <div className='login-container'>
+        <div className='pucs-login-container'>
 
-          <h2>Enter your credentials</h2>
-          <form onSubmit={handleSubmit}>
+          <div className='pucs-login-text-frame'>
+
+            <h2 className='pucs-login-text'>Enter your credentials</h2>
+          </div>
+            <form onSubmit={handleSubmit}>
 
             <div>
               <label htmlFor='username'>Username:</label>
@@ -98,4 +101,4 @@ function LoginFromNav(props) {
   );
 }
 
-export default LoginFromNav;
+export default Login;

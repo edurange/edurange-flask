@@ -21,4 +21,4 @@ root.render (
             <MainFrame/>
         </BrowserRouter>
     </React.StrictMode>
-)
+);

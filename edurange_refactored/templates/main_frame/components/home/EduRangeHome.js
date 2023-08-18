@@ -1,11 +1,7 @@
 "use strict";
-import React, { useContext } from 'react';
-import { MainFrameContext } from '../../MainFrame';
+import React from 'react';
 function EduRangeHome() {
   
-  const { session_userInfo_state, session_instructorData_state } = useContext(MainFrameContext);
-
-
     return (
         <div className='universal-page-parent'>
             <div className='universal-page-child'>

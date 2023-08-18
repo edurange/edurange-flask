@@ -1,13 +1,27 @@
 
 
-/* 'pucs.css' serves as the NEW 'style.css' file.  
-currently, both are being packed up by webpack and applied,
-but pucs.css is loaded afterward, so any styles that are defined from here out will be from a fresh start.
+/*  THIS 'pucs.css' REPLACES/CANCELS-OUT/SUPERCEDES './style.css' AND IS THE NEW UNIVERSAL 
+    STYLE SHEET FOR EDURANGE-REACT (see `./README.txt`) 
+    
+    To ease future development, including creation of style themes,
+    VARIABLES should be used in your component's .css files in the place of custom colors wherever possible.
 
-Both styles.css and pucs.css represent the Project Unified Custom Styling (PUCS) 
-which sits above bootstrap styles and below component specific styling in terms
-of style hierarchy (and reverse in terms of evaluation order), however, only styles.css applies to legacy,
-and only pucs.css applies to edurange-react*/
+    usage example with .css class: 
+
+    .example-class{
+        background-color: var(--green-muted);
+        color: var(--orange-strong);
+    }
+
+    See below for the variable names.  
+    
+    You should not need to import pucs.css directly into your React
+    components, as it is universally available through the webpack's 'main_css.css' which is passed
+    into React by way of 'EduRangeEntry.js' -> 'MainFrame.js', which is the 'mother' component
+    by which all other components are loaded/rendered.  There may be some details I'm getting
+    wrong here, but that's the general idea.
+
+    */
 
 /*  RESET ALL PREDEFINED STYLING FROM BOOTSTRAP, FONTAWESOME, AND LEGACY EDURANGE
     http://meyerweb.com/eric/tools/css/reset/ 
@@ -60,32 +74,58 @@ table {
 }
 /* END STYLE RESET */
 
+
+
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 
 :root {
-    --muted-green: #b8e0d0 ;
-    --muted-aqua: #E5F1F3;
-    --muted-orange: #FFDABB;
-    --muted-blue: #AEBFEE;
-    --muted-purple:#A4A7E2;
+    --green-muted: #b8e0d0 ;
+    --aqua-muted: #E5F1F3;
+    --orange-muted: #fff0c5;
+    --blue-muted: rgb(192, 221, 255);;
+    --purple-muted:#c2c2ff;
+
+    --green-light: #80eeca ;
+    --orange-light: #ffedb2;
+    --aqua-light: #b0e7f1;
+    --blue-light: rgb(73, 188, 255);
+    --purple-light: #c0b9ff; 
     
-    --normal-green: #83c4ae ;
-    --normal-aqua: #9CDDE8;
-    --normal-orange: #EE9260;
-    --normal-blue: #8e93eb;
-    --normal-purple: #5249A3; 
+    --green-normal: #4ed281 ;
+    --aqua-normal: #61d8ed;
+    --orange-normal: #deb14f;
+    --blue-normal: rgb(0, 109, 233);;
+    --purple-normal: #5249A3; 
 
-    --strong-green: #03ba8c;
-    --strong-aqua: #1CBEDB;
-    --strong-orange: #E26420;
-    --strong-blue: #1119AF;
-    --strong-purple: #2E1997;
+    --green-strong: #3fe0b8;
+    --aqua-strong: #35d0e4;
+    --orange-strong: #e9b036;
+    --blue-strong: #0009ae;
+    --purple-strong: #2e009a;
+    
+    --green-extreme: #00ffbf;
+    --aqua-extreme: #00e1ff;
+    --orange-extreme: #ffae00;
+    --blue-extreme: #0009ae;
+    --purple-extreme: #4c00ff;
 
-    --deep-green: #173224;
-    --deep-aqua: #1C3C42;
-    --deep-orange: #5c0000;
-    --deep-blue: #0A0C31;
-    --deep-purple: #161240;
+    --green-dim: #006330;
+    --aqua-dim: #006375;
+    --orange-dim: #6c4a00;
+    --blue-dim: rgb(0, 55, 117);
+    --purple-dim: #322c71;
+
+    --green-dark: #003218;
+    --aqua-dark: #003943;
+    --orange-dark: #402c00;
+    --blue-dark: #0A0C31;
+    --purple-dark: #161240;
+
+    --green-deep: #00180c;
+    --aqua-deep: #001d22;
+    --orange-deep:#291d00;
+    --blue-deep: #00022d;
+    --purple-deep: #030028;
 
     --success: green;
     --warning:  rgb(255, 217, 0);
@@ -104,65 +144,72 @@ a {
     text-decoration: none;
 }
 
+a:link {
+    color: var(--orange-normal);
+}
+a:visited {
+    color: var(--orange-normal);
+    
+}
+a:hover {
+    color: var(--orange-muted);
+}
+a:active {
+    color: var(--aqua-muted);
+}
 
-.pucs-text-primary{color: var(--deep-blue);}
-.pucs-text-primary-invert{color: var(--muted-blue);}
-.pucs-text-alt{color: var(--deep-orange);}
-.pucs-text-alt-invert{color: var(--muted-orange);}
+.pucs-text-primary{color: var(--blue-deep);}
+.pucs-text-primary-invert{color: var(--blue-muted);}
+.pucs-text-alt{color: var(--orange-deep);}
+.pucs-text-alt-invert{color: var(--orange-muted);}
 .pucs-text-danger{color: var(--danger);}
 .pucs-text-warning{color: var(--warning);}
 .pucs-text-success{color: var(--success);}
 
-.pucs-background-primary{background-color: var(--muted-blue);}
-.pucs-background-primary-invert{background-color: var(--deep-blue);}
+.pucs-background-primary{background-color: var(--blue-muted);}
+.pucs-background-primary-invert{background-color: var(--blue-deep);}
 .pucs-background-black{background-color: black;}
-.pucs-background-alt{background-color: var(--muted-orange);}
-.pucs-background-alt-invert{background-color: var(--deep-orange);}
+.pucs-background-alt{background-color: var(--orange-muted);}
+.pucs-background-alt-invert{background-color: var(--orange-deep);}
 .pucs-background-warning{background-color: var(--warning);}
-.pucs-background-success{background-color: var(--strong-green);}
+.pucs-background-success{background-color: var(--green-strong);}
 
-.pucs-fill-primary{background-color: var(--normal-blue);}
-.pucs-fill-primary-invert{background-color: var(--deep-blue);}
-.pucs-fill-alt{background-color: var(--muted-orange);}
-.pucs-fill-alt-invert{background-color: var(--deep-orange);}
+.pucs-fill-primary{background-color: var(--blue-normal);}
+.pucs-fill-primary-invert{background-color: var(--blue-deep);}
+.pucs-fill-alt{background-color: var(--orange-muted);}
+.pucs-fill-alt-invert{background-color: var(--orange-deep);}
 .pucs-fill-warning-invert{background-color: black;}
 .pucs-fill-warning{background-color: var(--warning);}
 
-.pucs-trim-primary{border: solid 3px var(--deep-blue);}
-.pucs-trim-primary-invert{border: solid 3px var(--normal-blue);}
-.pucs-trim-alt{border: solid 3px var(--deep-orange);}
-.pucs-trim-alt-invert{border: solid 3px var(--muted-orange);}
+.pucs-trim-primary{border: solid 3px var(--blue)-deep;}
+.pucs-trim-primary-invert{border: solid 3px var(--blue-normal);}
+.pucs-trim-alt{border: solid 3px var(--orange)-deep;}
+.pucs-trim-alt-invert{border: solid 3px var(--orange-muted);}
 .pucs-trim-warning-invert{border: solid 3px var(--warning);}
 .pucs-trim-warning{border: solid 3px black;}
 
 .my-table{
-    background-color: var(--normal-blue);
-    border-left: 2px solid var(--deep-blue);
-    border-right: 1px solid var(--deep-blue);
-    border-top: 2px solid var(--deep-blue);
-    border-bottom: 1px solid var(--deep-blue);
+    background-color: var(--blue-normal);
+    border-left: 2px solid var(--blue-deep);
+    border-right: 1px solid var(--blue-deep);
+    border-top: 2px solid var(--blue-deep);
+    border-bottom: 1px solid var(--blue-deep);
 }
 
 .pucs-table-top {
-    background-color: rgb(0, 233, 12);
-    color: rgb(38, 0, 255);
-
 }
 
 .pucs-table-base{
-    background-color: greenyellow;
-    border-left: 2px solid var(--deep-blue);
-    border-right: 1px solid var(--deep-blue);
-    border-top: 2px solid var(--deep-blue);
-    border-bottom: 1px solid var(--deep-blue);
+    border-left: 2px solid var(--blue-deep);
+    border-right: 1px solid var(--blue-deep);
+    border-top: 2px solid var(--blue-deep);
+    border-bottom: 1px solid var(--blue-deep);
 }
 .pucs-table-head{
-    background-color: var(--normal-green);
 }
-.pucs-table-row{border-bottom: 1px solid var(--deep-blue);}
-.pucs-table-col{border-right: 1px solid var(--deep-blue);}
+.pucs-table-row{border-bottom: 1px solid var(--blue-deep);}
+.pucs-table-col{border-right: 1px solid var(--blue-deep);}
 .pucs-table-cell{
     padding: 5px 15px;
-    /* background-color: rgb(199, 0, 33); */
 }
 

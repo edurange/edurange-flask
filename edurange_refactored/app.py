@@ -19,10 +19,12 @@ from edurange_refactored.extensions import (
     flask_static_digest,
     login_manager,
     migrate,
+    jwtman
 )
 from edurange_refactored.user.models import User
 
 socketapp = SocketIO()
+
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -41,6 +43,10 @@ def create_app(config_object="edurange_refactored.settings"):
     register_jinja_filters(app)
     socketapp.init_app(app)
 
+
+
+    # app.config['SECRET_KEY_SISTER'] = "iLikeTurtles"  ## DEV 
+
     return app
 
 
@@ -57,10 +63,9 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
 
-#####
-    # csrf_protect.init_app(app) # THIS APPWIDE CSRF DISABLED FOR DEV -> IMPLEMENTED ELSEWHERE IN ROUTES - WILL NEED TO FIX
-#####
-
+    jwtman.init_app(app) # added
+ 
+    csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)

@@ -105,25 +105,30 @@ const instructor_users_nav = {
     icon: edurange_icons.user_icon,
     path: `/home_sister/dashboard/users`
 };
+const jwt_auth_nav = {
+    title: "jwt_auth",
+    icon: edurange_icons.user_icon,
+    path: `/home_sister/dashboard/api/jwt_auth`
+};
 
 export const SideNav_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
 export const SideNav_instructor_logged_in = [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
 export const SideNav_admin_logged_in =      [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav ]
 export const SideNav_logged_out =           [ ]
 
-export const TopNav_student_logged_in =    [ home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
-export const TopNav_instructor_logged_in = [ home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
-export const TopNav_admin_logged_in =      [ home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
-export const TopNav_logged_out =           [ home_nav,docs_nav, options_nav, login_nav ]
+export const TopNav_student_logged_in =    [ jwt_auth_nav, home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
+export const TopNav_instructor_logged_in = [ jwt_auth_nav,home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
+export const TopNav_admin_logged_in =      [ jwt_auth_nav,home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav ]
+export const TopNav_logged_out =           [  jwt_auth_nav,home_nav,docs_nav, options_nav, login_nav ]
 
 export const DashSideNav_student_logged_in =    [ dashboard_nav, scenarios_nav, notifications_nav, ssh_nav, options_nav,  account_nav, logout_nav ]
-export const DashSideNav_instructor_logged_in = [ dashboard_nav, devtable_nav, instructor_users_nav, instructor_userGroups_nav, scenarios_nav, instructor_scenarioGroups_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav ]
-export const DashSideNav_admin_logged_in =      [ dashboard_nav, devtable_nav, instructor_users_nav, instructor_userGroups_nav, scenarios_nav, instructor_scenarioGroups_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav ]
+export const DashSideNav_instructor_logged_in = [ dashboard_nav, devtable_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav ]
+export const DashSideNav_admin_logged_in =      [ dashboard_nav, devtable_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav ]
 export const DashSideNav_logged_out =           [ login_nav ]
 
 export const DashContextNav_student_logged_in =    [ dashboard_nav, scenarios_nav, notifications_nav, ssh_nav, options_nav,  account_nav, logout_nav ]
-export const DashContextNav_instructor_logged_in = [ dashboard_nav, instructor_users_nav, instructor_userGroups_nav, scenarios_nav, instructor_scenarioGroups_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, devtable_nav ]
-export const DashContextNav_admin_logged_in =      [ dashboard_nav, instructor_users_nav, instructor_userGroups_nav, scenarios_nav, instructor_scenarioGroups_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, devtable_nav ]
+export const DashContextNav_instructor_logged_in = [ dashboard_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, devtable_nav ]
+export const DashContextNav_admin_logged_in =      [ dashboard_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, devtable_nav ]
 export const DashContextNav_logged_out =           [ login_nav ]
 
 

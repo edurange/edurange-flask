@@ -12,7 +12,7 @@ function InfoRouter (    ) {
     return (
         <div className='exo-dashpanes-outer-wrap'>
                 <div className='dash-sidebar-pane'>
-                This is the InfoHome 'wrapper' rendering successfully.  Looks like dash now but isn't 
+                This is the InfoHome 'wrapper' rendering successfully.
                 </div>
                     <div className="exo-dashpanes-container">
                     <div className='exo-dashpane'>

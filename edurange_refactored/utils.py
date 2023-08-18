@@ -7,7 +7,7 @@ import markdown as md
 import ast
 from flask import abort, flash, request, url_for
 from flask_login import current_user
-from jwt.jwk import OctetJWK, jwk_from_dict
+# from jwt.jwk import OctetJWK, jwk_from_dict
 from markupsafe import Markup
 
 from edurange_refactored.extensions import db
@@ -23,19 +23,19 @@ def load_key_data(name, mode="rb"):
         return fh.read()
 
 
-class TokenHelper:
-    def __init__(self):
-        self.data = jwk_from_dict(json.loads(load_key_data("oct.json", "r")))
-        self.octet_obj = OctetJWK(self.data.key, self.data.kid)
+# class TokenHelper:
+#     def __init__(self):
+#         self.data = jwk_from_dict(json.loads(load_key_data("oct.json", "r")))
+#         self.octet_obj = OctetJWK(self.data.key, self.data.kid)
 
-    def get_JWK(self):
-        return self.octet_obj
+#     def get_JWK(self):
+#         return self.octet_obj
 
-    def get_data(self):
-        return self.data
+#     def get_data(self):
+#         return self.data
 
-    def verify(self, token):
-        self.octet_obj.verify()
+#     def verify(self, token):
+#         self.octet_obj.verify()
 
 
 def flash_errors(form, category="warning"):

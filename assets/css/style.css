@@ -1,25 +1,6 @@
 /* =============================================================================
-   App specific CSS file.
+   App specific CSS file. (LEGACY EDURANGE ONLY! FOR NEW EDURANGE-REACT UNIVERSAL STYLING, USE './pucs.css')
    ========================================================================== */
-
-/* universal */
-
-/* html {
-  overflow-y: scroll;
-} */
-/* button {
-  background-color:#2e9566;
-  min-width: 2em;
-  min-height: 1em;
-  border: solid 2px black;
-} */
-/* section {
-  overflow: auto;
-} */
-/* 
-textarea {
-  resize: vertical;
-} */
 
 /*  RESET ALL PREDEFINED STYLING FROM BOOTSTRAP AND FONTAWESOME
     http://meyerweb.com/eric/tools/css/reset/ 

@@ -7,8 +7,7 @@
     border: 1px solid rgb(135, 96, 12);
     border-top: 0;
 
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-radius: 15px;
 
     box-sizing: border-box;
     contain: content;
@@ -25,7 +24,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column ;
+    flex-direction: row ;
     align-items: flex-start;
     background-color: rgb(12, 20, 44);
     box-sizing: border-box;
@@ -36,91 +35,184 @@
     right: 0;
     top: 0;
 }
-.newdash-itemcard-placard-frame{
+.newdash-itemcard-left-frame{
     display: flex;
-    flex-direction: row;
-    min-height: 25%;
-    max-height: 35%;
+    flex-direction: column;
+    min-height: 100%;
+    max-height: 100%;
     align-content: center;
     justify-items: center;
     align-items: center;
-    width: 100%;
-    padding: 0 8%;
+    width: 50%;
+    padding: 0 2%;
     box-sizing: border-box;
     contain: content;
 }
-.newdash-itemcard-placard-image-section {
-    
+.newdash-itemcard-left-upper-frame{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-self: center;
-    align-self: center;
-    width: 25%;
-    max-width: 25%;
-    min-width: 100px;
-    aspect-ratio: 1;
-    margin-right: 6%;
-}
-.newdash-itemcard-placard-meta-section {
-    
+    flex-direction: row;
     min-height: 100%;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-self: center;
-    align-self: center;
-}
-.newdash-itemcard-placard-image {
-    
-    display: flex;
-    justify-content: center;
-    align-content: center;
+    max-height: 100%;
+    min-height: 35 dvh;
+    align-content: space-between;
     justify-items: center;
     align-items: center;
-    aspect-ratio: 1;
+    justify-content: space-between;
     width: 100%;
-    max-width: 20dvh;
-    filter: invert(78%) sepia(39%) saturate(419%) hue-rotate(358deg) brightness(88%) contrast(87%);
+    /* padding: 0 2%; */
     box-sizing: border-box;
-    
-}
+    contain: content;
+    margin-top: 6%
 
-.newdash-itemcard-placard-meta-frame {
+}
+.newdash-itemcard-left-upper-image-section {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+    width: 32%;
+    max-width: 32%;
+    min-width: 100px;
+    aspect-ratio: 1;
+    margin-right: 3%
+}
+/* .newdash-itemcard-left-upper-section {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+    height: 35%;
+} */
+.newdash-itemcard-left-lower-frame {
     
     display: flex;
     flex-direction: column;
     align-items: space-evenly;
-    justify-items: flex-start;
+    justify-items: stretch;
+    margin-top: 5%;
+
 }
-.newdash-itemcard-placard-meta-item {
+.newdash-itemcard-left-lower-item {
+    margin-top: 2 dvh;
+    width: 100%;
+    display: block;
+    line-height: 1.25;
+    /* flex-direction: column;
+    align-items: space-evenly;
+    justify-items: flex-start;
+    margin-top: 5%; */
+}
+.newdash-itemcard-left-upper-meta-frame {
+    max-width: 60%;
+    justify-content: right;
+    align-items: flex-start;
+    justify-items: left;
+    display: flex;
+    flex-direction: column;
+    /* padding: 1% 0; */
+    line-height: 1.25;
+    justify-self: right;
+}
+.newdash-itemcard-left-upper-meta-item {
     
     display: flex;
     /* padding: 1% 0; */
-    line-height: 1.5;
+    line-height: 1.25;
+}
+.newdash-itemcard-left-upper-image {
+    
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 32dvh;
+    filter: invert(78%) sepia(39%) saturate(419%) hue-rotate(358deg) brightness(88%) contrast(87%);
+    box-sizing: border-box;
+    
 }
 
-.newdash-itemcard-placard-image-filter{
+
+
+.newdash-itemcard-left-upper-image-filter{
     filter: invert(78%) sepia(39%) saturate(419%) hue-rotate(358deg) brightness(88%) contrast(87%);
 }
-.newdash-itemcard-content-frame{
+
+
+.newdash-itemcard-right-upper-frame{
     contain: content;
     max-width: 100%;
-    max-height: 69%;
+    max-height: 25%;
     height: 100%;
     display: flex;
-    width: 100%;
+    width: 46%;
+    /* box-sizing: border-box; */
+    position: absolute;
+    bottom:75%; 
+    left: 52%;
+    right: 0;
+    top: 0;
+
+    /* padding: 2% ; */
+    flex-direction: row;
+}
+.newdash-itemcard-right-upper-buttons-frame{
+    gap: 1%;
+    contain: content;
+    max-width: 35%;
+    /* max-height: 25%; */
+    height: 100%;
+    display: flex;
+    width: 35%;
+    box-sizing: border-box;
+    justify-items: center;
+    align-content: space-around ;
+    justify-content: center;
+    flex-direction: column;
+    align-items: left;
+    line-height: 1.35;
+}
+.newdash-itemcard-right-upper-ssh-frame{
+    gap: 1%;
+    justify-items: left;
+    align-content: space-around ;
+    justify-content: center;
+    flex-direction: column;
+    align-items: left;
+    contain: content;
+    max-width: 65%;
+    /* max-height: 25%; */
+    height: 100%;
+    display: flex;
+    width: 65%;
+    box-sizing: border-box;
+    color: var(--muted-aqua);
+    flex-direction: column;
+}
+
+.newdash-itemcard-description-frame{
+    contain: content;
+    max-width: 100%;
+    max-height: 75%;
+    height: 100%;
+    display: flex;
+    width: 50%;
     box-sizing: border-box;
     position: absolute;
     bottom:0; 
-    left: 0;
+    left: 50%;
     right: 0;
-    top: 32%;
+    top: 25%;
 }
-.newdash-itemcard-content-main{
+.newdash-itemcard-description-main{
     max-width: 100%;
     display: flex;
     width: 100%;
@@ -132,7 +224,7 @@
     top: 0px;
     line-height: 1.35;
 }
-.newdash-itemcard-content-main-text{
+.newdash-itemcard-description-main-text{
     padding: 3% 4%;
     background-color: rgba(0, 0, 0, 0.412);
     overflow-y: auto;
@@ -149,6 +241,6 @@
     right: 0;
     top: 0px;
 }
-.newdash-itemcard-content-footer {
+.newdash-itemcard-description-footer {
 }
 

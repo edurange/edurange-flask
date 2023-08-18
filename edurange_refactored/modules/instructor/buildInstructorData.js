@@ -1,24 +1,16 @@
+
 // import React from 'react'
 import { nanoid } from 'nanoid'
 
-// the 'recombobulate' process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
+import { UserShell, UserGroupShell, ScenarioGroupShell, ScenarioShell,  } from '../shells/instructorData_shells';
+
+// the 'buildInstructorDAta' process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
 // useful structure for the frontend, consisting of object arrays.
 
 // all of these classes are going in arrays where their ID aligns with their array index.
 // this is particularly important for the User class, where the ID is considered a sensitive piece of information 
-// that should NOT be exposed to visitors.  admins will have a way to get this information elsewhere if needed
-// therefore the 'id' field will be overwritten with a unique identifier rather than the database's actual user ID.
-
-// however, as mentioned, the index of the users in the sessionData.instructor.users array that they will belong to will 
-// align 1:1 with their actual database ID, because a 'dummy' data item will be placed at the 0th index of each array
-// before the real items are pushed on top.
-
-// that of course means that, when using these arrays, start at index 1 and not 0, unless you want to display the dummy
-// data for some reason.
-
-// all of this data is only stored in browser/js memory for the session, and its availability will depend on the user's
-// role as defined by the backend.  in other words, admin data will not be ever be sent to a non-admin's browser to begin with,
-// so no amt of simple browser tampering will provide any extra information.
+// that should not be exposed to users.  instead, any time you want to display to a user a scenario's ID or
+// a user ID, display the UID, which is a randomly assigned unique ID.
 
 // ?? operator will assign 'none' if value is nullish (undefined, null) but otherwise preserves falsy values like 0
 
@@ -34,57 +26,13 @@ const formatDate = (inputDate) => {
     return `${month}/${day}/${year} ${hours}:${minutes}`;
 };
 
-
-export class UserShell {
-    constructor(input = {}) {
-        this.id = input.id ?? 'none';
-        this.uid = nanoid(5);
-        this.username = input.username ?? 'none';
-        this.role = (input.username) ? assignUserRole(input) : 'none'; // assigns role if user exists, otherwise 'none'
-        this.is_active = input.active || false;
-        this.email = input.email ?? 'none';
-        this.userGroups_memberOf = input.userGroups_memberOf ?? [];
-        this.scenarios_memberOf = input.scenarios_memberOf ?? [];
-        this.created_at = formatDate(input.created_at) ?? 'none';
-    };
-};
-export class UserGroupShell {
-    constructor(input = {}) {
-        this.code = input.code ?? 'none';
-        this.id = input.id ?? 'none';
-        this.is_hidden = input.is_hidden || true;
-        this.name = input.name ?? "none";
-        this.ownerID = input.owner_id ?? "none";
-        this.user_members = input.user_members ?? [];
-        this.scenarios_memberOf = input.scenario_memberOf ?? [];
-    };
-};
-export class ScenarioShell {
-    constructor(input = {}) {
-        this.id = input.scenario_id ?? 'none';
-        this.uid = nanoid(5);
-        this.name = input.scenario_name ?? 'none';
-        this.description = input.scenario_description ?? 'none';
-        this.ownerID = input.scenario_owner_id ?? 'none';
-        this.status = input.scenario_status ?? 'none';
-        this.studentGroup_members = input.studentGroup_members ?? [];
-        this.scenarioGroups_memberOf = input.scenarioGroups_memberOf ?? [];
-        this.created_at = formatDate(input.scenario_created_at) ?? 'none';
-    };
-};
-export class ScenarioGroupShell {
-    constructor(input = {}) {
-        this.id = input.scenario_group_id ?? "none";
-        this.studentGroup_members = input.studentGroup_members ?? [];
-    };
-};
-export function assignUserRole(inputData) {
+function assignUserRole(inputData) {
     if (inputData.is_admin) { return 'Administrator' }
     else if (inputData.is_instructor) { return 'Instructor' }
     else { return 'Student' }
 };
 
-export function makeFirstPass(inputObj) {
+function makeFirstPass(inputObj) {
 
     function processUsers(inputData) {
         const inputUserArray = inputData.instructor_data[0];
@@ -217,7 +165,7 @@ function assignScenariosToGroups(newObject, inputObj) {
     return outputObj;
 };
 
-export function makeSecondPass(firstPassObj, originalObj) {
+function makeSecondPass(firstPassObj, originalObj) {
 
     const groupsAssignedToUsersObj = assignGroupsToUsers(firstPassObj, originalObj);
     const usersAssignedtoGroupsObj = assignUsersToGroups(groupsAssignedToUsersObj, originalObj);
@@ -228,7 +176,7 @@ export function makeSecondPass(firstPassObj, originalObj) {
 };
 
 
-export function recombobulate(inputObj) {
+export function buildInstructorData(inputObj) {
 
     if (inputObj) {
         const firstPassOutput = makeFirstPass(inputObj);
@@ -237,7 +185,11 @@ export function recombobulate(inputObj) {
     }
 }
 
-export function convertToDivs(result) {
+function buildUserData (inputData) {
+    return inputData;
+}
+
+function convertToDivs(result) {
     let output = '';
 
     function processItem(item) {

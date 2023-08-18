@@ -1,20 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './NewDash.css';
-import { MainFrameContext } from '../../../main_frame/MainFrame';
-import { DashSideNav_admin_logged_in, DashSideNav_student_logged_in, DashSideNav_logged_out } from '../../../../scripts/ui/navItemsData';
+import React from 'react';
 function DashHome (    ) {
-
-    const   { login_state } = useContext(MainFrameContext);
-    
-    const dataType = Object.freeze({
-        USERS: 0,
-        USER_GROUPS: 1,
-        SCENARIOS: 2,
-        SCENARIO_GROUPS: 3
-    });
-    
-    const navDataToShow = login_state === 1 ? DashSideNav_admin_logged_in : DashSideNav_logged_out; // needs update for permissions!  ***************
-
     return (
         <>THIS IS THE HOME DASHBOARD PAGE! </>
     );
