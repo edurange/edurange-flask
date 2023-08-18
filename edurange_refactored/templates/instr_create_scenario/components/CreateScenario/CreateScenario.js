@@ -20,8 +20,7 @@ import ScenarioOptions from "../new_scenario/scenario_options/scenario_options.j
 function CreateScenario(props) {
        return (
               <>
-              <h1>"Scenario Options"</h1>
-              <ScenarioOptions />
+                     <ScenarioNameSelector/>
               </>
        ); 
 }

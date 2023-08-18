@@ -146,10 +146,7 @@ class Question extends React.Component {
     else {
       return question.Answers.map((answer, index) => (<div key={index}> {inputFormStuff}</div>));
     }
-
   }
-
-
 
   render() {
     const {question} = this.props;
