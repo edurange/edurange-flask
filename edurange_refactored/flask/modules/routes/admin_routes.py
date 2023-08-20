@@ -8,7 +8,7 @@ from flask import (
 )
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
-from edurange_refactored.api.utils.db_devHelper import (
+from edurange_refactored.flask.modules.utils.db_devHelper import (
     get_user,
     get_users,
     get_groups,

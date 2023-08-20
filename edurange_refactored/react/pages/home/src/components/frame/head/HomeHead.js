@@ -11,7 +11,7 @@ import {
     TopNav_instructor_logged_in, 
     TopNav_student_logged_in, 
     TopNav_logged_out } 
-    from '../../../../../../../modules/ui/navItemsData';
+    from '../../../../../../modules/nav/navItemsData';
 
 const HomeHead = () => {
   

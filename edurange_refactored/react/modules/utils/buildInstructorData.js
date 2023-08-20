@@ -2,7 +2,7 @@
 // import React from 'react'
 import { nanoid } from 'nanoid'
 
-import { UserShell, UserGroupShell, ScenarioGroupShell, ScenarioShell,  } from '../../../modules/shells/instructorData_shells';
+import { UserShell, UserGroupShell, ScenarioGroupShell, ScenarioShell } from '../shells/instructorData_shells';
 
 // the 'buildInstructorDAta' process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
 // useful structure for the frontend, consisting of object arrays.

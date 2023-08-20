@@ -21,8 +21,8 @@ import InfoRouter from '../info/src/Info_router';
 export const HomeRouterContext = React.createContext();
 function Home_router() {
   
-  const connectIP = "127.0.0.1";
-  const connectPort = "8008"; // or whatever your normal port is
+  const connectIP = "104.168.43.192"; // or whatever your IP/domain is
+  const connectPort = "5000"; // or whatever your normal port is
   const loginRoute = "/edurange3/login"
   
   const navigate = useNavigate();

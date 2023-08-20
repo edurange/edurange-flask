@@ -11,7 +11,7 @@ from flask import (
 )
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
-from edurange_refactored.api.utils.db_devHelper import (
+from edurange_refactored.flask.modules.utils.db_devHelper import (
     get_user,
     get_users,
     get_groups,
@@ -24,7 +24,7 @@ from edurange_refactored.api.utils.db_devHelper import (
 
 import secrets
 from marshmallow import ValidationError
-from edurange_refactored.api.schemas.ma_user import LoginSchema
+from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema
 from flask_jwt_simple import create_jwt
 from datetime import datetime, timedelta 
 from ..utils.auth_utils import jwt_and_csrf_required

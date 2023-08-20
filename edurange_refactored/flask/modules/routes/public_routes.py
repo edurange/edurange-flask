@@ -10,7 +10,7 @@ from flask import (
 )
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
-from edurange_refactored.api.utils.db_devHelper import (
+from edurange_refactored.flask.modules.utils.db_devHelper import (
     get_user,
     get_users,
     get_groups,
@@ -23,7 +23,7 @@ from edurange_refactored.api.utils.db_devHelper import (
 
 import secrets
 from marshmallow import ValidationError
-from edurange_refactored.api.schemas.ma_user import LoginSchema
+from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema
 from flask_jwt_simple import create_jwt
 from datetime import datetime, timedelta 
 
@@ -70,7 +70,7 @@ def login_edurange3():
     final_response = make_response(jsonify(json_return))
     token_return = create_jwt(identity=validated_user_dump["username"]) # generates token and encodes the username. 
                                                                         # 'identity' is a payload keyword for Flask-JWT-Simple. best to leave it alone
-    final_response.set_cookie('edurange3_jwt', token_return, samesite='Lax', secure=True, httponly=True, path='/edurange3/') # sets http only cookie to user's browser
+    final_response.set_cookie('edurange3_jwt', token_return, samesite='Lax',  httponly=True, path='/edurange3/') # sets http only cookie to user's browser (removed secure=True,)
     
     return final_response
 

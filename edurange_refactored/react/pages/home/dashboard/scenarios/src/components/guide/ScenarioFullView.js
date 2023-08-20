@@ -7,12 +7,12 @@ import './CardFullView.css';
 
 import { useContext } from 'react';
 import { scenarioShells } from '../../../../../../../modules/scenarios/ScenariosData';
-import { fetchData } from '../../../../../../../../modules/routing/fetchHelper';
+
 import GuideInterpreter from './GuideInterpreter';
 import GuideHome from './GuideHome';
 import { HomeRouterContext } from '../../../../../src/Home_router';
 
-
+import {fetchData} from '../../../../../../../modules/utils/fetchHelper'
 
 export const ScenarioGuideContext = React.createContext();
 

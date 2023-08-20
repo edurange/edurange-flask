@@ -1,10 +1,10 @@
-"use strict";
 import React, { useContext, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 import { HomeRouterContext } from '../../Home_router';
-import { buildInstructorData } from '../../../../../modules/utils/buildInstructorData';
+
+import { buildInstructorData } from '../../../../../modules/utils/buildInstructorData'
 
 function Login3() {
 
