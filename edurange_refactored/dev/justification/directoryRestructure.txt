@@ -1,0 +1,72 @@
+
+--------------------------------------------------------------------------------
+note:   None of the previous stuff has been touched (unless it was my own, 
+        in which case it has been consolidated). These are new directories 
+        with new files (and most are just placeholders/suggestions).
+
+        For flask, these are 90% just suggestions.  I made the directories,
+        but this document is more a proposal than a documentation of actual change,
+        at least as per Flask. The only actual changes so far in Flask have been 
+        to refactor the views_sister.py file I was working on to match the structure 
+        I lay out below (e.g.: flask/modules/routes/public_routes.py), and to 
+        register some of the new route files with Flask app.py or extensions.py, 
+        or to add some NEW_VALUES to settings.
+
+        But again, no previous legacy files have been in any way touched except where
+        explicitly reviewed and OK'd.
+
+        Also, anywhere that was previously named with _sister has been updated 
+        to edurange3 or eduRange3 or EduRange3, depending on the context.
+-----------------------------------------------------------------------------------
+
+The primary motivations of the 'react' and its sibling 'flask' directories, and their restructure:
+
+  - Clearly dilineate React from Flask, and allow space for other 'ecosystem-level' dirs, like Express
+  
+  - Clean up unused and redundant files, and clarify what is needed
+  
+  - Reduce confusing/unnecessary/inconsitent directory nesting 
+  
+  - Give better semantic meaning to directory names, and establish a standard for naming and structure
+  
+  - Give space to other 'top-level' directories that should be above or sibling to flask and react, 
+    such as the new proposed `edurange_refactored/dev` directory, which is the place for project-wide 
+    living documents, justification documents, todos, etc.
+
+  React specific:
+
+  - SEE: edurange_refactored/dev/convention/reactDirectory.md
+
+  Flask specific:
+
+  - Consolidate alike and flask-specific files in directories with more semantic and 
+    role-clarifying names.
+    
+  - Improve scalability and ease of dev access;
+    
+        Instead of public/views.py
+                   user/views.py:
+            flask/modules/routes/public_routes.py,
+            flask/modules/routes/student_routes.py,
+            flask/modules/routes/instructor_routes.py,
+            flask/modules/routes/admin_routes.py
+        
+        Instead of utils in main root:
+            flask/modules/utils/auth_utils.py
+        
+        Instead of config stuff in main root:
+            flask/config/settings.py 
+        
+        Instead of db items in separate dirs off main root:
+            flask/modules/db/models/Users.py
+            flask/modules/db/models/Groups.py
+            etc..
+        and
+            flask/modules/db/schemas/ma_users.py 
+
+        
+        etc... 
+
+
+
+    

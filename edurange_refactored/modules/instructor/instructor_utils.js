@@ -2,5 +2,5 @@
 // import React from 'react'
 import { nanoid } from 'nanoid'
 
-import { buildInstructorData } from './buildInstructorData'
+import { buildInstructorData } from '../../react/modules/utils/buildInstructorData'
 

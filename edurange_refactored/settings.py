@@ -31,7 +31,7 @@ MAIL_USERNAME = env.str("MAIL_USERNAME")
 MAIL_PASSWORD = env.str("MAIL_PASSWORD")
 KNOWN_SCENARIOS = env.str("SCENARIO_LIST_ENV").replace('"', '').split(",")
 JWT_SECRET_KEY = "iLikeTurtles"
-JWT_COOKIE_NAME = 'authorization'
+JWT_COOKIE_NAME = 'edurange3_jwt'
 JWT_IN_COOKIE = True
 JWT_TOKEN_LOCATION = ['cookies']
 

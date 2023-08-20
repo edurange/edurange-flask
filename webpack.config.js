@@ -82,10 +82,22 @@ module.exports = [
       ],
     }
   },
+
+
+
+
+
+
+
+
+
+
+
+
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/main_frame/'),
+    context: path.join(__dirname, 'edurange_refactored/react/pages/home/src/'),
     entry: {
-      MainFrame: './MainFrame'
+      Home_router: './Home_router'
     },
     output: {
       chunkFilename: "[id].js",
@@ -131,8 +143,10 @@ module.exports = [
       ]
     }
   },
+
+
   {
-    context: path.join(__dirname, '/edurange_refactored/templates/entry/'),
+    context: path.join(__dirname, '/edurange_refactored/react/entry/'),
     entry: {
       EduRangeEntry: './EduRangeEntry'
     },
@@ -180,6 +194,23 @@ module.exports = [
       ]
     }
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
 
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),

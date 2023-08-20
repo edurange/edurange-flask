@@ -1,0 +1,61 @@
+.newdash-datatable-frame {
+    width: 100%;
+    border: 1px solid  rgb(135, 96, 12);
+    border-radius: 15px;
+    box-sizing: border-box;
+
+}
+
+.newdash-datatable-header {
+    white-space: nowrap;
+    display: flex;
+    grid-auto-flow: column;
+    background-color: rgb(12, 20, 44);
+    contain: content;
+    border-radius: 15px 15px 0 0;
+}
+.table-row {
+    text-align: left;
+    white-space: nowrap;
+    display: flex;
+    grid-auto-flow: column;
+}
+.table-cell-item{
+    contain: content;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 10px;
+}
+.table-user-id{
+    max-width: 18px;
+    min-width: 18px;
+}
+.table-username{
+    max-width: 111px;
+    min-width: 111px;
+}
+.table-email{
+    max-width: 244px;
+    min-width: 244px;
+}
+.table-created{
+    max-width: 155px;
+    min-width: 155px;
+}
+.table-role{
+    max-width: 155px;
+    min-width: 155px;
+}
+.table-owner{
+    max-width: 60px;
+    min-width: 60px;
+}
+.table-active{
+    max-width: 60px;
+    min-width: 60px;
+}
+.table-scenario-name{
+    max-width: 180px;
+    min-width: 180px;
+}
+

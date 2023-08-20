@@ -1,0 +1,91 @@
+
+body, html{
+    margin: 0;
+    padding: 0;
+    height: 100dbh;
+    overflow: hidden;
+}
+.newdash-frame{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 15px ;
+    background-color: rgb(54, 8, 25);
+
+    border-bottom: 1px; 
+    border-top: 1px;
+    border-right: 1px;
+    border-style: solid;
+    border-color:   rgb(42, 6, 19);
+    padding-left: 9px;
+    contain: content;    
+    box-sizing: border-box;
+}
+.newdash-frame-carpet{
+    background-color: rgb(9, 16, 34);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    /* border-left: 1px solid rgb(7, 11, 24); */
+}
+.newdash-infopane-frame {
+    display: flex;
+    background-color: rgb(22, 35, 71);
+    width: 100%;
+    border-radius: 15px ;
+    border-left: 1px solid  rgb(63, 9, 29);
+    /* overflow: none; */
+    padding: 1% 1%;
+    color: var(--muted-aqua);
+    box-sizing: border-box;
+}
+.newdash-infopane-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height:100%;
+    /* contain: content; */
+    box-sizing: border-box;
+}
+.newdash-content-placard{
+    font-size: 6dvh;
+    /* margin-bottom: 3%; */
+    color: var(--muted-aqua);
+    min-height: 8%;
+    padding: 4%;
+    box-sizing: border-box;
+    align-items: center;
+    display: flex;
+}
+.newdash-sidebar-frame{
+    display: flex;
+    width: 100%;
+    /* min-width: 240px; */
+    max-width: 24dvh;
+    background-color:rgb(11, 20, 42);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    flex-direction: column;
+    padding: 2% 1%;
+}
+
+.newdash-sidebar-row {
+    display: flex;
+    align-items: center; 
+    padding: 10px 15px;  
+    cursor: pointer;   
+    height: 28px;  
+    transition: background-color 0.2s;
+    color: rgb(169, 211, 249);
+}
+.newdash-sidebar-row:hover {
+    color: rgb(255, 207, 87);
+}
+
+.newdash-sidebar-row:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+#newdash-sidebar-icon {
+    margin-right: 10px;
+}

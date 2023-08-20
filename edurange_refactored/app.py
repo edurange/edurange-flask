@@ -8,7 +8,12 @@ from flask import Flask, render_template
 from flask_login import current_user
 from flask_socketio import SocketIO
 
-from edurange_refactored.public_sister.views_sister import blueprint_routing_sister
+# from edurange_refactored.public_sister.views_sister import blueprint_routing_sister
+from edurange_refactored.flask.modules.routes.public_routes import blueprint_edurange3_public
+from edurange_refactored.flask.modules.routes.student_routes import blueprint_edurange3_student
+from edurange_refactored.flask.modules.routes.instructor_routes import blueprint_edurange3_instructor
+from edurange_refactored.flask.modules.routes.admin_routes import blueprint_edurange3_admin
+
 from edurange_refactored import commands, public, user, tutorials, api
 from edurange_refactored.extensions import (
     bcrypt,
@@ -79,7 +84,13 @@ def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(tutorials.views.blueprint)
-    app.register_blueprint(blueprint_routing_sister)
+
+    # app.register_blueprint(blueprint_routing_sister)
+    app.register_blueprint(blueprint_edurange3_public)
+    app.register_blueprint(blueprint_edurange3_student)
+    app.register_blueprint(blueprint_edurange3_instructor)
+    app.register_blueprint(blueprint_edurange3_admin)
+
     app.register_blueprint(api.contents.blueprint)
 
     return None
