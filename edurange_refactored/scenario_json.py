@@ -140,7 +140,7 @@ def write_resource(address, name, s_type,
     execs = build_execute_files(s_files, g_files, u_files, flags)
     if c_name == "gateway":
         host_names = '\\n'.join(name for name in c_names)
-        execs += "\",\n\"echo '" + host_names + "' > /usr/local/src/ttylog/host_names"
+        execs += "\",\n\"echo '" + host_names.casefold() + "' > /usr/local/src/ttylog/host_names"
 
     host = os.getenv('HOST_EXTERN_ADDRESS', 'localhost')
     # Make sure the container has a known template

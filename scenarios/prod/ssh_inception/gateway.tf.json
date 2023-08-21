@@ -1,9 +1,9 @@
 {
-	"resource": [
-	{
+    "resource": [
+        {
             "docker_container": [
                 {
-                    "SNAME_StartingLine": [
+                    "SNAME_gateway": [
                         {
                             "capabilities": [
                                 {
@@ -26,16 +26,16 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "StartingLine",
+                            "hostname": "gateway",
                             "image": "edurange2/ubuntu-sshd:16.04",
-                            "name": "SNAME_nat",
+                            "name": "SNAME_gateway",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.2",
+                                    "ipv4_address": "OCTET.0.1.4",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.2",
+                                    "ipv4_address": "OCTET.0.0.4",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
@@ -61,25 +61,25 @@
                     ]
                 }
             ]
-        }],
+        }
+    ],
     "locals": [
         {
-            "SNAME_StartingLine_extern": "HIDDEN"
+            "SNAME_gateway_extern": "${tostring(docker_container.SNAME_gateway.ports[0].external)}"
         }
     ],
     "output": [
         {
-            "SNAME_StartingLine": [
+            "SNAME_gateway": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_StartingLine_extern])}",
-                            "name": "SNAME_StartingLine"
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_gateway_extern])}",
+                            "name": "SNAME_gateway"
                         }
                     ]
                 }
             ]
         }
     ]
-
 }

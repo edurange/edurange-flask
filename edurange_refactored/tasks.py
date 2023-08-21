@@ -215,11 +215,8 @@ def start(self, sid):
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
         name = "".join(e for e in name if e.isalnum())
-        # there is probably a better way to identify the starting container
-        # this assumes that scenario.json lists the start as first element
-        c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(scenario.description.lower(), logger)
         gateway = name + "_gateway"
-        start = name + "_" + c_names[0]
+        start = name + "_nat"
         start_ip = scenario.subnet.split('.')[0] + '.0.0.2'
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
