@@ -16,20 +16,20 @@ def jwt_and_csrf_required(fn):
     def wrapper(*args, **kwargs):
         
         # CSRF check (dev)
-        csrf_token_client = request.headers.get('X-XSRF-TOKEN')
-        if not csrf_token_client: return jsonify({"error": f"no client csrf request denied"}), 418
-        edurange3_csrf = session.get('X-XSRF-TOKEN')
-        if not edurange3_csrf: return jsonify({"error": "no server csrf request denied"}), 418
-        if csrf_token_client != edurange3_csrf:  return jsonify({"error": "csrf bad match"}), 418
+        client_CSRF = request.headers.get('X-XSRF-TOKEN')
+        if not client_CSRF: return jsonify({"error": f"no client csrf request denied"}), 418
+        server_CSRF = session.get('X-XSRF-TOKEN')
+        if not server_CSRF: return jsonify({"error": "no server csrf request denied"}), 418
+        if client_CSRF != server_CSRF:  return jsonify({"error": "csrf bad match"}), 418
         
         
         # CSRF check (prod)
-        # csrf_token_client = request.headers.get('X-CSRFToken')
+        # client_CSRF = request.headers.get('X-CSRFToken')
         # edurange3_csrf = session.get('X-XSRF-TOKEN')
         # if (
         #     not edurange3_csrf
-        #     or not csrf_token_client
-        #     or csrf_token_client != edurange3_csrf):
+        #     or not client_CSRF
+        #     or client_CSRF != edurange3_csrf):
         #         return jsonify({"error": "csrf request denied"}), 418
         
         # JWT check

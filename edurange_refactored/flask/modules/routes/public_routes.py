@@ -90,7 +90,7 @@ def login_edurange3():
     # mitigate JWT/session related CSRF attacks
     # no httponly=True ; JS needs access to value
     login_return.set_cookie(
-        'edurange3_csrf', 
+        'X-XSRF-TOKEN', 
         session['X-XSRF-TOKEN'], 
         samesite='Lax',
         path='/edurange3/'

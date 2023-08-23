@@ -8,19 +8,19 @@
 
 // Home.js is the secondary main entry point Component.
 
+import AxiosConfig from '../api/config/AxiosConfig';
 import React from 'react';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from 'react-router-dom';
 import Home_router from '../pages/home/src/Home_router';
-import AxiosConfig from '../api/config/AxiosConfig';
 
 const root = ReactDOM.createRoot(document.getElementById("edurange3_entry_id"));
 root.render (
-    <React.StrictMode>
+    // <React.StrictMode>
             <AxiosConfig>
-                <BrowserRouter>
+                <BrowserRouter basename="/edurange3">
                     <Home_router/>
                 </BrowserRouter>
             </AxiosConfig>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

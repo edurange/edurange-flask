@@ -15,35 +15,26 @@ import Logout from './components/logout/Logout';
 import OptionsMenu from '../options/src/OptionsMenu';
 import InfoRouter from '../info/src/Info_router';
 
+
+
 export const HomeRouterContext = React.createContext();
+
 function Home_router() {  
   
-  const navigate = useNavigate();
 ////HOOKS//////////////////////////////////////
-    
-  // const [ csrfToken_state,        set_csrfToken_state]        = useState(null);
   const [ userData_state,         set_userData_state]         = useState({});
   const [ instructorData_state,   set_instructorData_state]   = useState({});    
-    
-  // this big ugly mess restores non-secure session info like page URL and 'logged in'
-  const [ login_state,            set_login_state]            = useState(() => {
-    const edurange3_session_string = sessionStorage.getItem('edurange3_session');
-    if (!edurange3_session_string) return false;  // if no session data is found
-    // console.log ("user session string: ",edurange3_session_string)
-    const edurange3_session = JSON.parse(edurange3_session_string);
-    const isLoggedIn = edurange3_session.isLoggedIn;
-    const expiry = edurange3_session.expiry;
-    const returnURL = edurange3_session.currentURL;
-    if (returnURL) {navigate(returnURL);};
-    if (isLoggedIn && Date.now() < expiry) { return true; }
-    else { return false; };
-  });
-
-// Saves current URL to sessionStorage on navigate for refresh persistence
-useEffect(() => {
-  const currentURL = location.pathname;
-  sessionStorage.setItem('currentURL', currentURL);
-}, [location]);
+  // restores 'logged in' bool from session storage (superficial auth)
+  const [ login_state, set_login_state] = useState(() => {
+      const edurange3_session_string = sessionStorage.getItem('edurange3_session');
+      if (!edurange3_session_string) {return false;}
+      const edurange3_session = JSON.parse(edurange3_session_string);
+      const isLoggedIn = edurange3_session.isLoggedIn;
+      const expiry = edurange3_session.expiry;
+      if (isLoggedIn && Date.now() < expiry) {return true;}
+      else {return false;};
+  }); 
+//////////////////////////////////////////////
 
 return (
     <div id='edurange-appframe'>
@@ -67,10 +58,10 @@ return (
                     <Route path="/edurange3/logout" element={<Logout />} />
                     <Route path="/edurange3/options" element={<OptionsMenu />} />
                     <Route path="/edurange3/info/*" element={<InfoRouter />} />
-                      <Route path="/edurange3/dashboard/*" element={
-                        <LoggedIn_context>
-                          <Dashboard_router />
-                        </LoggedIn_context>
+                    <Route path="/edurange3/dashboard/*" element={
+                      <LoggedIn_context>
+                        <Dashboard_router />
+                      </LoggedIn_context>
                       } />
                   </Routes>
                 </div>
