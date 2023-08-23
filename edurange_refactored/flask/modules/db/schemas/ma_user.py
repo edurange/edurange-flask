@@ -1,16 +1,12 @@
 
-
+from flask import abort
 from edurange_refactored.extensions import db, bcrypt
 from flask_marshmallow import Marshmallow
-from marshmallow import validate, ValidationError, validates_schema
+from marshmallow import validate, validates_schema
 from marshmallow.fields import String
 from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Notification
-from flask_login import login_user
 ma = Marshmallow()
 db_ses = db.session
-
-class TestUser(db.Model):
-    __tablename__ = 'users'
 
 class LoginSchema(ma.SQLAlchemyAutoSchema):
 
@@ -28,9 +24,11 @@ class LoginSchema(ma.SQLAlchemyAutoSchema):
         password_plain_input = data.get("password")
         user = db_ses.query(User).filter_by(username=username_input).first()
 
-        if not user or not bcrypt.check_password_hash(user.password, password_plain_input):
-            raise ValidationError("invalid credentials")
-        # login_user(user)
+        if (
+            not user 
+            or not bcrypt.check_password_hash(user.password, password_plain_input)
+            ):
+                abort(418)  
 
     class Meta:
         model = User

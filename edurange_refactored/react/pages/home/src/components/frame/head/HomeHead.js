@@ -16,7 +16,7 @@ import {
 const HomeHead = () => {
   
     const { login_state } = useContext(HomeRouterContext);
-    console.log("HomeHead loginstate is:", login_state )
+    // console.log("HomeHead loginstate is:", login_state )
 
     const navDataToShow = login_state === true ? TopNav_admin_logged_in : TopNav_logged_out; 
     

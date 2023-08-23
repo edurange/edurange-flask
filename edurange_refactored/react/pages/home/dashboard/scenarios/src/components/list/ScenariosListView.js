@@ -5,21 +5,28 @@ import { Link } from 'react-router-dom';
 import '../../../../src/Dashboard.css'
 import '../../../../src/tables.css'
 import { HomeRouterContext } from '../../../../../src/Home_router';
+import fetchHelper from '../../../../../../../api/common/fetchHelper';
 
 function ScenariosListView() {
     
-    
-    const { instructorData_state } = useContext(HomeRouterContext);
-    if (!instructorData_state.scenarios) {return (<>No Scenarios Available</>)}
+    const { csrfToken_state } = useContext(HomeRouterContext);
 
-    console.log('scenario list view reporting instructordatastate:',instructorData_state)
-    
-    const tempData = (instructorData_state.scenarios.length > 0) ? instructorData_state.scenarios : [];  
+    const fetchedData = fetchHelper("GET", "/edurange3/api/get_scenarios_list",{},csrfToken_state)
+    console.log ("fetched list: ",fetchedData)
 
-    if (tempData.length < 1) {return (<>No Scenarios Available</>)}
+    const renderMsg = (<>Rendered ScenarioListView</>)
+
+    if (!fetchedData.scenarioTable) {return (<>{renderMsg} No Scenarios Available</>)}
+
+    // console.log('scenario list view reporting instructordatastate:',instructorData_state)
+    
+    // const tempData = (fetchedData.scenarioTable.length > 0) ? fetchedData.scenarioTable : [];  
+
+    // if (tempData.length < 1) {return (<>No Scenarios Available</>)}
 
     return (
         <>
+        {renderMsg}
         <div className='newdash-content-placard' >Scenarios</div>
             
         <div className="newdash-datatable-frame">
@@ -30,7 +37,7 @@ function ScenariosListView() {
                 <div className='table-cell-item table-active' >Status</div>
                 <div className='table-cell-item table-created'>Created</div>
             </div>
-            {tempData.slice(1).map((scenario) => (
+            {fetchedData.slice(1).map((scenario) => (
                 <Link key={scenario.id} to ={`${scenario.uid}/home`}>
                     <div className="table-row">
                         <div className='table-cell-item table-active'>{scenario.uid}</div>

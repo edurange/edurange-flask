@@ -12,9 +12,8 @@ import GuideInterpreter from './GuideInterpreter';
 import GuideHome from './GuideHome';
 import { HomeRouterContext } from '../../../../../src/Home_router';
 
-import {fetchData} from '../../../../../../../modules/utils/fetchHelper'
-
-export const ScenarioGuideContext = React.createContext();
+// import FetchHelper from '../../../../../../../modules/utils/fetchHelper'
+import ScenComp from '../../../../../../../../templates/student_view/components/scenario/ScenComp';
 
 const GenericPageData = "this is generic page data"
 
@@ -24,6 +23,9 @@ const fakePages = [
 const fakeTabs = [ "Home", "Brief", ...fakePages.map(num => `Chpt.${num}`)];
 
 function ScenarioFullView() {
+
+  const { instructorData_state , userData_state, csrfToken_state } = useContext(HomeRouterContext);
+
   
   const { uid, pageID } = useParams();
   console.log(`Received params for instance ${uid} and pageID ${pageID}`)
@@ -53,8 +55,13 @@ function ScenarioFullView() {
 
 //--------------------------
 
+  async function get_scenario() {
+
+    fetchedScenario = await FetchHelper('POST', "/get_scenario", {}, csrfToken_state)
+  }
+
   async function getGuide(){
-    const fetchedPage = await fetchData('POST',"get_guide", {page: chosenPage}) 
+    const fetchedPage = await FetchHelper('POST',"get_guide", {page: chosenPage}) 
     console.log("fetched page response", fetchedPage.message)
   }
   
@@ -81,7 +88,6 @@ function ScenarioFullView() {
   
 
 
-  const { instructorData_state , userData_state } = useContext(HomeRouterContext);
   if (!instructorData_state.scenarios) { return (<>Scenario not found</>) };
   
   const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid); // returns data specific to this scenario instance, but not this user
@@ -189,7 +195,8 @@ function ScenarioFullView() {
             </div>
             <article className='dashcard-fullview-guide-main-text'>
               {scenarioShellData.description_long}
-              <GuideInterpreter/>
+              {/* <GuideInterpreter/> */}
+              < ScenComp/>
               {/* <scenarioShellData.tutorial/> */}
               {/* <MyLorey />  */}
             </article>

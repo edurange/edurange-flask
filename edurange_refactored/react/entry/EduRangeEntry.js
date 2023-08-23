@@ -12,12 +12,15 @@ import React from 'react';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from 'react-router-dom';
 import Home_router from '../pages/home/src/Home_router';
+import AxiosConfig from '../api/config/AxiosConfig';
 
 const root = ReactDOM.createRoot(document.getElementById("edurange3_entry_id"));
 root.render (
     <React.StrictMode>
-        <BrowserRouter>
-            <Home_router />
-        </BrowserRouter>
+            <AxiosConfig>
+                <BrowserRouter>
+                    <Home_router/>
+                </BrowserRouter>
+            </AxiosConfig>
     </React.StrictMode>
 );

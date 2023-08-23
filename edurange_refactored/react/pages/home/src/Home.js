@@ -1,6 +1,8 @@
 "use strict";
 import React from 'react';
 function Home() {
+
+    const condition = false
   
     return (
         <div className='universal-page-parent'>

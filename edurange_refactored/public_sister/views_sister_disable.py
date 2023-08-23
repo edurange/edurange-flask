@@ -27,13 +27,13 @@ from ..utils import (
     tempMaker,
 )
 from edurange_refactored.extensions import db, csrf_protect
-import edurange_refactored.public_sister.views_sister_dbHelper as dbHelper
+import edurange_refactored.flask.modules.utils.db_devHelper as dbHelper
 
 import secrets
 from marshmallow import ValidationError
-from edurange_refactored.api.schemas.ma_user import LoginSchema
+from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema
 from flask_jwt_simple import create_jwt
-from .auth_utils import jwt_and_csrf_required
+from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
 from datetime import datetime, timedelta 
 
 db_ses = db.session

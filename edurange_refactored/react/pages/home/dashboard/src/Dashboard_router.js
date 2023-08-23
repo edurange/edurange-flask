@@ -29,9 +29,9 @@ import JWT_Test from './JWT_test';
 
 function Dashboard_router() {
 
-  const { login_state,} = useContext(HomeRouterContext);
+  const { login_state} = useContext(HomeRouterContext);
 
-  console.log("user is logged in: ",login_state)
+  // console.log("user is logged in: ",login_state)
   const navDataToShow = login_state === true ? DashSideNav_admin_logged_in : DashSideNav_logged_out; // needs update for permissions!  ***************
   return (
 
@@ -62,11 +62,12 @@ function Dashboard_router() {
               {/* <Route path="/users" element={<Users />} /> */}
               {/* <Route path="/userGroups" element={<UserGroups />} /> */}
               <Route path="/scenarios" element={<Scenarios_home />} />
+              {/* <Route path="/scenarios" element={<Scenarios_home />} /> */}
               <Route path="/scenarios/:uid/:pageID" element={<ScenarioFullView />}/>
               {/* <Route path="/scenarioGroups" element={<ScenarioGroups />} /> */}
               {/* <Route path="/notifications" element={<DashNotifications />} /> */}
               {/* <Route path="/ssh" element={<SSHmodal />} /> */}
-              <Route path="/api/jwt_auth" element={<JWT_Test  />} />
+              <Route path="/jwt_test" element={<JWT_Test  />} />
             </Routes>
           </div>
         </div>

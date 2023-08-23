@@ -5,7 +5,7 @@ const Logout = () => {
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
-                    You have NOT been logged out (needs update).
+                    You have TOTALLY been logged out (needs update).
                 </div>
             </div>
         </div>

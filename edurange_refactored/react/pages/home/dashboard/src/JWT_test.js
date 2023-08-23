@@ -1,54 +1,51 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { HomeRouterContext } from '../../src/Home_router';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-// this is only a testing component, the real auth provider component is Auth_ContextProvider.js
+// Removed the unused HomeRouterContext import
+// import { useAxios } from '../../../../api/config/axiosConfig';
+function JWT_Test() {
+    // const myAx = useAxios;
+    // const axi = myAx();
 
-function JWT_Test ( ) {
-
-    const { session_csrfToken_state } = useContext(HomeRouterContext);
-
-    const [demo_user, set_demo_user] = useState("No one");
+    const [testResponse, set_testResponse] = useState({
+        username: "bub",
+        user_id: null,
+        user_role: "none",
+        message: "Go away"
+    });
 
     useEffect(() => {
 
-        async function fetchDataFromApi() {
+        async function beginFetch() {
             try {
-                const response = await fetch (`http://127.0.0.1:8008/edurange3/dashboard/jwt_auth`,
+                const response = await axios.post("api/jwt_test");
+                console.log("RESPONSE FROM AFTER JWT_TEST REQ", response);
                 
-                {    
-                    method: 'POST',
-                    credentials: 'include',    // very important! 
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': session_csrfToken_state,
-                        // any additional 'headers' properties
-                    },                              
-                    body: JSON.stringify({
-                        "message": 'anything else',
-                        "test2": "value2"
-                        
-                        // any additional 'body' properties
-                    })                  
+                if (response.data.user_id) {
+                    set_testResponse(response.data);
                 }
-                )
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
 
-            if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); }
-        
-            const jsonData = await response.json();
-            console.log("JWT_Test REPORTING RETURN: ",jsonData);
-            set_demo_user(jsonData.message)
-            return jsonData;
+        beginFetch();
 
-            } catch (error) { console.error('Error fetching data:', error); }
-            
-        }; 
-        fetchDataFromApi();
-    }, []);
+    }, []); // This ensures that the effect will re-run if axi changes.
+
+    console.log("TRYING TO RUN JWT TEST IN COMPONENT");
     return (
-        <>THIS IS THE JWT_Test! 
-        <br></br>
-        <h1>hello, {demo_user}</h1>
+        <>THIS IS THE JWT_Test!
+            <br></br>
+            <br></br>
+            <h1>{testResponse.message}, {testResponse.username}!</h1>
+            <br></br>
+            <br></br>
+            <h1>Your ID is {testResponse.user_id}</h1>
+            <br></br>
+            <br></br>
+            <h1>Your role is {testResponse.user_role}</h1>
         </>
     );
-};  
+};
 export default JWT_Test;
