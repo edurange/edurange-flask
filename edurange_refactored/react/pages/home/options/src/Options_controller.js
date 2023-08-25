@@ -5,7 +5,7 @@ import './Options.css';
 
 import DashSidebar from '../../dashboard/src/sidebar/DashSidebar';
 import { Options_SideNav } from '../../../../modules/nav/navItemsData';
-import Options_home from './components/Options_home';
+import Options_home from './Options_home';
 import Options_accessibility from './components/Options_accessibility';
 import Options_themes from './components/Options_themes';
 
