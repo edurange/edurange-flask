@@ -2,10 +2,9 @@
 //  we are using axios so this is no longer needed.
 //  will keep for reference for the time being.
 
-async function fetchHelper (methodArg, fetchRoute, fetchBody, csrf) {
+async function fetchHelper (methodArg, fetchBody, csrf) {
 
-  const fetchURL = "https://riparian.dev"; // or whatever your edurange IP/domain is
-  const connectPort = "5000"; // or whatever your edurange port is
+  const fetchURL = "http://10.0.0.55:5000/edurange3/"; // update as needed
 
   const currentCSRF = await csrf;
 
@@ -14,7 +13,7 @@ async function fetchHelper (methodArg, fetchRoute, fetchBody, csrf) {
     credentials: 'include',    // very important!
     headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': currentCSRF,
+        'X-XSRF-TOKEN': currentCSRF,
     }
 };
 if (methodArg !== 'GET' && methodArg !== 'HEAD') {
@@ -22,11 +21,8 @@ if (methodArg !== 'GET' && methodArg !== 'HEAD') {
 }
 
   try {
-
-    const response = await fetch(`${fetchURL}${fetchRoute}`, fetchOptions);
-    
+    const response = await fetch(`${fetchURL}`,fetchOptions);
     if (!response.ok) { return { "error" : response.status }; };
-
     const jsonData = await response.json();
     console.log("fetchHelper return: ",jsonData);
     return jsonData;

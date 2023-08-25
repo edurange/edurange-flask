@@ -41,7 +41,7 @@
     padding: 0 15px;
 }
 
-.exo-nav-tabs {
+.edu3-nav-tabs {
     width: 100%;
     
     border-left: 1px solid rgb(107, 107, 107);
@@ -50,19 +50,19 @@
     color: var(--muted-orange);
 }
 
-.exo-nav-active-tab {
+.edu3-nav-active-tab {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.exo-nav-tab-label {
+.edu3-nav-tab-label {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.exo-nav-inactive-tab:hover {
+.edu3-nav-inactive-tab:hover {
     color: rgb(40, 191, 255);
 }

@@ -16,6 +16,15 @@ const ProductionPlugins = [
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 
+// MIGRATION NOTE:  Because the new React UI only has a single entry point (EduRangeEntry.js),
+//                  there is no longer any need for any of the other entry 'items' we 
+//                  were using for react recently (like for Notifications or etc.).
+//                  They have been temporarily disabled/retained. Soon they may be deleted.
+//                  
+//                  It is POSSIBLE some of these items are still in use by the legacy app,
+//                  however (tests show they are not, but better safe than sorry),
+//                  so for the time being, they will just be disabled/commented.
+
 module.exports = [
   {
     // configuration
@@ -23,10 +32,10 @@ module.exports = [
     entry: {
       main_js: './assets/js/main',
       main_css: [
-        path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
-        path.join(__dirname, 'assets', 'fontawesome', 'css', 'all.css'),
-        path.join(__dirname, 'assets', 'css', 'style.css'),
-        path.join(__dirname, 'assets', 'css', 'pucs.css'),
+        path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'), // required by legacy 
+        path.join(__dirname, 'assets', 'fontawesome', 'css', 'all.css'), // required by legacy
+        path.join(__dirname, 'assets', 'css', 'style.css'), // required by legacy
+        // path.join(__dirname, 'react','assets', 'css','unified', 'pucs.css'), // probably unneeded, leave for now
       ],
     },
     mode: debug,
@@ -83,68 +92,7 @@ module.exports = [
     }
   },
 
-
-
-
-
-
-
-
-
-
-
-
-  {
-    context: path.join(__dirname, 'edurange_refactored/react/pages/home/src/'),
-    entry: {
-      Home_router: './Home_router'
-    },
-    output: {
-      chunkFilename: "[id].js",
-      filename: "[name].bundle.js",
-      path: path.join(__dirname, "edurange_refactored", "static", "build"),
-      publicPath: "/static/build/",
-      library: "lib",
-      libraryTarget: "var"
-    },
-    resolve: {
-      extensions: [".js", ".jsx", ".css"]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-    ],
-    module: {
-      rules: [
-        {
-          test: /\.?js(x)?$/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react']
-            }
-          },
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                hmr: debug,
-              },
-            },
-            'css-loader',
-          ],
-        },
-        {
-          test: /\.(ttf|eot|svg|png|jpe?g|gif|ico)(\?.*)?$/i,
-          loader: `file-loader?name=[path][name].[ext]`
-        }
-      ]
-    }
-  },
-
-
+// required by React / new UI (confirmed)
   {
     context: path.join(__dirname, '/edurange_refactored/react/entry/'),
     entry: {
@@ -196,21 +144,7 @@ module.exports = [
   },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// required by earlier jinja/react UI
   {
 
     context: path.join(__dirname, '/edurange_refactored/templates/student_view/components/'),
@@ -258,7 +192,9 @@ module.exports = [
       ]
     }
   },
-  {
+
+// required by earlier jinja/react UI
+{
     context: path.join(__dirname, '/edurange_refactored/templates/instructor_view/components/'),
     entry: {
       instructor_view: './instructor_view/instructor_view.component',
@@ -304,7 +240,115 @@ module.exports = [
       ]
     }
   },
-  // this was removed to stop an error but it may be required by the legacy app...
+// required by earlier jinja/react UI
+{
+    context: path.join(__dirname, '/edurange_refactored/templates/accountmgmt/components/'),
+    entry: {
+      accountmgmt: './accountmgmt',
+    },
+    output: {
+      chunkFilename: "[id].js",
+      filename: "[name].bundle.js",
+      path: path.join(__dirname, "edurange_refactored", "static", "build"),
+      publicPath: "/static/build/",
+      library: "lib",
+      libraryTarget: "var"
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".css"]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.?js(x)?$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: debug,
+              },
+            },
+            'css-loader',
+          ],
+        }
+      ]
+    }
+  },
+];
+
+
+  // -  The notifications entry was disabled to stop an error but it may 
+  //    be required by the legacy app.
+  // -  After some testing, commenting this seems to not cause problems, 
+  //    but i'll leave it here for now.
+
+  // -  The 'home_router' entry was disabled because it appears to be
+  //    unused for the new UI (and was never used by the legacy app)
+  // -  The 'home_router' entry should remain here, commented out, until it 
+  //    is 100% confirmed to be unneeded.
+
+  // {
+  //   context: path.join(__dirname, 'edurange_refactored/react/pages/home/src/'),
+  //   entry: {
+  //     Home_router: './Home_router'
+  //   },
+  //   output: {
+  //     chunkFilename: "[id].js",
+  //     filename: "[name].bundle.js",
+  //     path: path.join(__dirname, "edurange_refactored", "static", "build"),
+  //     publicPath: "/static/build/",
+  //     library: "lib",
+  //     libraryTarget: "var"
+  //   },
+  //   resolve: {
+  //     extensions: [".js", ".jsx", ".css"]
+  //   },
+  //   plugins: [
+  //     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
+  //   ],
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.?js(x)?$/,
+  //         use: {
+  //           loader: "babel-loader",
+  //           options: {
+  //             presets: ['@babel/preset-env', '@babel/preset-react']
+  //           }
+  //         },
+  //       },
+  //       {
+  //         test: /\.css$/,
+  //         use: [
+  //           {
+  //             loader: MiniCssExtractPlugin.loader,
+  //             options: {
+  //               hmr: debug,
+  //             },
+  //           },
+  //           'css-loader',
+  //         ],
+  //       },
+  //       {
+  //         test: /\.(ttf|eot|svg|png|jpe?g|gif|ico)(\?.*)?$/i,
+  //         loader: `file-loader?name=[path][name].[ext]`
+  //       }
+  //     ]
+  //   }
+  // },
+
   // {
   //   context: path.join(__dirname, '/edurange_refactored/templates/notification_history/components/'),
   //   entry: {
@@ -352,50 +396,5 @@ module.exports = [
   //     ]
   //   }
   // },
-  // {
-  //   context: path.join(__dirname, '/edurange_refactored/templates/accountmgmt/components/'),
-  //   entry: {
-  //     accountmgmt: './accountmgmt',
-  //   },
-  //   output: {
-  //     chunkFilename: "[id].js",
-  //     filename: "[name].bundle.js",
-  //     path: path.join(__dirname, "edurange_refactored", "static", "build"),
-  //     publicPath: "/static/build/",
-  //     library: "lib",
-  //     libraryTarget: "var"
-  //   },
-  //   resolve: {
-  //     extensions: [".js", ".jsx", ".css"]
-  //   },
-  //   plugins: [
-  //     new MiniCssExtractPlugin({ filename: "[name].bundle.css" }),
-  //   ],
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.?js(x)?$/,
-  //         use: {
-  //           loader: "babel-loader",
-  //           options: {
-  //             presets: ['@babel/preset-env', '@babel/preset-react']
-  //           }
-  //         },
-  //       },
-  //       {
-  //         test: /\.css$/,
-  //         use: [
-  //           {
-  //             loader: MiniCssExtractPlugin.loader,
-  //             options: {
-  //               hmr: debug,
-  //             },
-  //           },
-  //           'css-loader',
-  //         ],
-  //       }
-  //     ]
-  //   }
-  // },
   
-];
+  

@@ -2,7 +2,7 @@ import React from 'react';
 
 // import pic5 from '/static/build/img/5.jpeg'
 
-const Documents = () => {
+function Documents () {
     return (
         <div >
                     <a href='https://github.com/edurange/edurange-flask/wiki'>

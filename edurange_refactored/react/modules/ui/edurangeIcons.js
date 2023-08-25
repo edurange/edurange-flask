@@ -22,7 +22,9 @@ import {
     FaEye,
     FaPeopleGroup,
     FaChess,
-    FaPerson
+    FaPerson,
+    FaKey,
+    FaPalette,
 } from "react-icons/fa6";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
@@ -47,6 +49,8 @@ export const edurange_icons = {
     userGroup_icon: <FaPeopleGroup/>,
     scenarioGroup_icon: <FaChess/>,
     user_icon: <FaPerson/>,
+    key_icon: <FaKey/>,
+    palette_icon: <FaPalette/>
 }
 
 // import Icon Object references from the react-icon "font-awesome 6" library
@@ -72,7 +76,6 @@ export const edurange_icons = {
 // import { FaCheck } from "react-icons/fa6";
 // import { FaChevronRight } from "react-icons/fa6";
 // import { FaChevronLeft } from "react-icons/fa6";
-// import { FaChildReaching } from "react-icons/fa6";
 // import { FaCircleXmark } from "react-icons/fa6";
 // import { FaClipboardCheck } from "react-icons/fa6";
 // import { FaCommentDots } from "react-icons/fa6";

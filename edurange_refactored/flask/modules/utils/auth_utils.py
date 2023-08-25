@@ -9,7 +9,8 @@ from functools import wraps
 from flask_jwt_simple import decode_jwt
 
 ###########
-#  This `@jwt_and_csrf_required()` decorator function should be used on ALL non-legacy routes except those not requiring login.
+#  This `@jwt_and_csrf_required()` decorator function should be used on ALL 
+#  non-legacy routes except those not requiring login.
 ###########
 def jwt_and_csrf_required(fn):
     @wraps(fn)
@@ -17,7 +18,7 @@ def jwt_and_csrf_required(fn):
         
         # CSRF check (dev)
         client_CSRF = request.headers.get('X-XSRF-TOKEN')
-        if not client_CSRF: return jsonify({"error": f"no client csrf request denied"}), 418
+        if not client_CSRF: return jsonify({"error": "no client csrf request denied"}), 418
         server_CSRF = session.get('X-XSRF-TOKEN')
         if not server_CSRF: return jsonify({"error": "no server csrf request denied"}), 418
         if client_CSRF != server_CSRF:  return jsonify({"error": "csrf bad match"}), 418

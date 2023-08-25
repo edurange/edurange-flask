@@ -16,7 +16,8 @@ from edurange_refactored.user.models import (
     ScenarioGroups, 
     Scenarios, 
     Responses, 
-    User 
+    User,
+    StudentGroups,  
 )
 import json
 from random import seed, shuffle
@@ -35,8 +36,6 @@ from flask import (
     g, ## see note
 )
 from ..utils.auth_utils import jwt_and_csrf_required
-
-# blueprint = Blueprint("api", __name__, url_prefix="/api", static_folder="../static")
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.
@@ -62,17 +61,95 @@ from ..utils.auth_utils import jwt_and_csrf_required
 #######
 
 db_ses = db.session
-blueprint_edurange3_scenario = Blueprint('edurange3_scenario', __name__, url_prefix='/edurange3/api')
-csrf_protect.exempt(blueprint_edurange3_scenario) # enforced elsewhere
+blueprint_edurange3_scenarios = Blueprint('edurange3_scenario', __name__, url_prefix='/edurange3/api')
+csrf_protect.exempt(blueprint_edurange3_scenarios) # enforced elsewhere
 
-@blueprint_edurange3_scenario.errorhandler(418)
+@blueprint_edurange3_scenarios.errorhandler(418)
 def custom_error_handler(error):
     response = jsonify({"error": "request denied"})
     response.status_code = 418
     response.content_type = "application/json"
     return response
 
-@blueprint_edurange3_scenario.route('/test', methods=['GET'])
+
+
+### Reviewed / Working Routes  ##############
+
+@blueprint_edurange3_scenarios.route('/get_scenarios', methods=['GET'])
+@jwt_and_csrf_required
+def student():
+    current_username = g.current_username
+    current_user_id = g.current_user_id
+    db_ses = db.session
+ 
+    userInfo = {
+        'id': current_user_id,
+        'username': current_username,
+    }
+    
+    groupsQuery = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers) \
+        .filter(GroupUsers.user_id == current_user_id) \
+        .filter(GroupUsers.group_id == StudentGroups.id).all()
+    groups = [{'id': group.id, 'name': group.name} for group in groupsQuery]
+
+    scenarioTableQuery = (
+        db_ses.query(
+            Scenarios.id,
+            Scenarios.name.label('sname'),
+            Scenarios.description.label('type'),
+            StudentGroups.name.label('gname'),
+            User.username.label('iname'),
+        )
+        .filter(GroupUsers.user_id == current_user_id)
+        .filter(StudentGroups.id == GroupUsers.group_id)
+        .filter(User.id == StudentGroups.owner_id)
+        .filter(ScenarioGroups.group_id == StudentGroups.id)
+        .filter(Scenarios.id == ScenarioGroups.scenario_id)
+    ).all()
+
+    scenarioTable = [
+        {
+            'scenario_id': scenario.id,
+            'scenario_name': scenario.sname,
+            'scenario_type': scenario.type,
+            'group_name': scenario.gname,
+            'owner_name': scenario.iname
+        }
+        for scenario in scenarioTableQuery
+    ]
+
+    return jsonify (
+        userInfo=userInfo,
+        groups=groups,
+        scenarioTable=scenarioTable
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### UNReviewed Routes Below ##############
+
+@blueprint_edurange3_scenarios.route('/test', methods=['GET'])
 @jwt_and_csrf_required
 def test():
     '''Test page.'''
@@ -85,7 +162,7 @@ def test():
         qnum=qnum
     )
 
-@blueprint_edurange3_scenario.route('/get_content/<scenario_id>', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/get_content/<scenario_id>', methods=['GET'])
 @jwt_and_csrf_required
 def get_content(scenario_id):
 
@@ -115,7 +192,7 @@ def get_content(scenario_id):
         return content
     return err, code
 
-@blueprint_edurange3_scenario.route('/get_content_test/<scenario_id>', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/get_content_test/<scenario_id>', methods=['GET'])
 @jwt_and_csrf_required
 def get_content_test(scenario_id):
     """
@@ -139,7 +216,7 @@ def get_content_test(scenario_id):
 from the current attempt (using getAttempt)
 for each question: highest score, most recent score 
 """
-@blueprint_edurange3_scenario.route('/get_state/<scenario_id>', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/get_state/<scenario_id>', methods=['GET'])
 @jwt_and_csrf_required
 def get_state(scenario_id):
     """
@@ -152,14 +229,14 @@ def get_state(scenario_id):
         return jsonify(calc_state(current_user.id, scenario_id))
     return err, code
 
-@blueprint_edurange3_scenario.route('/get_state_test/<scenario_id>', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/get_state_test/<scenario_id>', methods=['GET'])
 @jwt_and_csrf_required
 def get_state_test(scenario_id):
     with open(f'edurange_refactored/api/sample_state.json', 'r') as fp:
         content = json.load(fp)
     return content
 
-@blueprint_edurange3_scenario.route('/post_ans/<scenario_id>', methods=['POST'])
+@blueprint_edurange3_scenarios.route('/post_ans/<scenario_id>', methods=['POST'])
 @jwt_and_csrf_required
 def post_ans(scenario_id):
     """
@@ -307,7 +384,7 @@ def canonicalize_response(scenario_id: int,
     answer: str):
     return student_response
 
-@blueprint_edurange3_scenario.route('/chat_init/<scenario_id>', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/chat_init/<scenario_id>', methods=['GET'])
 @jwt_and_csrf_required
 def gen_chat_names(scenario_id): 
     """

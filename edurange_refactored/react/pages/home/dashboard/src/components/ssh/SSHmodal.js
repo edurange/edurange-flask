@@ -10,7 +10,7 @@ const initialData = [
     }
 ];
 
-const SSHmodal = () => {
+function SSHmodal () {
     const [currentData, setCurrentData] = useState(initialData);
     const [isVisible, setIsVisible] = useState(true);
     const innerFrameRef = useRef(null);
@@ -22,13 +22,13 @@ const SSHmodal = () => {
         };
     }, []);
 
-    const handleClickOutside = (event) => {
+    function handleClickOutside (event) {
         if (innerFrameRef.current && !innerFrameRef.current.contains(event.target)) {
             setIsVisible(false);
-        }
+        };
     };
 
-    const generateRandomData = () => {
+    function generateRandomData () {
         const randomIP = `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
         const randomPort = `${Math.floor(Math.random() * 10000)}`;
         const randomPassword = Math.random().toString(36).substring(2, 10);
@@ -38,7 +38,7 @@ const SSHmodal = () => {
         ]);
     };
 
-    const copyToClipboard = () => {
+    function copyToClipboard () {
         const sshCommand = `ssh ${currentData[0].username}@${currentData[0].ip} -p ${currentData[0].port}`;
         navigator.clipboard.writeText(sshCommand).then(() => {
             console.log('SSH Command copied to clipboard!');

@@ -1,14 +1,10 @@
 "use strict";
 import React from 'react';
 function Home() {
-
-    const condition = false
   
     return (
-        <div className='universal-page-parent'>
-            <div className='universal-page-child'>
-                <div className='welcome-text'>welcome to<br/> eduRange&gt;<span className='blink-me'>_</span></div>
-            </div>
+        <div className='welcome-text'>
+            welcome to<br/> eduRange&gt;<span className='blink-me'>_</span>
         </div>
     );
 };

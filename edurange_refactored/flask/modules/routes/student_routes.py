@@ -1,34 +1,20 @@
 
 from flask_login import login_user, logout_user
-
-from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
-from edurange_refactored.flask.modules.utils.db_devHelper import (
-    get_user,
-    get_users,
-    get_groups,
-    get_group_users,
-    get_scenarios,
-    get_scenario_groups,
-    get_student_responses,
-    get_instructor_data,  # gets all the previous
-)
 from edurange_refactored.user.models import (
     User,
-    GroupUsers, 
-    ScenarioGroups, 
-    Scenarios, 
-    StudentGroups,  
-    Responses, 
+    GroupUsers,
+    ScenarioGroups,
+    Scenarios,
+    StudentGroups,
+    Responses,
     Notification
 )
 from flask import (
     Blueprint,
     request,
-    session,
     jsonify,
     make_response,
-    render_template,
     g, # see note
 )
 from ..utils.auth_utils import jwt_and_csrf_required
@@ -43,7 +29,7 @@ from ..utils.auth_utils import jwt_and_csrf_required
 #   g.current_user_role
 #
 # You must import the `g` object from Flask, which will be the same instance of `g` as first 
-# accessed by jwt_and_csrf_required().  
+# accessed by jwt_and_csrf_required().
 # 
 # You must also import jwt_and_csrf_required() from auth_utils.py and include it as a decorator
 # on any route where those values would be needed (i.e., an auth protected route)
@@ -57,7 +43,11 @@ from ..utils.auth_utils import jwt_and_csrf_required
 #######
 
 db_ses = db.session
-blueprint_edurange3_student = Blueprint('edurange3_student', __name__, url_prefix='/edurange3/api')
+blueprint_edurange3_student = Blueprint(
+    'edurange3_student', 
+    __name__, 
+    url_prefix='/edurange3/api')
+
 csrf_protect.exempt(blueprint_edurange3_student) # disables legacy csrf_protect interference; enforced elsewhere
 
 @blueprint_edurange3_student.errorhandler(418)
@@ -67,10 +57,23 @@ def custom_error_handler(error):
     response.content_type = "application/json"
     return response
 
-@blueprint_edurange3_student.route('/jwt_test', methods=['POST']) # DEV_ONLY
+@blueprint_edurange3_student.route("/logout", methods=["POST"])
+@jwt_and_csrf_required
+def logout():
+    current_username = g.current_username
+    logout_user()
+
+    response_data = {"message": f"User {current_username} has been successfully logged out."}
+    response = make_response(jsonify(response_data))
+
+    response.set_cookie('edurange3_jwt', '', expires=0, samesite='Lax', httponly=True, path='/edurange3/')
+    response.set_cookie('X-XSRF-TOKEN', '', expires=0, samesite='Lax', path='/edurange3/')
+    
+    return response
+
+@blueprint_edurange3_student.route('/jwt_test', methods=['GET']) # DEV_ONLY
 @jwt_and_csrf_required
 def jwt_test():
-
     current_username = g.current_username
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
@@ -81,54 +84,21 @@ def jwt_test():
         'user_id' : current_user_id,
         'user_role': current_user_role
     })
-
-@blueprint_edurange3_student.route('/get_scenarios_list', methods=['GET','POST'])
+@blueprint_edurange3_student.route('/get_guide', methods=['GET']) # WIP
 @jwt_and_csrf_required
-def student():
-
+def get_guide():
     current_username = g.current_username
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
-    db_ses = db.session
- 
-    userInfo = {
-        'id': current_user_id,
+
+    # get unique data for scenario instance (SSH info, randomized answer stuff, etc)
+
+    # get user-scenario data (answers, ... )
+
+
+    return jsonify({
+        'message': 'Welcome',
         'username': current_username,
-    }
-    
-    groupsQuery = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers) \
-        .filter(GroupUsers.user_id == current_user_id) \
-        .filter(GroupUsers.group_id == StudentGroups.id).all()
-    groups = [{'id': group.id, 'name': group.name} for group in groupsQuery]
-
-    scenarioTableQuery = (
-        db_ses.query(
-            Scenarios.id,
-            Scenarios.name.label('sname'),
-            Scenarios.description.label('type'),
-            StudentGroups.name.label('gname'),
-            User.username.label('iname'),
-        )
-        .filter(GroupUsers.user_id == current_user_id)
-        .filter(StudentGroups.id == GroupUsers.group_id)
-        .filter(User.id == StudentGroups.owner_id)
-        .filter(ScenarioGroups.group_id == StudentGroups.id)
-        .filter(Scenarios.id == ScenarioGroups.scenario_id)
-    ).all()
-
-    scenarioTable = [
-        {
-            'id': scenario.id,
-            'sname': scenario.sname,
-            'type': scenario.type,
-            'gname': scenario.gname,
-            'iname': scenario.iname
-        }
-        for scenario in scenarioTableQuery
-    ]
-
-    return jsonify(
-        userInfo=userInfo,
-        groups=groups,
-        scenarioTable=scenarioTable
-    )
+        'user_id' : current_user_id,
+        'user_role': current_user_role
+    })

@@ -18,7 +18,7 @@ const login_nav = {
 const logout_nav = {
     title: "Logout",
     icon: edurange_icons.user_x_icon,
-    path: `/edurange3/logout`
+    path: `/edurange3/dashboard/logout`
 }
 const options_nav = {
     title: "Options",
@@ -107,8 +107,18 @@ const instructor_users_nav = {
 };
 const jwt_test_nav = {
     title: "jwt_test",
-    icon: edurange_icons.user_icon,
+    icon: edurange_icons.key_icon,
     path: `/edurange3/dashboard/jwt_test`
+};
+const optionMenu_themes_nav = {
+    title: "Themes",
+    icon: edurange_icons.palette_icon,
+    path: `/edurange3/options/themes`
+};
+const optionsMenu_accessibility_nav = {
+    title: "Accessibility",
+    icon: edurange_icons.accessibility_icon,
+    path: `/edurange3/options/accessibility`
 };
 
 export const SideNav_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav, login_nav ]
@@ -131,4 +141,5 @@ export const DashContextNav_instructor_logged_in = [ dashboard_nav, instructor_u
 export const DashContextNav_admin_logged_in =      [ dashboard_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  login_nav,logout_nav, devtable_nav ]
 export const DashContextNav_logged_out =           [ login_nav ]
 
+export const Options_SideNav =           [ optionsMenu_accessibility_nav, optionMenu_themes_nav ]
 

@@ -1,23 +1,23 @@
 "use strict";
 
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
-import '../../../assets/css/unified/pucs.css';
 import './Home.css'; 
+
 import Home from './Home';
 import HomeHead from './components/frame/head/HomeHead';
 import HomeFoot from './components/frame/foot/HomeFoot';
-import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
 import Dashboard_router from '../dashboard/src/Dashboard_router';
 import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
-import OptionsMenu from '../options/src/OptionsMenu';
 import InfoRouter from '../info/src/Info_router';
 
-
+import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
+import Options_controller from '../options/src/Options_controller';
 
 export const HomeRouterContext = React.createContext();
+
 
 function Home_router() {  
   
@@ -56,7 +56,7 @@ return (
                     <Route path="/edurange3/" element={<Home />} />
                     <Route path="/edurange3/login" element={<Login />} />
                     <Route path="/edurange3/logout" element={<Logout />} />
-                    <Route path="/edurange3/options" element={<OptionsMenu />} />
+                    <Route path="/edurange3/options/*" element={<Options_controller  />} />
                     <Route path="/edurange3/info/*" element={<InfoRouter />} />
                     <Route path="/edurange3/dashboard/*" element={
                       <LoggedIn_context>
