@@ -1,9 +1,6 @@
 "use strict";
 import React, { useContext } from 'react';
 import './HomeHead.css';
-// import { TopNav_admin_logged_in, TopNav_instructor_logged_in, TopNav_student_logged_in, TopNav_logged_out } from '../../../../modules/ui/navItemsData'
-
-
 import { Link } from 'react-router-dom';
 import { HomeRouterContext } from '../../../Home_router';
 import { 
@@ -11,12 +8,11 @@ import {
     TopNav_instructor_logged_in, 
     TopNav_student_logged_in, 
     TopNav_logged_out } 
-    from '../../../../../../../modules/ui/navItemsData';
+    from '../../../../../../modules/nav/navItemsData';
 
-const HomeHead = () => {
+function HomeHead () {
   
     const { login_state } = useContext(HomeRouterContext);
-    console.log("HomeHead loginstate is:", login_state )
 
     const navDataToShow = login_state === true ? TopNav_admin_logged_in : TopNav_logged_out; 
     

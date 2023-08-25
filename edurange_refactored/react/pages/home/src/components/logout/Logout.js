@@ -1,15 +1,46 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
+import axios from 'axios';
+import { HomeRouterContext } from '../../Home_router';
 
-const Logout = () => {
-    return (
-        <div className='universal-content-outer'>
-            <div className='universal-content-mid'>
-                <div className='universal-content-inner'>
-                    You have NOT been logged out (needs update).
-                </div>
-            </div>
-        </div>
-    );
+function Logout () {
+
+    const { 
+        set_userData_state, 
+        login_state, 
+        set_login_state 
+    } = useContext(HomeRouterContext);
+
+    async function sendLogoutRequest() {
+        try {
+            const response = await axios.post('/api/logout');
+            const responseData = response.data;
+
+            if (responseData.message) {
+                console.log("Logout success!");
+                console.log("Logout message: ", responseData.message);
+                set_userData_state(responseData.user_data);
+                set_login_state(false);
+                const userSession = {
+                    isLoggedIn: false,
+                    expiry: 0
+                };
+            sessionStorage.setItem('edurange3_session', JSON.stringify(userSession));
+            }
+            else {
+                const errData = responseData.error;
+                console.log(errData);
+                console.log('Logout failure.');
+            };
+        }
+        catch (error) {
+            console.error('Error logging out:', error);
+        };
+    };
+
+    useEffect(() => {sendLogoutRequest();}, []);
+
+    if (login_state) {return (<>You have NOT been logged out!.</>)}
+    return (<>You have been successfully logged out!</>);
 }
 
 export default Logout;

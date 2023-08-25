@@ -1,4 +1,4 @@
-
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -7,108 +7,106 @@ import './CardFullView.css';
 
 import { useContext } from 'react';
 import { scenarioShells } from '../../../../../../../modules/scenarios/ScenariosData';
-import { fetchData } from '../../../../../../../../modules/routing/fetchHelper';
+
 import GuideInterpreter from './GuideInterpreter';
 import GuideHome from './GuideHome';
 import { HomeRouterContext } from '../../../../../src/Home_router';
 
+// import FetchHelper from '../../../../../../../modules/utils/fetchHelper'
+import ScenComp from '../../../../../../../../templates/student_view/components/scenario/ScenComp';
 
 
-export const ScenarioGuideContext = React.createContext();
+
+
+
+
+
 
 const GenericPageData = "this is generic page data"
-
 const fakePages = [
   1, 2, 3, 4, 5, 6, 7, 8, 9
-]
+];
 const fakeTabs = [ "Home", "Brief", ...fakePages.map(num => `Chpt.${num}`)];
 
+
+
+
+
+
+
+
+
 function ScenarioFullView() {
+
+
+
+
+  const { userData_state } = useContext(HomeRouterContext); //ok
   
-  const { uid, pageID } = useParams();
-  console.log(`Received params for instance ${uid} and pageID ${pageID}`)
+  const { scenarioID, pageID } = useParams();
+  console.log(`Received params for instance ${scenarioID} and pageID ${pageID}`); //ok
 
 
-  if (!uid) { return (<>Scenario not found</>) }
 
-  // Retrieve from localStorage and parse it
-  const recalledPageString = localStorage.getItem('guidePage');
-  const recalledPage = recalledPageString ? JSON.parse(recalledPageString) : {
-    uid: uid,
-    pageID: pageID
+
+
+  if (!scenarioID) { return (<>Scenario not found</>); };
+ 
+
+
+
+
+  async function get_scenario() {
+    fetchedScenario = await axios.get("/api/get_scenario",
+    {
+    
+    });
   };
 
-  console.log('2')
-  
-  const chosenPage = recalledPage.pageID || "home";
-  console.log("PAGE CHOSEN:",chosenPage)
-  
-  // Save to localStorage in a stringified format
-  if (chosenPage) { 
-    localStorage.setItem('guidePage', JSON.stringify({
-      uid: uid,
-      pageID: chosenPage
-    }));
-  }
 
-//--------------------------
+// scenario 'type' to get shell data
+// scenario instance data
+// student's answers
+// ssh info
+// other instance-specific info (randomized values, etc)
+// 
+
 
   async function getGuide(){
-    const fetchedPage = await fetchData('POST',"get_guide", {page: chosenPage}) 
-    console.log("fetched page response", fetchedPage.message)
-  }
-  
-  const currentPageData = (chosenPage !== "home") ?  getGuide() : GuideHome
-    
-
-  console.log(currentPageData)
-  // const [guidePage_state, set_guidePage_state] = ({
-  //   uid: uid,
-  //   pageID: chosenPage,
-  // })
-  
-  console.log('4')
-
-  // const [guide_pageNumber_state, set_guide_pageNumber_state] = useState(0);  // home is 'home'. briefing then starts at 0 and chapter 1 is page 1 (in the content json)
-  useEffect(() => {
-    // set_guide_uid_state(Number(uid));
-    // set_guidePage_state(Number(pageID) || "home");
-    localStorage.setItem('guidePage', JSON.stringify({
-      uid: uid,
-      pageID: pageID}
-    ));
-  }, [pageID]);
+    const fetchedPage = await axios.get("get_guide", {page: chosenPage});
+    console.log("fetched page response", fetchedPage.message);
+  };
   
 
 
-  const { instructorData_state , userData_state } = useContext(HomeRouterContext);
-  if (!instructorData_state.scenarios) { return (<>Scenario not found</>) };
-  
-  const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid); // returns data specific to this scenario instance, but not this user
-  if (!scenarioInstanceData) { return (<>Scenario not found</>) };
-  
-  const scenarioShellData = scenarioShells[`${scenarioInstanceData.description}`] // returns generic data for the scenario type (e.g. Getting_Started), things like: title, keywords, splash image, resources, etc.
 
-  // const userScenarioInstanceData = fetchData("get_scenario", {userID: userData_state.id}); // for prod - data specific to this user for this specific scenario instance
-  // const userScenarioInstanceData = fetchData("POST","get_scenario", {userID: 2}); // for dev (will always get user 2's data for the specific scenario instance)
+
+
+  // const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid); // returns data specific to this scenario instance, but not this user
+  // if (!scenarioInstanceData) { return (<>Scenario not found</>) };
+  
+  // const scenarioShellData = scenarioShells[`${scenarioInstanceData.description}`]; // returns generic data for the scenario type (e.g. Getting_Started), things like: title, keywords, splash image, resources, etc.
+
+
 
 
 
 
   return (
     <>
-    <ScenarioGuideContext.Provider value={{
+    {/* <ScenarioGuideContext.Provider value={{ */}
       
-      // guide_pageNumber_state
       
-    }}>
+      
+    {/* }}> */}
     <div className='dashcard-fullview-frame'>
       <div className='dashcard-fullview-frame-carpet'>
 
         <div className="dashcard-fullview-left-frame">
 
           <section className='dashcard-fullview-placard-row'>
-              <span className='dashcard-fullview-placard-title' >"{scenarioInstanceData.description}"</span>
+              <span className='dashcard-fullview-placard-title' >"description"</span>
+              {/* <span className='dashcard-fullview-placard-title' >"{scenarioInstanceData.description}"</span> */}
               {/* <span className='dashcard-fullview-placard-subtitle'>Instance UID:{scenarioInstanceData.uid}</span> */}
           </section>
 
@@ -116,13 +114,13 @@ function ScenarioFullView() {
 
             <div className='dashcard-fullview-splash-image-section'>
               <div className='dashcard-fullview-splash-image' >
-                <img src={scenarioShellData.icon} />
+                {/* <img src={scenarioShellData.icon} /> */}icon
               </div>
             </div>
 
             <div className='dashcard-fullview-splash-blurb-frame' >
               <div className='dashcard-fullview-splash-blurb-text'>
-                {scenarioShellData.description_short} <br />
+                {/* {scenarioShellData.description_short} <br /> */} short description
               </div>
             </div>
 
@@ -134,7 +132,7 @@ function ScenarioFullView() {
 
               
               <div className='dashcard-fullview-left-lower-item'>
-                Keywords: {scenarioShellData.keywords.join(', ')}
+                {/* Keywords: {scenarioShellData.keywords.join(', ')} */} keywords
               </div>
 
               <div className='dashcard-fullview-left-lower-item'>
@@ -188,8 +186,9 @@ function ScenarioFullView() {
 
             </div>
             <article className='dashcard-fullview-guide-main-text'>
-              {scenarioShellData.description_long}
-              <GuideInterpreter/>
+              {/* {scenarioShellData.description_long} */} long
+              {/* <GuideInterpreter/> */}
+              {/* < ScenComp/> */}
               {/* <scenarioShellData.tutorial/> */}
               {/* <MyLorey />  */}
             </article>
@@ -210,7 +209,7 @@ function ScenarioFullView() {
         </div>
       </div>
     </div>
-    </ScenarioGuideContext.Provider>
+    {/* </ScenarioGuideContext.Provider> */}
     </>
   );
 };

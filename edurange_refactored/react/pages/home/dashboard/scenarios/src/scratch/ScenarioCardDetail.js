@@ -2,7 +2,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-// import ScenariosListView from './ScenariosListView';
 // import elf from '../../../../../assets/img/card_img/elf.svg';
 // import fingerprint from '../../../../../assets/img/card_img/fingerprint.svg';
 // import getting_started_icon from '../../../../../assets/img/card_img/getting_started.svg';

@@ -13,6 +13,7 @@ from edurange_refactored.flask.modules.routes.public_routes import blueprint_edu
 from edurange_refactored.flask.modules.routes.student_routes import blueprint_edurange3_student
 from edurange_refactored.flask.modules.routes.instructor_routes import blueprint_edurange3_instructor
 from edurange_refactored.flask.modules.routes.admin_routes import blueprint_edurange3_admin
+from edurange_refactored.flask.modules.routes.scenario_routes import blueprint_edurange3_scenarios
 
 from edurange_refactored import commands, public, user, tutorials, api
 from edurange_refactored.extensions import (
@@ -90,6 +91,7 @@ def register_blueprints(app):
     app.register_blueprint(blueprint_edurange3_student)
     app.register_blueprint(blueprint_edurange3_instructor)
     app.register_blueprint(blueprint_edurange3_admin)
+    app.register_blueprint(blueprint_edurange3_scenarios)
 
     app.register_blueprint(api.contents.blueprint)
 

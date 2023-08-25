@@ -1,15 +1,10 @@
 import React from 'react';
 
-const HelpPage = () => {
+function HelpPage () {
     return (
-        <div className='universal-content-outer'>
-            <div className='universal-content-mid'>
-                <div className='universal-content-inner'>
-                    HelpPage.js placeholder text
-                </div>
-            </div>
-        </div>
+        <>
+            HelpPage.js placeholder text
+        </>
     );
 }
-
 export default HelpPage;

@@ -1,9 +1,20 @@
 
 
+# these functions probably shouldn't be used, and will likely be removed.
+# they are here mostly for dev's reference in making routes and functions.
+# 
+# for most needs, db query filtering is a better fit than grabbing everything,
+# then filtering after.
 
-
-from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Responses, Notification
 from edurange_refactored.extensions import db
+from edurange_refactored.user.models import (
+    GroupUsers, 
+    ScenarioGroups, 
+    Scenarios, 
+    StudentGroups, 
+    User, 
+    Responses
+)
 
 
 db_ses = db.session
