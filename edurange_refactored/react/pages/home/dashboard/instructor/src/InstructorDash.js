@@ -7,7 +7,9 @@ const InstructorDash = () => {
         <div className='universal-content-outer'>
             <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
-                    Come back later.  We're going to have so many amazing options, dude.
+                   <li>Scenario Table</li>
+                   <li>Scenario Overview</li>
+                   <li>Create Scenario</li>
                 </div>
             </div>
         </div>
