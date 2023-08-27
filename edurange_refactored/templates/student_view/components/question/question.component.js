@@ -120,8 +120,6 @@ class Question extends React.Component {
     );
   }
 
-<<<<<<< HEAD
-=======
   QuestionFormat=(theQuestion) => {
     const question = theQuestion;
     const inputFormStuff = 
@@ -150,7 +148,6 @@ class Question extends React.Component {
     }
   }
 
->>>>>>> b01f31d8 (Developed layout and interaction response utility for scenario name selection page.)
   render() {
     const {question} = this.props;
     return (

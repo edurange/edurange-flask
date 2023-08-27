@@ -4,7 +4,7 @@
 
 async function fetchHelper (methodArg, fetchBody, csrf) {
 
-  const fetchURL = "http://10.0.0.55:5000/edurange3/"; // update as needed
+  const fetchURL = "http://127.0.0.1/edurange3/"; // update as needed
 
   const currentCSRF = await csrf;
 

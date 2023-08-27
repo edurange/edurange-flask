@@ -8,16 +8,17 @@ import './CreateScenario.css';
 import CreateScenario from './CreateScenario';
 import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
 
-            import Dashboard_router from '../dashboard/src/Dashboard_router';
+import Dashboard_router from '../dashboard/src/Dashboard_router';
 //import OptionsMenu from '../options/src/OptionsMenu';
 //import InfoRouter from '../info/src/Info_router';
 
 export const CreateScenarioRouterContext = React.createContext();
+
 function CreateScenario_router() {
   
   const connectIP = "127.0.0.1";
-  const connectPort = "8008"; // or whatever your normal port is
-  const loginRoute = "/edurange3/login"
+  const connectPort = "5000"; // or whatever your normal port is
+  const createScenarioRoute = "/edurange3/create_scenario"
   
   const navigate = useNavigate();
 ////HOOKS//////////////////////////////////////
@@ -67,7 +68,7 @@ return (
 
                 connectIP, 
                 connectPort, 
-                loginRoute,
+                createScenarioRoute,
                 csrfToken_state,      set_csrfToken_state,
                 userData_state,       set_userData_state,
                 login_state,          set_login_state,
@@ -75,29 +76,18 @@ return (
                 instructorData_state, set_instructorData_state,
 
             }}>
-              
-          <CreateScenarioHead />
+
           <div id='edurange-content'>
             <div className='universal-content-outer'>
               <div className='universal-content-mid'>
                 <div className='universal-content-inner'>
                   <Routes>
-                    <Route path="/edurange3/" element={<CreateScenario />} />
-                    <Route path="/edurange3/login" element={<Login3 />} />
-                    <Route path="/edurange3/logout" element={<Logout />} />
-                    <Route path="/edurange3/options" element={<OptionsMenu />} />
-                    <Route path="/edurange3/info/*" element={<InfoRouter />} />
-                      <Route path="/edurange3/dashboard/*" element={
-                        <LoggedIn_context>
-                          <Dashboard_router />
-                        </LoggedIn_context>
-                      } />
+                    <Route path="/edurange3/create_scenario" element={<CreateScenario />} />
                   </Routes>
                 </div>
               </div>
             </div>
           </div>
-        <CreateScenarioFoot />
       </CreateScenarioRouterContext.Provider>
     </div>
   );
