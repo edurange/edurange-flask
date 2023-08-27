@@ -3,20 +3,21 @@ import React, { useContext } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { HomeRouterContext } from '../../src/Home_router';
 import Dashboard_home from './Dashboard_home';
-import Scenarios_controller from '../scenarios/src/Scenarios_controller';
 import DashSidebar from './sidebar/DashSidebar';
 import JWT_Test from '../src/components/JWT_test';
 
 import './Dashboard.css';
 import Logout from '../../src/components/logout/Logout';
 import { DashSideNav_admin_logged_in, DashSideNav_logged_out } from '../../../../modules/nav/navItemsData';
+import Scenarios_router from '../scenarios/src/Scenarios_router';
 
 function Dashboard_router() {
 
   const { login_state } = useContext(HomeRouterContext);
   const navDataToShow = (login_state) ? DashSideNav_admin_logged_in  : DashSideNav_logged_out;
 
-  
+  // these routes extend /edurange3/dashboard
+  // e.g. scenarios is URL /edurange3/dashboard/scenarios
   return (
 
     <div className='newdash-frame'>
@@ -28,7 +29,7 @@ function Dashboard_router() {
           <div className='newdash-infopane-content'>
             <Routes>
               <Route path="/*" element={<Dashboard_home />} />
-              <Route path="/scenarios/*" element={<Scenarios_controller />} />
+              <Route path="/scenarios/*" element={<Scenarios_router />} />
               <Route path="/jwt_test" element={<JWT_Test />} />
               <Route path="/logout" element={<Logout />} />
 

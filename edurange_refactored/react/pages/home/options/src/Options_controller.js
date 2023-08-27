@@ -12,6 +12,9 @@ import Options_themes from './components/Options_themes';
 function Options_controller() {
   // Attempt to load user settings from localStorage or use default values
 
+
+  // these routes extend /edurange3/options
+  // e.g. accessibility is URL /edurange3/options/accessibility
   return (
     <div className='newdash-frame'>
       <div className='newdash-frame-carpet'>

@@ -6,18 +6,16 @@ import '../../../../src/Dashboard.css'
 import './CardFullView.css';
 
 import { useContext } from 'react';
-import { scenarioShells } from '../../../../../../../modules/scenarios/ScenariosData';
 
 import GuideInterpreter from './GuideInterpreter';
 import GuideHome from './GuideHome';
-import { HomeRouterContext } from '../../../../../src/Home_router';
+import { HomeRouterContext } from '../../../../src/Home_router';
 
 // import FetchHelper from '../../../../../../../modules/utils/fetchHelper'
-import ScenComp from '../../../../../../../../templates/student_view/components/scenario/ScenComp';
 
 
 
-
+// UNDER HEAVY CONSTRUCTION
 
 
 
@@ -56,11 +54,8 @@ function ScenarioFullView() {
 
 
 
-  async function get_scenario() {
-    fetchedScenario = await axios.get("/api/get_scenario",
-    {
-    
-    });
+  async function get_guide(scenarioID) {
+    fetchedGuide = await axios.get(`/api/get_guide/${scenarioID}`);
   };
 
 
@@ -70,15 +65,6 @@ function ScenarioFullView() {
 // ssh info
 // other instance-specific info (randomized values, etc)
 // 
-
-
-  async function getGuide(){
-    const fetchedPage = await axios.get("get_guide", {page: chosenPage});
-    console.log("fetched page response", fetchedPage.message);
-  };
-  
-
-
 
 
 
@@ -95,7 +81,6 @@ function ScenarioFullView() {
   return (
     <>
     {/* <ScenarioGuideContext.Provider value={{ */}
-      
       
       
     {/* }}> */}

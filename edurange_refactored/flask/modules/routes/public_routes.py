@@ -39,6 +39,7 @@ def custom_error_handler(error):
 @blueprint_edurange3_public.route("/login", methods=["POST"])
 def login_edurange3():
 
+
     validation_schema = LoginSchema()  # instantiate validation schema
     validated_data = validation_schema.load(request.json) # validate login. reject if bad.
     

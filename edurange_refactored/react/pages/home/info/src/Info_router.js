@@ -9,6 +9,9 @@ import Documents from '../docs/src/Documents';
 
 function InfoRouter (    ) {
 
+
+// these routes extend /edurange3/info
+// e.g. about is URL /edurange3/info/about
     return (
         <div className='edu3-dashpanes-outer-wrap'>
                 <div className='dash-sidebar-pane'>

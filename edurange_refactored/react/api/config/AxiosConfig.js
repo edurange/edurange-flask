@@ -28,9 +28,11 @@ function getCSRFfromCookie() {
     return null;
 };
 const csrfToken = getCSRFfromCookie();
+// const baseURL = 'http://AXIOS_CONFIG_URL/edurange3/'; // (or your URL)
 const baseURL = 'http://10.0.0.55:5000/edurange3/'; // (or your URL)
 
-if (!csrfToken) { console.log('CSRF token not found in cookie'); } // DEV_ONLY
+if (!csrfToken) { 
+    console.log('CSRF token not found in cookie'); } // DEV_ONLY
 
 axios.defaults.baseURL = baseURL;
 axios.defaults.headers.common['X-XSRF-TOKEN'] = csrfToken || ""; // provide empty for login

@@ -54,15 +54,6 @@ function ScenarioFullView() {
 
 //--------------------------
 
-  async function get_scenario() {
-    fetchedScenario = await FetchHelper('POST', "/get_scenario", {}, csrfToken_state);
-  };
-
-  async function getGuide(){
-    const fetchedPage = await FetchHelper('POST',"get_guide", {page: chosenPage});
-    console.log("fetched page response", fetchedPage.message);
-  };
-  
   const currentPageData = (chosenPage !== "home") ?  getGuide() : GuideHome ;
     
 

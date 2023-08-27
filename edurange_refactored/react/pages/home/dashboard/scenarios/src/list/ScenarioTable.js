@@ -1,14 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import '../../../../src/Dashboard.css'
-import '../../../../src/tables.css'
-import { ScenarioControllerContext } from '../../Scenarios_controller';
+import '../../../src/Dashboard.css';
+import '../../../src/tables.css';
+import { ScenariosRouterContext } from '../Scenarios_router';
 
 function ScenarioTable() {
 
-    const { scenarioList_state,   set_scenarioList_state } = useContext( ScenarioControllerContext );
+    const navigate = useNavigate();
+
+    const { scenarioList_state,   set_scenarioList_state,
+            scenarioMeta_state, set_scenarioMeta_state
+     } = useContext( ScenariosRouterContext );
 
     async function fetchScenarioList() {
         try {
@@ -21,7 +25,13 @@ function ScenarioTable() {
     };
     useEffect(() => {fetchScenarioList();}, []);
 
-    console.log ("fetched list: ", scenarioList_state)
+    function handleNavClick (scenario_index) {
+        const currentMeta = scenarioList_state[scenario_index];
+        set_scenarioMeta_state(currentMeta);
+        navigate(`${currentMeta.scenario_id}/home`);
+    };
+
+    console.log ("fetched list: ", scenarioList_state);
 
     return (
         <div className="newdash-datatable-frame">
@@ -35,8 +45,8 @@ function ScenarioTable() {
                 <div className='table-cell-item table-active' >Status</div>
                 <div className='table-cell-item table-created'>Created</div> */}
             </div>
-            {scenarioList_state.slice(0).map((scenario) => (
-                <Link key={scenario.scenario_id} to ={`${scenario.scenario_id}/home`}>
+            {scenarioList_state.slice(0).map((scenario, index) => (
+                <div  key={scenario.scenario_id} onClick={() => handleNavClick(index)} >
                     <div className="table-row">
                         <div className='table-cell-item table-active'>{scenario.scenario_id}</div>
                         <div className='table-cell-item table-scenario-name'>{scenario.scenario_name}</div>
@@ -47,10 +57,10 @@ function ScenarioTable() {
                         <div className='table-cell-item table-active'>{scenario.status ? "true":"false"}</div>
                         <div className='table-cell-item table-created'>{scenario.created_at}</div> */}
                     </div>
-                </Link>
+                </div>
             ))}
         </div>
     );
-}
+};
 
 export default ScenarioTable;

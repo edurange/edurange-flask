@@ -166,16 +166,6 @@ def student():
     )
 
 
-@blueprint_routing_sister.route("/home_sister/dashboard/api/get_guide", methods=["POST"]) # DEV_ONLY
-@jwt_and_csrf_required
-def getGuide():
-    
-    req = request.json
-    reqPage = req["page"]
- 
-    return jsonify({"message": reqPage})
-
-
 @blueprint_routing_sister.route("/home_sister/api/get_actman", methods=['POST'])
 @jwt_and_csrf_required
 def account():
