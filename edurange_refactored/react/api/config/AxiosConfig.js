@@ -22,14 +22,16 @@ function getCSRFfromCookie() {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) {
         const cookieReturn = parts.pop().split(';').shift();
-        console.log (cookieReturn);
         return cookieReturn; 
     };
     return null;
 };
 const csrfToken = getCSRFfromCookie();
-// const baseURL = 'http://AXIOS_CONFIG_URL/edurange3/'; // (or your URL)
-const baseURL = 'http://10.0.0.55:5000/edurange3/'; // (or your URL)
+
+// by the time you see this, the baseURL should be your own.
+// if it is incorrect (or says URL_TO_BE_CHANGED),
+// update that portion to your actual edurange instance IP.
+const baseURL = 'http://URL_TO_BE_CHANGED:5000/edurange3/'; // (or your URL)
 
 if (!csrfToken) { 
     console.log('CSRF token not found in cookie'); } // DEV_ONLY

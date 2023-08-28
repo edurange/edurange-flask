@@ -21,7 +21,8 @@ kebab-case
 
 PascalCase
 
-  - `PascalCase` with ReactComponents - both the .js file and the Function().
+  - `PascalCase` with ReactComponents; both the .js file and the Function().
+     (same with most Classes and other 'shell' type construction objects)
 
 
 lower_snake_case

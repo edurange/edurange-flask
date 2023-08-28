@@ -1,200 +1,169 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import '../../../../src/Dashboard.css'
+import '../../../src/Dashboard.css'
 import './CardFullView.css';
 
 import { useContext } from 'react';
-
-import GuideInterpreter from './GuideInterpreter';
-import GuideHome from './GuideHome';
 import { HomeRouterContext } from '../../../../src/Home_router';
-
-// import FetchHelper from '../../../../../../../modules/utils/fetchHelper'
-
-
+import { ScenariosRouterContext } from '../Scenarios_router';
+import { nanoid } from 'nanoid';
+import buildGuide from '../../../../../../modules/utils/scenarios/buildGuide';
+import { scenarioShells } from '../../../../../../modules/shells/scenarioType_shells';
 
 // UNDER HEAVY CONSTRUCTION
 
-
-
-
-const GenericPageData = "this is generic page data"
-const fakePages = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9
-];
-const fakeTabs = [ "Home", "Brief", ...fakePages.map(num => `Chpt.${num}`)];
-
-
-
-
-
-
-
-
-
 function ScenarioFullView() {
 
+  const { scenarioID, pageID } = useParams(); // from URL parameters
+  const { userData_state } = useContext(HomeRouterContext);
+  const {
+    guideBook_state, set_guideBook_state,
+    guideContent_state, set_guideContent_state,
+    scenarioList_state, set_scenarioList_state,
+    scenarioPage_state, set_scenarioPage_state,
+  } = useContext(ScenariosRouterContext);
+
+  const meta = guideContent_state.scenario_meta;
+
+  useEffect(() => {
+    async function beginGuideBuild() {
+      try {
+        const contentReturn = await axios.get(`api/get_content/${scenarioID}`);
+        const contentData = contentReturn.data;
+        const guideReturn = buildGuide(contentData.contentJSON);
+        set_guideContent_state(contentData);
+        set_guideBook_state(guideReturn);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      };
+    };
+    beginGuideBuild();
+  }, [scenarioID]);
 
 
+  // present empty / deflect while promises await
+  if ((guideBook_state.length < 1) || (!meta)) {
+    return (<>Scenario not found</>);
+  }
 
-  const { userData_state } = useContext(HomeRouterContext); //ok
-  
-  const { scenarioID, pageID } = useParams();
-  console.log(`Received params for instance ${scenarioID} and pageID ${pageID}`); //ok
+  //  post-guard code
 
+  const tf_dir = [`${guideContent_state.unique_scenario_name}_attacker`][0]
+  const terraform = guideContent_state.scenario_meta.scenario_terraform.outputs[`${tf_dir}`]
+  const SSH_IP = terraform.value[0].SSH_IPess_public
 
-
-
-
-  if (!scenarioID) { return (<>Scenario not found</>); };
- 
-
-
-
-
-  async function get_guide(scenarioID) {
-    fetchedGuide = await axios.get(`/api/get_guide/${scenarioID}`);
-  };
-
-
-// scenario 'type' to get shell data
-// scenario instance data
-// student's answers
-// ssh info
-// other instance-specific info (randomized values, etc)
-// 
-
-
-
-  // const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid); // returns data specific to this scenario instance, but not this user
-  // if (!scenarioInstanceData) { return (<>Scenario not found</>) };
-  
-  // const scenarioShellData = scenarioShells[`${scenarioInstanceData.description}`]; // returns generic data for the scenario type (e.g. Getting_Started), things like: title, keywords, splash image, resources, etc.
-
-
-
-
-
+  const scenarioType = guideContent_state.contentJSON.ScenarioTitle
+  const shellData = scenarioShells[`${scenarioType}`];
 
   return (
     <>
-    {/* <ScenarioGuideContext.Provider value={{ */}
-      
-      
-    {/* }}> */}
-    <div className='dashcard-fullview-frame'>
-      <div className='dashcard-fullview-frame-carpet'>
+      <div className='dashcard-fullview-frame'>
+        <div className='dashcard-fullview-frame-carpet'>
 
-        <div className="dashcard-fullview-left-frame">
+          <div className="dashcard-fullview-left-frame">
 
-          <section className='dashcard-fullview-placard-row'>
-              <span className='dashcard-fullview-placard-title' >"description"</span>
-              {/* <span className='dashcard-fullview-placard-title' >"{scenarioInstanceData.description}"</span> */}
-              {/* <span className='dashcard-fullview-placard-subtitle'>Instance UID:{scenarioInstanceData.uid}</span> */}
-          </section>
-
-          <section className='dashcard-fullview-splash-row'>
-
-            <div className='dashcard-fullview-splash-image-section'>
-              <div className='dashcard-fullview-splash-image' >
-                {/* <img src={scenarioShellData.icon} /> */}icon
-              </div>
-            </div>
-
-            <div className='dashcard-fullview-splash-blurb-frame' >
-              <div className='dashcard-fullview-splash-blurb-text'>
-                {/* {scenarioShellData.description_short} <br /> */} short description
-              </div>
-            </div>
-
-          </section>
-
-          <section className='dashcard-fullview-left-lower-section'>
-
-            <section className='dashcard-fullview-left-mid-frame'>
-
-              
-              <div className='dashcard-fullview-left-lower-item'>
-                {/* Keywords: {scenarioShellData.keywords.join(', ')} */} keywords
-              </div>
-
-              <div className='dashcard-fullview-left-lower-item'>
-                Students: Mario, Toad, Bowser, DK
-              </div>
-              
-              <div className='dashcard-fullview-left-lower-item'>
-                Student Groups: 2, 4
-              </div>
-
-              <div className='dashcard-fullview-left-lower-item'>
-                Scenario Groups: 1
-              </div>
-
-              <div className='dashcard-fullview-left-lower-item'>
-                <br />
-                Resources:
-                <br />
-                - Frequently Asked Questions (FAQ)
-                <br />
-                - Link to Resource
-                <br />
-                - Link to Resource
-                <br />
-                - Link to Resource
-              </div>
+            <section className='dashcard-fullview-placard-row'>
+              <span className='dashcard-fullview-placard-title' >{meta.scenario_name}</span>
             </section>
-          </section>
 
+            <section className='dashcard-fullview-splash-row'>
 
-        </div>
-
-        <div className='dashcard-fullview-guide-frame'>
-          <div className='dashcard-fullview-guide-main'>
-            <div className='dashcard-fullview-controlbar-frame'>
-              <div className='dashcard-fullview-controlbar-tabs-frame'>
-
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-left dashcard-tab-active'>Home</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Brief</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.1</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.2</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.3</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.4</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.5</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.6</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.7</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.8</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Chpt.9</div>
-                <div className='dashcard-fullview-controlbar-tab dashcard-tab-right dashcard-tab-inactive'>Chpt.10</div>
+              <div className='dashcard-fullview-splash-image-section'>
+                <div className='dashcard-fullview-splash-image' >
+                  <img src={shellData.icon} />
+                </div>
               </div>
 
-            </div>
-            <article className='dashcard-fullview-guide-main-text'>
-              {/* {scenarioShellData.description_long} */} long
-              {/* <GuideInterpreter/> */}
-              {/* < ScenComp/> */}
-              {/* <scenarioShellData.tutorial/> */}
-              {/* <MyLorey />  */}
-            </article>
+              <div className='dashcard-fullview-splash-blurb-frame' >
+                <div className='dashcard-fullview-splash-blurb-text'>
+                  {shellData.description_short} <br />
+                </div>
+              </div>
+
+            </section>
+
+            <section className='dashcard-fullview-left-lower-section'>
+
+              <section className='dashcard-fullview-left-mid-frame'>
+
+
+                <div className='dashcard-fullview-left-lower-item'>
+                  Keywords: {shellData.keywords.join(', ')}
+                </div>
+
+                <div className='dashcard-fullview-left-lower-item'>
+                  Students: Mario, Toad, Bowser, DK
+                </div>
+
+                <div className='dashcard-fullview-left-lower-item'>
+                  Student Groups: 2, 4
+                </div>
+
+                <div className='dashcard-fullview-left-lower-item'>
+                  Scenario Groups: 1
+                </div>
+
+                <div className='dashcard-fullview-left-lower-item'>
+                  <br />
+                  Resources:
+                  <br />
+                  - Frequently Asked Questions (FAQ)
+                  <br />
+                  - Link to Resource
+                  <br />
+                  - Link to Resource
+                  <br />
+                  - Link to Resource
+                </div>
+              </section>
+            </section>
+
+
           </div>
-          <div className='dashcard-fullview-guide-footcontrol-frame'>
-            <div className='dashcard-fullview-footcontrol-item footcontrol-ssh-text'>
-              <div>
-                SSH: 123.456.789.012:1234
-              </div>
-              <div>
-                user: 1337h4x0r pass: sh4d0wruN  [COPY]
-              </div>
-            </div>
-            <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button'>Web-SSH</div>
-            <div className='dashcard-fullview-footcontrol-item footcontrol-chat-button'>Chat</div>
-          </div>
 
+          <div className='dashcard-fullview-guide-frame'>
+            <div className='dashcard-fullview-guide-main'>
+              <div className='dashcard-fullview-controlbar-frame'>
+                <div className='dashcard-fullview-controlbar-tabs-frame'>
+                  <div className='dashcard-fullview-controlbar-tab dashcard-tab-left dashcard-tab-active'>Home</div>
+                  {/* <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>Brief</div> */}
+                  {guideBook_state.map((val, key) => {
+                    return (
+                      <Link to={`/edurange3/dashboard/scenarios/${scenarioID}/${key + 1}`} key={nanoid(5)}>
+                        <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>
+                          Chpt.{key + 1}
+                          {/* <div id='newdash-sidebar-icon'>{val.icon}</div>
+                        <div id='newdash-sidebar-title'>{val.title}</div> */}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                  <div className='dashcard-fullview-controlbar-tab dashcard-tab-right dashcard-tab-inactive'>Chpt.10</div>
+                </div>
+
+              </div>
+              <article className='dashcard-fullview-guide-main-text'>
+                {guideBook_state[pageID - 1]}
+              </article>
+            </div>
+            <div className='dashcard-fullview-guide-footcontrol-frame'>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-ssh-text'>
+                <div>
+                  SSH: {SSH_IP}
+                </div>
+                <div>
+                  user: {guideContent_state.credentialsJSON.username} pass: {guideContent_state.credentialsJSON.password}  [COPY]
+                </div>
+              </div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button'>Web-SSH</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-chat-button'>Chat</div>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
-    {/* </ScenarioGuideContext.Provider> */}
     </>
   );
 };

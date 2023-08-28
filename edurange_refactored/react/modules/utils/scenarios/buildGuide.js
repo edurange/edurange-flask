@@ -1,6 +1,8 @@
 
 // an "item" is a single reading or question
 
+import { reactify, reactify_question, reactify_reading } from "./scenario_utils";
+
 // one or more grouped items make up a 'chapter'
 
 // all chapters make up a single scenario's guide 'book' array
@@ -15,7 +17,7 @@
 // but i've decided to leave them for yours :)
 
 
-export default function buildGuide(contentJSON, reactify) {
+export default function buildGuide(contentJSON) {
 
     const readings = contentJSON.StudentGuide.Readings;
     const questions = contentJSON.StudentGuide.Questions;
@@ -48,12 +50,8 @@ export default function buildGuide(contentJSON, reactify) {
             const itemContentType = itemReferencePair[0];    // 'q' or 'r'
             const itemContentPointer = itemReferencePair[1]; // Pointer to select content by key
 
-            //  if (reactify) {
-                    // make these objects react components instead
-            // }
-
             // 'items' store actual 'content'
-            const itemObject = {
+            let itemObject = {
                 itemContentType: itemContentType, // 'q' or 'r'
                 itemContentPointer: itemContentPointer, // Pointer to the actual content
                 chapterNumber: i,       // The chapter the item belongs to 
@@ -63,10 +61,17 @@ export default function buildGuide(contentJSON, reactify) {
 
             // Assign content based on the type
             if (itemContentType === "r") {
+
                 itemObject.itemContent = readings[itemContentPointer];
+                itemObject = reactify_reading(itemObject); // convert to react component (will refactor to actual component creation)
             } else {
                 itemObject.itemContent = questions[itemContentPointer];
+                itemObject = reactify_question(itemObject); // convert to react component
             }
+
+            // if (should_reactify) {
+            //     itemObject = reactify(itemObject);
+            // }
             // Add the 'item' to the 'chapter'
             bookChapter.push(itemObject);
         }

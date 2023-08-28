@@ -1,4 +1,9 @@
 
+
+//////////
+    // THIS ENTIRE PROCESS IS DEPRECATED (USE AXIOS).  WILL KEEP FOR REFERENCE AND COPYPASTA
+//////////
+
 import React, { useState } from 'react';
 
 function GenericDataFetcher() {

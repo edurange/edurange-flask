@@ -19,7 +19,7 @@ import '../assets/css/unified/pucs.css'
 
 const root = ReactDOM.createRoot(document.getElementById("edurange3_entry_id"));
 root.render (
-    // <React.StrictMode>
+    // <React.StrictMode> // strict mod is useful for debug, but can cause issues
             <AxiosConfig>
                 <BrowserRouter>
                     <Home_router/>

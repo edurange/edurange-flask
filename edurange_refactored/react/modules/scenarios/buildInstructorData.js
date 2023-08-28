@@ -4,6 +4,11 @@ import { nanoid } from 'nanoid'
 
 import { UserShell, UserGroupShell, ScenarioGroupShell, ScenarioShell } from '../shells/instructorData_shells';
 
+
+//////////
+    // KEEP FOR NOW; MESSY, BUT COULD BE USEFUL IN PANOPTICON (INSTRUCTOR_DATA)
+//////////
+
 // the 'buildInstructorDAta' process will take the data from the backend, as available, and repopulate it into a more dev-friendly and
 // useful structure for the frontend, consisting of object arrays.
 
