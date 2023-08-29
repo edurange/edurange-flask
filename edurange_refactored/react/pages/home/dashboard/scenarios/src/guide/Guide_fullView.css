@@ -213,44 +213,62 @@
     width: 100%;
     flex-direction: row;
     position: relative;
+    justify-content:space-evenly ;
+    justify-items: space-evenly;
+    align-items: space-evenly;
+    align-content: space-evenly;
     bottom: 0px; 
-    left: 0%;
+    left: 0;
     right: 0;
-    top: 0%;
+    top: 0;
     display: flex;
+    /* background-color: aliceblue; */
 }
 .dashcard-fullview-controlbar-tab{
     border-bottom: 1px solid rgba(218, 165, 32, 0.503);
     border-left: 1px solid rgba(218, 165, 32, 0.503);
     height: 100%;
+    min-height: 100%;
     width: 100%;
     text-align: center;
     align-items: center;
     justify-content: center;
     display: flex;
     font-size: small;
-    position: relative;
+    /* position: relative;
     bottom: 0%; 
     left: 0;
-    right: 0;
+    right: 0; */
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+    width: 100%;
+
 }
 .dashcard-tab-left{
     border-top-left-radius: 15px;
     border-left:none;
+    width: 100%;
+    display: flex;
 }
 .dashcard-tab-right{
     border-top-right-radius: 15px;
+    width: 100%;
+    display: flex;
 }
 .dashcard-tab-inactive{
     background-color: var(--blue-dark);
     color: var(--orange-light);
+    display: flex;
+    width: 100%;
+
 }
 .dashcard-tab-active{
     background-color: var(--blue-normal);
     color: var(--blue-deep);
     font-size:medium ;
+    display: flex;
+    width: 100%;
+
 }
 .dashcard-tab-active:hover{
     cursor:default ;

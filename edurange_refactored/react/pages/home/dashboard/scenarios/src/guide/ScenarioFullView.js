@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import '../../../src/Dashboard.css'
-import './CardFullView.css';
+import './Guide_fullView.css';
 
 import { useContext } from 'react';
 import { HomeRouterContext } from '../../../../src/Home_router';
 import { ScenariosRouterContext } from '../Scenarios_router';
 import { nanoid } from 'nanoid';
-import buildGuide from '../../../../../../modules/utils/scenarios/buildGuide';
 import { scenarioShells } from '../../../../../../modules/shells/scenarioType_shells';
+import buildGuide from '../modules/buildGuide';
 
 // UNDER HEAVY CONSTRUCTION
 
@@ -32,6 +32,7 @@ function ScenarioFullView() {
       try {
         const contentReturn = await axios.get(`api/get_content/${scenarioID}`);
         const contentData = contentReturn.data;
+        console.log(contentData)
         const guideReturn = buildGuide(contentData.contentJSON);
         set_guideContent_state(contentData);
         set_guideBook_state(guideReturn);
@@ -48,14 +49,8 @@ function ScenarioFullView() {
     return (<>Scenario not found</>);
   }
 
-  //  post-guard code
-
-  const tf_dir = [`${guideContent_state.unique_scenario_name}_attacker`][0]
-  const terraform = guideContent_state.scenario_meta.scenario_terraform.outputs[`${tf_dir}`]
-  const SSH_IP = terraform.value[0].SSH_IPess_public
-
-  const scenarioType = guideContent_state.contentJSON.ScenarioTitle
-  const shellData = scenarioShells[`${scenarioType}`];
+  const SSH_IP = guideContent_state.SSH_IP[`${meta.scenario_name}_attacker`]
+  const shellData = scenarioShells[`${meta.scenario_description}`];
 
   return (
     <>
@@ -154,7 +149,7 @@ function ScenarioFullView() {
                   SSH: {SSH_IP}
                 </div>
                 <div>
-                  user: {guideContent_state.credentialsJSON.username} pass: {guideContent_state.credentialsJSON.password}  [COPY]
+                  user: {guideContent_state.credentialsJSON.username} pass: {guideContent_state.credentialsJSON.password}
                 </div>
               </div>
               <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button'>Web-SSH</div>

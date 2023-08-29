@@ -1,0 +1,100 @@
+
+
+This document will list the locations for important files, directories, 
+functions, etc for the exo_prestage branch
+
+Important note:  this is only for the new directories and files.  
+                 for legacy directory and file locations, see wiki.
+
+Flask:
+
+edurange_refactored/
+
+    /flask                                  Main (new) flask dir.
+        
+        /config                             Important configuration files can go here, currently unused.
+
+        /modules                            The majority of my updates are here.  includes db tools, 
+                                            flask backend routes, authorisation utility and config files, etc
+            
+            /db                             Modules that are related specifically to SQLAlchemy 
+
+                /schemas                    Database request schemata (marshmallow library currently)
+            
+            /routes                         This is where route files go.  there are some already here, which you
+                                            can add to, or you can create your own and initialize them with flask 
+            
+            /utils                          A more general directory for 'utility' modules that don't fit 
+                                            in any of the other module directories.  
+            
+
+    react 
+
+        /api 
+
+            /config                         Important configuration files relating specifically to API calls to 
+                                            flask go here.
+                AxiosConfig.js              Very important your IP is correct here!
+            
+            /common                         probably going to be removed.
+
+            /test                           general API testing related files.  these files are meant to be general purpose API
+                                            testers OR specific usecase testers that don't fit better elsewhere. 
+
+        /assets                             .svgs, images, css, etc.  
+
+        /config                             high level react config files, currently unused.
+
+        /entry                              just holds the single EduRangeEntry.js file that creates the context and 
+                                            serves as the 'gateway' to the rest of the app.
+
+            EduRangeEntry.js                The entry component.  Provides intial render into .html, and is primary context provider.
+                                            Renders <Home_router.js /> but that's all.
+
+        /modules                            similar to the flask version, but for frontend business logic scripts.  this includes 
+                                            'context, nav, scenarios, shells, ui'. 
+        
+        /pages                              The main react UI, where all the Component.js files go other than entry. 
+                                    
+            /home                           Top level 
+
+                Home_router.js              'Context provider' for the logged out 'menu', and the 'root' of the website at / (or in dev, /edurange3/)
+                                            defines routes that extend from /edurange3/ (including /login and /dashboard)
+                                            This is the only file that is 'served' by EduRangeEntry.js, the gateway react script.
+                
+                /info                       all the docs, abouts, info, links, etc etc
+                    /about 
+                    /contact 
+                    /docs 
+                    /help 
+                
+                /options                    general user options
+                    /accessibility          accessibility options
+                    /themes                 new color themes for the future
+                                            note: we might not need separate directories but they're here if we want them
+
+                /dashboard                  logged in / protected 
+
+                    Dashboard_router.js     'Context provider' for the logged in dashboard 'menu', defines routes that extend from /edurange3/dashboard
+
+                    /scenarios              home is list view, individual scenario is full view (lots of this is under HEAVY construction.
+                                            If you make any updates here, especially to the full view or the helper scripts, 
+                                            please put it in a different directory or use distinct new filenames so there's no confusion)
+
+                        Scenarios_router.js Just like the other routers, this is the main 'Context provider' for the scenarios area, at least in terms
+                                            of routing and higher level pieces of state. 
+
+                            /src/guide      Full view and 'brain' of the normal scenario view.  HEAVY CONSTRUCTION 
+
+                            /chat           Chat.  Placeholder. 
+
+                            
+
+                    /admin                  admin panel within dashboard (placeholder, needs update)
+                    /account                user account controls (pw reset, email change, etc) (placeholder, needs update)
+                    /instructor             instructor stuff (placeholder)
+                    /testing                idk (unused) 
+                    /users                  older scripts relating to 'user groups', but may be removed 
+                
+
+Legacy:

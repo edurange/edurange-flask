@@ -10,7 +10,7 @@ from edurange_refactored.user.models import (
     Responses,
     Notification
 )
-from ....utils import (
+from edurange_refactored.utils import (
     check_role_view,
     displayCorrectAnswers,
     displayProgress,
@@ -30,8 +30,7 @@ from flask import (
     make_response,
     g, # see note
 )
-from ..utils.auth_utils import jwt_and_csrf_required
-from ..utils.guide_utils import getResponses
+from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.

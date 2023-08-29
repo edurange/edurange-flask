@@ -16,14 +16,6 @@ const ProductionPlugins = [
 const debug = (process.env.NODE_ENV !== 'production');
 const rootAssetPath = path.join(__dirname, 'assets');
 
-// MIGRATION NOTE:  Because the new React UI only has a single entry point (EduRangeEntry.js),
-//                  there is no longer any need for any of the other entry 'items' we 
-//                  were using for react recently (like for Notifications or etc.).
-//                  They have been temporarily disabled/retained. Soon they may be deleted.
-//                  
-//                  It is POSSIBLE some of these items are still in use by the legacy app,
-//                  however (tests show they are not, but better safe than sorry),
-//                  so for the time being, they will just be disabled/commented.
 
 module.exports = [
   {

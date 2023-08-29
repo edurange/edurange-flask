@@ -11,27 +11,12 @@ import ast
 from flask import abort, flash, request, url_for, jsonify
 from flask_login import current_user
 from markupsafe import Markup
-from ....utils import (
-    check_role_view,
-    displayCorrectAnswers,
-    displayProgress,
-    flash_errors,
-    getScore,
-    responseProcessing,
-    getResponses,
-    responseSelector,
-    tempMaker,
-    queryPolish,
-    questionReader,
-    getDescription,
-    getQuestions,
-    getPass
-)
+
 
 from edurange_refactored.extensions import db
 db_ses = db.session
 
-from ....user.models import Scenarios, User, Responses
+from edurange_refactored.user.models import Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
@@ -69,14 +54,7 @@ def getContent(scenario_id, username):
 def getScenarioMeta(scenario_id):
         
         scenario = db_ses.query (Scenarios).filter_by(id=scenario_id).first()
-        
-        with open('data/tmp/Facebooksploitable/terraform.tfstate') as f:
-            tf_data = f.read()
 
-        tf_data_dict = json.loads(tf_data)
-        # all_scenarios = db_ses.query(Scenarios).all()
-        # all_scenarios_list = []
-        # for scenario in all_scenarios:
         scenario_info = {
             "scenario_id": scenario.id,
             "scenario_name": scenario.name,
@@ -84,9 +62,7 @@ def getScenarioMeta(scenario_id):
             "scenario_owner_id": scenario.owner_id,
             "scenario_created_at": scenario.created_at,
             "scenario_status": scenario.status,
-            "scenario_terraform": tf_data_dict
         }
-            # all_scenarios_list.append(scenario_info)
         return scenario_info
 
 

@@ -79,15 +79,10 @@ function ScenarioFullView() {
 
   if (!instructorData_state.scenarios) { return (<>Scenario not found</>) };
   
-  const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid); // returns data specific to this scenario instance, but not this user
+  const scenarioInstanceData = instructorData_state.scenarios.find((scenarioInstanceData) => scenarioInstanceData.uid === uid);
   if (!scenarioInstanceData) { return (<>Scenario not found</>) };
   
-  const scenarioShellData = scenarioShells[`${scenarioInstanceData.description}`] // returns generic data for the scenario type (e.g. Getting_Started), things like: title, keywords, splash image, resources, etc.
-
-  // const userScenarioInstanceData = fetchData("get_scenario", {userID: userData_state.id}); // for prod - data specific to this user for this specific scenario instance
-  // const userScenarioInstanceData = fetchData("POST","get_scenario", {userID: 2}); // for dev (will always get user 2's data for the specific scenario instance)
-
-
+  const scenarioShellData = scenarioShells[`${scenarioInstanceData.description}`] 
 
 
   return (

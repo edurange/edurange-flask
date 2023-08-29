@@ -3,7 +3,7 @@
     border: 1px solid  rgb(135, 96, 12);
     border-radius: 15px;
     box-sizing: border-box;
-
+    cursor: default;
 }
 
 .newdash-datatable-header {
@@ -13,6 +13,8 @@
     background-color: rgb(12, 20, 44);
     contain: content;
     border-radius: 15px 15px 0 0;
+    cursor: pointer;
+
 }
 .table-row {
     text-align: left;
@@ -25,6 +27,11 @@
     width: 100%;
     overflow-x: auto;
     padding: 10px 10px;
+    cursor: pointer;
+}
+.table-row:hover{
+    background-color: rgba(250, 255, 173, 0.217);
+    border-radius: 15px;
 }
 .table-user-id{
     max-width: 18px;

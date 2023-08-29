@@ -4,13 +4,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { HomeRouterContext } from '../../../src/Home_router';
 import SSHmodal from '../../src/components/ssh/SSHmodal';
-import Guide_controller from './guide/Guide_controller';
 import Scenarios_home from './Scenarios_home';
 import ScenarioChat from '../chat/src/ScenarioChat';
 import ScenarioFullView from './guide/ScenarioFullView';
-// import contentJSON from '../../../../../../../../../data/tmp/Facebooksploitable/student_view/content.json'
-// import studentsJSON from '../../../../../../../../../data/tmp/Facebooksploitable/students.json'
-// import studentsJSON from '../../../../../../../data/tmp/Facebooksploitable/students.json';
 
 export const ScenariosRouterContext = React.createContext();
 

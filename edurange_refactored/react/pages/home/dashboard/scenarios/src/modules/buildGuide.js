@@ -1,7 +1,8 @@
 
 // an "item" is a single reading or question
 
-import { reactify, reactify_question, reactify_reading } from "./scenario_utils";
+import GuideQuestion from "../guide/Q_and_A/GuideQuestion";
+import GuideReading from "../guide/Q_and_A/GuideReading";
 
 // one or more grouped items make up a 'chapter'
 
@@ -63,10 +64,11 @@ export default function buildGuide(contentJSON) {
             if (itemContentType === "r") {
 
                 itemObject.itemContent = readings[itemContentPointer];
-                itemObject = reactify_reading(itemObject); // convert to react component (will refactor to actual component creation)
+                itemObject = GuideReading(itemObject);
+                // itemObject = reactify_reading(itemObject); // convert to react component (will refactor to actual component creation)
             } else {
                 itemObject.itemContent = questions[itemContentPointer];
-                itemObject = reactify_question(itemObject); // convert to react component
+                itemObject = GuideQuestion(itemObject); // convert to react component
             }
 
             // if (should_reactify) {

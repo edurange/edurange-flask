@@ -28,13 +28,15 @@ function getCSRFfromCookie() {
 };
 const csrfToken = getCSRFfromCookie();
 
-// by the time you see this, the baseURL should be your own.
-// if it is incorrect (or says URL_TO_BE_CHANGED),
+// By the time you see this, the baseURL should be your own.
+// if it is incorrect (or says URL_TO_BE_CHANGED), you must
 // update that portion to your actual edurange instance IP.
-const baseURL = 'http://URL_TO_BE_CHANGED:5000/edurange3/'; // (or your URL)
+// example:
+// const baseURL = 'http://10.0.0.55:5000/edurange3/';
+const baseURL = 'http://URL_TO_BE_CHANGED:5000/edurange3/'; 
 
 if (!csrfToken) { 
-    console.log('CSRF token not found in cookie'); } // DEV_ONLY
+    console.log('Axios: CSRF cookie not found'); } // DEV_ONLY
 
 axios.defaults.baseURL = baseURL;
 axios.defaults.headers.common['X-XSRF-TOKEN'] = csrfToken || ""; // provide empty for login
@@ -44,4 +46,4 @@ const AxiosConfig = ({ children }) => {
     return children;
 };
 
-export default AxiosConfig;
+export default AxiosConfig; 

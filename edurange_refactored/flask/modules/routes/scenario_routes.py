@@ -1,16 +1,6 @@
 """Student View API routes."""
 
 from edurange_refactored.extensions import db, csrf_protect
-from edurange_refactored.flask.modules.utils.db_devHelper import (
-    get_user,
-    get_users,
-    get_groups,
-    get_group_users,
-    get_scenarios,
-    get_scenario_groups,
-    get_student_responses,
-    get_instructor_data,  # gets all the previous
-)
 from edurange_refactored.user.models import (
     GroupUsers, 
     ScenarioGroups, 
@@ -20,7 +10,9 @@ from edurange_refactored.user.models import (
     StudentGroups,  
 )
 import json
-from random import seed, shuffle
+from edurange_refactored.scenario_utils import (
+     identify_state
+)
 from edurange_refactored.form_utils import process_request
 from edurange_refactored.utils import bashAnswer,  questionReader
 from edurange_refactored.role_utils import get_roles, scenario_exists, student_has_access
@@ -28,17 +20,13 @@ from edurange_refactored.user.forms import scenarioResponseForm
 from flask import (
     Blueprint,
     request,
-    session,
     jsonify,
-    make_response,
-    render_template,
     current_app,
     g, ## see note
 )
-from ..utils.auth_utils import jwt_and_csrf_required
-from ..utils.guide_utils import (
+from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
+from edurange_refactored.flask.modules.utils.guide_utils import (
     getContent, 
-    getResponses,
     getScenarioMeta
     )
 
@@ -78,7 +66,6 @@ def custom_error_handler(error):
     return response
 
 
-
 ### Reviewed / Working Routes  ##############
 
 @blueprint_edurange3_scenarios.route('/get_content/<int:i>', methods=['GET']) # WIP
@@ -100,39 +87,20 @@ def get_content(i):
 
     meta = getScenarioMeta(current_scenario_id)
 
-    if not credentialsJSON:
+
+    if not credentialsJSON or not unique_name:
         return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
+    
+    SSH_IP = identify_state(unique_name, "Started")  
     
     return jsonify({
         "scenario_meta": meta,
         "contentJSON":contentJSON, 
         "credentialsJSON":credentialsJSON,
-        "unique_scenario_name":unique_name
+        "unique_scenario_name":unique_name,
+        "SSH_IP": SSH_IP
         })
 
-# @blueprint_edurange3_scenarios.route('/get_scenario_meta/<int:i>', methods=['GET']) # WIP
-# @jwt_and_csrf_required
-# def getScenarioMeta(i):
-#     current_username = g.current_username
-#     current_scenario_id = i
-#     if (
-#         not isinstance(i, int)
-#         or i < 0 
-#         or i > 99
-#         ):
-#             return jsonify({'error': 'invalid scenario ID'}), 418 # DEV_ONLY (replace with standard denial msg)
-
-#     meta = getScenarioMeta(current_scenario_id)
-#     # returns instructor-chosen scenario name if check good
-#     # you can use the name for content.json retrieval, etc
-#     # this is useful for reducing need for stateful user-scenario data
-#     # user_creds = credentialsJSON[str(current_username)]
-#     return jsonify({
-#         "content_meta": meta, 
-#         })
-#     if not content.user_creds:
-#         return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
-#     return jsonify ({"content": content["content"], "user_creds": content["user_creds"]}), 200
 
 @blueprint_edurange3_scenarios.route('/get_scenarios', methods=['GET'])
 @jwt_and_csrf_required
