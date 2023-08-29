@@ -64,3 +64,11 @@ def instructor_test():
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
     return jsonify ({"message":"this is /instructor_test"})
+
+@blueprint_edurange3_instructor.route("/create_scenario")
+@jwt_and_csrf_required
+def create_scenario():
+    current_username = g.current_username
+    current_user_id = g.current_user_id
+    current_user_role = g.current_user_role
+    return jsonify ({"message":"this is /create_scenario"})

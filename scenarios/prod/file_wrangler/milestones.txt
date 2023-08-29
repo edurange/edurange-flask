@@ -11,3 +11,8 @@
 *,cp\sfile2\.txt\scopied_file2\.txt,*
 *,chmod\s660\scopied_perm1\.txt,*
 *,chmod\s764\scopied_perm2\.txt,*
+
+
+
+
+
