@@ -1,0 +1,147 @@
+.checkmark-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto); 
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    justify-content: center;
+    justify-content: space-around ;
+    
+}
+.checkmark-grid label {
+    padding-left: 15px;
+}
+.checkmark-grid select{
+  background: #5a64d4;
+  height: 40px;
+  
+}
+.options-page-outer-frame{
+  /* background: #5a64d4; */
+  height: 100%;
+  width: 100%;
+  position: relative;
+  bottom: 0; 
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.options-page-inner-frame{
+  /* background: #5a64d4; */
+  height: 90%;
+  width: 90%;
+  position: relative;
+  bottom: 5%; 
+  left: 5%;
+  right: 5%;
+  top: 5%;
+}
+
+.checkmark-item {
+    display: flex;
+    align-items: center;
+    margin: 2%;
+    min-width: 100%;
+}
+
+
+  .selectybox {
+    padding-left: 5px;
+    width: 100%; 
+    height: 100%;
+    border: 1px solid #999;
+    color: #0a1e2a;
+    background-color: #eee;
+  }
+  .edu3-options-pane input[type="range"]::-webkit-slider-runnable-track {
+    border-radius: 3px;
+  }
+  
+  .edu3-options-pane input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  }
+.boxfix{
+    
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
+    display: flex;
+    padding:0;
+    align-self: center;
+    z-index: 1000;
+
+}
+.options-menu-frame{
+    width: 100%;
+    height: 100%;
+    contain: content;
+    display: flex;
+    /* background-color: pink; */
+    border-radius: 15px;
+}
+.options-menu-carpet {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* gap: 0.4% 0.2%;  */
+    /* background-color: rgb(43, 43, 121); */
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid rgb(118, 55, 55); */
+    justify-content: space-around;
+    contain: content;
+}
+
+.edu3-options-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: stretch;
+    width: 100%;
+    height: 100%;
+    contain: content;
+}
+
+.options-menu-slider-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    justify-items: left;
+    align-content: stretch;
+    max-width: 75%;
+    max-height: 75%;
+    contain: content;
+}
+
+  
+  .edu3-options-pane select, 
+  .edu3-options-pane input, 
+  .edu3-options-pane button {
+    border-radius: 5px; 
+    border: 1px solid #c6bcff; 
+    width: 100%;
+    height: 100%;
+  }
+  
+  .edu3-options-pane button {
+    background: #7c87ff;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  .edu3-options-pane button:hover {
+    background: #3600b3;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  }
+  .edu3-options-pane input[type="range"] {
+    background: transparent;
+  }

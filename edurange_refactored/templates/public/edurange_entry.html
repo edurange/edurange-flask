@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>eduRange3 Home</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <link rel="stylesheet"type="text/css" href="/static/build/Home_router.bundle.css"/>   -->
+        <link rel="stylesheet"type="text/css" href="/static/build/EduRangeEntry.bundle.css"/>
+        <!--  - All this css import does is get a webpack css 'bundle' file that is a 
+                compilation of real css files.  EduRangeEntry is registered with webpack,
+                and 'hosts' the rest of the app, which is why its bundle is here.
+              - To add more css, just import more .css files into your Component.js, not here. -->
+        <link rel="icon" href="../../static/build/img/favicon.ico" type="image/x-icon">
+    </head>
+    <body>    
+        <div id="edurange3_entry_id"></div>
+        <!-- the above div is the new (and only) entrypoint for the entire React ecosystem -->
+        <script src="/static/build/EduRangeEntry.bundle.js"></script>
+    </body>
+</html>

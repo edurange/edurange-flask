@@ -1,0 +1,88 @@
+
+.edu3-login-prompt-text{
+    font-size: 110%;
+    align-items: center;
+    align-content: center;
+}
+.edu3-login-container {
+    display: flex;
+    width: auto;
+    height: auto;
+    align-items: left;
+    justify-content:center;
+    align-content: left;
+    flex-direction: column;
+    font-size: large;
+}
+.edu3-login-placard{
+    height: 8dvh;
+    justify-content: left;
+    align-items: center;
+    display: flex;
+}
+.edu3-login-placard-text{
+    font-size: 142%;
+    text-align: left;
+    display: flex;
+
+}
+.edu3-login-submit-frame{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.edu3-login-submit-row{
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+}
+.edu3-login-submit-row-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-evenly;
+    gap: 5%;
+    height: 6dvh;
+}
+.edu3-login-submit-row-right{
+    display: flex;
+    flex-direction: column;
+    margin-left: 4px;
+    align-items: center;
+    justify-items: center;
+
+}
+.edu3-login-submit-item{
+    display: flex;
+    flex-direction: row;
+}
+.edu3-login-button{
+    font-size: x-large;
+    display: flex;
+    flex-direction: row;
+    max-width: 45px;
+    min-width: 45px;
+    min-height: 45px;
+    max-height: 45px;
+    aspect-ratio: 1;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
+    
+    background-color: rgba(7, 0, 17, 0);
+    color: var(--blue-muted);
+    border: 0;
+    cursor: pointer;
+}
+.edu3-login-button-label{
+    font-size: medium;
+}
+.edu3-login-button:hover{
+    color: var(--orange-light) ;
+    font-size: 1.5em;
+}

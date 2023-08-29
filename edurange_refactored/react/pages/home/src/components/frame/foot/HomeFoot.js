@@ -3,7 +3,7 @@
 import React from 'react';
 import './HomeFoot.css'
 
-const HomeFoot = () => {
+function HomeFoot () {
 
     return (
         <div className='homefoot-frame'>This is the footer</div>
