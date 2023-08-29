@@ -10,6 +10,11 @@ import './Dashboard.css';
 import Logout from '../../src/components/logout/Logout';
 import { DashSideNav_admin_logged_in, DashSideNav_logged_out } from '../../../../modules/nav/navItemsData';
 import Scenarios_router from '../scenarios/src/Scenarios_router';
+import DashNotifications from './components/notifications/components/DashNotifications';
+import InstructorDash from '../instructor/src/InstructorDash';
+import Account from '../account/src/Account';
+import SSHmodal from './components/ssh/SSHmodal';
+import AdminDash from '../admin/src/AdminDash';
 
 function Dashboard_router() {
 
@@ -32,18 +37,11 @@ function Dashboard_router() {
               <Route path="/scenarios/*" element={<Scenarios_router />} />
               <Route path="/jwt_test" element={<JWT_Test />} />
               <Route path="/logout" element={<Logout />} />
-
-              {/* <Route path="/admin/*" element={<AdminDash />} /> */}
-              {/* <Route path="/instructor/*" element={<InstructorDash />} /> */}
-              {/* <Route path="/account" element={<Account />} /> */}
-              {/* <Route path="/users" element={<Users />} /> */}
-              {/* <Route path="/userGroups" element={<UserGroups />} /> */}
-              {/* <Route path="/scenarios" element={<Scenarios_home />} /> */}
-              {/* <Route path="/scenarios/:uid/:pageID" element={<ScenarioFullView />}/> */}
-              {/* <Route path="/scenarioGroups" element={<ScenarioGroups />} /> */}
-              {/* <Route path="/notifications" element={<DashNotifications />} /> */}
-              {/* <Route path="/ssh" element={<SSHmodal />} /> */}
-
+              <Route path="/admin/*" element={<AdminDash />} />
+              <Route path="/instructor/*" element={<InstructorDash />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/notifications" element={<DashNotifications />} />
+              <Route path="/ssh" element={<SSHmodal />} />
             </Routes>
           </div>
         </div>
