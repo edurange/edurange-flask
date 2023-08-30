@@ -4,8 +4,11 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { HomeRouterContext } from '../../src/Home_router';
 import Dashboard_home from './Dashboard_home';
 import Scenarios_controller from '../scenarios/src/Scenarios_controller';
+import CreateScenario from '../create_scenario/src/create_scenario';
 import DashSidebar from './sidebar/DashSidebar';
 import JWT_Test from '../src/components/JWT_test';
+
+
 
 import './Dashboard.css';
 import Logout from '../../src/components/logout/Logout';
@@ -37,7 +40,7 @@ function Dashboard_router() {
               {/* <Route path="/account" element={<Account />} /> */}
               {/* <Route path="/users" element={<Users />} /> */}
               {/* <Route path="/userGroups" element={<UserGroups />} /> */}
-              {<Route path="/scenarios" element={<ScenarioDashboard />} />}
+              {/*<Route path="/scenarios" element={<ScenarioDashboard />} />*/}
               {<Route path="/create_scenario" element={<CreateScenario />} />}
               {/* <Route path="/scenarios/:uid/:pageID" element={<ScenarioFullView />}/> */}
               {/* <Route path="/scenarioGroups" element={<ScenarioGroups />} /> */}
