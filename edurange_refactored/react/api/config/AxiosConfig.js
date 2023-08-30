@@ -28,7 +28,7 @@ function getCSRFfromCookie() {
     return null;
 };
 const csrfToken = getCSRFfromCookie();
-const baseURL = 'http://localhost:5000/edurange3/'; // (or your URL)
+const baseURL = 'http://34.16.148.72:5000/edurange3/'; // (or your URL)
 
 if (!csrfToken) { console.log('CSRF token not found in cookie'); } // DEV_ONLY
 

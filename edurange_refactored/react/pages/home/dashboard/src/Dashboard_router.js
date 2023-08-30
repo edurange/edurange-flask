@@ -37,7 +37,8 @@ function Dashboard_router() {
               {/* <Route path="/account" element={<Account />} /> */}
               {/* <Route path="/users" element={<Users />} /> */}
               {/* <Route path="/userGroups" element={<UserGroups />} /> */}
-              {/* <Route path="/scenarios" element={<Scenarios_home />} /> */}
+              {<Route path="/scenarios" element={<ScenarioDashboard />} />}
+              {<Route path="/create_scenario" element={<CreateScenario />} />}
               {/* <Route path="/scenarios/:uid/:pageID" element={<ScenarioFullView />}/> */}
               {/* <Route path="/scenarioGroups" element={<ScenarioGroups />} /> */}
               {/* <Route path="/notifications" element={<DashNotifications />} /> */}
