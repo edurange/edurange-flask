@@ -82,11 +82,15 @@ def get_content(i):
 
     contentJSON, credentialsJSON, unique_name = getContent(current_scenario_id, current_username)
     # returns instructor-chosen scenario name if check good
-    
-    if not credentialsJSON or not unique_name:
-        return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
+    # you can use the name for content.json retrieval, etc
+    # this is useful for reducing need for stateful user-scenario data
 
     meta = getScenarioMeta(current_scenario_id)
+
+
+    if not credentialsJSON or not unique_name:
+        return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
+    
     SSH_IP = identify_state(unique_name, "Started")  
     
     return jsonify({
