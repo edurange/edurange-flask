@@ -1,26 +1,18 @@
 "use strict";
-import React, { useContext } from 'react';
+import React from 'react';
 import './HomeHead.css';
 import { Link } from 'react-router-dom';
-import { HomeRouterContext } from '../../../Home_router';
-import { 
-    TopNav_admin_logged_in,
-    TopNav_instructor_logged_in, 
-    TopNav_student_logged_in, 
-    TopNav_logged_out } 
-    from '../../../../../../modules/nav/navItemsData';
+import { navArrays } from '../../../../../../modules/nav/navItemsData';
 
-function HomeHead () {
+function HomeHead ({navToShow}) {
   
-    const { login_state } = useContext(HomeRouterContext);
-
-    const navDataToShow = login_state === true ? TopNav_admin_logged_in : TopNav_logged_out; 
-    
+    navToShow = (navToShow) ? navToShow : navArrays.top_logout; 
+        
     return (
         <div id='edurange-navhead'>
             <span id="edurange-navhead-buttonbar">
 
-            {navDataToShow.map((val,key) => {
+            {navToShow.map((val,key) => {
                 return (
                     <Link to={val.path} key={key}>
                         <li className='topnav-button-panes' >

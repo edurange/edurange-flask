@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import { HomeRouterContext } from '../../Home_router';
 import axios from 'axios';
 import './Login.css'
-import { FaUserCheck } from 'react-icons/fa6';
+import edurange_icons from '../../../../../modules/ui/edurangeIcons';
 
 const loginExpiry = (1000 * 60 * 60 * 1); // 1 hr in miliseconds
 
 function Login() {
 
-  const { set_userData_state, set_login_state } = useContext(HomeRouterContext);
-
-  const navigate = useNavigate();
+  const { 
+    set_userData_state, set_login_state, 
+    updateNav
+  } = useContext(HomeRouterContext);
 
   async function sendLoginRequest(username_input, password_input) {
     try {
@@ -22,22 +22,21 @@ function Login() {
           password: password_input
         }
       );
+      const userData = response.data;
   
-      const responseData = response.data;
-  
-      if (responseData.user_data) {
+      if (userData) {
         console.log("Login success!");
-        console.log("Login responseData: ", responseData);
-        set_userData_state(responseData.user_data);
+        console.log("Login userData", userData);
+        set_userData_state(userData);
         set_login_state(true);
-        const userSession = {
-          isLoggedIn: true,
-          expiry: Date.now() + loginExpiry
-        };
-        sessionStorage.setItem('edurange3_session', JSON.stringify(userSession));
-        navigate('/edurange3/dashboard/');
+        const newExpiry = Date.now() + loginExpiry;
+        sessionStorage.setItem('userData', JSON.stringify(userData));
+        sessionStorage.setItem('navName', `dash`);
+        sessionStorage.setItem('login', true);
+        sessionStorage.setItem('loginExpiry', newExpiry);
+        updateNav('/edurange3/dashboard/', `dash`);
       } else {
-        const errData = responseData.error;
+        const errData = response.data.error;
         console.log(errData);
         console.log('Login failure.');
       };
@@ -79,7 +78,7 @@ function Login() {
 
               <div className='edu3-login-submit-row-right'>
                 <button className='edu3-login-button' type='submit'>
-                  <FaUserCheck/>
+                  {edurange_icons.user_check_icon}
                 </button>
               </div>
 

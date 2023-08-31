@@ -3,143 +3,167 @@
 // at the bottom, arrays define which items should be displayed in which contexts
 // you can simply add some more and use them as you wish
 
-import { edurange_icons } from "../ui/edurangeIcons";
+import edurange_icons from "../ui/edurangeIcons";
 
-const home_nav = {
+const home = {
     title: "Home",
     icon: edurange_icons.home_icon,
-    path: `/edurange3`
-}
-const login_nav = {
+    path: `/edurange3`,
+    navStub: 'Home'
+};
+const login = {
     title: "Login",
     icon: edurange_icons.user_check_icon,
-    path: `/edurange3/login`
-}
-const logout_nav = {
+    path: `/edurange3/login`,
+    navStub: 'Home'
+};
+const logout = {
     title: "Logout",
     icon: edurange_icons.user_x_icon,
-    path: `/edurange3/dashboard/logout`
-}
-const options_nav = {
-    title: "Options",
-    icon: edurange_icons.gear_icon,
-    path: `/edurange3/options`
-}
-const admin_nav = {
-    title: "Admin",
-    icon: edurange_icons.gear_icon,
-    path: `/edurange3/admin`
-}
-const instructor_nav = {
-    title: "Instructor",
-    icon: edurange_icons.gear_icon,
-    path: `/edurange3/instructor`
-}
-const info_home_nav = {
+    path: `/edurange3/dashboard/logout`,
+    navStub: 'Home'
+};
+const info_home = {
     title: "Info",
     icon: edurange_icons.book_icon,
-    path: `/edurange3/info`
-}
-const docs_nav = {
+    path: `/edurange3/info`,
+    navStub: 'Home'
+};
+const docs = {
     title: "Docs",
     icon: edurange_icons.book_icon,
-    path: `/edurange3/info/docs`
-}
-const about_nav = {
+    path: `/edurange3/info/docs`,
+    navStub: 'Home'
+};
+const about = {
     title: "About",
     icon: edurange_icons.book_icon,
-    path: `/edurange3/info/about`
-}
-const contact_nav = {
+    path: `/edurange3/info/about`,
+    navStub: 'Home'
+};
+const contact = {
     title: "Contact",
     icon: edurange_icons.book_icon,
-    path: `/edurange3/info/contact`
-}
-const help_nav = {
+    path: `/edurange3/info/contact`,
+    navStub: 'Home'
+};
+const help = {
     title: "Help",
     icon: edurange_icons.questionmark_icon,
-    path: `/edurange3/info/help`
-}
-const dashboard_nav = {
-    title: "Dashboard",
-    icon: edurange_icons.computer_monitor_icon,
-    path: `/edurange3/dashboard`
-}
-const account_nav = {
-    title: "Account",
-    icon: edurange_icons.account_icon,
-    path: `/edurange3/dashboard/account`
-}
-const scenarios_nav = {
-    title: "Scenarios",
-    icon: edurange_icons.chess_knight_icon,
-    path: `/edurange3/dashboard/scenarios`
-}
-const notifications_nav = {
-    title: "Notifications",
-    icon: edurange_icons.bell_icon,
-    path: `/edurange3/dashboard/notifications`
-}
-const ssh_nav = {
-    title: "Connect via SSH",
-    icon: edurange_icons.terminal_prompt_icon,
-    path: `/edurange3/dashboard/ssh`
-}
-const devtable_nav = {
-    title: "Instructor Data:",
-    icon: edurange_icons.eye_icon,
-    path: `/edurange3/dashboard/admin/devtable`
-}
-const instructor_userGroups_nav = {
-    title: "Student Groups",
-    icon: edurange_icons.userGroup_icon,
-    path: `/edurange3/dashboard/userGroups`
-}
-const instructor_scenarioGroups_nav = {
-    title: "Scenario Groups",
-    icon: edurange_icons.scenarioGroup_icon,
-    path: `/edurange3/dashboard/scenarioGroups`
-}
-const instructor_users_nav = {
-    title: "Students",
-    icon: edurange_icons.user_icon,
-    path: `/edurange3/dashboard/users`
+    path: `/edurange3/info/help`,
+    navStub: 'Home'
 };
-const jwt_test_nav = {
-    title: "jwt_test",
-    icon: edurange_icons.key_icon,
-    path: `/edurange3/dashboard/jwt_test`
+const options = {
+    title: "Options",
+    icon: edurange_icons.gear_icon,
+    path: `/edurange3/options`,
+    navStub: 'Options'
 };
-const themes_nav = {
+const themes = {
     title: "Themes",
     icon: edurange_icons.palette_icon,
-    path: `/edurange3/options/themes`
+    path: `/edurange3/options/themes`,
+    navStub: 'Options'
 };
-const accessibility_nav = {
+const accessibility = {
     title: "Accessibility",
     icon: edurange_icons.accessibility_icon,
-    path: `/edurange3/options/accessibility`
+    path: `/edurange3/options/accessibility`,
+    navStub: 'Options'
+};
+const dashboard = {
+    title: "Dashboard",
+    icon: edurange_icons.computer_monitor_icon,
+    path: `/edurange3/dashboard`,
+    navStub: 'Dash'
+};
+const admin = {
+    title: "Admin",
+    icon: edurange_icons.gear_icon,
+    path: `/edurange3/dashboard/admin`,
+    navStub: 'Dash'
+};
+const instructor = {
+    title: "Instructor",
+    icon: edurange_icons.gear_icon,
+    path: `/edurange3/dashboard/instructor`,
+    navStub: 'Dash'
+};
+const account = {
+    title: "Account",
+    icon: edurange_icons.account_icon,
+    path: `/edurange3/dashboard/account`,
+    navStub: 'Dash'
+};
+const scenarios = {
+    title: "Scenarios",
+    icon: edurange_icons.chess_knight_icon,
+    path: `/edurange3/dashboard/scenarios`,
+    navStub: 'Dash'
+};
+const notifications = {
+    title: "Notifications",
+    icon: edurange_icons.bell_icon,
+    path: `/edurange3/dashboard/notifications`,
+    navStub: 'Dash'
+};
+const ssh = {
+    title: "Connect via SSH",
+    icon: edurange_icons.terminal_prompt_icon,
+    path: `/edurange3/dashboard/ssh`,
+    navStub: 'Dash'
+};
+const instructor_userGroups = {
+    title: "Student Groups",
+    icon: edurange_icons.userGroup_icon,
+    path: `/edurange3/dashboard/userGroups`,
+    navStub: 'Dash'
+};
+const instructor_scenarioGroups = {
+    title: "Scenario Groups",
+    icon: edurange_icons.scenarioGroup_icon,
+    path: `/edurange3/dashboard/scenarioGroups`,
+    navStub: 'Dash'
+};
+const instructor_users = {
+    title: "Students",
+    icon: edurange_icons.user_icon,
+    path: `/edurange3/dashboard/users`,
+    navStub: 'Dash'
+};
+const jwt_test = {
+    title: "jwt_test",
+    icon: edurange_icons.key_icon,
+    path: `/edurange3/dashboard/jwt_test`,
+    navStub: 'Dash'
 };
 
-export const SideNav_student_logged_in =    [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav, login_nav ]
-export const SideNav_instructor_logged_in = [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav, login_nav ]
-export const SideNav_admin_logged_in =      [ home_nav, dashboard_nav, scenarios_nav, notifications_nav, docs_nav, options_nav, account_nav, logout_nav , help_nav, login_nav ]
-export const SideNav_logged_out =           [ jwt_test_nav, home_nav, docs_nav, options_nav,login_nav ]
+export const navArrays = {
 
-export const TopNav_student_logged_in =    [ jwt_test_nav, home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav, login_nav ]
-export const TopNav_instructor_logged_in = [ jwt_test_nav,home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav , login_nav]
-export const TopNav_admin_logged_in =      [ jwt_test_nav,home_nav,ssh_nav, dashboard_nav, options_nav, account_nav, logout_nav , login_nav]
-export const TopNav_logged_out =           [  jwt_test_nav, home_nav, docs_nav, options_nav, login_nav ]
 
-export const DashSideNav_student_logged_in =    [ jwt_test_nav, dashboard_nav, scenarios_nav, notifications_nav, ssh_nav, options_nav,  account_nav, logout_nav ]
-export const DashSideNav_instructor_logged_in = [ jwt_test_nav, dashboard_nav, devtable_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, login_nav ]
-export const DashSideNav_admin_logged_in =      [ jwt_test_nav, dashboard_nav, devtable_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  logout_nav, login_nav ]
-export const DashSideNav_logged_out =           [ jwt_test_nav, home_nav, docs_nav, options_nav,login_nav ]
+//logged_out
+    side_logout:            [ jwt_test, home, docs, options, login, logout ],
+    top_logout:             [ jwt_test, home, docs, options, login, logout ],
 
-export const DashContextNav_student_logged_in =    [ dashboard_nav, scenarios_nav, notifications_nav, ssh_nav, options_nav,  account_nav, login_nav,logout_nav ]
-export const DashContextNav_instructor_logged_in = [ dashboard_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  login_nav,logout_nav, devtable_nav ]
-export const DashContextNav_admin_logged_in =      [ dashboard_nav, instructor_users_nav, scenarios_nav, notifications_nav,  ssh_nav, options_nav, account_nav,  login_nav,logout_nav, devtable_nav ]
-export const DashContextNav_logged_out =           [ jwt_test_nav, home_nav, docs_nav, options_nav,login_nav ]
+//home  
+    side_home:              [ home, dashboard, scenarios, notifications, docs, options, account, logout , help, login ],
+    top_home:               [ jwt_test, home,ssh, dashboard, options, account, logout, login ],
 
-export const Options_SideNav =           [ accessibility_nav, themes_nav ]
+//options
+    side_options:           [ accessibility, themes, home ],
+    top_options:            [ jwt_test, home,ssh, dashboard, options, account, logout, login ],
 
+
+//dashboard
+    side_dash:              [ home, dashboard, scenarios, notifications, ssh, options, account, logout ],
+    top_dash:               [ jwt_test, home, dashboard, notifications, ssh, options, account, logout, login ],
+
+//admin-dashboard
+    side_dash_admin:        [ home, dashboard, scenarios, notifications, ssh, options, account, logout ],
+    top_dash_admin:         [ jwt_test, home, dashboard, notifications, ssh, options, account, logout, login ],
+
+//instructor-dashboard
+    side_dash_instructor:   [ home, dashboard, scenarios, notifications, ssh, options, account, logout ],
+    top_dash_instructor:    [ jwt_test, home, dashboard, notifications, ssh, options, account, logout, login ],
+
+};

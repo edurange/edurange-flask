@@ -7,7 +7,7 @@ function Dashboard_home () {
     
     const { userData_state } = useContext( HomeRouterContext ); 
 
-    if (!userData_state.username) { return <Login/> }
+    // if (!userData_state.username) { return <Login/> }
 
     const currentDate = new Date().toDateString();
     const currentTime = new Date().toLocaleTimeString();

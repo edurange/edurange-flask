@@ -1,6 +1,4 @@
-"use strict";
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import './Home.css';
@@ -8,47 +6,56 @@ import './Home.css';
 import Home from './Home';
 import HomeHead from './components/frame/head/HomeHead';
 import HomeFoot from './components/frame/foot/HomeFoot';
-import Dashboard_router from '../dashboard/src/Dashboard_router';
 import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
+import Dashboard_router from '../dashboard/src/Dashboard_router';
 import InfoRouter from '../info/src/Info_router';
 
 import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
+import { navArrays } from '../../../modules/nav/navItemsData';
 import Options_controller from '../options/src/Options_controller';
+import SessionKeeper from './SessionKeeper';
 
 export const HomeRouterContext = React.createContext();
 
+const loginExpiry = 1000000000;
 
 function Home_router() {
-
+  
   ////HOOKS//////////////////////////////////////
+  const [navName_state, set_navName_state] = useState('logout');
   const [userData_state, set_userData_state] = useState({});
-  const [instructorData_state, set_instructorData_state] = useState({});
-  // restores 'logged in' bool from session storage (superficial auth)
-  const [login_state, set_login_state] = useState(() => {
-    const edurange3_session_string = sessionStorage.getItem('edurange3_session');
-    if (!edurange3_session_string) { return false; };
-    const edurange3_session = JSON.parse(edurange3_session_string);
-    const isLoggedIn = edurange3_session.isLoggedIn;
-    const expiry = edurange3_session.expiry;
-    if (isLoggedIn && Date.now() < expiry) { return true; }
-    else { return false; };
-  });
-  //////////////////////////////////////////////
+  const [login_state, set_login_state] = useState(false);
+  const navigate = useNavigate();
+  ///////////////////////////////////////////////
 
+  function updateNav (newURL, newNavName) {
+    console.log('updating nav...');
+    set_navName_state(newNavName);
+    const newExpiry = (Date.now() + loginExpiry);
+    sessionStorage.setItem ('navName', JSON.stringify(newNavName));
+    sessionStorage.setItem ('loginExpiry', JSON.stringify(newExpiry));
+    navigate(newURL);
+  }
 
   // these routes extend the base URL of /edurange3/
   // e.g. dashboard is URL /edurange3/dashboard
+
+  const navToShow = navArrays[`top_${navName_state}`];
+
   return (
     <div id='edurange-appframe'>
 
       <HomeRouterContext.Provider value={{
         userData_state, set_userData_state,
-        login_state, set_login_state,
-        instructorData_state, set_instructorData_state,
+        login_state,    set_login_state,
+        navName_state,  set_navName_state,
+        updateNav, 
       }}>
 
-        <HomeHead />
+        <SessionKeeper/>
+
+        <HomeHead navToShow={navToShow} />
 
         <div id='edurange-content'>
           <div className='universal-content-outer'>

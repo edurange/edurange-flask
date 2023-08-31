@@ -8,22 +8,29 @@ import JWT_Test from '../src/components/JWT_test';
 
 import './Dashboard.css';
 import Logout from '../../src/components/logout/Logout';
-import { DashSideNav_admin_logged_in, DashSideNav_logged_out } from '../../../../modules/nav/navItemsData';
 import Scenarios_router from '../scenarios/src/Scenarios_router';
+import { navArrays } from '../../../../modules/nav/navItemsData';
 
 function Dashboard_router() {
 
-  const { login_state } = useContext(HomeRouterContext);
-  const navDataToShow = (login_state) ? DashSideNav_admin_logged_in  : DashSideNav_logged_out;
-
+  const { 
+    login_state, set_login_state,
+    navName_state, 
+    userData_state, set_userData_state
+  } = useContext(HomeRouterContext);
+  
   // these routes extend /edurange3/dashboard
   // e.g. scenarios is URL /edurange3/dashboard/scenarios
+
+  const navLong = `side_${navName_state}`
+  const navToShow = navArrays[navLong];
+
   return (
 
     <div className='newdash-frame'>
       <div className='newdash-frame-carpet'>
-
-        <DashSidebar navDataToShow={navDataToShow} />
+      
+        <DashSidebar navToShow={navToShow} />
 
         <div className="newdash-infopane-frame">
           <div className='newdash-infopane-content'>

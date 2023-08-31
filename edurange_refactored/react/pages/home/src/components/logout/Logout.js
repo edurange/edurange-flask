@@ -24,7 +24,7 @@ function Logout () {
                     isLoggedIn: false,
                     expiry: 0
                 };
-            sessionStorage.setItem('edurange3_session', JSON.stringify(userSession));
+            sessionStorage.setItem('login', false);
             }
             else {
                 const errData = responseData.error;

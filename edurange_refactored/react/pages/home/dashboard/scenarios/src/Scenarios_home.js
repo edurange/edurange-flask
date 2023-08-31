@@ -10,9 +10,9 @@ import { HomeRouterContext } from '../../../src/Home_router';
 function Scenarios_home () {
     
     const { userData_state } = useContext( HomeRouterContext ); 
-    if (!userData_state.username) {
-        return ( <Login /> )
-    }
+    // if (!userData_state.username) {
+    //     return ( <Login /> )
+    // }
     
     return ( 
             <div className='scenario-home-outer-frame'>

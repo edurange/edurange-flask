@@ -29,7 +29,7 @@ import {
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
 
-export const edurange_icons = {
+ const edurange_icons = {
     accessibility_icon : <FaUniversalAccess/>,
     bell_icon : <FaBell/>,
     gear_icon : <FaGear/>,
@@ -52,7 +52,7 @@ export const edurange_icons = {
     key_icon: <FaKey/>,
     palette_icon: <FaPalette/>
 }
-
+export default edurange_icons
 // import Icon Object references from the react-icon "font-awesome 6" library
 // (import and use the variables from this file, rather than importing icons directly.  
 // if you need more icons, import/add them from here!  https://react-icons.github.io/react-icons/

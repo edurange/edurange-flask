@@ -2,12 +2,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../Dashboard.css';
+import { navArrays } from '../../../../../modules/nav/navItemsData';
 
-function DashSidebar(props) {
+function DashSidebar({navToShow}) {
   
+  navToShow = (navToShow) ? navToShow : navArrays.side_logout; 
+    
+  const fixData = navToShow ?? []  
   return (
         <div className='newdash-sidebar-frame'>
-          {props.navDataToShow.map((val, key) => {
+          {navToShow.map((val, key) => {
             return (
               <Link to={val.path} key={key}>
                 <li className='newdash-sidebar-row'>

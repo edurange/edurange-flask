@@ -39,7 +39,7 @@ def custom_error_handler(error):
 @blueprint_edurange3_public.route("/login", methods=["POST"])
 def login_edurange3():
 
-
+    
     validation_schema = LoginSchema()  # instantiate validation schema
     validated_data = validation_schema.load(request.json) # validate login. reject if bad.
     
@@ -58,10 +58,13 @@ def login_edurange3():
     if validated_user_dump["is_admin"]: temp_role = "admin"
     elif validated_user_dump["is_instructor"]: temp_role = "instructor"
 
+    del validated_user_dump['is_instructor']
+    del validated_user_dump['is_admin']
+    validated_user_dump['role'] = temp_role
     json_return = { "user_data": validated_user_dump }
     # json_return["instructor_data"] = get_instructor_data() ##### DEV_ONLY
 
-    login_return = make_response(jsonify(json_return))
+    login_return = make_response(jsonify(validated_user_dump))
     
     # generates JWT and encodes these values. (NOT hidden from user)
     # note: 'identity' is a payload keyword for Flask-JWT-Simple. best to leave it
