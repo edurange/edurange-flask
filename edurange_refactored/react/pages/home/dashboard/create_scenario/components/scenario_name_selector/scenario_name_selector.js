@@ -53,10 +53,7 @@ export default function CreateScenario(props) {
                                 Notes: 
                             </Form.Label>
                             <Form.Control onChange={e => handleScenarioNoteInput(e.target.value)} as="textarea" rows={3}/>
-                        </Form.Group>
-                        <Button variant="primary" type="submit" onSubmit={submissionHandler}>Submit</Button>
-                        
-
+                        </Form.Group>                        
                     </Form>     
 
               </>

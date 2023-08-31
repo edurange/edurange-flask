@@ -40,9 +40,7 @@ export default function scenario_options() {
             <Col></Col>
             <Col></Col>
       </Row>
-     </Container> 
-     <Button>Next Page</Button>   
-    
+     </Container>     
     </div>
   )
 }
