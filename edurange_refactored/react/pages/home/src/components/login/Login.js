@@ -78,7 +78,7 @@ function Login() {
 
               <div className='edu3-login-submit-row-right'>
                 <button className='edu3-login-button' type='submit'>
-                  {edurange_icons.user_check_icon}
+                  {edurange_icons.user_check}
                 </button>
               </div>
 

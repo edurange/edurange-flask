@@ -25,34 +25,40 @@ import {
     FaPerson,
     FaKey,
     FaPalette,
+    FaGraduationCap,
+    FaWandMagicSparkles,
 } from "react-icons/fa6";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
 
  const edurange_icons = {
-    accessibility_icon : <FaUniversalAccess/>,
-    bell_icon : <FaBell/>,
-    gear_icon : <FaGear/>,
-    home_icon : <FaHouseChimney />,
-    file_icon : <FaFileLines />,
-    book_icon : <FaBook/>,
-    identity_icon : <FaAddressCard />,
-    chess_knight_icon : <FaChessKnight />,
-    account_icon : <FaCircleUser />,
-    user_x_icon : <FaUserXmark />,
-    user_check_icon : <FaUserCheck />,
-    computer_monitor_icon : <FaDisplay />,
-    questionmark_icon : <FaCircleQuestion/>,
-    hamburger_icon: <FaBars/>,
-    terminal_prompt_icon: <FaTerminal/>,
-    eye_icon: <FaEye/>,
-    userGroup_icon: <FaPeopleGroup/>,
-    scenarioGroup_icon: <FaChess/>,
-    user_icon: <FaPerson/>,
-    key_icon: <FaKey/>,
-    palette_icon: <FaPalette/>
+    accessibility : <FaUniversalAccess/>,
+    bell : <FaBell/>,
+    gear : <FaGear/>,
+    home : <FaHouseChimney />,
+    file : <FaFileLines />,
+    book : <FaBook/>,
+    id_card : <FaAddressCard />,
+    chess_knight : <FaChessKnight />,
+    account : <FaCircleUser />,
+    user_x : <FaUserXmark />,
+    user_check : <FaUserCheck />,
+    computer_monitor : <FaDisplay />,
+    questionmark : <FaCircleQuestion/>,
+    hamburger: <FaBars/>,
+    terminal_prompt: <FaTerminal/>,
+    eye: <FaEye/>,
+    userGroup: <FaPeopleGroup/>,
+    scenarioGroup: <FaChess/>,
+    user: <FaPerson/>,
+    key: <FaKey/>,
+    palette: <FaPalette/>,
+    instructor: <FaGraduationCap/>,
+    admin: <FaWandMagicSparkles/>
 }
 export default edurange_icons
+
+
 // import Icon Object references from the react-icon "font-awesome 6" library
 // (import and use the variables from this file, rather than importing icons directly.  
 // if you need more icons, import/add them from here!  https://react-icons.github.io/react-icons/
@@ -64,14 +70,18 @@ export default edurange_icons
 //  MyComponent(){
 //
 //    return (
-//      <div>{edurange_icons.bell_icon}</div>
+//      <div>{edurange_icons.bell}</div>
 //    );
 //  } 
 //  export default MyComponent;
 
 
 // below are some good icons for web development that are not yet in use
-
+//      FaUserGraduate,
+//      FaHatWizard,
+//      FaHandSparkles,
+//      FaUserAstronaut,
+//      FaUserNinja,
 // import { FaChartBar } from "react-icons/fa6";
 // import { FaCheck } from "react-icons/fa6";
 // import { FaChevronRight } from "react-icons/fa6";

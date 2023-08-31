@@ -8,12 +8,12 @@ export const SessionContext = React.createContext();
 function SessionKeeper () {
 
     const { 
-        login_state, set_login_state,
-        navName_state, set_navName_state,
+        login_state,    set_login_state,
+        navName_state,  set_navName_state,
         userData_state, set_userData_state
       } = useContext(HomeRouterContext);
     
-    const restoreSession = () => {
+    function restoreSession () {
         console.log('Restoring session...');
         
         const loginBoolString = sessionStorage.getItem('login');

@@ -7,5 +7,4 @@ function InstructorDash () {
         </>
     );
 }
-
 export default InstructorDash;

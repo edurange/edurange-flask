@@ -1,14 +1,12 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../Dashboard.css';
 import { navArrays } from '../../../../../modules/nav/navItemsData';
+import '../Dashboard.css';
 
 function DashSidebar({navToShow}) {
   
   navToShow = (navToShow) ? navToShow : navArrays.side_logout; 
     
-  const fixData = navToShow ?? []  
   return (
         <div className='newdash-sidebar-frame'>
           {navToShow.map((val, key) => {
@@ -23,6 +21,5 @@ function DashSidebar({navToShow}) {
           })}
         </div>
   );
-}
-
+};
 export default DashSidebar;

@@ -7,9 +7,14 @@ import DashSidebar from './sidebar/DashSidebar';
 import JWT_Test from '../src/components/JWT_test';
 
 import './Dashboard.css';
-import Logout from '../../src/components/logout/Logout';
 import Scenarios_router from '../scenarios/src/Scenarios_router';
 import { navArrays } from '../../../../modules/nav/navItemsData';
+import AdminDash from '../admin/src/AdminDash';
+import InstructorDash from '../instructor/src/InstructorDash';
+import Account from '../account/src/Account';
+import Logout from '../../src/components/logout/Logout';
+import SSHmodal from './components/ssh/SSHmodal';
+import DashNotifications from './components/notifications/components/DashNotifications';
 
 function Dashboard_router() {
 
@@ -34,24 +39,19 @@ function Dashboard_router() {
 
         <div className="newdash-infopane-frame">
           <div className='newdash-infopane-content'>
+
             <Routes>
               <Route path="/*" element={<Dashboard_home />} />
               <Route path="/scenarios/*" element={<Scenarios_router />} />
               <Route path="/jwt_test" element={<JWT_Test />} />
               <Route path="/logout" element={<Logout />} />
-
-              {/* <Route path="/admin/*" element={<AdminDash />} /> */}
-              {/* <Route path="/instructor/*" element={<InstructorDash />} /> */}
-              {/* <Route path="/account" element={<Account />} /> */}
-              {/* <Route path="/users" element={<Users />} /> */}
-              {/* <Route path="/userGroups" element={<UserGroups />} /> */}
-              {/* <Route path="/scenarios" element={<Scenarios_home />} /> */}
-              {/* <Route path="/scenarios/:uid/:pageID" element={<ScenarioFullView />}/> */}
-              {/* <Route path="/scenarioGroups" element={<ScenarioGroups />} /> */}
-              {/* <Route path="/notifications" element={<DashNotifications />} /> */}
-              {/* <Route path="/ssh" element={<SSHmodal />} /> */}
-
+              <Route path="/admin/*" element={<AdminDash />} />
+              <Route path="/instructor/*" element={<InstructorDash />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/ssh" element={<SSHmodal />} />
+              <Route path="/notifications" element={<DashNotifications />} />
             </Routes>
+
           </div>
         </div>
       </div>

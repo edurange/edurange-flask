@@ -18,12 +18,8 @@ function Logout () {
             if (responseData.message) {
                 console.log("Logout success!");
                 console.log("Logout message: ", responseData.message);
-                set_userData_state(responseData.user_data);
+                set_userData_state({});
                 set_login_state(false);
-                const userSession = {
-                    isLoggedIn: false,
-                    expiry: 0
-                };
             sessionStorage.setItem('login', false);
             }
             else {

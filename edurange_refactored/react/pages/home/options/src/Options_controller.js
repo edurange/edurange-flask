@@ -10,8 +10,8 @@ import Options_themes from './components/Options_themes';
 import { navArrays } from '../../../../modules/nav/navItemsData';
 
 function Options_controller() {
-  // Attempt to load user settings from localStorage or use default values
-
+  
+  // (add state and session restore logic for options here)
 
   // these routes extend /edurange3/options
   // e.g. accessibility is URL /edurange3/options/accessibility

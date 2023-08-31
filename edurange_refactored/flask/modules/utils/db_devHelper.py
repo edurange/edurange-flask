@@ -19,8 +19,6 @@ from edurange_refactored.user.models import (
 
 db_ses = db.session
     
-skeleton_key_dict = {}
-
 def get_user(input_name):
 
     user = User.query.filter_by(username=input_name).first()
