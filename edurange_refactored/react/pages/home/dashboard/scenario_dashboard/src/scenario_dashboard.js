@@ -4,7 +4,7 @@
 
 
 // Corresponding stylesheet, in the same folder as the component. 
-import "./ScenarioTable.css";
+//import "./ScenarioTable.css";
 
 
 import { createRoot } from 'react-dom/client';
@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 
 // Your component should always begin with a capital letter.
-function ScenarioTable({ scenarios }) {
+function ScenarioDashboard({ scenarios }) {
 
 	const [scenarioList, setScenarioList] = useState([]);
 
@@ -88,4 +88,4 @@ function ScenarioTable({ scenarios }) {
 }
 
 
-export default ScenarioTable;
+export default ScenarioDashboard;

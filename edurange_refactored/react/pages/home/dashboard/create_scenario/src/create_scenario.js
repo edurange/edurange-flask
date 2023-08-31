@@ -6,31 +6,33 @@
 // Corresponding stylesheet, in the same folder as the component. 
 //import "./Create_scenario.css";
 
-//import Create_scenarioButton from "../Create_scenarioButton/Create_scenarioButton.js";
-//import { createRoot } from 'react-dom/client';
-import React, { useState, useEffect } from 'react';
-//import ScenarioTable from "../ScenarioTable/ScenarioTable.js"
-//import GroupSelector from "../new_scenario/group_selector/group_selector.js"
+import React, { useContext, useState, useEffect } from 'react';
+import GroupSelector from "../components/group_selector/group_selector.js"
 import ScenarioNameSelector from "../components/scenario_name_selector/scenario_name_selector.js"
-//import CreateScenario from '../components/scenario_name_selector/scenario_name_selector.js';
-//import ScenarioOptions from "../new_scenario/scenario_options/scenario_options.js"
+import ScenarioOptions from "../components/scenario_options/scenario_options.js";
+import Button from 'react-bootstrap/Button'
+
+
 
 
 
 // Your component should always begin with a capital letter.
 function CreateScenario(props) {
-       return (
+    const prompt_components = [<ScenarioOptions/>, <ScenarioNameSelector/>, <GroupSelector/>, <h1>Your Scenario Is Created!!!</h1>]; 
+    const [currentComponent, setCurrentComponent] = useState(0);
+    
+    const clickHandler = () => {
+        if (currentComponent != 3) {
+            setCurrentComponent(currentComponent+1) 
+         } 
+    }
+
+    return (
               <>
-                     <ScenarioNameSelector/>
+                    {prompt_components[currentComponent]}
+                    <Button onClick={clickHandler}>foot in ass</Button>
               </>
        ); 
 }
-
-
- {/*            <div id="Create_scenario">
-                     <h1>Scenarios</h1>
-	       	     <ScenarioTable/>
-                     <Create_scenarioButton color="secondary"/>
-       </div> */} 
 
 export default CreateScenario;

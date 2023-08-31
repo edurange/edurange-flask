@@ -26,7 +26,6 @@ export default function group_selector() {
               <Dropdown.Item>Agh</Dropdown.Item>
           </Dropdown.Menu>
        </Dropdown>
-       <Button>Next Page</Button>
     </div>
   )
 }
