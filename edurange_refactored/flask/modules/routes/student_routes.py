@@ -84,6 +84,28 @@ def jwt_test():
         'user_id' : current_user_id,
         'user_role': current_user_role
     })
+
+@blueprint_edurange3_student.route('/groups', methods=['GET']) # DEV_ONLY
+@jwt_and_csrf_required
+def get_groups():
+    db_ses = db.session 
+    all_groups = db_ses.query(StudentGroups).all()
+    all_groups_list = []
+
+    for group in all_groups:
+        group_info = {
+            "id": group.id,
+            "name": group.name,
+            "owner_id": group.owner_id,
+            "code": group.code,
+            "hidden": group.hidden,
+        }
+    print(jsonify(all_groups_list))
+    print(all_groups_list)
+    all_groups_list.append(group_info)
+    return jsonify(all_groups_list)
+    
+ 
 @blueprint_edurange3_student.route('/get_guide', methods=['GET']) # WIP
 @jwt_and_csrf_required
 def get_guide():

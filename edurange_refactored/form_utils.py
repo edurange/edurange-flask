@@ -141,7 +141,7 @@ def process_addUser():  # Form to add or remove selected students from a selecte
     if uA.validate_on_submit():
         db_ses = db.session
         group = uA.groups.data
-        gid = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()[0]
+        gid = db_ses.query(Groups.id).filter(StudentGroups.name == group).first()[0]
         group = db_ses.query(StudentGroups).filter(StudentGroups.id == gid).first()
         uids = uA.uids.data  # string form
         adding = False

@@ -8,8 +8,10 @@ import Button from 'react-bootstrap/Button'
 export default function scenario_options() {
      const [selectedScenario, setSelectedScenario] = useState("");
      const setScenario = (e) => {setSelectedScenario("Metasploitable")};   
-
-
+     const scenario_dict = [{Difficulty:"e", Scenario:"Getting Started"}, {Difficulty:"e", Scenario:"File Wrangler"},
+     {Difficulty:"m", Scenario:"Elf Infection"}, {Difficulty:"m", Scenario:"Strace"}, {Difficulty:"m", Scenario:"Treasure Hunt"},
+     {Difficulty:"m", Scenario:"SSH Inception"}, {Difficulty:"m", Scenario:"Total Recon"}, {Difficulty:"m", Scenario:"Webfu"},
+     {Difficulty:"h", Scenario:"Metasploitable"}];
 
   return (
     <div> 

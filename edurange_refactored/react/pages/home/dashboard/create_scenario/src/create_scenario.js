@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/Button'
 // Your component should always begin with a capital letter.
 function CreateScenario(props) {
     const prompt_components = [<ScenarioOptions/>, <ScenarioNameSelector/>, <GroupSelector/>, <h1>Your Scenario Is Created!!!</h1>]; 
-    const [currentComponent, setCurrentComponent] = useState(0);
+    const [currentComponent, setCurrentComponent] = useState(2);
     
     const clickHandler = () => {
         if (currentComponent != 3) {
@@ -30,7 +30,7 @@ function CreateScenario(props) {
     return (
               <>
                     {prompt_components[currentComponent]}
-                    <Button onClick={clickHandler}>foot in ass</Button>
+                    <Button onClick={clickHandler}>Next</Button>
               </>
        ); 
 }
