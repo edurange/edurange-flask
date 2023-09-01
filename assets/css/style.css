@@ -5,10 +5,12 @@
 /* universal */
 
 html {
+  font-family: 'Times New Roman', Times, serif;
   overflow-y: scroll;
 }
 
 body {
+  font-family: 'Times New Roman', Times, serif;
   padding-top: 50px;
 }
 

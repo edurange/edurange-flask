@@ -1,0 +1,3 @@
+
+this example shows how you can dynamically generate elements in React JSX
+by going through an array/list, and applying the current data to each item

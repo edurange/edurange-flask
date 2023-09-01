@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """User views."""
 import os
+import json
+from datetime import datetime
 
 from flask import (
     Blueprint,
@@ -62,7 +64,6 @@ from .models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, 
 blueprint = Blueprint(
     "dashboard", __name__, url_prefix="/dashboard", static_folder="../static"
 )
-
 
 @blueprint.route("/")
 @login_required
@@ -261,22 +262,30 @@ def instructor():
 
     return redirect(url_for("dashboard.instructor"))
 
-
 @blueprint.route("/notification", methods=["GET", "POST"])
 @login_required
 def notification():
-    if request.method == "POST":
-        process_request(request.form)
+    
+    # if request.method == "POST": process_request(request.form)
+    notifications_raw = Notification.query.all()
+    
+    notifications_processed = []
+    for notif in notifications_raw:
+        notif_serialized = {
+            "id": notif.id,
+            "date": notif.date.isoformat(),
+            "detail": notif.detail
+        }
+        notifications_processed.append(notif_serialized)
 
-    notificationList = Notification.query.all()
-    deleteNotify = notifyDeleteForm()
+    # deleteNotify = notifyDeleteForm()
+    notifications_export = json.dumps(notifications_processed)
 
     return render_template(
         "dashboard/notification.html",
-        notifications=notificationList,
-        deleteNotify=deleteNotify
+        notifications=notifications_export
+        # deleteNotify=deleteNotify
     )
-
 
 @blueprint.route("/student_scenario/<i>", methods=["GET", "POST"])
 @login_required

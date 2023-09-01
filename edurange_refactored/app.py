@@ -8,6 +8,12 @@ from flask import Flask, render_template
 from flask_login import current_user
 from flask_socketio import SocketIO
 
+from edurange_refactored.flask.modules.routes.public_routes import blueprint_edurange3_public
+from edurange_refactored.flask.modules.routes.student_routes import blueprint_edurange3_student
+from edurange_refactored.flask.modules.routes.instructor_routes import blueprint_edurange3_instructor
+from edurange_refactored.flask.modules.routes.admin_routes import blueprint_edurange3_admin
+from edurange_refactored.flask.modules.routes.scenario_routes import blueprint_edurange3_scenarios
+
 from edurange_refactored import commands, public, user, tutorials, api
 from edurange_refactored.extensions import (
     bcrypt,
@@ -18,10 +24,12 @@ from edurange_refactored.extensions import (
     flask_static_digest,
     login_manager,
     migrate,
+    jwtman
 )
 from edurange_refactored.user.models import User
 
 socketapp = SocketIO()
+
 
 
 def create_app(config_object="edurange_refactored.settings"):
@@ -40,6 +48,10 @@ def create_app(config_object="edurange_refactored.settings"):
     register_jinja_filters(app)
     socketapp.init_app(app)
 
+
+
+    # app.config['SECRET_KEY_SISTER'] = "iLikeTurtles"  ## DEV_ONLY (replace; secret key MUST be secure!)
+
     return app
 
 
@@ -50,12 +62,14 @@ def register_jinja_filters(app):
     app.jinja_env.globals.update(Iid=Iid)
     app.jinja_env.globals.update(get_role=get_role)
 
-
 def register_extensions(app):
     """Register Flask extensions."""
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
+
+    jwtman.init_app(app) # added
+ 
     csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
@@ -71,7 +85,12 @@ def register_blueprints(app):
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(tutorials.views.blueprint)
 
-    # test
+    app.register_blueprint(blueprint_edurange3_public)
+    app.register_blueprint(blueprint_edurange3_student)
+    app.register_blueprint(blueprint_edurange3_instructor)
+    app.register_blueprint(blueprint_edurange3_admin)
+    app.register_blueprint(blueprint_edurange3_scenarios)
+
     app.register_blueprint(api.contents.blueprint)
 
     return None

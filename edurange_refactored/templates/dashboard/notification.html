@@ -1,31 +1,13 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/Notification.bundle.css') }}" />
+<main class="notification-class">
+    <div id="notification-page" notifications="{{notifications}}">
+    </div>
+</main>
+{% endblock %}
 
-<!-- scripts for notification page -->
-<p></p>
-<div class="container">
-    <form method="POST">
-        {{ deleteNotify.csrf_token }}
-        <input name="clearButton" class="btn btn-dark" type="submit" value="Clear all notifications"/>
-    </form>
-    <p></p>
-    <table class="table">
-        <caption>Table of Notification history</caption>
-        <thead class="thead-dark">
-            <tr>
-                <th data-sort="string"scope="col">Notification</th>
-                <th data-sort="float" data-sort-default="desc" scope="col">Date</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for notification in notifications %}
-            <tr>
-                <td>{{notification.detail}}</td>
-                <td>{{notification.date}}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-
+{% block js %}
+<script src="/static/build/Notification.bundle.js"></script>
 {% endblock %}

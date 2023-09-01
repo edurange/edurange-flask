@@ -24,16 +24,17 @@ from edurange_refactored.role_utils import get_roles, scenario_exists, student_h
 from ..user.models import Responses, Scenarios
 
 from flask_login import current_user, login_required
-from jwt import JWT
+# from jwt import JWT
 
 from edurange_refactored.extensions import  db
 from edurange_refactored.user.forms import scenarioResponseForm
-from edurange_refactored.utils import TokenHelper, bashAnswer,  questionReader
+from edurange_refactored.utils import bashAnswer,  questionReader
+# from edurange_refactored.utils import TokenHelper, bashAnswer,  questionReader (removed TokenHelper)
 
 blueprint = Blueprint("api", __name__, url_prefix="/api", static_folder="../static")
-jwtToken = JWT()
-helper = TokenHelper()
-oct_data = helper.get_data()
+# jwtToken = JWT()
+# helper = TokenHelper()
+# oct_data = helper.get_data()
 
 @blueprint.route("/test", methods=["GET"])
 @login_required

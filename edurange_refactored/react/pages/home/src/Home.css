@@ -1,0 +1,14 @@
+
+
+@keyframes promptBlink {
+    0%, 90% { opacity: 1; }   
+    90%, 100% { opacity: 0; } 
+}
+.welcome-text{
+    color: var(--blue-muted);
+    font-size: 68px;
+}
+.blink-me {
+    animation: promptBlink 3s steps(1) infinite;
+    animation-iteration-count: 4;
+}

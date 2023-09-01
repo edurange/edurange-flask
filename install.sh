@@ -23,12 +23,90 @@ sudo apt update
 sudo apt install -y python3-pip npm redis-server unzip wget postgresql libpq-dev
 pip3 install -r requirements/prod.txt
 
+pip3 uninstall pyjwt -y
+pip3 uninstall flask-jwt-simple -y
+
+pip3 install -r requirements/prod.txt
+
 npm install
 mkdir data
 mkdir data/tmp
 mkdir logs
 
-# Add option for automatic install for testing. Do not use this in a production environment.
+echo -e "${YLW}\n\n##### The following set of prompts are for network configuration #####${NC}\n\n"
+echo -e "We recommend using your LAN (local) IP for most purposes.\n
+If you need the edurange server to be accessible outside your LAN, \n  use your WAN IP or a DNS hostname.\n
+WAN IPs/DNS hostnames will expose your installation to the entire \n  Internet and may require additional network configuration.\n
+Use at your own risk; we offer limited support for external \n  configurations. \n"
+
+echo -e "${GRN}Please select one of the following options for networking configuration:${NC}"
+echo -e "  (1) Use your internal ip address (Recommended for Developer Instances)"
+echo -e "  (2) Use your public extern ip address (Advanced)"
+echo -e "  (3) Enter your public domain name (For production installations"
+
+#Gather potential IP/Address Options:
+
+#wlo1=$(ip -4 addr show wlo1 | grep -oP '(?<=inet\s)\d+(.\d+){3}' 2>/dev/null)
+#eth0=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(.\d+){3}' 2>/dev/null)
+#enp1s0=$(ip -4 addr show enp1s0 | grep -oP '(?<=inet\s)\d+(.\d+){3}' 2>/dev/null)
+#wlan0=$(ip -4 addr show wlan0 | grep -oP '(?<=inet\s)\d+(.\d+){3}' 2>/dev/null)
+
+all=$(/sbin/ip -4 -o addr show scope global | awk '{gsub(/\/.*/,"",$4); print $4}')
+
+#echo "($all)"
+#echo "($wlo1)"
+#echo "($enp1s0)"
+#echo "($eth0)"
+#echo "($wlan0)"
+
+
+hostAddress=''
+
+#TODO Regex this
+promptnumber=0
+
+external_ip=$(dig @resolver4.opendns.com myip.opendns.com +short)
+
+echo "$hostAddress"
+
+while [ -z "$hostAddress" ]
+do 
+  #echo "READING PROMPT NUM"
+  read promptnumber
+
+  if [ $promptnumber -eq 1 ]; then
+    #echo -e "Your ip is one of these \n$all"
+    option1=$(echo "$all" | sed "1p;d")
+    option2=$(echo "$all" | sed "2p;d")
+    echo "  Please select one of the following Local IP Addresses we detected:"
+    echo "  (1) $option1"
+    echo "  (2) $option2"
+
+    while [ -z "$hostAddress" ]
+    do
+      read optnumber
+      if [ $optnumber -eq 1 ]; then
+        hostAddress="$option1"
+      elif [ $optnumber -eq 2 ]; then
+        hostAddress="$option2"
+      fi
+    done
+    
+  elif [ $promptnumber -eq 2 ]; then
+    #echo $external_ip
+    hostAddress="$external_ip"
+    #echo "$hostAddress CHANGED"
+  
+  elif [ $promptnumber -eq 3 ]; then
+    echo "Enter domain name: "
+    read hostAddress
+    #echo "$hostAddress CHANGED"
+  fi
+done
+
+#echo "hostAddress changed to: $hostAddress "
+
+#exit
 
 if [ $# -eq 0 ];
 then
@@ -40,8 +118,8 @@ then
 	read flaskUser
 	echo -e "${YLW}Please enter your Flask (web interface) password:${NC}"
 	read flaskPass
-	echo -e "${YLW}Please enter your external address (Like example.com):${NC}"
-	read hostAddress
+	#echo -e "${YLW}Please enter your external address (Like example.com):${NC}"
+	#read hostAddress
 	echo -e "${YLW}Please enter your root password for all containers:${NC}"
 	read rootPass
 	# Generate secret string for cookie encryption
@@ -54,6 +132,7 @@ then
 	sed -i "s/not-so-secret/${secretKey}/" .env
 	sed -i "s/localhost/${hostAddress}/" .env
 	sed -i "s/change-me/${rootPass}/" .env
+  sed -i "s/URL_TO_BE_CHANGED/${hostAddress}/" edurange_refactored/react/api/config/AxiosConfig.js
 elif [ $1 = "auto" ];
 then
 	cp ./.env.example ./.env

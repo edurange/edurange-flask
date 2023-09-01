@@ -1,0 +1,68 @@
+
+#edurange-navhead {
+    display: flex;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6.3dvh;
+    z-index: 1000;
+    justify-content: right ;
+}
+#edurange-navhead-buttonbar{
+    margin-right: 40px;
+    width:auto;
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.topnav-icon-box:hover{
+    color: var(--muted-aqua);
+}
+.topnav-icon-box{
+    color: rgb(255, 209, 136) ;
+    font-size: 15px;
+    margin-right: 4px;
+}
+.topnav-label-box{
+    color: rgb(210, 160, 81) ;
+}
+.topnav-label-box:hover{
+    color: var(--muted-aqua);
+}
+
+
+.topnav-button-panes{
+    display:flex;
+    padding: 0 15px;
+}
+
+.edu3-nav-tabs {
+    width: 100%;
+    
+    border-left: 1px solid rgb(107, 107, 107);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--muted-orange);
+}
+
+.edu3-nav-active-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edu3-nav-tab-label {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edu3-nav-inactive-tab:hover {
+    color: rgb(40, 191, 255);
+}

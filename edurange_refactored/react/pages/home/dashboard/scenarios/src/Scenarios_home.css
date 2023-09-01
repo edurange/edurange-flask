@@ -1,0 +1,20 @@
+.scenario-home-outer-frame {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    contain: content;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.scenario-home-inner-frame {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    contain: content;
+    flex-direction: column;
+    position: relative;
+    bottom: 0; 
+    left: 5%;
+    right: 0;
+    top: 2%;
+}

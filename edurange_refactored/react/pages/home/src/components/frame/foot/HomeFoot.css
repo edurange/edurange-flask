@@ -1,0 +1,18 @@
+
+.homefoot-frame{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5dvh ;
+    color: rgb(115, 143, 152);
+    justify-content:start ;
+    padding-left: 20px;
+    align-items:center  ;
+    text-align:left  ;
+    z-index: 1000;
+    border-top: 1px solid rgb(44, 6, 20);
+    background-color: rgb(12, 20, 44);
+    font-size: 12px;
+    display:flex;
+}

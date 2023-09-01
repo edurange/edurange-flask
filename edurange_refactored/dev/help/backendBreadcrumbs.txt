@@ -1,0 +1,210 @@
+
+CAVEAT DEVS:  This file was made while in the process of following some breadcrumb trails 
+              and trying to make sense of them.  What's written here were my notes I took
+              while doing that, and there could very well be completely wrong info in here.
+
+              This branch is being pushed to a staging branch, so people may see it, 
+              but devs should be aware that these are just notes I took very quickly and
+              have not taken the time to review.
+
+              You may see what looks vaguely like Python in here, but it is 100% pseudo
+              except where otherwise marked.
+
+              Still, with that in mind, they could be useful.  This will be deleted eventually.
+
+---'scenario names'--------------------------------------------------------------
+scenario names are defined in the .env file:  (formatting is mine)
+  SCENARIO_LIST_ENV='
+    "Elf_Infection",
+    "File_Wrangler",
+    "Getting_Started",
+    "Metasploitable",
+    "Ransomware",
+    "Ssh_Inception",
+    "Strace",
+    "Total_Recon",
+    "Treasure_Hunt",
+    "Web_Fu"
+    '
+
+then in settings.py, a KNOWN_SCENARIOS variable is declared with that info formatted
+  KNOWN_SCENARIOS = env.str("SCENARIO_LIST_ENV").replace('"', '').split(",")
+
+the scenario names are then referenced in scenario_utils.py: 
+  known_types = KNOWN_SCENARIOS
+
+
+in tasks.py  CreateScenarioTask( self, name, s_type, owner, group, g_id, s_id, namedict ):
+  the s_type is formatted before being used as an argument to invoke scenario_utils > gather_files()
+    s_type = s_type.lower()
+    c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(s_type, logger)
+
+then in scenario_utils.py > gather_files( s_type, logger):
+  the s_type, or scenario name in lower case (e.g.'file_wrangler') is used to identify which
+  data will be queried from the db, such as:
+
+ACTUAL CODE SNIPPET FROM gather_files():
+
+def gather_files(s_type, logger):
+    c_names = []
+    g_files = []
+    s_files = []
+    u_files = []
+    package_list = []
+    ip_addrs = []
+
+    if os.path.isdir(os.path.join("./scenarios/prod/", s_type)):
+        logger.info("Scenario of type {} Found".format(s_type))
+        logger.info("Now attempting to load file requirements...")
+        try:
+            with open(
+                os.path.join("./scenarios/prod/", s_type + "/" + s_type + ".json")
+            ) as f:
+                data = json.load(f)
+
+                containers = item_generator(data, "name")
+                for i in containers:
+                    c_names.append(i)
+
+ultimately, this means we should be able to use scenario_utils > gather_files() 
+as part of generating new scenarios if we can't otherwise use predefined routes.
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+SCENARIOS
+
+general resources and info:
+
+  Flask route: /student_scenario/<i> (GET, POST) # will probably only use POST
+
+  Flask functions: 
+      
+    scenario_utils.py:
+
+      gather_files( s_type, logger ) #calls utils.tempMaker() to get properties to pass to celery
+        args:
+          s_type = string, scenario type (e.g."getting_started" or s_type == "file_wrangler") # note this is actual snippet, which means these types are special for some reason
+
+    utils.py
+
+      tempMaker( sId, i ) # needs scenarioID and userRole, 
+                          # returns properties for a given scenario
+        args: 
+          sId = integer, scenarioID input to match with db scenarioID
+          i = string, scenarioIndex user role:
+            'ins' = string, user is instructor
+            'stu' = string, user is student
+        
+        return:
+          if 'ins:
+            status, 
+            ownerName, 
+            createdAt, 
+            description, 
+            ty, 
+            sName, 
+            guide, 
+            questions
+          elif "stu":
+            status, 
+            ownerName, 
+            description, 
+            ty, 
+            sName, 
+            username, 
+            pw, 
+            guide, 
+            questions
+
+get scenario description from DB:
+  utils.py > getDescription ( scenario ):
+
+    args: 
+      scenario: string, name of scenario eg 'File_Wrangler' (is formatted toLower in-function)
+    returns:
+      open(f"./scenarios/prod/{scenario}/{scenario}.yml", "r") > key: "Description", value: [returned]
+
+get scenario ssh pass? from DB:   # not sure
+  utils.py > getPass ( scenario, username ):
+
+    args: 
+      scenario: string, name of scenario eg 'File_Wrangler' (is formatted toLower in-function)
+      username: username of specific user
+    returns:
+      .open(f'./data/tmp/{scenario}/students.json') > key: "password", value: [returned]
+      note: MAY also return user object which may contain ssh username if different
+
+get scenario questions (guide?) # maybe
+  utils.py > getQuestions ( scenario )
+
+    args: 
+      scenario: string, name of scenario eg 'File_Wrangler' 
+    returns: 
+      open(f"./scenarios/prod/{scenario}/questions.yml"
+
+tempMaker = mostly just returns scenario info (See above)
+
+check a user's answer from guide view submission
+
+
+utils.py > checkAnswer(scenario, qnum, sid, student_answer, uid):   # calls bashAnswer to check student's answer and return something
+
+  args: 
+    scenario: string, the scenario normal name  , 
+    qnum: int, question number , 
+    sid: int, scenario id, 
+    uid: user id
+    student_answer: str, student ansew 
+
+  returns: 
+    question['Points'] (or 0): int, points awarded for attempt
+
+utils.py > bashAnswer(sid, uid, ans):   # does some bash craziness, involving: checks student's scenario question submission against db 
+
+  args: 
+    sid: int, scenario id 
+    uid: int, user id 
+    ans: string, student's answer 
+
+  returns: 
+    ans: string(?), but it has been put through the wringer. not clear what the return is
+
+
+
+
+
+
+  properties needed: 
+
+
+
+    status, 
+    owner, 
+    desc, 
+    s_type, 
+    s_name, 
+    u_name, 
+    pw, 
+    guide, 
+  questions = tempMaker(i, "stu")
+
+  
+
+
+building a scenario guide for a user: 
+
+what do i have access to?
+from db:
+ - scenario title 
+ - scenario unique name 
+ - scenario blurb
+ - scenario id 
+ - ssh password (i think) (tempMaker)
+ - ssh username (i think) (tempMaker)
+ - some questions? (tempMaker) 
+ - 
+
+/scenarios/prod/(scenario)/content.json -- defines most values for each scenario
+/data/tmp/(scenario)/student_view/content.json -- holds temporary variable values for specific scenario instance that are referenced in other content.json
