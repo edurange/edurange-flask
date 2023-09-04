@@ -17,7 +17,7 @@
   "author": "Jack Cook",
   "license": "MIT",
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "browser": {
     "fs": false
@@ -28,9 +28,11 @@
   "homepage": "https://github.com/coojac09/edurange_refactored#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.2",
+    "ansi-to-html": "^0.7.2",
     "axios": "^1.4.0",
     "bootstrap": "^4.6.2",
     "cidr-matcher": "^2.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -40,6 +42,7 @@
     "jsx": "^0.9.89",
     "morgan": "^1.10.0",
     "nanoid": "^4.0.2",
+    "npm": "^8.5.1",
     "path": "^0.12.7",
     "popper.js": "^1.15.0",
     "react": "^18.2.0",
@@ -47,10 +50,11 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.2",
+    "react-terminal-ui": "^1.0.5",
     "redis": "^3.0.2",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^3.0.5",
-    "socket.io-client": "^4.5.2",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
     "ssh2": "^0.8.9",
     "validator": "^13.5.2"
   },
@@ -74,8 +78,8 @@
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.19",
-    "npm": "^7.0.10",
     "raw-loader": "^4.0.2",
+    "read-config-ng": "^3.0.7",
     "url-loader": "^3.0.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.2"

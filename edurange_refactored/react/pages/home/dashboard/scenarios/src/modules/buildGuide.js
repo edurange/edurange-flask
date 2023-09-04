@@ -14,10 +14,6 @@ import GuideReading from "../guide/Q_and_A/GuideReading";
 // 'Content Order' pointers in the scenario's content.json, 
 // and same with the items in each chapter
 
-// most of the notes here i made for my own sanity while making this
-// but i've decided to leave them for yours :)
-
-
 export default function buildGuide(contentJSON) {
 
     const readings = contentJSON.StudentGuide.Readings;
@@ -70,10 +66,6 @@ export default function buildGuide(contentJSON) {
                 itemObject.itemContent = questions[itemContentPointer];
                 itemObject = GuideQuestion(itemObject); // convert to react component
             }
-
-            // if (should_reactify) {
-            //     itemObject = reactify(itemObject);
-            // }
             // Add the 'item' to the 'chapter'
             bookChapter.push(itemObject);
         }

@@ -15,6 +15,7 @@ import Account from '../account/src/Account';
 import Logout from '../../src/components/logout/Logout';
 import SSHmodal from './components/ssh/SSHmodal';
 import DashNotifications from './components/notifications/components/DashNotifications';
+import SSH_web from './components/ssh/SSH_web';
 
 function Dashboard_router() {
 
@@ -24,12 +25,12 @@ function Dashboard_router() {
     userData_state, set_userData_state
   } = useContext(HomeRouterContext);
   
-  // these routes extend /edurange3/dashboard
-  // e.g. scenarios is URL /edurange3/dashboard/scenarios
-
+  
   const navLong = `side_${navName_state}`
   const navToShow = navArrays[navLong];
-
+  
+  // these routes extend /edurange3/dashboard
+  // e.g. scenarios is URL /edurange3/dashboard/scenarios
   return (
 
     <div className='newdash-frame'>
@@ -49,6 +50,7 @@ function Dashboard_router() {
               <Route path="/instructor/*" element={<InstructorDash />} />
               <Route path="/account" element={<Account />} />
               <Route path="/ssh" element={<SSHmodal />} />
+              <Route path="/sshweb" element={<SSH_web />} />
               <Route path="/notifications" element={<DashNotifications />} />
             </Routes>
 

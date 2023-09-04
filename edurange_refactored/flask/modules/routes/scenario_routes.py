@@ -74,7 +74,7 @@ def get_content(i):
     current_username = g.current_username
     current_scenario_id = i
     if (
-        not isinstance(i, int)
+        not isinstance(current_scenario_id, int)
         or i < 0 
         or i > 99
         ):
@@ -154,9 +154,43 @@ def student():
 
 
 
+@blueprint_edurange3_scenarios.route('/web_ssh/<int:i>', methods=['POST']) # WIP
+@jwt_and_csrf_required
+def begin_ssh(i):
+
+    current_username = g.current_username
+    current_user_id = g.current_user_id
+    current_user_role = g.current_user_role
+
+    current_scenario_id = i
+
+    if (
+        not isinstance(current_scenario_id, int)
+        or i < 0 
+        or i > 99
+        ):
+            return jsonify({'error': 'invalid scenario ID'}), 418 # DEV_ONLY (replace with standard denial msg)
+
+    contentJSON, credentialsJSON, unique_name = getContent(current_scenario_id, current_username)
+    # returns instructor-chosen scenario name if check good
+    # you can use the name for content.json retrieval, etc
+    # this is useful for reducing need for stateful user-scenario data
+
+    meta = getScenarioMeta(current_scenario_id)
 
 
-
+    if not credentialsJSON or not unique_name:
+        return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
+    
+    SSH_IP = identify_state(unique_name, "Started")  
+    
+    return jsonify({
+        "scenario_meta": meta,
+        "contentJSON":contentJSON, 
+        "credentialsJSON":credentialsJSON,
+        "unique_scenario_name":unique_name,
+        "SSH_IP": SSH_IP
+        })
 
 
 
@@ -195,7 +229,7 @@ def student():
 #     Output: The JSON outline for a student scenario. 
 #             This file will be located at f'data/tmp/{scenario_name_collapsed}/content.json'
 #     Errors: 
-#     TODO:   
+#     todo:   
 #             Instructors should only be able to access content for scenarios that they are managing.
 #     '''
 #     ok, err, code = validate_usage(scenario_id)
@@ -223,7 +257,7 @@ def student():
 #     Output: The JSON outline for a student scenario. 
 #             This file will be located at f'data/tmp/{scenario_name_collapsed}/content.json'
 #     Errors: 
-#     TODO:   
+#     todo:   
 #             Instructors should only be able to access content for scenarios that they are managing.
 #     """
 #     with open(f'scenarios/prod/getting_started/student_view/content.json', 'r') as fp:
@@ -231,7 +265,7 @@ def student():
 #     return content
 
 
-# # TODO :
+# # todo :
 # #       instructors can get all data associated with their students
 # #       admins get all 
 # #

@@ -18,7 +18,7 @@ import SessionKeeper from './SessionKeeper';
 
 export const HomeRouterContext = React.createContext();
 
-const loginExpiry = 1000000000; // DEV_ONLY
+const loginExpiry = (1000 * 60 * 60 * 1); // 1 hr in miliseconds
 
 function Home_router() {
   
@@ -36,13 +36,12 @@ function Home_router() {
     sessionStorage.setItem ('navName', JSON.stringify(newNavName));
     sessionStorage.setItem ('loginExpiry', JSON.stringify(newExpiry));
     navigate(newURL);
-  }
-
-  // these routes extend the base URL of /edurange3/
-  // e.g. dashboard is URL /edurange3/dashboard
+  };
 
   const navToShow = navArrays[`top_${navName_state}`];
-
+  
+  // these routes extend the base URL of /edurange3/
+  // e.g. dashboard is URL /edurange3/dashboard
   return (
     <div id='edurange-appframe'>
 
@@ -50,7 +49,7 @@ function Home_router() {
         userData_state, set_userData_state,
         login_state,    set_login_state,
         navName_state,  set_navName_state,
-        updateNav, 
+        updateNav, loginExpiry
       }}>
 
         <SessionKeeper/>

@@ -93,3 +93,6 @@ body, html{
 #newdash-sidebar-icon {
     margin-right: 10px;
 }
+.edu3-nav-link{
+    cursor: pointer;
+}

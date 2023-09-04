@@ -31,8 +31,6 @@ function ScenarioTable() {
         navigate(`${currentMeta.scenario_id}/home`);
     };
 
-    console.log ("fetched list: ", scenarioList_state);
-
     return (
         <div className="newdash-datatable-frame">
             <div className="newdash-datatable-header">

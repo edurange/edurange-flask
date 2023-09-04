@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import { scenarioShells } from '../../../../../../../modules/scenarios/ScenariosData';
 
 import GuideInterpreter from './GuideInterpreter';
-import GuideHome from './GuideHome';
+import HomeChapter from './HomeChapter';
 import { HomeRouterContext } from '../../../../../src/Home_router';
 
 // import FetchHelper from '../../../../../../../modules/utils/fetchHelper'
@@ -54,7 +54,7 @@ function ScenarioFullView() {
 
 //--------------------------
 
-  const currentPageData = (chosenPage !== "home") ?  getGuide() : GuideHome ;
+  const currentPageData = (chosenPage !== "home") ?  getGuide() : HomeChapter ;
     
 
   console.log(currentPageData);

@@ -174,9 +174,11 @@ def identify_state(name, state):
     else:
         return {"Could not find scenario folder": "Please destroy and re-make this scenario"}
 
-def query_valid_scenario_id(id, session):
-    scenId = session.query(Scenarios).get(id)
-    return scenId
+# if Scenarios are imported from models, it creates circular import
+# this has been disabled and should possibly be removed
+# def query_valid_scenario_id(id, session):
+#     scenId = session.query(Scenarios).get(id)
+#     return scenId
 
 
 def gen_chat_names(student_ids, sid): 

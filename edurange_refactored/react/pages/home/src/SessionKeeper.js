@@ -3,7 +3,6 @@ import React, {useContext, useEffect} from 'react';
 
 import { HomeRouterContext } from "./Home_router";
 import Login from './components/login/Login';
-export const SessionContext = React.createContext();
 
 function SessionKeeper () {
 
@@ -19,7 +18,7 @@ function SessionKeeper () {
         const loginBoolString = sessionStorage.getItem('login');
         const expiryString = sessionStorage.getItem('loginExpiry');
         
-        if (!loginBoolString || !expiryString)  { return <Login/>; };
+        if ((!loginBoolString) || (!expiryString))  { return <Login/>; };
     
         const expiry = JSON.parse(expiryString);
         const loginBool = JSON.parse(loginBoolString);
@@ -29,7 +28,7 @@ function SessionKeeper () {
         const userDataString = sessionStorage.getItem('userData');
         const navNameString = sessionStorage.getItem('navName');
         
-        if ( !userDataString || !navNameString ) { return <Login/>; };
+        if ((!userDataString) || (!navNameString)) { return <Login/>; };
         
         const userData = JSON.parse(userDataString);
         const navName = JSON.parse(navNameString);
@@ -41,5 +40,3 @@ function SessionKeeper () {
       useEffect(() => {restoreSession();}, []);
   };
   export default SessionKeeper;
-
- 

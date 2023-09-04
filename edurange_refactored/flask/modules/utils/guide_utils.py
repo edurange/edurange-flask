@@ -40,6 +40,8 @@ def getContent(scenario_id, username):
     if unique_name: unique_name = unique_name[0]
     if (not unique_name
     or status != "Started"): abort(418) 
+
+    unique_name = "".join(e for e in unique_name if e.isalnum())
     
     with open(f'data/tmp/{unique_name}/student_view/content.json', 'r') as fp:
         contentJSON = json.load(fp)

@@ -12,3 +12,6 @@
     animation: promptBlink 3s steps(1) infinite;
     animation-iteration-count: 4;
 }
+.edu3-nav-link{
+    cursor: pointer;
+}
