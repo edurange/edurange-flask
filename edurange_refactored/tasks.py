@@ -94,7 +94,8 @@ def test_send_async_email(email_data):
 def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
     ''' self is the task instance, other arguments are the results of database queries '''
     from edurange_refactored.user.models import ScenarioGroups, Scenarios
-
+    print("*********************")
+    print(group)
     app = current_app
     s_type = s_type.lower()
     g_id = g_id["id"]
@@ -138,8 +139,8 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
             json.dump(students, outfile)
 
         # create file of chat names for the scenario
-        with open(f"../chatnames.json", "w") as chatnamefile:
-           json.dump(namedict, chatnamefile)
+        #with open(f"../chatnames.json", "w") as chatnamefile:
+        #   json.dump(namedict, chatnamefile)
 
         questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
         content = open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")

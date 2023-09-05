@@ -21,8 +21,9 @@ export default function CreateScenario(props) {
     useEffect(() => {
 
     }, []);
-
+  
     const handleScenarioNameInput = (data) => {
+        // SLIME to-do: validate name input
         setScenarioName(data);
     }
 

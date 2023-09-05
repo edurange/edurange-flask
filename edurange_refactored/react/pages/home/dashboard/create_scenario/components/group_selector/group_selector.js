@@ -5,9 +5,11 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function group_selector() {
+
   const [groupOptions, setGroupOptions] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
-  async function beginTest() {
+
+  async function getGroupList() {
     try {
         const response = await axios.get("/api/groups");
         if (response.data) {
@@ -19,35 +21,31 @@ export default function group_selector() {
         };
     }
     catch (error) {console.log('groups error:', error);};
-};
+  };
+
+
+
   useEffect (() => {
-    beginTest();
+    getGroupList();
   }, []);
+
     return (
-    <div>
-        <h1>SELECTED GROUP{selectedGroup}</h1>
+        <div>
+            <h1>SELECTED GROUP{selectedGroup}</h1>
 
-       <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic">
-      Select Group
-        </Dropdown.Toggle>
-          <Dropdown.Menu>
-          {groupOptions.map((groupName, index) => (
-                      <Dropdown.Item key={index} onClick={() => setSelectedGroup(groupName)}>
-                          {groupName}
-                      </Dropdown.Item>
-                    ))}  
-          </Dropdown.Menu>
-       </Dropdown>
-    </div>
-  )
-}
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-basic">
+          Select Group
+            </Dropdown.Toggle>
+              <Dropdown.Menu>
+              {groupOptions.map((groupName, index) => (
+                          <Dropdown.Item key={index} onClick={() => setSelectedGroup(groupName)}>
+                              {groupName}
+                          </Dropdown.Item>
+                        ))}  
+              </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      )
+  }
 
-/* <Dropdown>
-            <Dropdown.Toggle>Something Here</Dropdown.Toggle>
-            <Dropdown.Menu> 
-                  {groupOptions.map((groupName, index) => (
-                    <Dropdown.Item key={index}>{groupName}</Dropdown.Item>
-                  ))}  
-            </Dropdown.Menu>
-        </Dropdown> */

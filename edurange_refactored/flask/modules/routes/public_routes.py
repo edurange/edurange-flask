@@ -1,7 +1,7 @@
 
 from flask_login import login_user, logout_user
-
-from edurange_refactored.user.models import User
+from edurange_refactored.tasks import CreateScenarioTask
+from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_data  # gets all the previous
 
@@ -38,7 +38,11 @@ def custom_error_handler(error):
 
 @blueprint_edurange3_public.route("/login", methods=["POST"])
 def login_edurange3():
-
+    group = "fuzz"
+    g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+    g_id = g_id._asdict()
+    CreateScenarioTask("bob", "file_wrangler", "owner", "group", g_id, "456", {"djdwn":"jnjn"})
+ 
     validation_schema = LoginSchema()  # instantiate validation schema
     validated_data = validation_schema.load(request.json) # validate login. reject if bad.
     

@@ -381,7 +381,7 @@ def make_scenario():
             .all()
         )
 
-        Scenarios.create(name=name, description=s_type, owner_id=own_id)
+        Scenarios.create(name=name, description=s_type, owner_id=own_id) #creates database entry
         NotifyCapture(f"Scenario {name} has been created.")
         #Notification.create(details=something, date=something)
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
