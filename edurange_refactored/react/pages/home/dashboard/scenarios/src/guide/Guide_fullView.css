@@ -35,11 +35,11 @@
 
 .dashcard-fullview-left-frame{
     contain: content;
-    max-width: 30%;
+    max-width: 38%;
     height: 100%;
     max-height: 100%;
     display: flex;
-    width: 30%;
+    width: 38%;
     box-sizing: border-box;
     position: relative;
     flex-direction: column;
@@ -213,7 +213,7 @@
     width: 100%;
     flex-direction: row;
     position: relative;
-    justify-content:space-evenly ;
+    justify-content:space-between ;
     justify-items: space-evenly;
     align-items: space-evenly;
     align-content: space-evenly;
@@ -222,6 +222,8 @@
     right: 0;
     top: 0;
     display: flex;
+    box-sizing: border-box;
+
     /* background-color: aliceblue; */
 }
 .dashcard-fullview-controlbar-tab{
@@ -229,7 +231,7 @@
     border-left: 1px solid rgba(218, 165, 32, 0.503);
     height: 100%;
     min-height: 100%;
-    width: 100%;
+    /* width: 100%; */
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -239,35 +241,45 @@
     bottom: 0%; 
     left: 0;
     right: 0; */
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /* width: 100%; */
 
 }
 .dashcard-tab-left{
     border-top-left-radius: 15px;
     border-left:none;
+    min-width: 10%;
+    display: flex;
+    position: relative;
+    left:0;
+}
+.dashcard-tab-middles{
     width: 100%;
     display: flex;
+    /* border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px; */
 }
 .dashcard-tab-right{
     border-top-right-radius: 15px;
-    width: 100%;
+    min-width: 10%;
     display: flex;
+    /* border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px; */
 }
 .dashcard-tab-inactive{
     background-color: var(--blue-dark);
     color: var(--orange-light);
     display: flex;
-    width: 100%;
+    /* width: 100%; */
 
 }
 .dashcard-tab-active{
     background-color: var(--blue-normal);
     color: var(--blue-deep);
-    font-size:medium ;
+    /* font-size:medium ; */
     display: flex;
-    width: 100%;
+    /* width: 100%; */
 
 }
 .dashcard-tab-active:hover{
@@ -275,7 +287,7 @@
 }
 .dashcard-tab-inactive:hover{
     color: var(--blue-deep);
-    background-color: var(--blue-normal);
+    background-color: var(--blue-light);
     cursor:pointer ;
 }
 
@@ -285,11 +297,11 @@
     height: 100%;
     max-height: 100%;
     display: flex;
-    width: 68%;
+    width: 62%;
     box-sizing: border-box;
     position: absolute;
     bottom:0; 
-    left: 32%;
+    left: 38%;
     right: 0;
     top: 0%;
     flex-direction: column;
@@ -298,7 +310,7 @@
     max-width: 100%;
     display: flex;
     width: 100%;
-    min-height: 96%;
+    min-height: 95%;
     line-height: 1.35;
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.412);
@@ -316,20 +328,20 @@
 }
 .dashcard-fullview-guide-main-text{
     color: var(--orange-normal);
-    width: 93%; 
-    max-height: 94%;
-    min-height: 94%;
+    width: 98%; 
+    max-height: 92%;
+    min-height: 92%;
     overflow-y: auto ;
     position: relative;
     bottom: 0px; 
-    left: 3%;
+    left: 1%;
     right: 0;
     top: 1%;
-    padding-right: 4%
+    /* padding-right: 4% */
 }
 .dashcard-fullview-guide-footcontrol-frame {
-    min-height: 4%;
-    max-height: 4%;
+    min-height: 5%;
+    max-height: 5%;
     display: flex;
     min-width: 100%;
     max-width: 100%;
@@ -353,6 +365,44 @@
     flex-direction: row;
     flex-direction: column;
 }
+.footcontrol-info-button{
+    width: 100%;
+    text-align: center;
+    font-size: small;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(207, 148, 0);
+    color: rgb(44, 39, 0);
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    font-size: medium;
+}
+.footcontrol-info-button:hover{
+    background-color: rgb(255, 211, 144);
+    color: rgb(20, 16, 0);
+    cursor: pointer;
+}
+.footcontrol-pseudo-ssh-button{
+    width: 100%;
+    text-align: center;
+    font-size: small;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--purple-normal);
+    color: rgb(183, 255, 241);
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    font-size: medium;
+}
+.footcontrol-pseudo-ssh-button:hover{
+    background-color: var(--purple-light);
+    color: rgb(0, 9, 20);
+    cursor: pointer;
+}
 .footcontrol-web-ssh-button{
     width: 100%;
     text-align: center;
@@ -374,7 +424,7 @@
 }
 .footcontrol-ssh-text{
     width: 55%;
-    min-width: 70%;
+    min-width: 55%;
     text-align: left;
     font-size: small;
     display: flex;

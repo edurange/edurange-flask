@@ -21,7 +21,6 @@ function Guide_infoFrame({guideBook, guideContent}) {
 
    
     const meta = guideContent.scenario_meta;
-    console.log(guideContent)
 
     // present empty / deflect while promises await
     if ((guideBook.length < 1) || (!meta)) {
@@ -29,7 +28,6 @@ function Guide_infoFrame({guideBook, guideContent}) {
     }
     const SSH_IP = guideContent.SSH_IP[`${meta.scenario_name}_nat`]
     const shellData = scenarioShells[`${meta.scenario_description}`];
-    console.log(SSH_IP)
     return (
         <>
 

@@ -140,23 +140,11 @@ body, html {
     min-height: 100vh;
   }
 
-a {
-    text-decoration: none;
+  a, a:link, a:visited, a:hover, a:active {
+    color: inherit; /* This will make the link take the color of its parent element */
+    text-decoration: none; /* To remove the underline typically associated with links */
 }
 
-a:link {
-    color: var(--orange-normal);
-}
-a:visited {
-    color: var(--orange-normal);
-    
-}
-a:hover {
-    color: var(--orange-muted);
-}
-a:active {
-    color: var(--aqua-muted);
-}
 
 .pucs-text-primary{color: var(--blue-deep);}
 .pucs-text-primary-invert{color: var(--blue-muted);}

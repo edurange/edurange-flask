@@ -8,7 +8,7 @@ input{
     height: 2em;
     display: flex;
     background-color: rgb(34, 56, 87);
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
     top: 0;
     left: 0;
@@ -26,7 +26,8 @@ input{
     height: 100%;
     display: flex;
     /* background-color: rgb(37, 44, 50); */
-    flex-direction: column;
+    color: mediumseagreen;
+    flex-direction: row;
     position: relative;
     top: 0;
     bottom: 0; 
@@ -54,13 +55,9 @@ input{
     width: 100%;
     height: 100%;
     display: flex;
-    /* background-color: rgb(43, 51, 58); */
     flex-direction: column;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
     background-color: rgb(23, 27, 31);
     line-height: 1.5em;
-    /* overflow: auto; */
     position: relative;
     top: 0;
     bottom: 0; 
@@ -71,8 +68,8 @@ input{
 }
 .ssh-terminal-output-content{
     width: 98%;
-    height: 96%;
-    max-height: 96%;
+    height: 95%;
+    max-height: 95%;
     padding: 0;
     line-height: 1.5em;
     /* background-color: orange; */
@@ -93,6 +90,7 @@ input{
     position: fixed;
     bottom: 0%;
     left: 0%;
+    color: rgb(186, 255, 198)
 }
 .ssh-terminal-input-frame{
     
@@ -104,7 +102,7 @@ input{
     left: 0; 
     right: 0;
     width: 100%;
-    height: 3em;
+    height: 5.4%;
     box-sizing: border-box;
     color: goldenrod;
     border-bottom-left-radius:15px ;
@@ -127,4 +125,7 @@ input{
     color: goldenrod;
     outline: none;
     border: none;
+}
+.ssh-terminal-header-subtext{
+    font-size: x-small;
 }

@@ -23,9 +23,9 @@ function ScenarioFullView() {
   const {
     guideBook_state, set_guideBook_state,
     guideContent_state, set_guideContent_state,
-    scenarioList_state, set_scenarioList_state,
-    scenarioPage_state, set_scenarioPage_state,
   } = useContext(ScenariosRouterContext);
+
+  const [ leftPane_state, set_leftPane_state ] = useState(0)
 
   const meta = guideContent_state.scenario_meta;
 
@@ -34,7 +34,6 @@ function ScenarioFullView() {
       try {
         const contentReturn = await axios.get(`api/get_content/${scenarioID}`);
         const contentData = contentReturn.data;
-        console.log(contentData)
         const guideReturn = buildGuide(contentData.contentJSON);
         set_guideContent_state(contentData);
         set_guideBook_state(guideReturn);
@@ -45,18 +44,36 @@ function ScenarioFullView() {
     beginGuideBuild();
   }, [scenarioID]);
 
-  function launchWebSSH(addr, port, user, pass) {
+  function launchWebSSH(SSH_address, user, pass) {
+
+    const url = `http://10.0.0.55:1337/ssh/host/${SSH_address}`;
+    window.open(url, '_blank');
 
   }
 
-  // present empty / deflect while promises await
-  if ((guideBook_state.length < 1) || (!meta)) {
-    return (<>Scenario not found</>);
-  }
+//// GUARD /////
+if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>); }
+//// GUARD /////
+
+  const SSH_username = guideContent_state.credentialsJSON.username;
+  const SSH_password = guideContent_state.credentialsJSON.password;
 
   const SSH_IP = guideContent_state.SSH_IP[`${meta.scenario_name}_nat`]
   const shellData = scenarioShells[`${meta.scenario_description}`];
-  console.log(meta)
+
+  const tabActiveClass = 'dashcard-fullview-controlbar-tab dashcard-tab-active'
+  const tabInactiveClass = 'dashcard-fullview-controlbar-tab dashcard-tab-inactive'
+
+  const infoPane = (
+  <Guide_infoFrame 
+    guideBook={guideBook_state} 
+    guideContent={guideContent_state} />)
+
+  const sshPane = (
+  <SSH_web 
+    SSH_address={SSH_IP}
+    SSH_username={SSH_username}
+    SSH_password={SSH_password} />)
 
   return (
     <>
@@ -65,27 +82,36 @@ function ScenarioFullView() {
 
           <div className="dashcard-fullview-left-frame">
 
-          {/* <SSH_web/> */}  
-          <Guide_infoFrame guideBook={guideBook_state} guideContent={guideContent_state} />
+          {(leftPane_state===1) ? sshPane : infoPane }
+
           </div>
 
           <div className='dashcard-fullview-guide-frame'>
             <div className='dashcard-fullview-guide-main'>
               <div className='dashcard-fullview-controlbar-frame'>
                 <div className='dashcard-fullview-controlbar-tabs-frame'>
-                  <div className='dashcard-fullview-controlbar-tab dashcard-tab-left dashcard-tab-active'>Home</div>
 
-                  {guideBook_state.map((val, key) => {
-                    return (
-                      <Link to={`/edurange3/dashboard/scenarios/${scenarioID}/${key + 1}`} key={nanoid(5)}>
-                        <div className='dashcard-fullview-controlbar-tab dashcard-tab-inactive'>
-                          Chpt.{key + 1}
-                        </div>
+                    <div className={`dashcard-tab-left ${pageID === "0" ? tabActiveClass : tabInactiveClass}`}>
+                      <Link to={`/edurange3/dashboard/scenarios/${scenarioID}/0`}>
+                          Brief
                       </Link>
-                    );
-                  })}
+                    </div>
 
-                  <div className='dashcard-fullview-controlbar-tab dashcard-tab-right dashcard-tab-inactive'>Chpt.10</div>
+                    {guideBook_state.map((val, key) => {
+                      return (
+                        <div key={key} className={`dashcard-tab-middles ${pageID === (key+1).toString() ? tabActiveClass : tabInactiveClass}`}>
+                            <Link to={`/edurange3/dashboard/scenarios/${scenarioID}/${key + 1}`} key={nanoid(5)}>
+                                Chpt.{key + 1}
+                            </Link>
+                          </div>
+                      );
+                    })}
+
+                    <div className={`dashcard-tab-right ${pageID === "1337" ? tabActiveClass : tabInactiveClass}`}>
+                      <Link to={`/edurange3/dashboard/scenarios/${scenarioID}/1337`}>
+                          Debrief
+                      </Link>
+                    </div>
                 </div>
 
               </div>
@@ -99,10 +125,12 @@ function ScenarioFullView() {
                   SSH: {SSH_IP}
                 </div>
                 <div>
-                  user: {guideContent_state.credentialsJSON.username} pass: {guideContent_state.credentialsJSON.password}
+                  user: {SSH_username} pass: {SSH_password}
                 </div>
               </div>
-              <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button'>Web-SSH</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-info-button' onClick={() => set_leftPane_state(0)}>Info</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-pseudo-ssh-button' onClick={() => set_leftPane_state(1)} >edu3-SSH</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button' onClick={() => launchWebSSH( SSH_IP, SSH_username, SSH_password ) }>Web-SSH</div>
               <div className='dashcard-fullview-footcontrol-item footcontrol-chat-button'>Chat</div>
             </div>
 
