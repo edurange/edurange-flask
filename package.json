@@ -55,7 +55,9 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "ssh2": "^0.8.9",
-    "validator": "^13.5.2"
+    "validator": "^13.5.2",
+    "xterm": "^5.2.1",
+    "xterm-addon-fit": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

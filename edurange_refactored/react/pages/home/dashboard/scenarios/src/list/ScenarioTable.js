@@ -28,7 +28,7 @@ function ScenarioTable() {
     function handleNavClick (scenario_index) {
         const currentMeta = scenarioList_state[scenario_index];
         // set_scenarioMeta_state(currentMeta);
-        navigate(`${currentMeta.scenario_id}/home`);
+        navigate(`${currentMeta.scenario_id}/0`);
     };
 
     return (

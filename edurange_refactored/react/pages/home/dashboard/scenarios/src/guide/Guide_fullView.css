@@ -15,7 +15,6 @@
     right: 0;
     top: 0;
 }
-
 .dashcard-fullview-frame-carpet {
     align-items: center;
     width: 100%;
@@ -32,7 +31,6 @@
     right: 0;
     top: 0;
 }
-
 .dashcard-fullview-left-frame{
     contain: content;
     max-width: 38%;
@@ -98,7 +96,6 @@
     top: 0;
 }
 .dashcard-fullview-splash-image-section {
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -113,7 +110,6 @@
     top: 0%;
 }
 .dashcard-fullview-splash-image {
-    
     display: flex;
     justify-content: center;
     align-content: center;
@@ -156,7 +152,6 @@
     padding-bottom: 10% ;
     color: var(--green-light);
 }
-
 .dashcard-fullview-left-mid-frame{
     display: flex;
     justify-content: space-between;
@@ -189,8 +184,6 @@
     display: block;
     line-height: 1.25;
 }
-
-
 .dashcard-fullview-controlbar-frame{
     min-height: 5%;
     max-height: 5%;
@@ -223,28 +216,19 @@
     top: 0;
     display: flex;
     box-sizing: border-box;
-
-    /* background-color: aliceblue; */
 }
 .dashcard-fullview-controlbar-tab{
     border-bottom: 1px solid rgba(218, 165, 32, 0.503);
     border-left: 1px solid rgba(218, 165, 32, 0.503);
     height: 100%;
     min-height: 100%;
-    /* width: 100%; */
     text-align: center;
     align-items: center;
     justify-content: center;
     display: flex;
     font-size: small;
-    /* position: relative;
-    bottom: 0%; 
-    left: 0;
-    right: 0; */
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    /* width: 100%; */
-
 }
 .dashcard-tab-left{
     border-top-left-radius: 15px;
@@ -257,30 +241,21 @@
 .dashcard-tab-middles{
     width: 100%;
     display: flex;
-    /* border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px; */
 }
 .dashcard-tab-right{
     border-top-right-radius: 15px;
     min-width: 10%;
     display: flex;
-    /* border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px; */
 }
 .dashcard-tab-inactive{
     background-color: var(--blue-dark);
     color: var(--orange-light);
     display: flex;
-    /* width: 100%; */
-
 }
 .dashcard-tab-active{
     background-color: var(--blue-normal);
     color: var(--blue-deep);
-    /* font-size:medium ; */
     display: flex;
-    /* width: 100%; */
-
 }
 .dashcard-tab-active:hover{
     cursor:default ;
@@ -290,7 +265,6 @@
     background-color: var(--blue-light);
     cursor:pointer ;
 }
-
 .dashcard-fullview-guide-frame{
     contain: content;
     max-width: 100%;
@@ -337,7 +311,6 @@
     left: 1%;
     right: 0;
     top: 1%;
-    /* padding-right: 4% */
 }
 .dashcard-fullview-guide-footcontrol-frame {
     min-height: 5%;
@@ -378,6 +351,7 @@
     justify-items: center;
     align-content: center;
     font-size: medium;
+    border-bottom-left-radius: 15px;
 }
 .footcontrol-info-button:hover{
     background-color: rgb(255, 211, 144);
@@ -432,7 +406,6 @@
     background-color: rgb(0, 55, 117);
     background-color: var(--blue-dim);
     color: rgb(255, 253, 244);
-    border-bottom-left-radius: 15px;
     padding-left: 5%;
     align-items: center;
     gap: 6px;
@@ -449,7 +422,6 @@
     justify-content: center;
     justify-items: center;
     align-content: center;
-    border-bottom-right-radius: 15px;
     font-size: medium;
 }
 .footcontrol-chat-button:hover{

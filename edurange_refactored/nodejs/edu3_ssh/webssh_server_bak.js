@@ -3,7 +3,6 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const { Client } = require('ssh2');
-// const webssh2App = require('./webssh2/app');
 
 const app = express();
 const server = http.createServer(app);
@@ -16,11 +15,7 @@ const io = socketIo(server, {
 
 const SERVER_PORT = 31337;
 
-// Middleware for CORS
 app.use(cors());
-
-// webssh2 route
-// app.use('/webssh', webssh2App);
 
 io.on('connection', (socket) => {
     console.log('New client connected');
@@ -32,16 +27,6 @@ io.on('connection', (socket) => {
 
     socket.on('set_credentials', (reqBody) => {
         const sshClient = new Client();
-        let sendTimer = null;
-        const SEND_INTERVAL = 10;  // send data every 50ms
-        let bufferedData = ""; // Moved to this scope
-
-        function sendDataToFrontend() {
-            if (bufferedData) {
-                socket.emit('edu3_response', { result: bufferedData });
-                bufferedData = "";
-            }
-        }
 
         sshClient.on('ready', () => {
             console.log('SSH Client Ready');
@@ -53,21 +38,13 @@ io.on('connection', (socket) => {
                 }
 
                 shell.on('data', (dataOutput) => {
-                    bufferedData += dataOutput.toString();
-
-                    if (sendTimer) clearTimeout(sendTimer);
-
-                    if (dataOutput.toString().trim().endsWith("$")) {
-                        sendDataToFrontend();
-                    } else {
-                        sendTimer = setTimeout(sendDataToFrontend, SEND_INTERVAL);
-                    }
+                    // Send raw data directly to frontend for xterm.js to render
+                    socket.emit('edu3_response', { result: dataOutput.toString() });
                 });
 
-                socket.on('edu3_command_data', (data) => {
-                    shell.write(data.data);
+                socket.on('edu3_command', (data) => {
+                    shell.write(data.command + "\n");
                 });
-                
 
                 shell.on('close', () => {
                     console.log('Shell session closed');

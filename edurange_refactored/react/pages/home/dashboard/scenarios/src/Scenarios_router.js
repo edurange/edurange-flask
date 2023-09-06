@@ -20,7 +20,7 @@ function Scenarios_router() {
     const [ guideContent_state, set_guideContent_state ] = useState({});
     const [ scenarioList_state, set_scenarioList_state ] = useState([]);    
     const [ scenarioPage_state, set_scenarioPage_state ] = useState({
-        chapter: "home",
+        chapter: 0,
         sectionAnchor: 0,
     });    
     const [ guideMeta_state,    set_guideMeta_state ] = useState({

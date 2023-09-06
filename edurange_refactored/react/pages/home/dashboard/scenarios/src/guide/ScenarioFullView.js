@@ -1,10 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-
-import '../../../src/Dashboard.css'
-import './Guide_fullView.css';
-
 import { useContext } from 'react';
 import { HomeRouterContext } from '../../../../src/Home_router';
 import { ScenariosRouterContext } from '../Scenarios_router';
@@ -14,7 +10,11 @@ import buildGuide from '../modules/buildGuide';
 import SSH_web from '../../../src/components/ssh/SSH_web';
 import Guide_infoFrame from './Guide_infoFrame';
 
-// UNDER HEAVY CONSTRUCTION
+import '../../../src/Dashboard.css'
+import './Guide_fullView.css';
+import HomeChapter from './HomeChapter';
+
+//// UNDER HEAVY CONSTRUCTION ////
 
 function ScenarioFullView() {
 
@@ -45,20 +45,22 @@ function ScenarioFullView() {
   }, [scenarioID]);
 
   function launchWebSSH(SSH_address, user, pass) {
-
     const url = `http://10.0.0.55:1337/ssh/host/${SSH_address}`;
     window.open(url, '_blank');
-
   }
 
-//// GUARD /////
+  
+////   GUARD    /////
 if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>); }
-//// GUARD /////
+////   /GUARD   /////
+
 
   const SSH_username = guideContent_state.credentialsJSON.username;
   const SSH_password = guideContent_state.credentialsJSON.password;
+  const scenarioName_raw = meta.scenario_name
+  const scenarioName_sani = scenarioName_raw.split('_').join('');
 
-  const SSH_IP = guideContent_state.SSH_IP[`${meta.scenario_name}_nat`]
+  const SSH_IP = guideContent_state.SSH_IP[`${scenarioName_sani}_nat`]
   const shellData = scenarioShells[`${meta.scenario_description}`];
 
   const tabActiveClass = 'dashcard-fullview-controlbar-tab dashcard-tab-active'
@@ -75,6 +77,13 @@ if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>);
     SSH_username={SSH_username}
     SSH_password={SSH_password} />)
 
+    const pageToShow = () => {
+      if (pageID === "0") {
+        return <HomeChapter/>
+      }
+      else { return guideBook_state[pageID - 1] }
+    }
+
   return (
     <>
       <div className='dashcard-fullview-frame'>
@@ -83,7 +92,6 @@ if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>);
           <div className="dashcard-fullview-left-frame">
 
           {(leftPane_state===1) ? sshPane : infoPane }
-
           </div>
 
           <div className='dashcard-fullview-guide-frame'>
@@ -116,10 +124,17 @@ if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>);
 
               </div>
               <article className='dashcard-fullview-guide-main-text'>
-                {guideBook_state[pageID - 1]}
+                {/* {(pageID === 0) ? <HomeChapter/> : guideBook_state[pageID - 1]} */}
+                {pageToShow()}
+                
+
               </article>
             </div>
             <div className='dashcard-fullview-guide-footcontrol-frame'>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-info-button' onClick={() => set_leftPane_state(0)}>Info</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-pseudo-ssh-button' onClick={() => set_leftPane_state(1)} >edu3-SSH</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button' onClick={() => launchWebSSH( SSH_IP, SSH_username, SSH_password ) }>Web-SSH</div>
+              <div className='dashcard-fullview-footcontrol-item footcontrol-chat-button'>Chat</div>
               <div className='dashcard-fullview-footcontrol-item footcontrol-ssh-text'>
                 <div>
                   SSH: {SSH_IP}
@@ -128,10 +143,6 @@ if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>);
                   user: {SSH_username} pass: {SSH_password}
                 </div>
               </div>
-              <div className='dashcard-fullview-footcontrol-item footcontrol-info-button' onClick={() => set_leftPane_state(0)}>Info</div>
-              <div className='dashcard-fullview-footcontrol-item footcontrol-pseudo-ssh-button' onClick={() => set_leftPane_state(1)} >edu3-SSH</div>
-              <div className='dashcard-fullview-footcontrol-item footcontrol-web-ssh-button' onClick={() => launchWebSSH( SSH_IP, SSH_username, SSH_password ) }>Web-SSH</div>
-              <div className='dashcard-fullview-footcontrol-item footcontrol-chat-button'>Chat</div>
             </div>
 
           </div>
