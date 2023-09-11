@@ -17,8 +17,5 @@ know for sure."
 You found it. Well done. The next dream machine lies just a few addresses
 higher on your subnet. Use nmap to find the next closest machine.
 
-The subnet address was mentioned in an earlier message, or you can calculate it
-for yourself using 'ipcalc'
-
-Helpful commands: ifconfig, nmap, ssh, ipcalc
+Helpful commands: ifconfig, nmap, ssh
 EOF
