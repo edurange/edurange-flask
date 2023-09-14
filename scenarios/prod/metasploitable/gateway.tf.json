@@ -3,7 +3,7 @@
         {
             "docker_container": [
                 {
-                    "SNAME_nat": [
+                    "SNAME_gateway": [
                         {
                             "capabilities": [
                                 {
@@ -26,38 +26,24 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "WebFu",
-                            "image": "edurange2/webfu:latest",
-                            "name": "SNAME_nat",
+                            "hostname": "gateway",
+                            "image": "edurange2/ubuntu-sshd:16.04",
+                            "name": "SNAME_gateway",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.2",
+                                    "ipv4_address": "OCTET.0.1.4",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.2",
+                                    "ipv4_address": "OCTET.0.0.4",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
                             "ports": [
                                 {
                                     "internal": 22
-                                },
-                                {
-                                    "internal": 80,
-                                    "external": 8080
-                                },
-                                {
-                                    "internal": 443,
-                                    "external": 8443
                                 }
                             ],
-                            "mounts": {
-                                "source": "/etc/letsencrypt/archive/EXTERN_HOST",
-                                "target": "/etc/ssl/webfu",
-                                "type": "bind",
-                                "read_only": true
-                            },
                             "provisioner": [
                                 {
                                     "remote-exec": [
@@ -79,17 +65,17 @@
     ],
     "locals": [
         {
-            "SNAME_nat_extern": "HIDDEN"
+            "SNAME_gateway_extern": "$HIDDEN"
         }
     ],
     "output": [
         {
-            "SNAME_nat": [
+            "SNAME_gateway": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_nat_extern])}",
-                            "name": "SNAME_nat"
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_gateway_extern])}",
+                            "name": "SNAME_gateway"
                         }
                     ]
                 }

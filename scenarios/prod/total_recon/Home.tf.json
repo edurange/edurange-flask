@@ -64,7 +64,7 @@
     }],
   "locals": [
     {
-      "SNAME_Home_extern": "${tostring(docker_container.SNAME_Home.ports[0].external)}"
+      "SNAME_Home_extern": "HIDDEN"
     }
   ],
   "output": [
