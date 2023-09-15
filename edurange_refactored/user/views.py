@@ -383,7 +383,7 @@ def make_scenario():
 
         Scenarios.create(name=name, description=s_type, owner_id=own_id) #creates database entry
         NotifyCapture(f"Scenario {name} has been created.")
-        #Notification.create(details=something, date=something)
+        
         s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
 
         s_id_list = list(s_id._asdict().values())[0]
@@ -397,20 +397,7 @@ def make_scenario():
         # Above queries return sqlalchemy collections.result objects
         # _asdict() method is needed in case celery serializer fails
         # Unknown exactly when this may occur, maybe version differences between Mac/Linux
-
-        for i, s in enumerate(students):
-            students[i] = s._asdict()
-
-        # s_id, g_id = s_id._asdict(), g_id._asdict()
-
-        gid = g_id["id"]
-        student_ids = db_ses\
-                    .query(GroupUsers.id)\
-                    .filter(GroupUsers.group_id == gid)\
-                    .all()
-
-        namedict = gen_chat_names(student_ids, s_id_list)
-
+        
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list, namedict)
         flash(
             "Success! Your scenario will appear shortly. This page will automatically update. " \

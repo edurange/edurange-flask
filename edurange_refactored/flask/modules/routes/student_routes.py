@@ -18,6 +18,24 @@ from flask import (
     g, # see note
 )
 from ..utils.auth_utils import jwt_and_csrf_required
+from edurange_refactored.role_utils import user_is_admin_and_instructor
+
+# -*- coding: utf-8 -*-
+"""User views."""
+import os
+import json
+from datetime import datetime
+
+from edurange_refactored.extensions import db
+from edurange_refactored.notification_utils import NotifyCapture
+from edurange_refactored.user.forms import (
+    
+    makeScenarioForm,
+ 
+)
+from edurange_refactored.tasks import CreateScenarioTask
+
+from edurange_refactored.user.models import GroupUsers, Scenarios, StudentGroups, User
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.
@@ -105,7 +123,73 @@ def get_groups():
     all_groups_list.append(group_info)
     return jsonify(all_groups_list)
     
+
+@blueprint_edurange3_student.route("/make_scenario", methods=["POST"])
+@jwt_and_csrf_required
+def make_scenario():
+    
+    user_is_admin_and_instructor()
+
+    db_ses = db.session
+    name = request.form.get("scenario_name")
+    '''
+
+    s_type = identify_type(request.form)
+    own_id = session.get("_user_id")
+        group = request.form.get("scenario_group")
+
+        students = (
+            db_ses.query(User.username)
+            .filter(StudentGroups.name == group)
+            .filter(StudentGroups.id == GroupUsers.group_id)
+            .filter(GroupUsers.user_id == User.id)
+            .all()
+        )
+
+        Scenarios.create(name=name, description=s_type, owner_id=own_id) #creates database entry
+        NotifyCapture(f"Scenario {name} has been created.")
+        #Notification.create(details=something, date=something)
+        s_id = db_ses.query(Scenarios.id).filter(Scenarios.name == name).first()
+
+        s_id_list = list(s_id._asdict().values())[0]
+
+        scenario = Scenarios.query.filter_by(id=s_id_list).first()
+        scenario.update(status=7)
+        g_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == group).first()
+        g_id = g_id._asdict()
+
+        # JUSTIFICATION:
+        # Above queries return sqlalchemy collections.result objects
+        # _asdict() method is needed in case celery serializer fails
+        # Unknown exactly when this may occur, maybe version differences between Mac/Linux
+
+        for i, s in enumerate(students):
+            students[i] = s._asdict()
+
+        # s_id, g_id = s_id._asdict(), g_id._asdict()
+
+        gid = g_id["id"]
+        student_ids = db_ses\
+                    .query(GroupUsers.id)\
+                    .filter(GroupUsers.group_id == gid)\
+                    .all()
+
+        namedict = gen_chat_names(student_ids, s_id_list)
+
+        CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list, namedict)
+        flash(
+            "Success! Your scenario will appear shortly. This page will automatically update. " \
+            f"Students found: {students}",
+            "success"
+        )
+        '''
+    return jsonify({
+        'scenario_name': name,
+    })
+
  
+        
+    
 @blueprint_edurange3_student.route('/get_guide', methods=['GET']) # WIP
 @jwt_and_csrf_required
 def get_guide():

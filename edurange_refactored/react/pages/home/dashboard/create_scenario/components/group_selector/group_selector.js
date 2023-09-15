@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import "./group_selector.css";
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import { CreateScenarioContext } from '../../src/create_scenario';
+
 
 export default function group_selector() {
 
   const [groupOptions, setGroupOptions] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const { groupNameSelection, setGroupNameSelection } = useContext( CreateScenarioContext );
 
   async function getGroupList() {
     try {
@@ -31,15 +33,13 @@ export default function group_selector() {
 
     return (
         <div>
-            <h1>SELECTED GROUP{selectedGroup}</h1>
-
           <Dropdown>
             <Dropdown.Toggle id="dropdown-basic">
           Select Group
             </Dropdown.Toggle>
               <Dropdown.Menu>
               {groupOptions.map((groupName, index) => (
-                          <Dropdown.Item key={index} onClick={() => setSelectedGroup(groupName)}>
+                          <Dropdown.Item key={index} onClick={() => setGroupNameSelection(groupName)}>
                               {groupName}
                           </Dropdown.Item>
                         ))}  

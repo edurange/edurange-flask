@@ -1,5 +1,5 @@
 
-import React, {useContext, useState} from 'react';
+import React, {, useState} from 'react';
 import * as cardHelper from './cardHelper';
 import { MainFrameContext } from '../../../main_frame/MainFrame';
 
@@ -10,7 +10,7 @@ import { MainFrameContext } from '../../../main_frame/MainFrame';
 
 const CategoryCard = ({ categoryIndex, secondaryIndex }) => {
     
-    const { session_instructorData_state } = useContext(MainFrameContext);
+    const { session_instructorData_state } = (MainFrameContext);
     
 
 

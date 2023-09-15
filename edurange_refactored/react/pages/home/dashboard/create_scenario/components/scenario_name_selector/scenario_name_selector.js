@@ -7,16 +7,17 @@
 // Corresponding stylesheet, in the same folder as the component. 
 import "./scenario_name_selector.css";
 
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { CreateScenarioContext } from '../../src/create_scenario';
 
 
 // Your component should always begin with a capital letter.
 export default function CreateScenario(props) {
     const [ scenarioName, setScenarioName] = useState("");
     const [ scenarioNotes, setScenarioNotes] = useState(""); 
-
+    const { scenarioNameSelection, setScenarioNameSelection } = useContext( CreateScenarioContext );
 
     useEffect(() => {
 
@@ -24,7 +25,7 @@ export default function CreateScenario(props) {
   
     const handleScenarioNameInput = (data) => {
         // SLIME to-do: validate name input
-        setScenarioName(data);
+        setScenarioNameSelection(data);
     }
 
     const handleScenarioNoteInput = (data) => {
