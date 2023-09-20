@@ -1,9 +1,9 @@
 {
-	"resource": [
-	{
+    "resource": [
+        {
             "docker_container": [
                 {
-                    "SNAME_StartingLine": [
+                    "SNAME_attacker": [
                         {
                             "capabilities": [
                                 {
@@ -19,15 +19,15 @@
                             ],
                             "connection": [
                                 {
-                                    "host": "${self.ports[0].ip}",
-                                    "password": "root",
-                                    "port": "${self.ports[0].external}",
-                                    "type": "ssh",
-                                    "user": "root"
+                                  "host": "${self.ports[0].ip}",
+                                  "password": "root",
+                                  "port": "${self.ports[0].external}",
+                                  "type": "ssh",
+                                  "user": "root"
                                 }
                             ],
-                            "hostname": "StartingLine",
-                            "image": "edurange2/ubuntu-sshd:16.04",
+                            "hostname": "NAT",
+                            "image": "edurange2/metasploit.attacker.dev",
                             "name": "SNAME_nat",
                             "networks_advanced": [
                                 {
@@ -42,6 +42,12 @@
                             "ports": [
                                 {
                                     "internal": 22
+                                }
+                            ],
+                            "host": [
+                                {
+                                    "host": "target",
+                                    "ip": "OCTET.0.0.2"
                                 }
                             ],
                             "provisioner": [
@@ -61,25 +67,25 @@
                     ]
                 }
             ]
-        }],
+        }
+    ],
     "locals": [
         {
-            "SNAME_StartingLine_extern": "HIDDEN"
+            "SNAME_attacker_extern": "HIDDEN"
         }
     ],
     "output": [
         {
-            "SNAME_StartingLine": [
+            "SNAME_attacker": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_StartingLine_extern])}",
-                            "name": "SNAME_StartingLine"
+                          "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_attacker_extern])}",
+                          "name": "SNAME_attacker"
                         }
                     ]
                 }
             ]
         }
     ]
-
 }

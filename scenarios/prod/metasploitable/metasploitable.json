@@ -14,7 +14,7 @@
 		}]
 	},
 	{
-		"name" : "attacker",
+		"name" : "nat",
 		"files": [{
 			"global_files": [
 			],

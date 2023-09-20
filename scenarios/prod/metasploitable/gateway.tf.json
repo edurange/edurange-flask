@@ -65,7 +65,7 @@
     ],
     "locals": [
         {
-            "SNAME_gateway_extern": "$HIDDEN"
+            "SNAME_gateway_extern": "${tostring(docker_container.SNAME_gateway.ports[0].external)}"
         }
     ],
     "output": [

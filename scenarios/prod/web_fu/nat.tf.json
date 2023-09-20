@@ -26,7 +26,7 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "WebFu",
+                            "hostname": "NAT",
                             "image": "edurange2/webfu:latest",
                             "name": "SNAME_nat",
                             "networks_advanced": [
