@@ -340,7 +340,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
     return buf
 
 
-def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, current_user_prompt, current_root_prompt):
+def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, known_prompts, current_root_prompt):
     # Return two lists
     # The first list contains the ttylog lines that should be read in next iteration of infinite loop.
     # The second list contain the ttylog lines that should be docded in current iteration of infinite loop.
@@ -359,7 +359,6 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, c
     index_ttylog_lines_file = None
     line_prompt_end_index = -1
     line_to_append = ''
-    current_user_prompt = current_user_prompt.casefold()
     current_root_prompt = current_root_prompt.casefold()
 
     # When we get two user prompts in ttylog_lines_read_next, we add all the lines from first user prompt to second user prompt to ttylog_lines_to_decode.
@@ -373,8 +372,7 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, c
             ttylog_lines_to_decode = ttylog_lines_read_next[::]
             ttylog_lines_read_next = []
             return ttylog_lines_to_decode, ttylog_lines_read_next
-
-        elif (line.casefold().find(current_user_prompt) > -1) or (line.casefold().find(current_root_prompt) > -1):
+        elif any(p.casefold() in line.casefold() for p in known_prompts):
             no_of_prompts_in_ttylog_read_next += 1
             # Break the loop of no_of_prompts >= 2
             if no_of_prompts_in_ttylog_read_next >= 2:
@@ -384,13 +382,11 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, c
             index_ttylog_lines_file = len(ttylog_lines_read_next) - 1 - count
 
             # Find the last user prompt. Get data starting from 0th index to ending of last user prompt from the line
-            if (line.casefold().rfind(current_user_prompt) > -1):
-                line_prompt_end_index = line.casefold().rfind(current_user_prompt)
-                line_prompt_end_index = line_prompt_end_index + len(current_user_prompt)
-            elif (line.casefold().rfind(current_root_prompt) > -1):
-                line_prompt_end_index = line.casefold().rfind(current_root_prompt)
-                line_prompt_end_index = line_prompt_end_index + len(current_root_prompt)
-
+            for p in known_prompts:
+                if (line.casefold().rfind(p) > -1):
+                    line_prompt_end_index = line.casefold().rfind(p)
+                    line_prompt_end_index = line_prompt_end_index + len(p)
+                    break
             line_to_append = line[:line_prompt_end_index]
 
     if index_ttylog_lines_file is not None and no_of_prompts_in_ttylog_read_next >= 2:
@@ -702,9 +698,12 @@ if __name__ == "__main__":
     skip_reading_in_first_iteration = True
     ttylog_lines_read_next = []
     exit_flag = False
+    known_prompts = []
+    host_pattern = ''
 
     ttylog_lines_from_file, ttylog_bytes_read = get_ttylog_lines_from_file(ttylog, ttylog_seek_pointer)
     ttylog_seek_pointer += ttylog_bytes_read
+
 
     for count, line in enumerate(ttylog_lines_from_file):
 
@@ -732,8 +731,7 @@ if __name__ == "__main__":
         #Same line is 'User prompt is test@intro')
         p = re.compile(r'^User prompt is ')
         if p.match(line):
-            user_initial_prompt = (line.split()[-1]).casefold()
-
+            user_initial_prompt = (line.split()[-1])
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
             node_name = line.split('@')[-1]
             root_prompt = 'root@' + node_name
@@ -749,6 +747,18 @@ if __name__ == "__main__":
             ttylog_lines_from_file = ttylog_lines_from_file[break_counter:]
             break
 
+    # populate the list of known_prompts, and construct a regex pattern for possible hosts
+    nodes = []
+    try:
+        file = open('/usr/local/src/ttylog/host_names', 'r')
+        nodes = file.read().splitlines()
+        file.close()
+        host_pattern = '(' + '|'.join(n for n in nodes) + ')'
+        for node in nodes:
+            known_prompts.append(user_initial_prompt.split('@')[0] + '@' + node)
+    except FileNotFoundError:
+        print('File /usr/local/src/ttylog/host_names.txt not found', file=sys.stderr)
+        known_prompts.append(user_initial_prompt)
 
     while True:
 
@@ -760,7 +770,7 @@ if __name__ == "__main__":
         if skip_reading_in_first_iteration == True:
             skip_reading_in_first_iteration = False
 
-        ttylog_lines_to_decode, ttylog_lines_read_next = get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, user_initial_prompt, root_prompt)
+        ttylog_lines_to_decode, ttylog_lines_read_next = get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, known_prompts, root_prompt)
         if len(ttylog_lines_to_decode) == 0:
             time.sleep(0.1)
             continue
@@ -776,15 +786,14 @@ if __name__ == "__main__":
                 tline = rexp.sub('', line)
                 line = tline
 
-            command_pattern_user_prompt = re.compile("{}:.*?".format(user_initial_prompt.casefold()))
+            command_pattern_user_prompt = re.compile("{user}@{host}:.*?".format(user=user_initial_prompt.split('@')[0].casefold(), host=host_pattern))
             command_pattern_root_prompt = re.compile("{}:.*?".format(root_prompt.casefold()))
-
             tstampre = re.compile(";\d{9}")
-
             # Check if there is a prompt
-            if (command_pattern_user_prompt.search(line.casefold()) or command_pattern_root_prompt.search(line.casefold())):
-                if (command_pattern_user_prompt.search(line.casefold())):
-                    user_prompt = user_initial_prompt
+            res = command_pattern_user_prompt.search(line.casefold())
+            if (res or command_pattern_root_prompt.search(line.casefold())):
+                if (res):
+                    user_prompt = res.group(0).split(':')[0]
                 else:
                     user_prompt = root_prompt
                 prompt = True
@@ -811,12 +820,14 @@ if __name__ == "__main__":
                     if command_pattern_root_prompt.search(line.casefold()):
                         left_hash_part, right_hash_part = line.split('#',1)
                         current_line_prompt = left_hash_part
+                        node_name = left_hash_part.split('@')[-1].split(':')[0]
                         current_working_directory = left_hash_part.split(':',1)[-1]
                         current_working_directory = current_working_directory.replace('~', root_home_dir ,1)
                         line = right_hash_part[1:]
                     else:
                         left_dollar_part, right_dollar_part = line.split('$',1)
                         current_line_prompt = left_dollar_part
+                        node_name = left_dollar_part.split('@')[-1].split(':')[0]
                         current_working_directory = left_dollar_part.split(':',1)[-1]
                         current_working_directory = current_working_directory.replace('~', ttylog_sessions[current_session_id]['home_dir'] ,1)
                         line = right_dollar_part[1:]
@@ -871,7 +882,6 @@ if __name__ == "__main__":
                 #logfile.close()
                 current_home_dir = ttylog_sessions[current_session_id]['home_dir']
                 output_txt = ''
-
 
             elif not end:
                 output_txt += '\n'+line

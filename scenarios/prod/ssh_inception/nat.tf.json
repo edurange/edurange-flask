@@ -1,9 +1,9 @@
 {
-    "resource": [
-        {
+	"resource": [
+	{
             "docker_container": [
                 {
-                    "SNAME_target": [
+                    "SNAME_StartingLine": [
                         {
                             "capabilities": [
                                 {
@@ -26,28 +26,22 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "target",
-                            "image": "edurange2/metasploit.victim.dev",
-                            "name": "SNAME_target",
+                            "hostname": "NAT",
+                            "image": "edurange2/ubuntu-sshd:16.04",
+                            "name": "SNAME_nat",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.3",
+                                    "ipv4_address": "OCTET.0.1.2",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.3",
+                                    "ipv4_address": "OCTET.0.0.2",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
                             "ports": [
                                 {
                                     "internal": 22
-                                }
-                            ],
-                            "host": [
-                                {
-                                    "host": "attacker",
-                                    "ip": "OCTET.0.0.3"
                                 }
                             ],
                             "provisioner": [
@@ -67,25 +61,25 @@
                     ]
                 }
             ]
-        }
-    ],
+        }],
     "locals": [
         {
-            "SNAME_target_extern": "HIDDEN"
+            "SNAME_StartingLine_extern": "HIDDEN"
         }
     ],
     "output": [
         {
-            "SNAME_target": [
+            "SNAME_StartingLine": [
                 {
                     "value": [
                         {
-                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_target_extern])}",
-                            "name": "SNAME_target"
+                            "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_StartingLine_extern])}",
+                            "name": "SNAME_StartingLine"
                         }
                     ]
                 }
             ]
         }
     ]
+
 }
