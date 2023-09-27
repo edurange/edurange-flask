@@ -377,15 +377,17 @@ def scenarioCollectLogs(self, arg):
         if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
-        try:  # This is dangerous, may want to substitute for subprocess.call
-            os.system(f'docker cp {c_name}:/usr/local/src/merged_logs.csv logs/{c_name}.csv')
-            os.system(f'docker cp {c_name}:/usr/local/src/raw_logs.zip logs/{c_name}.zip')
-        except FileNotFoundError as e:
-            print(f'{e}')
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
+        #try:  # This is dangerous, may want to substitute for subprocess.call
+        try:
+            os.system(f'docker cp {s}_gateway:/usr/local/src/merged_logs.csv logs/{s}.csv')
+            os.system(f'docker cp {s}_gateway:/usr/local/src/raw_logs.zip logs/{s}.zip')
+        except FileNotFoundError as e:
+            print(f'{e}')
+
         if os.path.isdir(f'data/tmp/{s}'):
             try:
                 os.system(f'cat /dev/null > data/tmp/{s}/{s}-history.csv')
