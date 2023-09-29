@@ -1,6 +1,6 @@
 Milestones:
-	M1:
-  	Objective: "use pwd"
+  M1:
+    Objective: "use pwd"
     Type: INPUT
     Content: 
     	Command: "pwd"
