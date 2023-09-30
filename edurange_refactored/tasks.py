@@ -383,8 +383,8 @@ def scenarioCollectLogs(self, arg):
     for s in scenarios:
         #try:  # This is dangerous, may want to substitute for subprocess.call
         try:
-            os.system(f'docker cp {s}_gateway:/usr/local/src/merged_logs.csv logs/{s}.csv')
-            os.system(f'docker cp {s}_gateway:/usr/local/src/raw_logs.zip logs/{s}.zip')
+            os.system(f'docker cp {s}_gateway:/usr/local/src/merged_logs.csv logs/{s}_gateway.csv')
+            os.system(f'docker cp {s}_gateway:/usr/local/src/raw_logs.zip logs/{s}_gateway.zip')
         except FileNotFoundError as e:
             print(f'{e}')
 
