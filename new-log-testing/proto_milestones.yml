@@ -1,31 +1,29 @@
 Milestones:
-  M1:
+  - M1:
     Objective: "use pwd"
     Type: INPUT
     Content: 
-    	Command: "pwd"
+      Command: "pwd"
       Args: "n/a"
     Directory: "n/a"
-  M2:
-  	Objective: "View hidden files"
+  - M2:
+    Objective: "View hidden files"
     Type: OUTPUT
     Content: "<hidden files>"
     Directory: "/home/<student>"
-  M3:
-  	Objective: "Get to the hidden directory"
+  - M3:
+    Objective: "Get to the hidden directory"
     Type: DIRECTORY
     Content: "n/a"
     Directory: "/special/hidden"
-  M4:
-  	Objective: "Become the root user"
+  - M4:
+    Objective: "Become the root user"
     Type: USER
     Content: PROMPT
     Directory: "n/a"
-  M5:
-  	Objective: "..."
+  - M5:
+    Objective: "..."
     Type: COMPOUND
     Content:
-    	Milestones: [M1, M2]
+      Milestones: [M1, M2]
     Directory: "n/a"
-  
-    
