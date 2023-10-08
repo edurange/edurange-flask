@@ -67,6 +67,7 @@ def get_ttylog_lines_from_file(ttylog, ttylog_seek_pointer):
     ttylog_lines = ttylog_read_data.split('\n')
 
     for line in ttylog_lines:
+        line = line.replace('\x00','')
         if len(line) > 0:
             if line[-1] == '\r':
                 ttylog_lines_file.append(line[:-1])
