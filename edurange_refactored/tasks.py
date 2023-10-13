@@ -94,6 +94,8 @@ def test_send_async_email(email_data):
 def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
     ''' self is the task instance, other arguments are the results of database queries '''
     from edurange_refactored.user.models import ScenarioGroups, Scenarios
+    import yaml
+    import json
 
     app = current_app
     s_type = s_type.lower()
@@ -141,31 +143,28 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
         with open(f"../chatnames.json", "w") as chatnamefile:
            json.dump(namedict, chatnamefile)
 
-        questions = open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+")
-        content = open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")
+        with open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+") as f:
+            questions = yaml.safe_load(f)
+        with open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")as f: 
+            content = json.load(f)
 
-        logger.info(f"Questions Type: {type(questions)}")
-        logger.info(f"Content Type: {type(content)}")
+        logger.info(f"Questions Type: {type(f)}")
+        logger.info(f"Content Type: {type(f)}")
 
+        # randomize answers
         flags = []
-        if s_type == "getting_started" or s_type == "file_wrangler":
-            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
-            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
-
-            questions = questions.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
-            content = content.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
+        for q_num, q in enumerate(questions):
+            for a_num, a in enumerate(q["Answers"]):
+                if isinstance(a["Value"], str) and "$RANDOM" in a["Value"]:
+                    rnd_ans = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
+                    content["StudentGuide"]["Questions"][str(q_num + 1)]["Answers"][a_num]["Value"] = rnd_ans
+                    a["Value"] = rnd_ans
+                    flags.append(rnd_ans)
 
         with open("questions.yml", "w") as outfile:
-            if type(questions) == str:
-                outfile.write(questions)
-            else:
-                outfile.write(questions.read())
-
+            yaml.dump(questions, outfile)
         with open("./student_view/content.json", "w") as outfile:
-            if type(content) == str:
-                outfile.write(content)
-            else:
-                outfile.write(content.read())
+            json.dump(content, outfile, indent=4)
 
         active_scenarios = Scenarios.query.count()
         starting_octet = int(os.getenv("SUBNET_STARTING_OCTET", 10))
