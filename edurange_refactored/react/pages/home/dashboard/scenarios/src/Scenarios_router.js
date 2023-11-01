@@ -1,12 +1,11 @@
 
 import axios from 'axios';
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HomeRouterContext } from '../../../src/Home_router';
-import SSHmodal from '../../src/components/ssh/SSHmodal';
 import Scenarios_home from './Scenarios_home';
 import ScenarioChat from '../chat/src/ScenarioChat';
-import ScenarioFullView from './guide/ScenarioFullView';
+import Scenario_controller from './guide/Scenario_controller';
 
 export const ScenariosRouterContext = React.createContext();
 
@@ -54,10 +53,10 @@ function Scenarios_router() {
             }}>
             <Routes>
                 <Route path="/" element={<Scenarios_home />} />
-                <Route path="/:scenarioID" element={<ScenarioFullView />}/>
-                <Route path="/:scenarioID/:pageID" element={<ScenarioFullView />}/>
+                <Route path="/:scenarioID" element={<Scenario_controller />}/>
+                <Route path="/:scenarioID/:pageID" element={<Scenario_controller />}/>
                 <Route path="/:scenarioID/chat" element={<ScenarioChat />}/>
-                <Route path="/:scenarioID/ssh" element={<SSHmodal />}/>
+                {/* <Route path="/:scenarioID/ssh" element={<SSHmodal />}/> */}
                 {/* <Route path="/:scenarioID/settings" element={<InstructorDash/>}/> */}
             </Routes>
         </ScenariosRouterContext.Provider>

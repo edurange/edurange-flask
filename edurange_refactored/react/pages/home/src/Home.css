@@ -12,6 +12,16 @@
     animation: promptBlink 3s steps(1) infinite;
     animation-iteration-count: 4;
 }
-.edu3-nav-link{
+/* .edu3-nav-link{
     cursor: pointer;
+    margin-right: 1%;
+    box-sizing: border-box;
+    height: 70%;
+    align-items: center;
+    display: flex;
+    border-radius: 15px;
 }
+.edu3-nav-link:hover{
+    background-color: rgba(240, 248, 255, 0.137);
+    color: aqua;
+} */

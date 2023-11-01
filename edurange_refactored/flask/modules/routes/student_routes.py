@@ -84,6 +84,7 @@ def logout():
     
     return response
 
+
 @blueprint_edurange3_student.route('/jwt_test', methods=['GET']) # DEV_ONLY
 @jwt_and_csrf_required
 def jwt_test():

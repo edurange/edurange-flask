@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import './Options.css';
 
-import DashSidebar from '../../dashboard/src/sidebar/DashSidebar';
+import SideNav from '../../dashboard/src/sidenav/SideNav';
 import Options_home from './Options_home';
 import Options_accessibility from './components/Options_accessibility';
 import Options_themes from './components/Options_themes';
@@ -20,7 +20,7 @@ function Options_controller() {
     <div className='newdash-frame'>
       <div className='newdash-frame-carpet'>
 
-        < DashSidebar navDataToShow={navArrays.sideOptions} />
+        < SideNav navDataToShow={navArrays.sideOptions} />
 
         <div className="newdash-infopane-frame">
           <div className='newdash-infopane-content'>

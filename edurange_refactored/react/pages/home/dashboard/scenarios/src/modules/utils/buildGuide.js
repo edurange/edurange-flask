@@ -1,8 +1,8 @@
 
 // an "item" is a single reading or question
 
-import GuideQuestion from "../guide/Q_and_A/GuideQuestion";
-import GuideReading from "../guide/Q_and_A/GuideReading";
+import GuideQuestion from "../../guide/Q_and_A/GuideQuestion";
+import GuideReading from "../../guide/Q_and_A/GuideReading";
 
 // one or more grouped items make up a 'chapter'
 
@@ -58,13 +58,11 @@ export default function buildGuide(contentJSON) {
 
             // Assign content based on the type
             if (itemContentType === "r") {
-
                 itemObject.itemContent = readings[itemContentPointer];
-                itemObject = GuideReading(itemObject);
-                // itemObject = reactify_reading(itemObject); // convert to react component (will refactor to actual component creation)
+                itemObject = GuideReading(itemObject);  // convert to react component
             } else {
                 itemObject.itemContent = questions[itemContentPointer];
-                itemObject = GuideQuestion(itemObject); // convert to react component
+                itemObject = GuideQuestion(itemObject); // convert to react component 
             }
             // Add the 'item' to the 'chapter'
             bookChapter.push(itemObject);

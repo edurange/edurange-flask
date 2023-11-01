@@ -12,7 +12,7 @@ import maze from '../../assets/img/svg/small/maze.svg';
 import twoHeads from '../../assets/img/svg/small/twoHeads.svg';
 import wrangler from '../../assets/img/svg/small/wrangler.svg';
 import treasureMap from '../../assets/img/svg/small/tmap.svg';
-import resData from '../scenarios/scenarioResources';
+import resData from '../../pages/home/dashboard/scenarios/src/modules/scenarioResources';
 
 // these classes are called by their .name from /dashboard/scenarios/ in this format:
 // ScenariosData.scenarioShells[`${theScenarioName}`] }

@@ -157,7 +157,7 @@ export const navArrays = {
     top_logout:             [ jwt_test, home, docs, options, login, logout ],
 
 //home  
-    side_home:              [ home, dashboard, scenarios, notifications, docs, options, account, logout , help, login ],
+    side_home:              [ home, dashboard, scenarios, docs, options, account, logout , help, login ],
     top_home:               [ jwt_test, home, dashboard, options, account, logout, login ],
 
 //options
@@ -165,19 +165,19 @@ export const navArrays = {
     top_options:            [ jwt_test, home, dashboard, options, account, logout, login ],
 
 //dashboard
-    side_dash:              [ home, dashboard, scenarios, instructor, admin, notifications,  options, account, logout ],
-    top_dash:               [ jwt_test, home, dashboard, notifications,   options, account, logout, login ],
+    side_dash:              [ home, dashboard, scenarios, instructor, admin,  options, account, logout ],
+    top_dash:               [ jwt_test, home, dashboard, options, account, logout, login ],
 
 //guide
-    side_guide:              [ home, dashboard, scenarios, ssh, instructor, admin, notifications,  options, account, logout ],
-    top_guide:               [ jwt_test, home, dashboard, scenarios, ssh, notifications,   options, account, logout, login ],
+    side_guide:              [ home, dashboard, scenarios, ssh, instructor, admin,  options, account, logout ],
+    top_guide:               [ jwt_test, home, dashboard, scenarios, ssh,   options, account, logout, login ],
 
 //admin-dashboard
-    side_dash_admin:        [ home, dashboard, scenarios, instructor, admin, notifications,  options, account, logout ],
-    top_dash_admin:         [ jwt_test, home, dashboard, notifications,   options, account, logout, login ],
+    side_dash_admin:        [ home, dashboard, scenarios, instructor, admin,  options, account, logout ],
+    top_dash_admin:         [ jwt_test, home, dashboard, options, account, logout, login ],
 
 //instructor-dashboard
-    side_dash_instructor:   [ home, dashboard, scenarios, instructor, admin, notifications,  options, account, logout ],
-    top_dash_instructor:    [ jwt_test, home, dashboard, notifications,  options, account, logout, login ],
+    side_dash_instructor:   [ home, dashboard, scenarios, instructor, admin,  options, account, logout ],
+    top_dash_instructor:    [ jwt_test, home, dashboard, options, account, logout, login ],
 
 };

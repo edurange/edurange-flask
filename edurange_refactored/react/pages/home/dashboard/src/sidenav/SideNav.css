@@ -1,0 +1,82 @@
+.newdash-sidebar-frame{
+    display: flex;
+    max-width: 24dvh;
+    background-color:rgb(11, 20, 42);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    flex-direction: column;
+    padding: 4px 2px;
+}
+.newdash-sidebar-row {
+    display: flex;
+    align-items: center; 
+    cursor: pointer;   
+    transition: background-color 0.2s;
+    color: rgb(169, 211, 249);
+    border-radius: 20px;
+}
+.newdash-sidebar-row:hover {
+    color: rgb(255, 207, 87);
+}
+.newdash-sidebar-row:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+.newdash-sidebar-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.newdash-sidebar-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+.newdash-sidebar-title {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    padding-right: 10px;
+    font-size: 12pt;
+}
+.edu3-nav-link{
+    cursor: pointer;
+}
+.er3-sidenav-hamburger-row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center ;
+    align-content: center ;
+    justify-items: flex-end ;
+}
+.er3-sidenav-hamburger-frame {
+    display: flex;
+    width: 40px;
+    height: 30px;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+}
+.er3-sidenav-hamburger-item {
+    aspect-ratio: 1;
+    width: 75%;
+    justify-content: center ;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    color: rgb(133, 210, 255);
+    cursor: pointer;
+    font-size: 17pt;
+}
+.er3-sidenav-hamburger-item:hover {
+    color: goldenrod;
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 50%;
+}

@@ -14,7 +14,7 @@ from edurange_refactored.scenario_utils import (
      identify_state
 )
 from edurange_refactored.form_utils import process_request
-from edurange_refactored.utils import bashAnswer,  questionReader
+# from edurange_refactored.utils import bashAnswer,  questionReader
 from edurange_refactored.role_utils import get_roles, scenario_exists, student_has_access
 from edurange_refactored.user.forms import scenarioResponseForm
 from flask import (
@@ -27,7 +27,8 @@ from flask import (
 from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
 from edurange_refactored.flask.modules.utils.guide_utils import (
     getContent, 
-    getScenarioMeta
+    getScenarioMeta,
+    evaluateResponse
     )
 
 
@@ -152,6 +153,20 @@ def student():
         scenarioTable=scenarioTable
     )
 
+
+
+@blueprint_edurange3_scenarios.route('/check_response', methods=['POST']) # WIP
+@jwt_and_csrf_required
+def checkResponse():
+
+    requestJSON = request.json
+    scenario_id = requestJSON.scenario_id
+    question_num = requestJSON.question_num
+    student_response = requestJSON.student_response
+
+    current_user_id = g.current_user_id
+    pointsAwarded = evaluateResponse (current_user_id, scenario_id, question_num, student_response )
+    return jsonify({"points_gained" : pointsAwarded})
 
 
 @blueprint_edurange3_scenarios.route('/web_ssh/<int:i>', methods=['POST']) # WIP

@@ -6,12 +6,12 @@ import { HomeRouterContext } from '../../../../src/Home_router';
 import { ScenariosRouterContext } from '../Scenarios_router';
 import { nanoid } from 'nanoid';
 import { scenarioShells } from '../../../../../../modules/shells/scenarioType_shells';
-import buildGuide from '../modules/buildGuide';
+import buildGuide from '../modules/utils/buildGuide';
 import SSH_web from '../../../src/components/ssh/SSH_web';
-import Guide_infoFrame from './Guide_infoFrame';
+import InfoPane from './InfoPane';
 
 import '../../../src/Dashboard.css'
-import './Guide_fullView.css';
+import './Scenario_controller.css';
 import HomeChapter from './HomeChapter';
 
 //// UNDER HEAVY CONSTRUCTION ////
@@ -67,12 +67,12 @@ if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>);
   const tabInactiveClass = 'dashcard-fullview-controlbar-tab dashcard-tab-inactive'
 
   const infoPane = (
-  <Guide_infoFrame 
+  <InfoPane 
     guideBook={guideBook_state} 
     guideContent={guideContent_state} />)
 
   const sshPane = (
-  <SSH_web 
+  <SSH_web  
     SSH_address={SSH_IP}
     SSH_username={SSH_username}
     SSH_password={SSH_password} />)

@@ -67,7 +67,67 @@ def getScenarioMeta(scenario_id):
         }
         return scenario_info
 
+def bashResponse(sid, uid, ans):
+    db_ses = db.session
 
+    uName = db_ses.query(User.username).filter(User.id == uid).first()[0]
+    uName = "".join(e for e in uName if e.isalnum())
+
+    sName = db_ses.query(Scenarios.name).filter(Scenarios.id == sid).first()[0]
+    sName = "".join(e for e in sName if e.isalnum())
+
+    if "${player.login}" in ans:
+        students = open(f"./data/tmp/{sName}/students.json")
+        user = ast.literal_eval(students.read())
+        username = user[uName][0]["username"]
+        ansFormat = ans[0:6]
+        newAns = ansFormat + username
+        return newAns
+    elif "${scenario.instances" in ans:
+        wordIndex = ans[21:-1].index(".")
+        containerName = ans[21:21+wordIndex]
+        containerFile = open(f"./data/tmp/{sName}/{containerName}.tf.json")
+        content = ast.literal_eval(containerFile.read())
+        index = content["resource"][0]["docker_container"][0][sName + "_" + containerName][0]["networks_advanced"]
+        ans = ""
+        for d in index:
+            if d["name"] == (sName + "_PLAYER"):
+                ans = d["ipv4_address"]
+
+        return ans
+
+    return ans
+
+def readQuestions(scenario):
+    scenario = "".join(e for e in scenario if e.isalnum())
+
+    with open(f"./data/tmp/{scenario}/questions.yml") as yml:
+        return yaml.full_load(yml)
+
+def evaluateResponse(user_id, scenario_id, question_num, submittedResponse):
+    """Check student answer matches correct one from YAML file."""
+
+    scenario = db_ses.query (Scenarios).filter_by(id=scenario_id).first()
+    scenario_uniqueName = scenario.name
+    questions = readQuestions(scenario_uniqueName[0])
+    question = questions[question_num-1]
+
+    responseData = []
+
+    for i in question['Answers']:
+
+        correctResponse = i['Value']
+
+        if "${" in correctResponse:
+            correctResponse = bashResponse(scenario_id, user_id, correctResponse)
+
+        if submittedResponse == correctResponse or correctResponse == 'ESSAY':
+            pointsAwarded = i['Points']
+            responseData.append({
+                "submitted_response":submittedResponse,
+                "correct_response":correctResponse,
+                "points_awarded":pointsAwarded})
+    return responseData
 
 ### UNTESTED / DEV 
     
