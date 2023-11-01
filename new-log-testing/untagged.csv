@@ -1,0 +1,194 @@
+edulog:1696703028:0,NAT,1696703088,/home/bsides2user1,ls,%
+editme  final-mission  followMe  i  stuff  textfiles  toLearn%,bsides2user1@nat
+edulog:1696703028:1,NAT,1696703088,/home/bsides2user1,cd followME,%
+bash: cd: followME: No such file or directory
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:2,NAT,1696703091,/home/bsides2user1,cd followMe,%
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:3,NAT,1696703093,/home/bsides2user1/followMe,ls,%
+keepGOING
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe
+edulog:1696703028:4,NAT,1696703095,/home/bsides2user1/followMe,cd keepGOING,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe
+edulog:1696703028:5,NAT,1696703096,/home/bsides2user1/followMe/keepGOING,ls,%
+another folder wee
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:6,NAT,1696703103,/home/bsides2user1/followMe/keepGOING,cd another folder wee,%
+bash: cd: another: No such file or directory
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:7,NAT,1696703106,/home/bsides2user1/followMe/keepGOING,cd another,%
+bash: cd: another: No such file or directory
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:8,NAT,1696703106,/home/bsides2user1/followMe/keepGOING,ls,%
+another folder wee
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:9,NAT,1696703114,/home/bsides2user1/followMe/keepGOING,cd ./another folder wee,%
+bash: cd: ./another: No such file or directory
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:10,NAT,1696703165,/home/bsides2user1/followMe/keepGOING,cd another\ folder\ wee,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:11,NAT,1696703166,/home/bsides2user1/followMe/keepGOING/another folder wee,ls,%
+im.another.folder
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee
+edulog:1696703028:12,NAT,1696703172,/home/bsides2user1/followMe/keepGOING/another folder wee,cd im.another.folder,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee
+edulog:1696703028:13,NAT,1696703173,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder,cd,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder
+edulog:1696703028:14,NAT,1696703175,/home/bsides2user1,ls,%
+editme  final-mission  followMe  i  stuff  textfiles  toLearn
+bsides2user1@NAT
+cd followMe
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:15,NAT,1696703192,/home/bsides2user1/followMe,cd keepGOING,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe
+edulog:1696703028:16,NAT,1696703198,/home/bsides2user1/followMe/keepGOING,cd another\ folder\ wee,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING
+edulog:1696703028:17,NAT,1696703199,/home/bsides2user1/followMe/keepGOING/another folder wee,ls,%
+im.another.folder
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee
+edulog:1696703028:18,NAT,1696703202,/home/bsides2user1/followMe/keepGOING/another folder wee,cd im.another.folder,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee
+edulog:1696703028:19,NAT,1696703203,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder,ls,%
+WOOT
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder
+edulog:1696703028:20,NAT,1696703205,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder,cd WOOT,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder
+edulog:1696703028:21,NAT,1696703206,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT,ls,%
+dontstop
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT
+edulog:1696703028:22,NAT,1696703208,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT,cd dontstop,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT
+edulog:1696703028:23,NAT,1696703209,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop,ls,%
+okYouAreHERE!
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop
+edulog:1696703028:24,NAT,1696703213,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop,cd okYouAreHERE!,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop
+edulog:1696703028:25,NAT,1696703214,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!,ls,%
+WCcUmoGT
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!
+edulog:1696703028:26,NAT,1696703279,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!,man file,%
+FILE(1)                                                     BSD General Commands Manual                                                     FILE(1)
+
+NAME
+     file — determine file type
+
+SYNOPSIS
+     file [-bcEhiklLNnprsvzZ0] [--apple] [--extension] [--mime-encoding] [--mime-type] [-e testname] [-F separator] [-f namefile] [-m magicfiles]
+          [-P name=value] file ...
+     file -C [-m magicfiles]
+     file [--help]
+
+DESCRIPTION
+     This manual page documents version 5.25 of the file comm%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!
+edulog:1696703028:27,NAT,1696703280,/home/bsides2user1/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!,cd,%
+bsides2user1@NAT%,bsides2user1@NAT:~/followMe/keepGOING/another folder wee/im.another.folder/WOOT/dontstop/okYouAreHERE!
+edulog:1696703028:28,NAT,1696703283,/home/bsides2user1,ls,%
+editme  final-mission  followMe  i  stuff  textfiles  toLearn
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:29,NAT,1696703286,/home/bsides2user1,cd stuff,%
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:30,NAT,1696703287,/home/bsides2user1/stuff,ls,%
+3dprintedbox.txt  3leggedcat.txt  iamanimage2.txt  iamanimage3.txt  imatextfiletoo.txt  imtxt.txt  mysong.txt
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:31,NAT,1696703299,/home/bsides2user1/stuff,ls -al,%
+total 3504
+dr-xr-x--x 2 bsides2user1 bsides2user1    4096 Oct  7 16:37 .
+drwxr-xr-x 9 bsides2user1 bsides2user1    4096 Oct  7 16:37 ..
+-rw-r--r-- 1 root         root          159308 Oct  7 16:37 3dprintedbox.txt
+-rw-r--r-- 1 root         root         1546645 Oct  7 16:37 3leggedcat.txt
+-rw-r--r-- 1 root         root          729451 Oct  7 16:37 iamanimage2.txt
+-rw-r--r-- 1 root         root          176971 Oct  7 16:37 iamanimage3.txt
+-rw-r--r-- 1 root         root              22 Oct  7 16:37%,bsides2user1@NAT:~/stuff
+edulog:1696703028:32,NAT,1696703326,/home/bsides2user1/stuff,file mysong.txt,%
+mysong.txt: Audio file with ID3 version 2.4.0, contains: MPEG ADTS, layer III, v1, 192 kbps, 44.1 kHz, Stereo
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:33,NAT,1696703329,/home/bsides2user1/stuff,file imtxt.txt,%
+imtxt.txt: Microsoft Word 2007+
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:34,NAT,1696703337,/home/bsides2user1/stuff,file imatextfiletoo.txt,%
+imatextfiletoo.txt: ASCII text
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:35,NAT,1696703345,/home/bsides2user1/stuff,cat imatextfiletoo.txt,%
+SECRET CODE: ieS3WTeu
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:36,NAT,1696703434,/home/bsides2user1/stuff,cd,%
+bsides2user1@NAT%,bsides2user1@NAT:~/stuff
+edulog:1696703028:37,NAT,1696703438,/home/bsides2user1,ls,%
+editme  final-mission  followMe  i  stuff  textfiles  toLearn
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:38,NAT,1696703440,/home/bsides2user1,cd textfiles,%
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:39,NAT,1696703441,/home/bsides2user1/textfiles,ls,%
+one.txt  three.txt  two.txt
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:40,NAT,1696703473,/home/bsides2user1/textfiles,echo one.txt; echo two.txt; echo three.txt > alltogether.txt,%
+one.txt
+two.txt
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:41,NAT,1696703481,/home/bsides2user1/textfiles,ls,%
+alltogether.txt  one.txt  three.txt  two.txt
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:42,NAT,1696703485,/home/bsides2user1/textfiles,rm alltogether.txt,%
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:43,NAT,1696703505,/home/bsides2user1/textfiles,cat one.txt; cat two.txt; cat three.txt > alltogether.txt,%
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed ullamcorper nisi. Morbi risus libero, ultricies in condimentum in, porttitor sit amet quam. Curabitur ultrices, magna ut viverra posuere, urna massa molestie ex, at pellentesque magna justo eget arcu. Vestibulum eget ante vulputate, euismod lacus in, lobortis nisl. Suspendisse tempus maximus erat ut consectetur. Donec molestie massa vitae commodo ultricies. Integer dignissim leo consequat nisi sodales, acvolutpat magna
+euismod%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:44,NAT,1696703552,/home/bsides2user1/textfiles,clear,%
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:45,NAT,1696703629,/home/bsides2user1/textfiles,man find,%
+FIND(1)                                                       General Commands Manual                                                       FIND(1)
+
+NAME
+       find - search for files in a directory hierarchy
+
+SYNOPSIS
+       find [-H] [-L] [-P] [-D debugopts] [-Olevel] [starting-point...] [expression]
+
+DESCRIPTION
+       This  manual page documents the GNU version of find.  GNU find searches the directory tree rooted at each given starting-point by evaluating
+       the given expression from %,bsides2user1@NAT:~/textfiles
+edulog:1696703028:46,NAT,1696703647,/home/bsides2user1/textfiles,find . -type f -iname *edurange*,%
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:47,NAT,1696703652,/home/bsides2user1/textfiles,cd,%
+bsides2user1@NAT%,bsides2user1@NAT:~/textfiles
+edulog:1696703028:48,NAT,1696703655,/home/bsides2user1,find . -type f -iname *edurange*,%
+./i/z/g/j/l/o/w/edurange006weeeeeee.png
+./i/c/e/h/k/edurange3.GIF
+./i/d/f/kitty/k/n/t/edurange5meow.JPG
+./i/b/e/j/l/s/v/002edurange.jpg
+./i/a/g/kitty/m/q/w/edurange001.gif
+./i/a/e/kitty/4edurange.jpeg
+bsides2user1@NAT
+
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:49,NAT,1696703712,/home/bsides2user1,clear,%
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:50,NAT,1696703773,/home/bsides2user1,find -type f -iname *cowFJS*,%
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:51,NAT,1696703819,/home/bsides2user1,pwd,%
+/home/bsides2user1
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:52,NAT,1696703828,/home/bsides2user1,find /home -type f -iname *cowFJS*,%
+find: ‘/home/bsides2user60/followMe’: Permission denied
+find: ‘/home/bsides2user60/textfiles’: Permission denied
+find: ‘/home/bsides2user60/stuff’: Permission denied
+find: ‘/home/bsides2user60/i’: Permission denied
+find: ‘/home/bsides2user60/toLearn’: Permission denied
+find: ‘/home/bsides2user60/editme’: Permission denied
+find: ‘/home/bsides2user60/final-mission’: Permission denied
+find: ‘/home/bsides2user33/followMe’: Permission denied
+find: ‘/home/bsides2user33/textfiles’: Permission denied
+f%,bsides2user1@NAT:~
+edulog:1696703028:53,NAT,1696703828,/home/bsides2user1,ion denied,%
+find: ‘/home/bsides2user35/followMe’: Permission denied
+find: ‘/home/bsides2user35/textfiles’: Permission denied
+find: ‘/home/bsides2user35/stuff’: Permission denied
+find: ‘/home/bsides2user35/i’: Permission denied
+find: ‘/home/bsides2user35/toLearn’: Permission denied
+find: ‘/home/bsides2user35/editme’: Permission denied
+find: ‘/home/bsides2user35/final-mission’: Permission denied
+bsides2user1@NAT%,bsides2user1@NAT:~
+edulog:1696703028:54,NAT,1696703850,/home/bsides2user1,r1@NAT:~$ pwd,%
+/home/bsides2user1
+bsides2user1@NAT%,bsides2user1@NAT:~
+

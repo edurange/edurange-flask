@@ -1,29 +1,35 @@
-Milestones:
-  - M1:
-    Objective: "use pwd"
-    Type: INPUT
-    Content: 
-      Command: "pwd"
-      Args: "n/a"
-    Directory: "n/a"
-  - M2:
-    Objective: "View hidden files"
-    Type: OUTPUT
-    Content: "<hidden files>"
-    Directory: "/home/<student>"
-  - M3:
-    Objective: "Get to the hidden directory"
-    Type: DIRECTORY
-    Content: "n/a"
-    Directory: "/special/hidden"
-  - M4:
-    Objective: "Become the root user"
-    Type: USER
-    Content: PROMPT
-    Directory: "n/a"
-  - M5:
-    Objective: "..."
-    Type: COMPOUND
-    Content:
-      Milestones: [M1, M2]
-    Directory: "n/a"
+---
+- Milestones:
+    Prototype:
+      - M1:
+          Type: Input
+          Command:
+          Args:
+        Strictness:
+      - M2:
+          Type: Output
+          Output:
+        Strictness: 
+      - M3:
+          Type: Thinking about it
+          Objective: Change Directory to Root
+          Command: cd
+          args: "/"
+          pwd: "anywhere"
+          Output: none
+          strictness: "match-command"
+    Regexes:
+      M1: cd /
+      M2: cd /root
+      M3: man
+      M4: ls -la
+      M5: file \w+.jpg
+      M6: echo "This is cool" > \w+
+      M7: cat
+      M8: cat \w+ >> \w+
+      M9: cat alltogether.txt
+      M10: cd okYouAreHERE!
+      M11: vim .+
+      M12: find . -iname "?\*cowFJS\*\"? |find / -iname "?\*cowFJS\*\"? |find . -iname "?\*cowFJS\*\"? |find . -type f -iname "?\*cowFJS\*\"? |find / -type f -iname "?\*cowFJS\*\"?|find . -iname "?\*cowFJS\*\"?|find / -iname "?\*cowFJS\*\"?
+      M13: cowsay
+...
