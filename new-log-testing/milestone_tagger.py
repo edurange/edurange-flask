@@ -7,20 +7,53 @@ import yaml
 import pprint
 import csv
 import re
+import numpy as np
 
+
+def levenshtein(s, t):            #checks similarities between two words
+    rows = len(s) + 1
+    cols = len(t) + 1
+    deletes = 1
+    inserts = 1
+    substitutes = 1
+    dist = [[0 for x in range(cols)] for x in range(rows)]
+
+    for row in range(1,rows):
+        dist[row][0] = row * deletes
+    for col in range(1, cols):
+        dist[0][col] = col * inserts
+    for col in range(1,cols):
+        for row in range(1,rows):
+            if s[row-1] == t[col-1]:
+                cost = 0
+            else:
+                cost = substitutes
+            dist[row][col] = min(dist[row-1][col] + deletes, dist[row][col-1] + inserts, dist[row-1][col-1] + cost)
+    return dist[row][col]
 
 def apply_regexes(regex_list, csv_line, milestone_bitvector):
 
-    stdin = csv_line[4]
-
-    #print(input)
-
-
-    for r in regex_list:
+    stdin = ""
+    if len(csv_line) >= 4:
+        stdin = csv_line[4]
+        command, args = parse_stdin(stdin)       
+        
+    for milestone, r in enumerate(regex_list.values()):
         potential_match = re.match(r, stdin)
         
+        distance = levenshtein(r, stdin)
+        print(distance)
+
         if potential_match is not None:
-            print(potential_match)
+            milestone_bitvector[milestone] = 1
+            #print(potential_match)
+
+    print(milestone_bitvector)
+
+def parse_stdin(stdin_line):
+    command = ""
+    args = ""
+    return command, args
 
 
 if __name__ == "__main__":
@@ -58,7 +91,7 @@ if __name__ == "__main__":
  #      print('usage:\n master_log_tagger.py <milestone_file> <log_file> <out_file>')
  #     exit(1)
 
-    with open("milestones.yml", "r") as yml:
+    with open("proto_milestones.yml", "r") as yml:
         document = yaml.full_load(yml)
         
         #pp.pprint(document[0])
@@ -74,8 +107,12 @@ if __name__ == "__main__":
 
     reader = csv.reader(csvFile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL)
     
+
     untagged = []
-    milestone_bitvector = []
+    
+    num_milestones = len(regexes)
+    milestone_bitvector = np.zeros(num_milestones)
+
     for row in reader:
         apply_regexes(regexes, row, milestone_bitvector)
 

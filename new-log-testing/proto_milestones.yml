@@ -22,7 +22,7 @@
       M1: cd /
       M2: cd /root
       M3: man
-      M4: ls -la
+      M4: ls
       M5: file \w+.jpg
       M6: echo "This is cool" > \w+
       M7: cat
