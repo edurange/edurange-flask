@@ -1,23 +1,21 @@
 ---
 - Milestones:
     Prototype:
-      - M1:
-          Type: Input
-          Command:
-          Args:
-        Strictness:
-      - M2:
-          Type: Output
-          Output:
-        Strictness: 
-      - M3:
-          Type: Thinking about it
-          Objective: Change Directory to Root
-          Command: cd
-          args: "/"
-          pwd: "anywhere"
-          Output: none
-          strictness: "match-command"
+      - Label: M1
+        Type: Input
+        Objective: Long listing in the home directory
+        Command: ls
+        Args: -la
+        Strictness: FullMatch
+      - Label: M2
+        Type: Output
+        Objective: Read the secret file
+        Output: "sup3rs3cr3t"
+        Strictness: FullMatch
+      - Label: M3
+        Type: Compound
+        Objective: Listing and Read Secret
+        Requirements: M1, M2
     Regexes:
       M1: cd /
       M2: cd /root

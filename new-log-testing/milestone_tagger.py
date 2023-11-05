@@ -56,6 +56,32 @@ def parse_stdin(stdin_line):
     return command, args
 
 
+def identify_milestone_type(milestone):
+    # TODO 
+    
+    #found_type = milestone[0]["Type"]
+
+    #return found_type
+
+    pass
+
+def handle_input_milestone(found_type):
+    # TODO 
+
+    pass
+
+def handle_output_milestone(found_type):
+    # TODO 
+
+    pass
+
+def handle_compound_milestone(found_type):
+    # TODO 
+
+    pass
+
+
+
 if __name__ == "__main__":
     '''
   Milestone file is a .yml file
@@ -96,7 +122,7 @@ if __name__ == "__main__":
         
         #pp.pprint(document[0])
         
-        regexes = document[0]["Milestones"]["Regexes"]
+        milestones = document[0]["Milestones"]["Prototype"]
         
         #print(regexes.keys())
 
@@ -107,14 +133,40 @@ if __name__ == "__main__":
 
     reader = csv.reader(csvFile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL)
     
+    
+
+    for index, m in enumerate(milestones):
+        mstone_type = m["Type"]
+    
+        #mnumber = index + 1
+
+        #mtag = "M" + mnumber
+
+        pp.pprint(m["Type"])
+        
+        # Breaks if not on python 3.10 TODO update docker images
+        match mstone_type:
+            case 'Input':
+                handle_input_milestone(m)
+
+            case "Output":
+                handle_output_milestone(m)
+
+            case "Compound":
+                handle_compound_milestone(m)
+
+            case _:
+                raise Exception("Unknown Milestone Type Encountered")
+
+        #print(type(m))
 
     untagged = []
     
-    num_milestones = len(regexes)
-    milestone_bitvector = np.zeros(num_milestones)
+    #num_milestones = len(regexes)
+    #milestone_bitvector = np.zeros(num_milestones)
 
-    for row in reader:
-        apply_regexes(regexes, row, milestone_bitvector)
+   # for row in reader:
+   #     apply_regexes(regexes, row, milestone_bitvector)
 
     #print(untagged)
     #print(regexes)
