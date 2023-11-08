@@ -1,0 +1,31 @@
+# Milestone file will be preprocessed to replace OCTET
+
+- Milestones:
+    Prototype:
+        - Label: M1
+          Type: Input
+          Objective: ssh no flags to given ip
+          Command: ssh
+          Args: <user>@10.OCTET.0.7
+          Strictness: FullMatch
+        - Label: M2
+          Type: Input
+          Objective: ssh with -p and correct port
+          Command: ssh
+          Args: <user>@10.OCTET.0.10 -p <port>
+          Strictness: FullMatch
+        - Label: M3
+          Type: Input
+          Objective: nmap to find next ip
+          Command: nmap
+          Args: *
+
+        - Label: M4
+          Type: Output
+          Objective: display correct ip ending in 13
+          Output: 10.OCTET.0.13
+
+        - Label: M5
+          Type: Compound
+          Objective: use nmap to display next ip
+          Requirements: M3, M4
