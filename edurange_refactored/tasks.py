@@ -145,11 +145,10 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
 
         with open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+") as f:
             questions = yaml.safe_load(f)
-        with open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")as f: 
+            logger.info(f"Questions Type: {type(questions)}")
+        with open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")as f:
             content = json.load(f)
-
-        logger.info(f"Questions Type: {type(f)}")
-        logger.info(f"Content Type: {type(f)}")
+            logger.info(f"Content Type: {type(content)}")
 
         # randomize answers
         flags = []
