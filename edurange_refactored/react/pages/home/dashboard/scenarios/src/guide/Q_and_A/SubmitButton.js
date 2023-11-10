@@ -2,6 +2,8 @@
 
 import React, {useState} from 'react';
 import axios from 'axios';
+import './Q_and_A.css'
+
 
 function SubmitButton ({scenario_id, question_num}) {
 
@@ -27,8 +29,8 @@ function SubmitButton ({scenario_id, question_num}) {
 
     }
     return (
-        <div>
-        <input
+        <div className='edu3-qSubmit-element'>
+        <input className='edu3-qSubmit-text'
           type="text"
           value={inputText_state}
           onChange={(e) => set_inputText_state(e.target.value)}
