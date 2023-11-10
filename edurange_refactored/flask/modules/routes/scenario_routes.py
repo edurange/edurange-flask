@@ -160,11 +160,15 @@ def student():
 def checkResponse():
 
     requestJSON = request.json
-    scenario_id = requestJSON.scenario_id
-    question_num = requestJSON.question_num
-    student_response = requestJSON.student_response
-
+    print(requestJSON)
     current_user_id = g.current_user_id
+    question_num = int(requestJSON['question_num'])
+    scenario_id = int(requestJSON['scenario_id'])
+    student_response = requestJSON['student_response']
+    print(question_num)
+    print(scenario_id)
+    print(student_response)
+
     pointsAwarded = evaluateResponse (current_user_id, scenario_id, question_num, student_response )
     return jsonify({"points_gained" : pointsAwarded})
 

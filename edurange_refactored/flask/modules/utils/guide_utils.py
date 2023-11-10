@@ -1,21 +1,10 @@
-
-
-
-"""Helper utilities and decorators."""
 import json
 import os
-
 import yaml
-import markdown as md
 import ast
-from flask import abort, flash, request, url_for, jsonify
-from flask_login import current_user
-from markupsafe import Markup
-
+from flask import abort
 
 from edurange_refactored.extensions import db
-db_ses = db.session
-
 from edurange_refactored.user.models import Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +12,7 @@ path_to_key = os.path.dirname(os.path.abspath(__file__))
 ## TESTED/WORKING
 
 def getContent(scenario_id, username):
-    # db_ses = db.session
+    db_ses = db.session
     statusSwitch = {
         0: "Stopped",
         1: "Started",
@@ -54,7 +43,7 @@ def getContent(scenario_id, username):
     return contentJSON, user_creds, unique_name
 
 def getScenarioMeta(scenario_id):
-        
+        db_ses = db.session
         scenario = db_ses.query (Scenarios).filter_by(id=scenario_id).first()
 
         scenario_info = {
@@ -104,29 +93,36 @@ def readQuestions(scenario):
     with open(f"./data/tmp/{scenario}/questions.yml") as yml:
         return yaml.full_load(yml)
 
-def evaluateResponse(user_id, scenario_id, question_num, submittedResponse):
+def evaluateResponse(user_id, scenario_id, question_num, student_response):
     """Check student answer matches correct one from YAML file."""
-
+    db_ses = db.session
     scenario = db_ses.query (Scenarios).filter_by(id=scenario_id).first()
     scenario_uniqueName = scenario.name
-    questions = readQuestions(scenario_uniqueName[0])
+    questions = readQuestions(scenario_uniqueName)
     question = questions[question_num-1]
 
     responseData = []
 
+    print("evaluateResponse says student_response: ", student_response)
+
     for i in question['Answers']:
 
-        correctResponse = i['Value']
+        correctResponse = str(i['Value'])
+
+        tempResponseItem = {
+            "submitted_response":student_response,
+            "correct_response":correctResponse,
+            "points_awarded":0
+        }
 
         if "${" in correctResponse:
             correctResponse = bashResponse(scenario_id, user_id, correctResponse)
 
-        if submittedResponse == correctResponse or correctResponse == 'ESSAY':
+        if student_response == correctResponse or correctResponse == 'ESSAY':
             pointsAwarded = i['Points']
-            responseData.append({
-                "submitted_response":submittedResponse,
-                "correct_response":correctResponse,
-                "points_awarded":pointsAwarded})
+            tempResponseItem['points_awarded'] = pointsAwarded
+
+        responseData.append (tempResponseItem)
     return responseData
 
 ### UNTESTED / DEV 

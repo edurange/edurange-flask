@@ -7,10 +7,8 @@ import './InfoPane.css';
 function InfoPane({ guideContent }) {
 
   const meta = guideContent.scenario_meta;
-
-  // GUARD
-  if ((!meta)) { return (<>Scenario not found</>); }
-  // GUARD
+  
+  if ((!meta)) { return (<>Scenario not found</>); } // GUARD
 
   const shellData = scenarioShells[`${meta.scenario_description}`];
 

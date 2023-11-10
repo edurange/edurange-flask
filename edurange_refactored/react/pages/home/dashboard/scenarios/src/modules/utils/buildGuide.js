@@ -14,7 +14,7 @@ import GuideReading from "../../guide/Q_and_A/GuideReading";
 // 'Content Order' pointers in the scenario's content.json, 
 // and same with the items in each chapter
 
-export default function buildGuide(contentJSON) {
+export default function buildGuide(scenarioID, contentJSON) {
 
     const readings = contentJSON.StudentGuide.Readings;
     const questions = contentJSON.StudentGuide.Questions;
@@ -53,7 +53,8 @@ export default function buildGuide(contentJSON) {
                 itemContentPointer: itemContentPointer, // Pointer to the actual content
                 chapterNumber: i,       // The chapter the item belongs to 
                 itemIndexInChapter: j,  // Index of the item within its chapter
-                itemContent: ""         // The actual content (populated below)
+                itemContent: "",         // The actual content (populated below)
+                scenario_id: scenarioID
             };
 
             // Assign content based on the type

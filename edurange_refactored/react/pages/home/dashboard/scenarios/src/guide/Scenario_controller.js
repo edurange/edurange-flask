@@ -12,8 +12,6 @@ import SSH_web from './ssh/SSH_web';
 import '../../../src/Dashboard.css';
 import './Scenario_controller.css';
 
-//// UNDER HEAVY CONSTRUCTION ////
-
 function Scenario_controller() {
   
   const { scenarioID, pageID } = useParams(); // from URL parameters
@@ -33,7 +31,6 @@ function Scenario_controller() {
     set_SliderNum_state(event.target.value);
 };
 
-
   useEffect(() => {
     async function getContent() {
       try {
@@ -47,10 +44,7 @@ function Scenario_controller() {
     getContent();
   }, [scenarioID]);
 
-  ////   GUARD    /////
-  if ((!meta)) { return (<>Scenario not found</>); };
-  ////   /GUARD   /////
-
+  if ((!meta)) { return (<>Scenario not found</>); }; // GUARD
 
   const SSH_username = guideContent_state.credentialsJSON.username;
   const SSH_password = guideContent_state.credentialsJSON.password;

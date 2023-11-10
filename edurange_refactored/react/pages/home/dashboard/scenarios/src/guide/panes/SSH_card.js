@@ -8,9 +8,7 @@ function SSH_card({ guideContent }) {
 
     const meta = guideContent.scenario_meta;
 
-    // GUARD
-    if ((!meta)) { return (<>Scenario not found</>); };
-    // GUARD
+    if ((!meta)) { return (<>Scenario not found</>); }; // GUARD
 
     const SSH_key = `${guideContent.unique_scenario_name}_nat`;
     const SSH_IP = guideContent.SSH_IP[SSH_key];

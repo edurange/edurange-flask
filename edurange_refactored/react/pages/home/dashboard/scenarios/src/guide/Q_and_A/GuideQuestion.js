@@ -1,21 +1,13 @@
 
-import React, {useState}  from 'react';
+import React from 'react';
 import { nanoid } from 'nanoid';
 import './Q_and_A.css'
 import SubmitButton from './SubmitButton';
 
 function GuideQuestion ( {
-    // itemContentType,
-    // itemContentPointer,
-    // chapterNumber,
-    // itemIndexInChapter,
+    itemContentPointer,
     scenario_id,
-    question_num,
     itemContent } ) {
-
-
-
-
 
     return (
     <div className='edu3-question-frame' key={nanoid(3)}>
@@ -36,10 +28,7 @@ function GuideQuestion ( {
                 </div>
 
                 <div className='edu3-response-row-right'>
-                    
-                    <SubmitButton scenario_id={1} question_num={1} />
-
-
+                    <SubmitButton scenario_id={scenario_id} question_num={itemContentPointer} />
                 </div>
 
             </div>

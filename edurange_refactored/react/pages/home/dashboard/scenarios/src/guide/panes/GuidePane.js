@@ -15,7 +15,7 @@ function GuidePane({ guideContent, set_leftPane_state }) {
   useEffect(() => {
     async function beginGuideBuild() {
       try {
-        const guideReturn = buildGuide(guideContent.contentJSON);
+        const guideReturn = buildGuide(scenarioID, guideContent.contentJSON);
         set_guideBook_state(guideReturn);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -24,9 +24,7 @@ function GuidePane({ guideContent, set_leftPane_state }) {
     beginGuideBuild();
   }, []);
 
-  ////   GUARD    /////
-  if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>); }
-  ////   /GUARD   /////
+  if ((guideBook_state.length < 1) || (!meta)) { return (<>Scenario not found</>); } // GUARD
 
   const tabActiveClass = 'guidepane-controlbar-tab guidepane-tab-active';
   const tabInactiveClass = 'guidepane-controlbar-tab guidepane-tab-inactive';
