@@ -1,8 +1,8 @@
 
 // an "item" is a single reading or question
 
-import GuideQuestion from "../guide/Q_and_A/GuideQuestion";
-import GuideReading from "../guide/Q_and_A/GuideReading";
+import GuideQuestion from "../../guide/Q_and_A/GuideQuestion";
+import GuideReading from "../../guide/Q_and_A/GuideReading";
 
 // one or more grouped items make up a 'chapter'
 
@@ -14,11 +14,7 @@ import GuideReading from "../guide/Q_and_A/GuideReading";
 // 'Content Order' pointers in the scenario's content.json, 
 // and same with the items in each chapter
 
-// most of the notes here i made for my own sanity while making this
-// but i've decided to leave them for yours :)
-
-
-export default function buildGuide(contentJSON) {
+export default function buildGuide(scenarioID, contentJSON) {
 
     const readings = contentJSON.StudentGuide.Readings;
     const questions = contentJSON.StudentGuide.Questions;
@@ -57,23 +53,18 @@ export default function buildGuide(contentJSON) {
                 itemContentPointer: itemContentPointer, // Pointer to the actual content
                 chapterNumber: i,       // The chapter the item belongs to 
                 itemIndexInChapter: j,  // Index of the item within its chapter
-                itemContent: ""         // The actual content (populated below)
+                itemContent: "",         // The actual content (populated below)
+                scenario_id: scenarioID
             };
 
             // Assign content based on the type
             if (itemContentType === "r") {
-
                 itemObject.itemContent = readings[itemContentPointer];
-                itemObject = GuideReading(itemObject);
-                // itemObject = reactify_reading(itemObject); // convert to react component (will refactor to actual component creation)
+                itemObject = GuideReading(itemObject);  // convert to react component
             } else {
                 itemObject.itemContent = questions[itemContentPointer];
-                itemObject = GuideQuestion(itemObject); // convert to react component
+                itemObject = GuideQuestion(itemObject); // convert to react component 
             }
-
-            // if (should_reactify) {
-            //     itemObject = reactify(itemObject);
-            // }
             // Add the 'item' to the 'chapter'
             bookChapter.push(itemObject);
         }

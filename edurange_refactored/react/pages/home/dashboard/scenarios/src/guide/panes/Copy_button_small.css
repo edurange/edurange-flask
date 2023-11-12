@@ -1,0 +1,54 @@
+
+  .copyButton-frame{
+    display: flex;
+    min-height: 42%;
+    max-height: 42%;
+    
+    aspect-ratio: 1;
+    flex-direction: column;
+    background-color: rgba(95, 158, 160, 0.144);
+    color: rgba(255, 192, 34, 0.801);
+    border-radius: 25%;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    cursor: pointer;
+  }
+  .copyButton-frame:hover{
+    color: rgb(154, 255, 255);
+  }
+  .copyButton-item{
+    cursor: pointer;
+    color:  var(--orange-strong);
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.copyButton-item:hover{
+    background-color: rgba(117, 255, 223, 0.06);;
+    color: var(--green-normal);
+    font-size: 14px;
+  }
+  .copyCheck-frame{
+    display: flex;
+    min-height: 42%;
+    max-height: 42%;
+    aspect-ratio: 1;
+    background-color: rgba(95, 158, 160, 0.144);
+    border-radius: 25%;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    cursor: default;
+  }
+  .copyCheck-icon{
+    color: var(--green-normal);
+    align-self: center;
+    justify-self: center;
+    display: flex;
+  }
+
+  

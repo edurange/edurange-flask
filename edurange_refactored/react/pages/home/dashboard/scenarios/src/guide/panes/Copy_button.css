@@ -1,0 +1,86 @@
+
+.ssh-copyButton-inner{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13pt;
+  cursor: pointer;
+  background-color: rgba(255, 192, 203, 0.153);
+}
+.ssh-copyButton-content{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.115);
+  border-radius: 8px;
+}
+.ssh-copyButton-content:hover{
+  color: rgb(0, 255, 119);
+  font-size: 105%;
+}
+.ssh-copyButton-frame{
+  font-size: 16pt;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.sshcard-icon-label{
+  color: inherit;
+  font-size: 7pt;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 3px;
+  position: relative;
+  top: 5%;
+}
+.sshcard-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+  width: 70%;
+  height: 70%;
+  position: relative;
+  top: 0;
+}
+.green-checkmark-icon{
+  color: var(--green-normal);
+  align-self: center;
+  justify-self: center;
+  display: flex;
+}
+.green-checkmark-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  background-color: rgba(0, 121, 0, 0.074);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 183, 255, 0.342);;
+}
+.copyColumn-button-frame{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(129, 226, 255, 0.09);
+  color: goldenrod;
+  border-radius: 8px;
+}

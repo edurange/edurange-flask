@@ -6,6 +6,7 @@ import HelpPage from '../help/src/HelpPage';
 import InfoHome from './Info_home';
 import About from '../about/src/About';
 import Documents from '../docs/src/Documents';
+import FAQ from '../faq/FAQ';
 
 function InfoRouter (    ) {
 
@@ -25,6 +26,7 @@ function InfoRouter (    ) {
                             <Route path="/contact" element={<Contact />} />
                             <Route path="/docs" element={<Documents />} />
                             <Route path="/about" element={<About />} />
+                            <Route path="/FAQ" element={<FAQ />} />
                         </Routes>
                     </div>            
                 </div>

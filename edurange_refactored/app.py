@@ -14,6 +14,7 @@ from edurange_refactored.flask.modules.routes.instructor_routes import blueprint
 from edurange_refactored.flask.modules.routes.admin_routes import blueprint_edurange3_admin
 from edurange_refactored.flask.modules.routes.scenario_routes import blueprint_edurange3_scenarios
 
+
 from edurange_refactored import commands, public, user, tutorials, api
 from edurange_refactored.extensions import (
     bcrypt,
@@ -24,13 +25,11 @@ from edurange_refactored.extensions import (
     flask_static_digest,
     login_manager,
     migrate,
-    jwtman
+    jwtman,
 )
 from edurange_refactored.user.models import User
 
-socketapp = SocketIO()
-
-
+socketapp = SocketIO()  # legacy instance of socketio  -  edu3 is socketio from extensions
 
 def create_app(config_object="edurange_refactored.settings"):
     """Create application factory, as explained here: http://flask.pocoo.org/docs/patterns/appfactories/.
@@ -47,8 +46,6 @@ def create_app(config_object="edurange_refactored.settings"):
     configure_logger(app)
     register_jinja_filters(app)
     socketapp.init_app(app)
-
-
 
     # app.config['SECRET_KEY_SISTER'] = "iLikeTurtles"  ## DEV_ONLY (replace; secret key MUST be secure!)
 

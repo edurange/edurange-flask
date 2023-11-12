@@ -1,29 +1,13 @@
 
-import React  from 'react';
+import React from 'react';
 import { nanoid } from 'nanoid';
 import './Q_and_A.css'
+import SubmitButton from './SubmitButton';
 
 function GuideQuestion ( {
-    itemContentType,
     itemContentPointer,
-    chapterNumber,
-    itemIndexInChapter,
+    scenario_id,
     itemContent } ) {
-
-    const q_points =  itemContent.Answers.Points;
-    const q_value =  itemContent.Answers.Value;
-    const q_options =  itemContent.Options; 
-    const q_text =  itemContent.Text;
-    const q_type =  itemContent.Type;
-    
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        const usernameInput = event.target.elements.username.value;
-        const passwordInput = event.target.elements.password.value;
-        sendLoginRequest(usernameInput, passwordInput);
-    };
-
 
     return (
     <div className='edu3-question-frame' key={nanoid(3)}>
@@ -33,21 +17,19 @@ function GuideQuestion ( {
                 {itemContent.Text}
             </div>
 
-            <div className='edu3-response-row' onSubmit={handleSubmit}>
+            <div className='edu3-response-row'>
 
                 <div className='edu3-response-row-left'>
                     
                     <div className='edu3-response-row-left-content'>
                         <label className='edu3-response-row-left-content-text' htmlFor='question'>Response:</label>
-                        <input className='edu3-response-row-left-content-field' type='text' id='question' name='question' />
+                        {/* <input className='edu3-response-row-left-content-field' type='text' id='question' name='question' /> */}
+                        
+                        <SubmitButton scenario_id={scenario_id} question_num={itemContentPointer} />
+                        
                     </div>
                 </div>
 
-                <div className='edu3-response-row-right'>
-                    <button className='edu3-response-row-right-button' type='submit'>
-                        CHECK
-                    </button>
-                </div>
 
             </div>
         </div>

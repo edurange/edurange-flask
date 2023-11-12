@@ -48,6 +48,7 @@ env/
 
 # npm
 /node_modules/
+/edurange_refactored/nodejs/node_modules
 
 # webpack-built files
 /edurange_refactored/static/build/

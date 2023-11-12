@@ -84,6 +84,7 @@ def logout():
     
     return response
 
+
 @blueprint_edurange3_student.route('/jwt_test', methods=['GET']) # DEV_ONLY
 @jwt_and_csrf_required
 def jwt_test():
@@ -97,70 +98,3 @@ def jwt_test():
         'user_id' : current_user_id,
         'user_role': current_user_role
     })
-
-
-    if not checked_scenario_title: 
-         return jsonify({'error': 'no active scenario with that ID found'}), 418 # DEV_ONLY
-    
-    # response_id = 0
-    
-    # d = responseSelector(response_id)
-    
-    # (   u_id,  uName,
-    #     sName, aNum    ) = responseProcessing(d)
-    
-    responsesQuery = db.session.query(
-        Responses.id, 
-        Responses.user_id, 
-        Responses.attempt, 
-        Responses.question,
-        Responses.points, 
-        Responses.student_response, 
-        User.current_username) \
-            .filter(Responses.scenario_id == i) \
-            .filter(Responses.user_id == current_user_id) \
-            .all()
-            # .filter(Responses.attempt == aNum) \
-    
-    table = getResponses(u_id, aNum, responsesQuery, questionReader(sName))
-    score = getScore(u_id, aNum, responsesQuery, questionReader(sName))
-
-    returnDict = {
-        'status': status,
-        'owner': owner,
-        'desc': desc,
-        's_type': s_type,
-        's_name': s_name,
-        'u_name': u_name,
-        'pw': pw,
-        'guide': guide,
-        'questions': questions
-    }
-
-    return jsonify(returnDict)
-
-    # get unique data for scenario instance (SSH info, randomized answer stuff, etc)
-
-    # get user-scenario data (answers, ... )
-
-    # all_scenarios = db_ses.query(Scenarios).all()
-    # all_scenarios_list = []
-    # for scenario in all_scenarios:
-    #     scenario_info = {
-    #         "scenario_id": scenario.id,
-    #         "scenario_name": scenario.name,
-    #         "scenario_description": scenario.description,
-    #         "scenario_owner_id": scenario.owner_id,
-    #         "scenario_created_at": scenario.created_at,
-    #         "scenario_status": scenario.status,
-    #     }
-    #     all_scenarios_list.append(scenario_info)
-    # return all_scenarios_list
-
-
-    # return jsonify({
-    #     'message': 'Welcome',
-    #     'username': current_username,
-    #     'user_id' : current_user_id,
-    #     'user_role': current_user_role
-    # })

@@ -1,17 +1,104 @@
-
-#edurange-navhead {
+.er3-homehead {
     display: flex;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 6.3dvh;
-    z-index: 1000;
-    justify-content: right ;
+    height: 4.8dvh;
+    flex-direction: row;
+    font-size: 11pt;
 }
-#edurange-navhead-buttonbar{
-    margin-right: 40px;
+.er3-homehead-left {
+    height: inherit;
+    max-width: 8dvh;
+    display: flex;
+    /* aspect-ratio: 1; */
+    position: fixed;
+    top: 0;
+    left: 3dvh;
+    right: 0;
+    justify-content: flex-start ;
+    align-items: flex-end;
+}
+.er3-homehead-hamburger-frame {
+    display: flex;
+    height: 65%;
+    width: auto;
+    justify-content: flex-start ;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    border-radius: 20px;
+    position: relative;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid rgba(125, 96, 0, 0.291);
+    background-color: rgba(255, 235, 192, 0.101);
+    margin-bottom: 4px;
+}
+.er3-homehead-hamburger-item {
+    max-height: 100%;
+    min-height: 100%;
+    aspect-ratio: 1;
+    justify-content: center ;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    cursor: pointer;
+    font-size: 17pt;
+    color:  rgb(203, 150, 50);
+}
+.er3-homehead-hamburger-item:hover {
+
+    color: aqua;
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-bottom-right-radius: 50%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+.hamburger-jr {
+    font-size: 14pt;
+}
+.hamburger-pill-left {
+    border-bottom-left-radius: 50%;
+    border-top-left-radius: 50%;
+}
+.hamburger-pill-right {
+    border-bottom-right-radius: 50%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.hamburger-pill-left:hover {
+    border-bottom-left-radius: 50%;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.hamburger-pill-right:hover {
+    border-bottom-right-radius: 50%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.er3-homehead-right {
+    height: inherit;
+    display: flex;
+    width: auto;
+    position: fixed;
+    top: 0;
+    left: 16dvh;
+    right: 0;
+    justify-content: right ;
+    contain: content;
+}
+.er3-homehead-buttonbar{
     width:auto;
     display: flex;
     flex-direction: row;
@@ -19,50 +106,61 @@
     justify-content: center;
     align-items: center;
     align-content: center;
+    position: relative;
+    right: 1%
 }
 .topnav-icon-box:hover{
     color: var(--muted-aqua);
 }
 .topnav-icon-box{
-    color: rgb(255, 209, 136) ;
+    color: inherit;
     font-size: 15px;
     margin-right: 4px;
 }
 .topnav-label-box{
-    color: rgb(210, 160, 81) ;
+    color: inherit ;
 }
 .topnav-label-box:hover{
     color: var(--muted-aqua);
 }
-
-
 .topnav-button-panes{
     display:flex;
     padding: 0 15px;
+    color: inherit;
 }
-
 .edu3-nav-tabs {
     width: 100%;
-    
     border-left: 1px solid rgb(107, 107, 107);
-    font-size: 1em;
-    font-weight: 500;
     color: var(--muted-orange);
 }
-
-.edu3-nav-active-tab {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .edu3-nav-tab-label {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-.edu3-nav-inactive-tab:hover {
-    color: rgb(40, 191, 255);
+.edu3-nav-link{
+    cursor: pointer;
+    margin-right: 2px;
+    box-sizing: border-box;
+    height: 70%;
+    align-items: center;
+    display: flex;
+    border-radius: 15px;
+    color: rgb(225, 181, 68);
+}
+.edu3-nav-link:hover{
+    background-color: rgba(240, 248, 255, 0.137);
+    color: rgb(125, 255, 255);
+}
+.homehead-notifs-section {
+    height: inherit;
+    max-width: 4dvh;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 11dvh;
+    right: 0;
+    justify-content: center ;
+    align-items: flex-end;
 }

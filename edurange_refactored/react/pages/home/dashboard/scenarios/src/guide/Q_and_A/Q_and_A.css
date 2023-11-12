@@ -41,6 +41,7 @@
     height: 2em;
     box-sizing: border-box;
     width: 100%;
+    flex-direction: row;
 }
 .edu3-response-row-left-content-field{
     align-items: center;
@@ -86,4 +87,28 @@
 }
 .edu-reading-text{
     line-height:1.35em ;
+}
+.edu3-qSubmit-element{
+    align-items:stretch;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    height: 2em;
+    box-sizing: border-box;
+    width: 90%;
+    padding: 0 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 5px;
+    background: rgb(191, 193, 218);
+}
+.edu3-qSubmit-text{
+    background: none;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+.edu3-qSubmit-text:focus{
+    outline:none;
 }

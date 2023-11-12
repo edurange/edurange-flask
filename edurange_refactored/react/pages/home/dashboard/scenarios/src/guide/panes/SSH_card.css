@@ -1,0 +1,157 @@
+.sshcard-frame{
+  display: block;
+  background-color: rgba(0, 0, 0, 0.198);
+  border-radius: 15px;
+  width: 96%;
+  position: relative;
+  left: 2%;
+  box-sizing: border-box;
+}
+.sshcard-carpet{
+  display: flex;
+  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.sshcard-main{
+  border-left: 1px solid rgba(218, 165, 32, 0.413);
+  border-right: 1px solid rgba(218, 165, 32, 0.413);
+  border-bottom: 1px solid rgba(218, 165, 32, 0.413);
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.sshcard-row{
+  display: flex;
+  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  min-height: 2.6em;
+  align-items: center;
+}
+.ssh-placard{
+  color: var(--blue-muted);
+  justify-content: center;
+  max-height: 2em;
+  min-height: 1.6em;
+  display: flex;
+  background-color: rgba(0, 136, 255, 0.221);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  align-items: center;
+  cursor: default;
+
+}
+.sshcard-creds{
+  display: flex;
+  flex-direction: row;
+}
+.sshcard-creds-col{
+  display: flex;
+  flex-direction: row;
+}
+.sshcard-label-col{
+  min-width: 35px;
+  max-width: 35px;
+  color: goldenrod;
+  cursor: default;
+  position: relative;
+  left: 3%;
+}
+.sshcard-value-col{
+  min-width: calc(100% - 54px - 5.2dvh);
+  max-width: calc(100% - 54px - 5.2dvh);
+  height: 100%;
+  color: aqua;
+  align-items: center;
+  display: flex;
+  word-wrap: break-word ;
+  position: relative;
+  left: 4%;
+  flex-direction: row;
+}
+.sshcard-value-break{
+  word-break: break-all;
+}
+.sshcard-button-contanew{
+  display: flex;
+  flex-direction: row;
+  height: 3.9dvh;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right:2%;
+  cursor: default;
+}
+
+.sshcard-icon-label{
+  color: inherit;
+  font-size: 7pt;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 3px;
+  position: relative;
+  top: 5%;
+}
+.sshcard-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+  width: 70%;
+  height: 70%;
+  position: relative;
+  top: 0;
+}
+
+.sshcard-copy-frame{
+  display: flex;
+  width: 86%;
+  height: 86%;
+  flex-direction: column;
+  background-color: rgba(95, 158, 160, 0.144);
+  color: rgba(255, 192, 34, 0.801);
+  border-radius: 8px;
+  align-items: center;
+  font-size: 14pt;
+}
+.sshcard-copy-frame:hover{
+  font-size: 16pt;
+  display: flex;
+  width: 94%;
+  height: 94%;
+  flex-direction: column;
+  background-color: rgba(95, 158, 160, 0.318);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  color: rgb(154, 255, 255);
+}
+.green-checkmark{
+  color: var(--green-normal);
+  align-self: center;
+  justify-self: center;
+  display: flex;
+}
+.green-checkmark-frame{
+  display: flex;
+  width: 86%;
+  height: 86%;
+  background-color: rgba(95, 158, 160, 0.144);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14pt;
+}

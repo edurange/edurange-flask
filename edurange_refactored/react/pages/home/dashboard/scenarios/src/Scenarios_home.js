@@ -4,15 +4,11 @@ import '../../src/Dashboard.css'
 import './Scenarios_home.css'
 
 import ScenarioTable from './list/ScenarioTable';
-import Login from '../../../src/components/login/Login';
 import { HomeRouterContext } from '../../../src/Home_router';
 
 function Scenarios_home () {
     
     const { userData_state } = useContext( HomeRouterContext ); 
-    // if (!userData_state.username) {
-    //     return ( <Login /> )
-    // }
     
     return ( 
             <div className='scenario-home-outer-frame'>

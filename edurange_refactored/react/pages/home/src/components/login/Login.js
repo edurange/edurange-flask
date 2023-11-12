@@ -5,13 +5,11 @@ import axios from 'axios';
 import './Login.css'
 import edurange_icons from '../../../../../modules/ui/edurangeIcons';
 
-const loginExpiry = (1000 * 60 * 60 * 1); // 1 hr in miliseconds
-
 function Login() {
 
   const { 
     set_userData_state, set_login_state, 
-    updateNav
+    updateNav, loginExpiry
   } = useContext(HomeRouterContext);
 
   async function sendLoginRequest(username_input, password_input) {

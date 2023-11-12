@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-
-import './Home.css';
-
+import { navArrays } from '../../../modules/nav/navItemsData';
+import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
 import Home from './Home';
 import HomeHead from './components/frame/head/HomeHead';
 import HomeFoot from './components/frame/foot/HomeFoot';
 import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
-import Dashboard_router from '../dashboard/src/Dashboard_router';
-import InfoRouter from '../info/src/Info_router';
-
-import { LoggedIn_context } from '../../../modules/context/LoggedIn_context';
-import { navArrays } from '../../../modules/nav/navItemsData';
-import Options_controller from '../options/src/Options_controller';
 import SessionKeeper from './SessionKeeper';
+import InfoRouter from '../info/src/Info_router';
+import Dashboard_router from '../dashboard/src/Dashboard_router';
+import Options_controller from '../options/src/Options_controller';
+
+import './Home.css';
 
 export const HomeRouterContext = React.createContext();
 
-const loginExpiry = 1000000000; // DEV_ONLY
+const loginExpiry = (1000 * 60 * 60 * 1); // 1 hr in miliseconds
 
 function Home_router() {
   
   ////HOOKS//////////////////////////////////////
   const [navName_state, set_navName_state] = useState('logout');
+  const [clipboard_state, set_clipboard_state] = useState('');
+  const [sideNav_isVisible_state, set_sideNav_isVisible_state] = useState(true);
+  const [sideNav_isSmall_state, set_sideNav_isSmall_state] = useState(false);
   const [userData_state, set_userData_state] = useState({});
   const [login_state, set_login_state] = useState(false);
   const navigate = useNavigate();
@@ -36,13 +37,12 @@ function Home_router() {
     sessionStorage.setItem ('navName', JSON.stringify(newNavName));
     sessionStorage.setItem ('loginExpiry', JSON.stringify(newExpiry));
     navigate(newURL);
-  }
-
-  // these routes extend the base URL of /edurange3/
-  // e.g. dashboard is URL /edurange3/dashboard
+  };
 
   const navToShow = navArrays[`top_${navName_state}`];
 
+  // these routes extend the base URL of /edurange3/
+  // e.g. dashboard is URL /edurange3/dashboard
   return (
     <div id='edurange-appframe'>
 
@@ -50,7 +50,10 @@ function Home_router() {
         userData_state, set_userData_state,
         login_state,    set_login_state,
         navName_state,  set_navName_state,
-        updateNav, 
+        updateNav, loginExpiry,
+        sideNav_isVisible_state, set_sideNav_isVisible_state,
+        sideNav_isSmall_state, set_sideNav_isSmall_state,
+        clipboard_state, set_clipboard_state
       }}>
 
         <SessionKeeper/>

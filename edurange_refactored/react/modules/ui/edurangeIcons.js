@@ -27,13 +27,35 @@ import {
     FaPalette,
     FaGraduationCap,
     FaWandMagicSparkles,
+    FaChevronUp,
+    FaChevronDown,
+    FaChevronLeft,
+    FaChevronRight,
+    FaRegCopy,
+    FaCheck,
+
 } from "react-icons/fa6";
+
+import { 
+    HiMiniBarsArrowDown,
+    HiMiniBarsArrowUp 
+} from "react-icons/hi2";
+
+import { 
+    LuPanelLeftOpen,
+    LuPanelLeftClose 
+} from "react-icons/lu";
+import { 
+    MdNotifications, 
+    MdNotificationsActive,
+  } from "react-icons/md";
 
 // assign to specific vars to use appwide. (use these instead of importing directly)
 
  const edurange_icons = {
     accessibility : <FaUniversalAccess/>,
-    bell : <FaBell/>,
+    bell : <MdNotifications/>,
+    bell_ringing : <MdNotificationsActive/>,
     gear : <FaGear/>,
     home : <FaHouseChimney />,
     file : <FaFileLines />,
@@ -54,7 +76,17 @@ import {
     key: <FaKey/>,
     palette: <FaPalette/>,
     instructor: <FaGraduationCap/>,
-    admin: <FaWandMagicSparkles/>
+    admin: <FaWandMagicSparkles/>,
+    chevron_up: <FaChevronUp />,
+    chevron_down: <FaChevronDown />,
+    chevron_left: <FaChevronLeft />,
+    chevron_right: <FaChevronRight />,
+    clipboard_copy: <FaRegCopy/>,
+    checkmark: <FaCheck/>,
+    menuOpen_down: <HiMiniBarsArrowDown/>,
+    menuClose_up: <HiMiniBarsArrowUp/>,
+    panelOpen_left: <LuPanelLeftOpen/>,
+    panelClose_left: <LuPanelLeftClose/>,
 }
 export default edurange_icons
 
@@ -84,8 +116,7 @@ export default edurange_icons
 //      FaUserNinja,
 // import { FaChartBar } from "react-icons/fa6";
 // import { FaCheck } from "react-icons/fa6";
-// import { FaChevronRight } from "react-icons/fa6";
-// import { FaChevronLeft } from "react-icons/fa6";
+
 // import { FaCircleXmark } from "react-icons/fa6";
 // import { FaClipboardCheck } from "react-icons/fa6";
 // import { FaCommentDots } from "react-icons/fa6";
@@ -97,8 +128,6 @@ export default edurange_icons
 // import { FaToggleOn } from "react-icons/fa6";
 
 // const chart_icon = <FontAwesomeIcon icon={FaChartBar} />
-// const leftChevron_icon = <FontAwesomeIcon icon={FaChevronLeft} />
-// const rightChevron_icon = <FontAwesomeIcon icon={FaChevronRight} />
 // const check_icon = <FontAwesomeIcon icon={FaCheck} />
 // const circle_x_icon = <FontAwesomeIcon icon={FaCircleXmark} />
 // const clipboard_check_icon = <FontAwesomeIcon icon={FaClipboardCheck} />
