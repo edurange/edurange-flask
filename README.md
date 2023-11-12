@@ -64,7 +64,7 @@ You'll only need to change the path to the edurange templates and static folders
 Once that's updated, the app runs using two commands (We highly recommend using tmux to split the terminal and detach the session)
 ```bash
 gunicorn --threads 3 --bind 0.0.0.0:5000 edurange_refactored.wsgi:app
-celery worker -B -E -f celery.log -l DEBUG -A edurange_refactored.tasks 
+celery -A edurange_refactored.tasks worker -B -E -f celery.log -l
 ```
 
 You'll then need to use your domain registrar to make your host server publicly discoverable.

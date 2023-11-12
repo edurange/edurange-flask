@@ -23,6 +23,11 @@ sudo apt update
 sudo apt install -y python3-pip npm redis-server unzip wget postgresql libpq-dev
 pip3 install -r requirements/prod.txt
 
+pip3 uninstall pyjwt -y
+pip3 uninstall flask-jwt-simple -y
+
+pip3 install -r requirements/prod.txt
+
 npm install
 mkdir data
 mkdir data/tmp
