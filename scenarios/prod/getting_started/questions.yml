@@ -10,7 +10,7 @@
 - Text: In your home directory there is subdirectory named followMe. Travel into the directory as far as you can go. At the end there is a file. What is the name of the file?
   Type: String
   Answers:
-  - Value: $RANDOM_ONE
+  - Value: $RANDOM
     Points: 15
   Points: 15
 - Text: What does the line below NAME on the man page for the "file" command say?
@@ -25,7 +25,7 @@
 - Text: What is the secret code in the text file in the stuff directory? (If you try and read a non-ASCII text file, something WILL break!!)
   Type: String
   Answers:
-  - Value: $RANDOM_TWO
+  - Value: $RANDOM
     Points: 15
   Points: 15
 - Text: What command or list of commands did you use to create a file with the contents of the three files in the textfiles directory? (Endless approaches, this question will not be graded automatically)
