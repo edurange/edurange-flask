@@ -34,10 +34,7 @@ const io = new Server(server, {
     cors: {
         // accept communication with this port
         // DarkSeth temp fix.
-        origin: [ "https://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
-                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
-                  "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
-                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
+        origin: [ "*", 
                 ],
 
         // accept these types of HTTP requests
