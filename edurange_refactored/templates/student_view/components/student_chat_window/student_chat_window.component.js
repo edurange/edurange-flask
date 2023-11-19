@@ -26,7 +26,7 @@ function StudentChatWindow({messages, chat_opened}) {                    //Curre
                 <StudentChatEntry key={Math.random() * 100} 
                     message={message.contents} 
                     fromSelf={message.from=="000"} 
-                    user={message.from!="000"?"me":"The Benevolent Instructor"}
+                    user={message.from!="000"?"me":"Instructor"}
                 />
             )
             return messageList;                                     //Return the componenet for rendering
