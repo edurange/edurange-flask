@@ -31,11 +31,11 @@
                             "name": "SNAME_AnonFTP",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.0.14",
+                                    "ipv4_address": "10.OCTET.0.14",
                                     "name": "SNAME_PLAYER"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.1.14",
+                                    "ipv4_address": "10.OCTET.1.14",
                                     "name": "SNAME_NAT"
                                 }
                             ],

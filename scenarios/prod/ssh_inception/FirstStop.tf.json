@@ -31,11 +31,11 @@
                             "name": "SNAME_FirstStop",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.7",
+                                    "ipv4_address": "10.OCTET.1.7",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.7",
+                                    "ipv4_address": "10.OCTET.0.7",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],

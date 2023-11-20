@@ -30,7 +30,7 @@ cat << \EOF >/etc/motd
         //||\\                head to Mars. As you fly close, you run into a
        // || \\               problem. You need the right landing coordinates
     __//__||__\\__            for the Mars spaceport, but the planet is huge.
-   '--------------'           Scan the subnet OCTET.0.192.0/18 to find your landing
+   '--------------'           Scan the subnet 10.OCTET.192.0/18 to find your landing
                               port. The IP ends in 33.
 
 You'll need a fast scan to search through a mars-sized network!

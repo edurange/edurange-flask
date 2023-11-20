@@ -189,7 +189,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
 
         scenario.update(
             status=0,
-            subnet=f"{address}.0.0.0/27"
+            subnet=f"10.{address}.0.0/27"
         )
         os.chdir("../../..")
 
