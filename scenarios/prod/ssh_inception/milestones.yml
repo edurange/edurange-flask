@@ -4,28 +4,79 @@
     Prototype:
         - Label: M1
           Type: Input
-          Objective: ssh no flags to given ip
-          Command: ssh
-          Args: <user>@10.OCTET.0.7
-          Strictness: FullMatch
-        - Label: M2
-          Type: Input
           Objective: ssh with -p and correct port
           Command: ssh
-          Args: <user>@10.OCTET.0.10 -p <port>
+          Args: <user>@10.OCTET.0.7 -p <port>
           Strictness: FullMatch
-        - Label: M3
+        - Label: M2
           Type: Input
           Objective: nmap to find next ip
           Command: nmap
           Args: *
-
-        - Label: M4
+        - Label: M3
           Type: Output
           Objective: display correct ip ending in 13
           Output: 10.OCTET.0.13
-
-        - Label: M5
+        - Label: M4
           Type: Compound
           Objective: use nmap to display next ip
-          Requirements: M3, M4
+          Requirements: M2, M3
+        - Label: M5
+          Type: Input
+          Objective: ssh with -i and identity file
+          Command: ssh
+          Args: <user>@10.OCTET.0.10 -i id_rsa
+          Strictness: FullMatch
+         - Label: M6
+          Type: Output
+          Objective: find the password to fourth stop
+          Output: 7035efa5
+        - Label: M7
+          Type: Input
+          Objective: ssh from non-blocked ip to fourth stop
+          Command: ssh
+          Hostname: NOT ThirdStop
+          Args: <user>@10.OCTET.0.14 -p <port>
+          Strictness: FullMatch
+        - Label: M8
+          Type: Output
+          Objective: retrieve the hint from the FTP server
+          Output: decryption_password: 8fddakjfds0s9f
+        - Label: M9
+          Type: Output
+          Objective: Succesfully decrypted fifth stop password
+          Output: 95541890
+        - Label: M10
+          Type: Input
+          Objective: use base64 decode to find the final password
+          Command: base64
+          Hostname: FifthStop
+          Args: --decode -d betcha_cant_read_me
+          Strictness: FullMatch
+         - Label: M11
+          Type: Output
+          Objective: Read betcha_cant_read_me
+          Output: You found me. Good job. 
+        - Label: M12
+          Type: Compound
+          Objective: read betcha_cant_read_me using base64
+          Requirements: M10, M11
+        - Label: M13
+          Type: Input
+          Objective: list the files before getting kicked
+          Command: ssh 
+          Hostname: FifthStop
+          Args: 10.OCTET.0.17 ls
+          Strictness: FullMatch
+        - Label: M14
+          Type: Input
+          Objective: read the final flag before getting kicked
+          Command: ssh 
+          Hostname: FifthStop
+          Args: 10.OCTET.0.17 cat final_flag
+          Strictness: FullMatch
+        - Label: M15
+          Type: Compound
+          Objective: retrieve the final flag
+          Requirements: M13, M14
+          
