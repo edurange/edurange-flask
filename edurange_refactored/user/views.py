@@ -465,6 +465,11 @@ def scenariosInfo(sId):
 
     players = db_ses.query(User.username).filter(GroupUsers.group_id == StudentGroups.id, StudentGroups.id == gid, GroupUsers.user_id == User.id).all()
 
+    tmp = []
+    for user in players:
+        tmp.append({'username': ''.join(c for c in user.username if c.isalnum())})
+    players = tmp
+
     u_logs = groupCSV(logData, 4)  # Make dictionary using 6th value as key (player name)
 
     return render_template(
