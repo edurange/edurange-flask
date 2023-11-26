@@ -1,7 +1,3 @@
-/**
- * Component that alerts if you click outside of it
- */
-
 import React from 'react';
 
 export default class OutsideAlerter extends React.Component {
@@ -21,7 +17,12 @@ export default class OutsideAlerter extends React.Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.current.contains(event.target) &&
+      event.target.className !== "form-control chat-input-box" &&
+      event.target.className !== "btn btn-outline-success group_chat_send"
+    ) {
       this.props.callback();
     }
   }

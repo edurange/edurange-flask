@@ -40,7 +40,7 @@ class StudentScenario extends React.Component {
         const { Sections, Readings, Questions } = this.state.content.StudentGuide;
         return (
        <div className="student_view">
-        <TopicList 
+        <TopicList
           currentSection={this.state.currentSection} 
           sections={Sections} 
           setState={p => {this.setState(p)}}
@@ -56,6 +56,7 @@ class StudentScenario extends React.Component {
         <Chatbox 
           className='chatbox'
           uid={this.props.uid}
+          sid={this.props.scenarioId}
         />
           
       </div /* student-view */>           
@@ -65,7 +66,6 @@ class StudentScenario extends React.Component {
       }
     }
 }
-
 var e = document.getElementById('student_scenario');
 var root = createRoot(e);
 root.render(<StudentScenario scenarioId={e.attributes.scenario_id.value} uid={e.attributes.uid.value} />);

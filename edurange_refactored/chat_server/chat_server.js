@@ -7,7 +7,6 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
-//const chat_post = require("contents.py");
 
 app.use(cors());
 
@@ -26,6 +25,7 @@ fs.readFile(`${process.env.HOME}/edurange-flask/data/tmp/chatnames.json`, (err, 
 //dictionary of chat sessions
 let masterListChats = {};
 let masterLiveStuds = {};
+let groupChat = []
 
 // create new instance of { Server } class
 const io = new Server(server, {
@@ -38,12 +38,27 @@ const io = new Server(server, {
                   "http://" + process.env.HOST_EXTERN_ADDRESS  + ":5000",
                   "https://" + process.env.HOST_EXTERN_ADDRESS  + ":443",
                   "http://" + process.env.HOST_EXTERN_ADDRESS  + ":80",
+                  "https://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
+                  "http://" + process.env.HOST_EXTERN_ADDRESS  + ":3001",
                 ],
 
         // accept these types of HTTP requests
         methods: ["GET", "POST"],
     },
 });
+
+// first irun npm install pg
+const pg = require('pg')
+
+// Pool objects use environment variables
+// for connection information
+
+// TO DO: Change .env file to vibe with this better
+// make it default: use PGHOST, PGUSER, PGPASSWORD, PGDATABASE, and PGPORT
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL
+});
+
 
 //create middleware
 io.use((socket, next) => {
@@ -52,42 +67,48 @@ io.use((socket, next) => {
     return next(new Error("no user ID"));
   }
   socket.uid = uid;
+  console.log("UID!")
+
+  const sid = socket.handshake.auth.sid;
+  if(!sid) {
+    return next(new Error("no scenario ID"));
+  }
+  socket.sid = sid;
+
+  console.log("SID!")
+  
+  
   next();
 });
 
 
 io.on('connection', socket => {
-  var stream = fs.createWriteStream("logs/chat_server_logs.csv", {flags:'a'});
-
 
   for(let i in studentList) {
+    
     let x_uid = (parseInt(i) + 1).toString()
+    
+    // 
     if(!masterListChats[x_uid] || !masterListChats[x_uid].messages)  {
       masterListChats[x_uid] = {
         messages: [],
       }
-      let json = JSON.stringify(masterListChats[x_uid]);
     }
 
     if(!masterLiveStuds[x_uid] || !masterLiveStuds[x_uid].live)  {
       masterLiveStuds[x_uid] = {
         live: false,
       }
-    } else {
-      //console.log("found previous" + masterLiveStuds[x_uid].live)
     }
-  }
-
-  for(let i in studentList) {
-    let x_uid = (parseInt(i) + 1).toString();
-    //console.log(x_uid + " : " + masterLiveStuds[x_uid].live)
   }
 
 
   if (masterListChats[socket.uid] && masterListChats[socket.uid].messages) {
     if(socket.uid!="000") {
-      prevChat = masterListChats[socket.uid].messages;
+      prevChat = groupChat.messages;
+
       socket.emit("student session retrieval",prevChat);
+      socket.emit("group session retrieval", groupChat);
     } else {
       instructorPrevChat = masterListChats;
       socket.emit("instructor session retrieval", instructorPrevChat);
@@ -99,7 +120,7 @@ io.on('connection', socket => {
   }
   // Error handler for middleware.
   socket.on("connect_error", err => {
-    console.log("Connnection Error: no user id.")
+    console.log("Connnection Error: missing user id or scenario id.")
   });
 
   // Sockets join rooms immediately after connecting. 
@@ -112,9 +133,6 @@ io.on('connection', socket => {
     }
     socket.emit("live students", masterLiveStuds);
   }
-
-  
-  //console.log(io.sockets.adapter.rooms);
 
     // Traffic Alerts: Join, Leave, Message.
   const trafficAlert = (alertType) => {
@@ -142,12 +160,23 @@ io.on('connection', socket => {
   }
   trafficAlert("studJoin");
 
+
+  //var msg_list = [];
+  
   //var msg_list = [];
   // send room members message so they can make server-side update
   socket.on("send message", ({messageContents, _to, _from}) => {
-
-
-
+/*
+    const chatDB_rowEntry = [_from,_to,messageContents, alertTime, socket.sid]
+    const query = 'INSERT INTO chat_history (sender, recipient, message_contents, timestamp, sid) VALUES ($1, $2 ,$3, $4, $5)';
+    pool.query(query, chatDB_rowEntry, (err, result) => {
+      if (err) {
+        console.error('Error executing query', err);
+      } else {
+        console.log('Query result:', result.rows);
+      }
+    });
+    */
     var room = (_to!=="000") ? _to : _from; // room number is student's unique id#
     
     masterListChats[room].messages.push({               
@@ -155,24 +184,6 @@ io.on('connection', socket => {
       from: _from,
         to: _to,
     });
-
-    let currTime = new Date().toISOString() // Ask Aubrey about date formatting for logging
-    /*fs.appendFile('./chat_server_logs.csv', `${messageContents}, ${_from}, ${_to}, ${currTime}`, (err) => {
-      if(err) {
-        console.log(err);
-      }
-    });*/
-
-    
-    stream.write(`${messageContents}, ${_from}, ${_to}, ${currTime}\n`);
-    //stream.end();
-
-   const intFrom = parseInt(_from);
-   const intTo = parseInt(_to);
-
-    
-
-   // #chat_post.createPost(intFrom, intTo, messageContents);
 
     msg_list = masterListChats[socket.uid].messages;
 
@@ -185,6 +196,68 @@ io.on('connection', socket => {
     io.to(room).emit("new message", {messageContents, _to, _from, room}); // all room members sent message
   });
   
+  socket.on("send group message", ({messageContents, _from}) => {
+
+    const chatDB_rowEntry = [_from ,messageContents, alertTime, socket.sid]
+    const query = 'INSERT INTO group_chat_history (sender, message_contents, timestamp, sid) VALUES ($1, $2 ,$3, $4)';
+    pool.query(query, chatDB_rowEntry, (err, result) => {
+      if (err) {
+        console.error('Error executing query', err);
+      }
+    });
+
+    async function getUsername() {
+      try {
+        const uname_query = 'SELECT username FROM users WHERE id=$1';
+        const result = await pool.query(uname_query, [_from]);
+
+        if (result.rows.length > 0) {
+          const users_name = result.rows[0].username;
+          return users_name;
+        } else {
+          console.log('User not found.');
+        }
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+      return;
+    }
+
+
+    msg_list = masterListChats[socket.uid].messages;
+    
+    // student messages alert instructor
+    if(_from!=="000") {
+      room = socket.uid
+      trafficAlert("message", {msg_list, room});
+    }
+
+    //io.emit("new group message", {messageContents, _from}); // all group members sent message
+
+    async function queryThenEmit() {
+      try {
+        const _uname = await getUsername()
+        if(_uname) {
+          groupChat.push({               
+            contents: messageContents,
+            from: _from,
+            uname: _uname,
+          });
+          io.emit("new group message", {messageContents, _from, _uname})
+        } else {
+          console.log("No uname found.")
+        }
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    queryThenEmit()
+
+  });
+  
+
+
   socket.on("disconnect", () => {
     trafficAlert("studLeave");
     if(socket.uid=="000") {
@@ -196,5 +269,5 @@ io.on('connection', socket => {
 
 });
 
-console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`)
+console.log(`sever listening on port ${process.env.CHAT_SERVER_PORT}`);
 io.listen(process.env.CHAT_SERVER_PORT);
