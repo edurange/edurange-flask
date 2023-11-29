@@ -3,23 +3,11 @@ Not all files appear as they really are. Just because you see a file that says, 
 
 ### file
 
-To find out what a file really is regardless of its extension is file. Check out the man page. Give it a peruse by typing in man file. What type of options are there with file? Now let's test it. Type `q` to get out of the man page.
+To find out what a file really is regardless of its extension is file. Check out the man page. Give it a peruse by typing in man file. What type of options are there with file? Now let's test it. Remember to type `q` to get out of the man page.
 
 There are 2 files in your Linux box in a folder at your home directory called `/toLearn` . One is called `cat.jpg` and the other is `dog.jpg`
 
-Both look like images to me! But if you type in `ls -l` you will notice that one is a lot larger in size than the other. One is about 25,000 bytes whereas the other is only about 20. Now let's see what is really going on.
-
-Type
-
-- `file dog.jpg`
-
-You'll see something like, dog.jpg: ASCII text
-
-Now type
-
-- `file cat.jpg`
-
-You'll see something like, cat.jpg: JPEG image data, Exif standard: TIFF image data, ... etc.
+Both look like images to me! But if you try `file` and some other commands from the previous sections, you may notice some differences between the two.
 
 ### cat
 

@@ -119,13 +119,13 @@ def write_resource(address, name, s_type,
 
     log_files = ["tty_setup", "analyze.py", "makeTsv.py",
                  "milestone-lbl.pl", "intervention.py", "start_ttylog.sh",
-                 "ttylog", "clearlogs", "iamfrustrated",
+                 "ttylog", "clearlogs", "iamfrustrated", "hint", "hint.py",
                  "place_milestone_file", "change_root_pass", "cgconfig.conf", "limit_resources"]
     # Generate a list of 'provisioner' blocks to upload all files
     uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
 
     s_files = ["tty_setup", "place_milestone_file", "change_root_pass", "limit_resources"] + s_files
-    g_files = ["iamfrustrated", "clearlogs"] + g_files
+    g_files = ["iamfrustrated", "clearlogs", "hint", "hint.py"] + g_files
     u_files = ["ttylog", "start_ttylog.sh", "makeTsv.py", "analyze.py",
                "milestone-lbl.pl", "intervention.py"] + u_files
     # Generate a list of commands to move files, and run them if needed

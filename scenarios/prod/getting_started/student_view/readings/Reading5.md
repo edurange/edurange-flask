@@ -1,10 +1,16 @@
+### Man Pages
+
+Man Pages is short for manual pages. These are text documents with lots of information on commands. Remember the command we did for listing our files? `ls`! Let's find that man page.
+
+Type
+
+- `man ls`
+
+and hit enter. You can use the arrow keys to navigate the man page.
+
 There are parameters and options you can give a command. What if you wanted to list the permissions of a file and find hidden files? (Yes there are hidden files!)
 
-Now type
-
-- `ls -la`
-
-Then hit enter.
+Now use `man` to find the `ls` flags to show ALL files, in a list format. (If you're struggling with this, look at the bottom of this section!)
 
 That's a lot of info! What you see is all the files and folders in the folder you are at currently.
 
@@ -22,22 +28,7 @@ That's a lot of info! What you see is all the files and folders in the folder yo
 
 - And finally the file name
 
-
-
-
-### Man Pages
-
-Man Pages is short for manual pages. These are text documents with lots of information on commands. Remember the command we did for listing our files? `ls`! Let's find that man page.
-
-Type
-
-- `man ls`
-
-and hit enter.
-
-Remember we typed `ls -la`? Let's learn what `-l` and `-a` is!
-
-
+The flags you should have found were `-l` and -`a`, though you can combine them in one command, like `ls -la`. Let's look at an efficient way to find those flags in the man page!
 
 #### -l
 

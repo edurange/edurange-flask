@@ -4,7 +4,7 @@
 Now type in
 
 - `pwd`
- You should see something similar to `/home/yourusername`. To learn more type `man pwd` , then to get out of that page type `q`
+ You should see something similar to `/home/yourusername`. To learn more type `man pwd`.
 
 
 TASK: `cd` into your home directory and then type `ls` and you will see a directory called `follow_Me`. Travel as deep as that folder will go. When you get to the end there is a file whose name is a randomized number. Find that.

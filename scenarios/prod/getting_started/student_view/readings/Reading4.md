@@ -3,21 +3,7 @@ What is a command? Commands are executable programs that you can call from your 
 
 ### cd
 
-`cd` stands for "change directory", meaning to navigate to a new folder.
-Type each of the following. One at a time. Hitting enter after each
-
-- `cd /`
-- `cd /root`
-- `cd`
-- `cd ../`
-
-The first command sends you to the root of your entire file system.
-
-The second command sends you to the user root folder, but notice that you don't have permissions to that directory.
-
-The third command sends you to your home directory
-
-The fourth sends you backwards (up) a level.
+`cd` stands for "change directory", meaning to navigate to a new folder. `cd ..` sends you backwards (up) a level.
 
 TASK: `cd` to `/bin` then `cd` back to your home directory.
 
