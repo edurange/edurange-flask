@@ -1,19 +1,36 @@
 {
-	"containers": {
-		"name" : "nat",
-		"files": [{
-			"global_files": [
-				"cat"
-			],
-			"system_files": [
-				"install",
-				"motd_nat"
-			],
-			"user_files": [
-				"files",
-				"milestones.txt"
-			]
-		}]
-	}
+    "containers": 
+    [ 
+        {
+            "name" : "nat",
+            "files": [{
+                "global_files": [
+                    "cat"
+                ],
+                "system_files": [
+                    "install",
+                    "motd_nat"
+                ],
+                "user_files": [
+                    "files",
+                    "milestones.txt"
+                ]
+            }]
+        },
+        {
+            "name" : "gateway",
+            "files":[
+                {
+                    "global_files": [
+                    ],
+                    "system_files": [
+                    ],
+                    "user_files": [
+                        "milestones.txt"
+                    ]
+                }
+            ]
+        }
+    ]
 }
 

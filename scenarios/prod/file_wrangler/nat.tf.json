@@ -26,7 +26,7 @@
                   "user": "root"
                 }
               ],
-              "hostname": "File_Wrangler",
+              "hostname": "NAT",
               "image": "edurange2/ubuntu-sshd:16.04",
               "name": "SNAME_nat",
               "networks_advanced": [
@@ -65,7 +65,7 @@
   ],
   "locals": [
     {
-      "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+      "SNAME_nat_extern": "HIDDEN"
     }
   ],
   "output": [

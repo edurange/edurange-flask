@@ -184,7 +184,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
             find_and_copy_template(s_type, c)
             write_resource(
                 address, name, s_type, c_names[i], usernames, passwords,
-                s_files[i], g_files[i], u_files[i], flags
+                s_files[i], g_files[i], u_files[i], flags, c_names
             )
 
         scenario.update(
@@ -213,6 +213,9 @@ def start(self, sid):
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
         name = "".join(e for e in name if e.isalnum())
+        gateway = name + "_gateway"
+        start = name + "_nat"
+        start_ip = scenario.subnet.split('.')[0] + '.0.0.2'
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             NotifyCapture("Failed to start scenario " + name + ": Invalid Status")
@@ -223,6 +226,7 @@ def start(self, sid):
             os.chdir("./data/tmp/" + name)
             os.system("terraform apply network")
             os.system("terraform apply --auto-approve")
+            os.system("../../../shell_scripts/scenario_movekeys {} {} {}".format(gateway, start, start_ip))
             os.chdir("../../..")
             scenario.update(status=1)
             scenario.update(attempt=setAttempt(sid))
@@ -371,15 +375,17 @@ def scenarioCollectLogs(self, arg):
         if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
-        try:  # This is dangerous, may want to substitute for subprocess.call
-            os.system(f'docker cp {c_name}:/usr/local/src/merged_logs.csv logs/{c_name}.csv')
-            os.system(f'docker cp {c_name}:/usr/local/src/raw_logs.zip logs/{c_name}.zip')
-        except FileNotFoundError as e:
-            print(f'{e}')
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
+        #try:  # This is dangerous, may want to substitute for subprocess.call
+        try:
+            os.system(f'docker cp {s}_gateway:/usr/local/src/merged_logs.csv logs/{s}_gateway.csv')
+            os.system(f'docker cp {s}_gateway:/usr/local/src/raw_logs.zip logs/{s}_gateway.zip')
+        except FileNotFoundError as e:
+            print(f'{e}')
+
         if os.path.isdir(f'data/tmp/{s}'):
             try:
                 os.system(f'cat /dev/null > data/tmp/{s}/{s}-history.csv')

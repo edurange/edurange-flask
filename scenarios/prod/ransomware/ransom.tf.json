@@ -27,7 +27,7 @@
               ],
               "hostname": "ransom",
               "image": "edurange2/ubuntu_desktop_testing",
-              "name": "SNAME_ransom",
+              "name": "SNAME_nat",
               "networks_advanced": [
                 {
                   "ipv4_address": "OCTET.0.1.2",
@@ -74,7 +74,7 @@
   ],
   "locals": [
     {
-      "SNAME_ransom_extern": "${tostring(docker_container.SNAME_ransom.ports[0].external)}"
+      "SNAME_ransom_extern": "HIDDEN"
     }
   ],
   "output": [
