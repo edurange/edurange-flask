@@ -31,11 +31,11 @@
               "name": "SNAME_Venusville",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.8",
+                  "ipv4_address": "10.OCTET.1.8",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.204.64",
+                  "ipv4_address": "10.OCTET.204.64",
                   "name": "SNAME_MARS"
                 }
               ],

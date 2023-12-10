@@ -189,7 +189,7 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
 
         scenario.update(
             status=0,
-            subnet=f"{address}.0.0.0/27"
+            subnet=f"10.{address}.0.0/27"
         )
         os.chdir("../../..")
 
@@ -215,7 +215,7 @@ def start(self, sid):
         name = "".join(e for e in name if e.isalnum())
         gateway = name + "_gateway"
         start = name + "_nat"
-        start_ip = scenario.subnet.split('.')[0] + '.0.0.2'
+        start_ip = '10.' + scenario.subnet.split('.')[1] + '.0.2'
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             NotifyCapture("Failed to start scenario " + name + ": Invalid Status")

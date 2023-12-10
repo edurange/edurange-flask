@@ -1,7 +1,7 @@
 #!/bin/bash
 
 read IP CN < <(exec ifconfig eth1 | awk '/inet / { t = $2; sub(/.*[.]/, "", t); print $2, t }')
-LEAD=$(echo $IP | cut -d ':' -f 2 | cut -b 1-2)
-sed -i "s/OCTET/$LEAD/g" /etc/motd
+FLEX_IP=$(echo $IP | cut -d ':' -f 2 | cut -b 4-5)
+sed -i "s/OCTET/$FLEX_IP/g" /etc/motd
 
 echo "cat /etc/motd" >> /etc/bash.bashrc
