@@ -9,6 +9,29 @@ import csv
 import re
 import numpy as np
 
+ERRORS = [
+        "Invalid mode",
+        "Invalid option",
+        "No such file or directory",
+        "Permission denied",
+        "Command Interrupted ^C",
+        "Segmentation Fault (Core Dumped)",
+        "Syntax Error",
+        "Out of memory",
+        "Command not found",
+        "Argument list too long",
+        ]
+
+def detect_error(output_line, ERRORS):
+    error_tag = "s"
+    for e in ERRORS:
+        if e in output_line:
+            error_tag = "f"
+    return error_tag
+
+def detect_overflow(output_line):
+    #TODO
+    pass
 
 def levenshtein(s, t):            #checks similarities between two words
     rows = len(s) + 1
