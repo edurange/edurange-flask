@@ -9,6 +9,7 @@ import csv
 import re
 import numpy as np
 
+
 ERRORS = [
         "Invalid mode",
         "Invalid option",
@@ -32,6 +33,8 @@ def detect_error(output_line, ERRORS):
 def detect_overflow(output_line):
     #TODO
     pass
+
+
 
 def levenshtein(s, t):            #checks similarities between two words
     rows = len(s) + 1
@@ -79,28 +82,39 @@ def parse_stdin(stdin_line):
     return command, args
 
 
-def identify_milestone_type(milestone):
+def decompose_line(line):
+    try:
+        components = {
+                "hostname": line[1],
+                "timestamp": line[2],
+                "directory": line[3],
+                "stdin" : line[4],
+                "output": line[5],
+                "prompt": line[6]
+                }
+    except ValueError:
+        pass
+
+def handle_input_milestone(mstone, line):
     # TODO 
+    print("Found INPUT")
+    pass
+
+def handle_output_milestone(mstone, line):
+    # TODO 
+    print("Found OUTPUT")
     
-    #found_type = milestone[0]["Type"]
+    desired_output = mstone["Output"]
+    found_output = line["output"]
 
-    #return found_type
-
-    pass
-
-def handle_input_milestone(found_type):
-    # TODO 
+    if desired_output in found_output:
+        print("hooray")
 
     pass
 
-def handle_output_milestone(found_type):
+def handle_compound_milestone(mstone, line):
     # TODO 
-
-    pass
-
-def handle_compound_milestone(found_type):
-    # TODO 
-
+    print("Found COMPOUND")
     pass
 
 
@@ -145,6 +159,7 @@ if __name__ == "__main__":
         
         #pp.pprint(document[0])
         
+        # Create the list of milestones, each milestone is a dictionary
         milestones = document[0]["Milestones"]["Prototype"]
         
         #print(regexes.keys())
@@ -154,34 +169,50 @@ if __name__ == "__main__":
 
     csvFile = open("untagged.csv", "r")
 
-    reader = csv.reader(csvFile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL)
+
+    """
+    Split the csv file into a list of lists where each item is one log entry
+
+    column indexes:
+        0: edulog (Experiment name: Starting Timestamp)
+        1: Hostname
+        2: Start Timestamp
+        3: Working Dir
+        4: Input Command (Plus args, Plus error)
+        5: Output (Contains newlines)
+        6: Prompt (user@hostname)
+    """
+    reader = list(csv.reader(csvFile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL))
     
+
+    #pp.pprint(reader)
     
+    for line in reader:
+        line = decompose_line(line)
+        for index, m in enumerate(milestones):
+            mstone_type = m["Type"]
 
-    for index, m in enumerate(milestones):
-        mstone_type = m["Type"]
-    
-        #mnumber = index + 1
+            #mnumber = index + 1
 
-        #mtag = "M" + mnumber
+            #mtag = "M" + mnumber
 
-        pp.pprint(m["Type"])
-        
-        # Breaks if not on python 3.10 TODO update docker images
-        match mstone_type:
-            case 'Input':
-                handle_input_milestone(m)
+            #pp.pprint(m)
 
-            case "Output":
-                handle_output_milestone(m)
+            # Breaks if not on python 3.10 TODO update docker images
+            match mstone_type:
+                case 'Input':
+                    handle_input_milestone(m, line)
 
-            case "Compound":
-                handle_compound_milestone(m)
+                case "Output":
+                    handle_output_milestone(m, line)
 
-            case _:
-                raise Exception("Unknown Milestone Type Encountered")
+                case "Compound":
+                    handle_compound_milestone(m, line)
 
-        #print(type(m))
+                case _:
+                    raise Exception("Unknown Milestone Type Encountered")
+
+            #print(type(m))
 
     untagged = []
     
@@ -193,5 +224,3 @@ if __name__ == "__main__":
 
     #print(untagged)
     #print(regexes)
-
-
