@@ -148,13 +148,16 @@ if __name__ == "__main__":
     """
 
     pp = pprint.PrettyPrinter(indent=4)
-    
-    # Proper usage check
- #   if len(sys.argv) != 3:
- #      print('usage:\n master_log_tagger.py <milestone_file> <log_file> <out_file>')
- #     exit(1)
+    if len(sys.argv) != 4:
+        #print('usage:\n milestone_tagger.py <log_dir> <milestone_file> <out_dir>')
+        exit(1)
 
-    with open("proto_milestones.yml", "r") as yml:
+    # Read Arguments
+    log_dir = sys.argv[1]
+    milestone_file = sys.argv[2]
+    out_dir = sys.argv[3]
+
+    with open(milestone_file, "r") as yml:
         document = yaml.full_load(yml)
         
         #pp.pprint(document[0])
