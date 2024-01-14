@@ -40,7 +40,7 @@ import shutil
 import queue
 import subprocess
 import threading
-from pprint import pprint
+
 def starting_index_timestamp(line):
     """Return the index where the timestamp starts, in a line. If timestamp does not exist, return None"""
     reg_expr_end_timestamp = re.compile(';[0-9]+$')
@@ -115,6 +115,7 @@ def decode(lines, current_user_prompt, current_root_prompt):
         #Eliminiating OSC for root prompt
         if escape_sequence_dict['osc_reg_expr'].findall(line):
             line = escape_sequence_dict['osc_reg_expr'].sub('',line)
+
         #If user prompt or root prompt does not occur at start of prompt, find the position of prompt. Now, The current line will end just before this prompt. A new line is constructed starting from the prompt.
         if (line.casefold().find(current_user_prompt) > 0) or (line.casefold().find(current_root_prompt) > 0):
             if (line.casefold().find(current_user_prompt) > 0):
@@ -765,7 +766,9 @@ if __name__ == "__main__":
         if len(ttylog_lines_to_decode) == 0:
             time.sleep(0.1)
             continue
+
         ttylog_lines = decode(ttylog_lines_to_decode, user_prompt, root_prompt)
+
         for count,line in enumerate(ttylog_lines):
             # Check for ctrl c and remove
             #print("Line ", line)
