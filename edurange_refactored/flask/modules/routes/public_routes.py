@@ -4,9 +4,10 @@ from flask_login import login_user, logout_user
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_data  # gets all the previous
+from edurange_refactored.flask.modules.utils.auth_utils import register_user
 
 import secrets
-from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema
+from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema, RegistrationSchema
 from flask_jwt_simple import create_jwt
 
 from flask import (
@@ -92,6 +93,16 @@ def login_edurange3():
 )
     return login_return
 
+@blueprint_edurange3_public.route("/registration_page", methods=["POST"])
+def registration():
+    validation_schema = RegistrationSchema()  # instantiate validation schema
+    validated_data = validation_schema.load(request.json) # validate registration. reject if bad.
+    
+    validated_user_obj = User.query.filter_by(username=validated_data["username"]).first()
+    if validated_user_obj: 
+        register_user(validated_user_obj) # register user in the database
+
+    return jsonify({"response":"account successfully registered"})
 
 @blueprint_edurange3_public.route("/request_account", methods=["POST"])
 def request_account():

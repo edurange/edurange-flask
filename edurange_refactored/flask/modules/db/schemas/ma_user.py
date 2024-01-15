@@ -33,3 +33,9 @@ class LoginSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         # exclude = ["id"]
+
+class RegistrationSchema(ma.SQLAlchemySchema):
+    banned_names = ["root", "ubuntu", "user", "student", "guest", "ec2-user", "nobody", '']
+
+    email = String(required=True)
+    username = String(required=True, validate=[validate.Length(min=4, max=16) ])

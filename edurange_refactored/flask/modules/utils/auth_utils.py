@@ -54,3 +54,17 @@ def jwt_and_csrf_required(fn):
         return fn(*args, **kwargs)
     
     return wrapper
+
+def register_user(validated_registration_data):
+    User.create(
+            username=username.data,
+            email=form.email.data,
+            password=form.password.data,
+            active=True,
+        )
+        if form.code.data:
+            group = StudentGroups.query.filter_by(code=form.code.data).first()
+            user = User.query.filter_by(username=form.username.data).first()
+            gid = group.get_id()
+            uid = user.get_id()
+            GroupUsers.create(user_id=uid, group_id=gid)
