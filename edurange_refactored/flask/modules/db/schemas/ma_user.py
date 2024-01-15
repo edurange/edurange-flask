@@ -2,7 +2,7 @@
 from flask import abort
 from edurange_refactored.extensions import db, bcrypt
 from flask_marshmallow import Marshmallow
-from marshmallow import validate, validates_schema
+from marshmallow import ValidationError, validate, validates_schema
 from marshmallow.fields import String
 from edurange_refactored.user.models import GroupUsers, ScenarioGroups, Scenarios, StudentGroups, User, Notification
 ma = Marshmallow()
@@ -35,7 +35,39 @@ class LoginSchema(ma.SQLAlchemyAutoSchema):
         # exclude = ["id"]
 
 class RegistrationSchema(ma.SQLAlchemySchema):
-    banned_names = ["root", "ubuntu", "user", "student", "guest", "ec2-user", "nobody", '']
+    banned_names = ["root", "ubuntu", "nobody", "ec2user", "user", "student", "guest", '' ]
+    
+    email = String(required=True, validate=[validate.Email(error="Please use a valid email address")])
+    
+    username = String(required=True, validate=[
+        validate.Length(min=3, max=25, error="Username must be between 3 and 25 characters"),
+        validate.ContainsNoneOf(banned_names, error="Nice try bucko, use a different name"),
+        validate.Regexp('^\w+-?\w+-?\w+$', error="Username must be alphanumeric")
+        ])
+    
+    code = String(required=True, validate=[validate.Length(min=0, max=8)])
+    password = String(required=True, validate=[validate.Length(min=6, max=40)])
+    confirm_password = String(required=True, validate=[validate.Equal(password, error="Passwords do not match")])
 
-    email = String(required=True)
-    username = String(required=True, validate=[validate.Length(min=4, max=16) ])
+    @validates_schema
+    def validate_registration(self, data, **kwargs):
+
+        username_input = data.get("username")
+        password_plain_input = data.get("password")
+        password_confirm_input = data.get("password_confirm")
+        email_input = data.get("email")
+        registration_code_input = data.get("registration_code")
+
+        user = db_ses.query(User).filter_by(username=username_input).first()
+
+        if not user:
+            abort(418)
+
+    class Meta:
+        model = User
+
+
+
+
+
+

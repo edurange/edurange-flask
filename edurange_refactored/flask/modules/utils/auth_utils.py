@@ -7,6 +7,8 @@ from flask import (
 from edurange_refactored.user.models import User
 from functools import wraps
 from flask_jwt_simple import decode_jwt
+from edurange_refactored.user.models import GroupUsers, StudentGroups, User
+
 
 ###########
 #  This `@jwt_and_csrf_required()` decorator function should be used on ALL 
@@ -56,15 +58,16 @@ def jwt_and_csrf_required(fn):
     return wrapper
 
 def register_user(validated_registration_data):
+    data = validated_registration_data
     User.create(
-            username=username.data,
-            email=form.email.data,
-            password=form.password.data,
+            username=data.username,
+            email=data.email,
+            password=data.password,
             active=True,
-        )
-        if form.code.data:
-            group = StudentGroups.query.filter_by(code=form.code.data).first()
-            user = User.query.filter_by(username=form.username.data).first()
-            gid = group.get_id()
-            uid = user.get_id()
-            GroupUsers.create(user_id=uid, group_id=gid)
+    )
+       
+    group = StudentGroups.query.filter_by(code=data.code).first()
+    user = User.query.filter_by(username=data.username).first()
+    gid = group.get_id()
+    uid = user.get_id()
+    GroupUsers.create(user_id=uid, group_id=gid)
