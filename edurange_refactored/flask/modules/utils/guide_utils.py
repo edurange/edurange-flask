@@ -2,6 +2,7 @@ import json
 import os
 import yaml
 import ast
+import docker
 from flask import abort
 
 from edurange_refactored.extensions import db
@@ -126,6 +127,18 @@ def evaluateResponse(user_id, scenario_id, question_num, student_response):
     return responseData
 
 ### UNTESTED / DEV 
+
+def get_dockerPort (scenario_unique_name):
+
+    # use name to select docker container
+    docClient = docker.from_env()
+    active_containers = docClient.containers.list()
+    
+
+
+    # get docker port info
+
+    # return docker port info
     
 # def getResponses(req_user_id, req_attempt, req_query, req_questions):
 #     responses = []

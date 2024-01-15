@@ -162,6 +162,7 @@ def identify_state(name, state):
                 else:
                     miss += 1
 
+            # returns a list
             return addresses
 
         except FileNotFoundError:

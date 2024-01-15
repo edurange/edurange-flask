@@ -16,8 +16,8 @@ function ScenarioTable() {
     async function fetchScenarioList() {
         try {
             const response = await axios.get("/api/get_scenarios");
-            if (response.data.scenarioTable) {
-                set_scenarioList_state(response.data.scenarioTable);
+            if (response.data.scenarios_list) {
+                set_scenarioList_state(response.data.scenarios_list);
             };
         }
         catch (error) {console.log('get_scenarios_list error:', error);};

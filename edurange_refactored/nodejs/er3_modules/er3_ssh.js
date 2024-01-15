@@ -8,7 +8,7 @@ module.exports = function (io) {
     
         // Send greeting to the newly connected client
         socket.emit('greeting', { 
-            greeting: `\x1b[37m Welcome to the \x1b[32medu\x1b[31mRange\x1b[30m pseudo-terminal! \n \x1b[37mWhile we recommend using official OS terminal shells and ssh connections, this \x1b[35m(limited feature)\x1b[37m emulated terminal can also be handy.\x1b[0m \n\n`
+            greeting: `\x1b[37m Welcome to the \x1b[32medu\x1b[31mRange\x1b[30m pseudo123-terminal! \n \x1b[37mWhile we recommend using official OS terminal shells and ssh connections, this \x1b[35m(limited feature)\x1b[37m emulated terminal can also be handy.\x1b[0m \n\n`
         });
     
         socket.on('set_credentials', (reqBody) => {

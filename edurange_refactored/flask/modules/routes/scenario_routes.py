@@ -66,7 +66,6 @@ def custom_error_handler(error):
     response.content_type = "application/json"
     return response
 
-
 ### Reviewed / Working Routes  ##############
 
 @blueprint_edurange3_scenarios.route('/get_content/<int:i>', methods=['GET']) # WIP
@@ -82,18 +81,22 @@ def get_content(i):
             return jsonify({'error': 'invalid scenario ID'}), 418 # DEV_ONLY (replace with standard denial msg)
 
     contentJSON, credentialsJSON, unique_name = getContent(current_scenario_id, current_username)
-    # returns instructor-chosen scenario name if check good
-    # you can use the name for content.json retrieval, etc
-    # this is useful for reducing need for stateful user-scenario data
 
     meta = getScenarioMeta(current_scenario_id)
-
 
     if not credentialsJSON or not unique_name:
         return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
     
-    SSH_IP = identify_state(unique_name, "Started")  
-    
+    SSH_connections = identify_state(unique_name, "Started")
+    SSH_IP = ""
+
+    # IMPORTANT
+    # we are assuming every scenario has only ONE port that does not include the string 'HIDDEN',
+    # and that this is the port users should connect to w/ SSH to start scenario
+    for (key,val) in SSH_connections.items():
+        if "HIDDEN" not in val:
+            SSH_IP = val
+
     return jsonify({
         "scenario_meta": meta,
         "contentJSON":contentJSON, 
@@ -110,52 +113,22 @@ def student():
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
     db_ses = db.session
- 
-    userInfo = {
-        'id': current_user_id,
-        'username': current_username,
-    }
     
-    groupsQuery = db_ses.query(StudentGroups.id, StudentGroups.name, GroupUsers) \
-        .filter(GroupUsers.user_id == current_user_id) \
-        .filter(GroupUsers.group_id == StudentGroups.id).all()
-    groups = [{'id': group.id, 'name': group.name} for group in groupsQuery]
-
-    scenarioTableQuery = (
-        db_ses.query(
-            Scenarios.id,
-            Scenarios.name.label('sname'),
-            Scenarios.description.label('type'),
-            StudentGroups.name.label('gname'),
-            User.username.label('iname'),
-        )
-        .filter(GroupUsers.user_id == current_user_id)
-        .filter(StudentGroups.id == GroupUsers.group_id)
-        .filter(User.id == StudentGroups.owner_id)
-        .filter(ScenarioGroups.group_id == StudentGroups.id)
-        .filter(Scenarios.id == ScenarioGroups.scenario_id)
-    ).all()
-
-    scenarioTable = [
-        {
-            'scenario_id': scenario.id,
-            'scenario_name': scenario.sname,
-            'scenario_type': scenario.type,
-            'group_name': scenario.gname,
-            'owner_name': scenario.iname
+    all_scenarios = db_ses.query(Scenarios).all()
+    all_scenarios_list = []
+    for scenario in all_scenarios:
+        scenario_info = {
+            "scenario_id": scenario.id,
+            "scenario_name": scenario.name,
+            "scenario_description": scenario.description,
+            "scenario_owner_id": scenario.owner_id,
+            "scenario_created_at": scenario.created_at,
+            "scenario_status": scenario.status,
         }
-        for scenario in scenarioTableQuery
-    ]
+        all_scenarios_list.append(scenario_info)
+    return jsonify({"scenarios_list":all_scenarios_list})
 
-    return jsonify (
-        userInfo=userInfo,
-        groups=groups,
-        scenarioTable=scenarioTable
-    )
-
-
-
-@blueprint_edurange3_scenarios.route('/check_response', methods=['POST']) # WIP
+@blueprint_edurange3_scenarios.route('/check_response', methods=['POST'])
 @jwt_and_csrf_required
 def checkResponse():
 
@@ -173,70 +146,21 @@ def checkResponse():
     return jsonify({"points_gained" : pointsAwarded})
 
 
-@blueprint_edurange3_scenarios.route('/web_ssh/<int:i>', methods=['POST']) # WIP
-@jwt_and_csrf_required
-def begin_ssh(i):
-
-    current_username = g.current_username
-    current_user_id = g.current_user_id
-    current_user_role = g.current_user_role
-
-    current_scenario_id = i
-
-    if (
-        not isinstance(current_scenario_id, int)
-        or i < 0 
-        or i > 99
-        ):
-            return jsonify({'error': 'invalid scenario ID'}), 418 # DEV_ONLY (replace with standard denial msg)
-
-    contentJSON, credentialsJSON, unique_name = getContent(current_scenario_id, current_username)
-    # returns instructor-chosen scenario name if check good
-    # you can use the name for content.json retrieval, etc
-    # this is useful for reducing need for stateful user-scenario data
-
-    meta = getScenarioMeta(current_scenario_id)
-
-
-    if not credentialsJSON or not unique_name:
-        return jsonify({"error": f"scenario with id {i} is found, build failed"}), 418 # DEV_ONLY
-    
-    SSH_IP = identify_state(unique_name, "Started")  
-    
-    return jsonify({
-        "scenario_meta": meta,
-        "contentJSON":contentJSON, 
-        "credentialsJSON":credentialsJSON,
-        "unique_scenario_name":unique_name,
-        "SSH_IP": SSH_IP
-        })
-
-
-
-
-
-
-
-
-
-
-
-
 
 ### UNReviewed Routes Below ##############
 
-# @blueprint_edurange3_scenarios.route('/test', methods=['GET'])
+# @blueprint_edurange3_scenarios.route('/get_docker_info/<int:i>', methods=['GET']) # WIP
 # @jwt_and_csrf_required
-# def test():
-#     '''Test page.'''
-#     srF = scenarioResponseForm()
-#     scenario_id = 4
-#     qnum = 1
-#     return render_template('api/test.html',
-#         srF=srF,
-#         scenario_id=scenario_id,
-#         qnum=qnum
-#     )
+# def get_docker_info(i):
+#     current_username = g.current_username
+#     current_scenario_id = i
+
+
+
+
+
+
+
 
 # @blueprint_edurange3_scenarios.route('/get_content/<scenario_id>', methods=['GET'])
 # @jwt_and_csrf_required

@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const er3_ssh = require('./er3_modules/er3_ssh');
+const er3_ssh = require('./er3_modules/er3_ssh'); // this is the actual ssh server configuration
 
 const SERVER_PORT = 31337;
 

@@ -1,22 +1,22 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { useContext } from 'react';
-import { HomeRouterContext } from '../../../../src/Home_router';
-import { ScenariosRouterContext } from '../Scenarios_router';
-import InfoPane from './panes/InfoPane';
-import GuidePane from './panes/GuidePane';
-import FootControls from './controls/FootControls';
-import SSH_web from './ssh/SSH_web';
 
-import '../../../src/Dashboard.css';
-import './Scenario_controller.css';
+import InfoPane from '../../scenarios/src/guide/panes/InfoPane';
+import GuidePane from '../../scenarios/src/guide/panes/GuidePane';
+import FootControls from '../../scenarios/src/guide/controls/FootControls';
+import SSH_web from '../../scenarios/src/guide/ssh/SSH_web';
 
-function Scenario_controller() {
+import '../../../dashboard/src/Dashboard.css';
+import '../../scenarios/src/guide/Scenario_controller.css'
+import { HomeRouterContext } from '../../../src/Home_router';
+import { AdminRouterContext } from './Admin_router';
+
+function Admin_controller() {
   
   const { scenarioID, pageID } = useParams(); // from URL parameters
   const { userData_state } = useContext(HomeRouterContext);
-  const { guideContent_state, set_guideContent_state } = useContext(ScenariosRouterContext);
+  const { guideContent_state, set_guideContent_state } = useContext(AdminRouterContext);
 
   const [leftPaneName_state, set_leftPaneName_state] = useState("info");
   const [rightPaneName_state, set_rightPaneName_state] = useState("guide");
@@ -51,10 +51,9 @@ function Scenario_controller() {
   const scenarioName_raw = meta.scenario_name;
   const scenarioName_sani = scenarioName_raw.split('_').join('');
 
-  console.log(guideContent_state)
   // const SSH_IP = guideContent_state.SSH_IP[`${scenarioName_sani}_nat`];
-  const SSH_IP = guideContent_state.SSH_IP;
-  console.log(guideContent_state.SSH_IP);
+  const SSH_IP = guideContent_state.SSH_IP[`${scenarioName_sani}_StartingLine`];
+
 
   const panes = {
     info : (
@@ -107,6 +106,6 @@ function Scenario_controller() {
     </>
   );
 };
-export default Scenario_controller;
+export default Admin_controller;
 
 

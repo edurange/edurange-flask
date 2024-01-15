@@ -9,12 +9,13 @@ import JWT_Test from '../src/components/JWT_test';
 import Scenarios_router from '../scenarios/src/Scenarios_router';
 import Account from '../account/src/Account';
 import Logout from '../../src/components/logout/Logout';
-import AdminDash from '../admin/src/AdminDash';
+import Admin_home from '../admin/src/Admin_home';
 import InstructorDash from '../instructor/src/InstructorDash';
 import DashNotifications from './components/notifications/components/DashNotifications';
 export const DashRouterContext = React.createContext();
 
 import './Dashboard.css';
+import Admin_router from '../admin/src/Admin_router';
 
 function Dashboard_router() {
 
@@ -57,7 +58,7 @@ function Dashboard_router() {
               <Route path="/scenarios/*" element={<Scenarios_router />} />
               <Route path="/jwt_test" element={<JWT_Test />} />
               <Route path="/logout" element={<Logout />} />
-              <Route path="/admin/*" element={<AdminDash />} />
+              <Route path="/admin/*" element={<Admin_router />} />
               <Route path="/instructor/*" element={<InstructorDash />} />
               <Route path="/account" element={<Account />} />
               <Route path="/notifications" element={<DashNotifications notifsArray={notifsArray_state}/>} />

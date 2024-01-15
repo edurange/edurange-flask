@@ -11,7 +11,7 @@
 //   DashSideNav_admin_logged_in,
 // } from '../../../../modules/ui/navItemsData';
 // import InstructorDash from '../instructor/InstructorDash';
-// import AdminDash from '../admin/AdminDash';
+// import Admin_home from '../admin/Admin_home';
 // import DashHome from '../Dashboard_home';
 // import SSHmodal from '../ssh/SSHmodal';
 // import Users from '../users/Users';
@@ -62,7 +62,7 @@
 //           <div className='newdash-infopane-content'>
 //             <Routes>
 //               <Route path="/*" element={<DashHome />} />
-//               <Route path="/admin/*" element={<AdminDash />} />
+//               <Route path="/admin/*" element={<Admin_home />} />
 //               <Route path="/instructor/*" element={<InstructorDash />} />
 //               <Route path="/account" element={<Accountmgmt />} />
 //               <Route path="/users" element={<Users />} />
