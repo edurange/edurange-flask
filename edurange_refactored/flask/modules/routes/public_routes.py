@@ -1,5 +1,5 @@
 import time
-from flask_login import login_user, logout_user
+from flask_login import login_user
 from flask import current_app
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
@@ -75,7 +75,7 @@ def login_edurange3():
         "user_id": validated_user_dump["id"]
         }))
     
-    # httponly=True ; mitigate XSS attacks by blinding JS to the value
+    # httponly=True ; this property mitigates XSS attacks by 'blinding' JS to the value
     login_return.set_cookie(
         'edurange3_jwt', 
         token_return, 
@@ -95,94 +95,17 @@ def login_edurange3():
 
 @blueprint_edurange3_public.route("/register", methods=["POST"])
 def registration():
-
-    current_app.logger.info("Hello from the registration page!")    
+    
     validation_schema = RegistrationSchema()  # instantiate validation schema
     validated_data = validation_schema.load(request.json) # validate registration. reject if bad.
     
-    validated_user_obj = User.query.filter_by(username=validated_data["username"]).first()
-    if validated_user_obj: 
-        register_user(validated_user_obj) # register user in the database
-
-    return jsonify({"response":"account successfully registered"})
-
-@blueprint_edurange3_public.route("/request_account", methods=["POST"])
-def request_account():
+    existing_db_user = User.query.filter_by(username=validated_data["username"]).first()
     
-    account_request = request.json
-
-    if account_request['registration_code'] == session['registration_code'] and session['expiry'] > time.time():
-        return jsonify({"response":"okay cool"})
-    else: 
-        return jsonify({"response":"nooooo"})
-    
-
-    validation_schema = RegisterSchema()  # instantiate validation schema
-    validated_data = validation_schema.load(request.json) # validate registration request. reject if bad.
-    
-    validated_user_obj = User.query.filter_by(username=validated_data["username"]).first()
-    if validated_user_obj: login_user(validated_user_obj) # login to legacy app
-
-    if 'X-XSRF-TOKEN' not in session:
-        session['X-XSRF-TOKEN'] = secrets.token_hex(32)
-    
-    validated_user_dump = validation_schema.dump(vars(validated_user_obj))
-    del validated_user_dump['password']   # remove pw hash from return obj
-
-    return login_return
-
-
-# @blueprint_edurange3_public.route("/register", methods=["POST"])
-# def register_edurange3():
-    
-#     validation_schema = RegisterSchema()  # instantiate validation schema
-#     validated_data = validation_schema.load(request.json) # validate registration request. reject if bad.
-    
-#     validated_user_obj = User.query.filter_by(username=validated_data["username"]).first()
-#     if validated_user_obj: login_user(validated_user_obj) # login to legacy app
-
-#     if 'X-XSRF-TOKEN' not in session:
-#         session['X-XSRF-TOKEN'] = secrets.token_hex(32)
-    
-#     validated_user_dump = validation_schema.dump(vars(validated_user_obj))
-#     del validated_user_dump['password']   # remove pw hash from return obj
-
-#     return login_return
-
-
-# @blueprint.route("/register/", methods=["GET", "POST"])
-# def register():
-#     """Register new user."""
-
-#     form = RegisterForm(request.form)
-#     if form.validate_on_submit():
-#         User.create(
-#             username=form.username.data,
-#             email=form.email.data,
-#             password=form.password.data,
-#             active=True,
-#         )
-#         if form.code.data:
-#             group = StudentGroups.query.filter_by(code=form.code.data).first()
-#             user = User.query.filter_by(username=form.username.data).first()
-#             gid = group.get_id()
-#             uid = user.get_id()
-#             GroupUsers.create(user_id=uid, group_id=gid)
-#         else:
-#             group = StudentGroups.query.filter_by(name="ALL").first()
-#             gid = group.get_id()
-#             user = User.query.filter_by(username=form.username.data).first()
-#             uid = user.get_id()
-#             GroupUsers.create(user_id=uid, group_id=gid)
-#         flash("Thank you for registering. You can now log in.", "success")
-#         return redirect(url_for("public.home"))
-#     else:
-#         flash_errors(form)
-#     return render_template("public/register.html", form=form)
-
-
-
-
+    if existing_db_user is None:
+        print("existing db user was not found, trying to create with: ", validated_data)
+        register_user(validated_data) # register user in the database
+        return jsonify({"response":"account successfully registered"})
+    else: return jsonify({"response":"user already exists. account NOT registered"})
 
 # handles all other non-login requests to base URL (non-protected)
 @blueprint_edurange3_public.route("/", defaults={'path': ''}, methods=["GET"])

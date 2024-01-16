@@ -3,6 +3,7 @@ import docker
 import os
 import json
 
+# this is a testing script, to diagnose problematic docker connections
             
 def askDock(scenario_uniqueName):
 

@@ -35,10 +35,21 @@ function Register() {
                 console.log("Registration Success!");
                 console.log("reg_response: ", reg_response);
 
+                // set_userData_state(userData);
+                // set_login_state(true);
+                // const newExpiry = Date.now() + loginExpiry;
+                // sessionStorage.setItem('userData', JSON.stringify(userData));
+                // sessionStorage.setItem('navName', `dash`);
+                // sessionStorage.setItem('login', true);
+                // sessionStorage.setItem('loginExpiry', newExpiry);
+                updateNav('/edurange3/login/', 'home');
+
+
             } else {
                 const errData = response.data.error;
                 console.log(errData);
-                console.log('Login failure.');
+                console.log('Registration failure.');
+                
             };
         } catch (error) {
             console.error('Error:', error);
