@@ -34,7 +34,7 @@ class LoginSchema(ma.SQLAlchemyAutoSchema):
         model = User
         # exclude = ["id"]
 
-class RegistrationSchema(ma.SQLAlchemySchema):
+class RegistrationSchema(ma.SQLAlchemyAutoSchema):
     banned_names = ["root", "ubuntu", "nobody", "ec2user", "user", "student", "guest", '' ]
     
     email = String(required=True, validate=[validate.Email(error="Please use a valid email address")])
@@ -47,20 +47,27 @@ class RegistrationSchema(ma.SQLAlchemySchema):
     
     code = String(required=True, validate=[validate.Length(min=0, max=8)])
     password = String(required=True, validate=[validate.Length(min=6, max=40)])
-    confirm_password = String(required=True, validate=[validate.Equal(password, error="Passwords do not match")])
-
+    # confirm_password = String(required=True, validate=[validate.Equal(password, error="Passwords do not match")])
+    confirm_password = String(required=True)
+    
     @validates_schema
     def validate_registration(self, data, **kwargs):
-
         username_input = data.get("username")
-        password_plain_input = data.get("password")
-        password_confirm_input = data.get("password_confirm")
+        password_input = data.get("password")
+        confirm_password_input = data.get("confirm_password")
         email_input = data.get("email")
-        registration_code_input = data.get("registration_code")
+        code_input = data.get("code")
+
+        if password_input != confirm_password_input:
+            raise ValidationError("Passwords do not match")
+        
+        if password_input == confirm_password_input:
+            print('pws match')
 
         user = db_ses.query(User).filter_by(username=username_input).first()
-
-        if not user:
+        print(user)
+        if user != None:
+            print("user already exists! aborting...")
             abort(418)
 
     class Meta:

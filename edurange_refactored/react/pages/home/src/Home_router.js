@@ -11,6 +11,7 @@ import SessionKeeper from './SessionKeeper';
 import InfoRouter from '../info/src/Info_router';
 import Dashboard_router from '../dashboard/src/Dashboard_router';
 import Options_controller from '../options/src/Options_controller';
+import Register from './components/login/Register';
 
 import './Home.css';
 
@@ -68,6 +69,7 @@ function Home_router() {
                 <Routes>
                   <Route path="/edurange3/" element={<Home />} />
                   <Route path="/edurange3/login" element={<Login />} />
+                  <Route path="/edurange3/register" element={<Register />} />
                   <Route path="/edurange3/logout" element={<Logout />} />
                   <Route path="/edurange3/options/*" element={<Options_controller />} />
                   <Route path="/edurange3/info/*" element={<InfoRouter />} />

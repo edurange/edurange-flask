@@ -1,6 +1,6 @@
 import time
 from flask_login import login_user, logout_user
-
+from flask import current_app
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_data  # gets all the previous
@@ -93,8 +93,10 @@ def login_edurange3():
 )
     return login_return
 
-@blueprint_edurange3_public.route("/registration_page", methods=["POST"])
+@blueprint_edurange3_public.route("/register", methods=["POST"])
 def registration():
+
+    current_app.logger.info("Hello from the registration page!")    
     validation_schema = RegistrationSchema()  # instantiate validation schema
     validated_data = validation_schema.load(request.json) # validate registration. reject if bad.
     

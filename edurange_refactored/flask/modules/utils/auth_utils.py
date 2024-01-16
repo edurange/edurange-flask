@@ -68,6 +68,6 @@ def register_user(validated_registration_data):
        
     group = StudentGroups.query.filter_by(code=data.code).first()
     user = User.query.filter_by(username=data.username).first()
-    gid = group.get_id()
-    uid = user.get_id()
-    GroupUsers.create(user_id=uid, group_id=gid)
+    group_id = group.get_id()
+    user_id = user.get_id()
+    GroupUsers.create(user_id=user_id, group_id=group_id)
