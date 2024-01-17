@@ -4,6 +4,9 @@ import yaml
 import ast
 import docker
 from flask import abort
+import string
+import random
+from ..utils.account_utils import register_user
 
 from edurange_refactored.extensions import db
 from edurange_refactored.user.models import Scenarios, User, Responses
@@ -12,7 +15,8 @@ path_to_key = os.path.dirname(os.path.abspath(__file__))
 
 ## whole file is currently WIP 1/17/24 -Jonah (exoriparian)
 
-
+def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(chars) for _ in range(size))
 
 # - INSTRUCTOR: GENERATE USER GROUP W/ GROUP CODE
 def createUserGroup():
@@ -20,7 +24,28 @@ def createUserGroup():
 
 
 # - INSTRUCTOR: GENERATE GENERIC USER ACCTS FOR EXISTING GROUP
-def generateTestAccts(acctCount):
+def generateTestAccts(group_size, group_prefix, group_code):
+
+    # check for code input
+    if not group_code:
+        print('You must have group code')
+    # check to see if code is in database
+        # if code NOT in database, reject request
+
+    generatedUsers = []
+    for i in range(group_size):
+
+        newPass = generate_registration_code()
+        user_obj = {
+            'username' : group_prefix + '-' + i,
+            'password' : newPass,
+            'confirm_password' : newPass,
+            'code' : group_code,
+            'email': 'DEV_ONLY@EMAIL.COM'
+        }
+
+        register_user(user_obj)
+
     return []
 
 

@@ -1,7 +1,6 @@
 
 from flask_login import login_user, logout_user
-
-from edurange_refactored.user.models import User
+from edurange_refactored.user.models import User, StudentGroups
 from edurange_refactored.extensions import db, csrf_protect
 from flask import (
     Blueprint,
@@ -11,6 +10,10 @@ from flask import (
     g,  ## see note
 )
 from ..utils.auth_utils import jwt_and_csrf_required
+from ..utils.instructor_utils import generateTestAccts
+from werkzeug.exceptions import abort
+
+from ..utils.instructor_utils import generate_registration_code as grc
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.
@@ -53,3 +56,57 @@ def instructor_test():
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
     return jsonify ({"message":"this is /instructor_test"})
+
+@blueprint_edurange3_instructor.route("/create_group")
+@jwt_and_csrf_required
+def create_group():
+
+    # work in progress
+    
+    reqJSON = request.json
+
+
+    current_username = g.current_username
+    current_user_id = g.current_user_id
+    current_user_role = g.current_user_role
+
+    if current_user_role == 'instructor' or current_user_role == 'admin':
+        # allowed
+        code = grc()
+        group_name = reqJSON['group_name'] # something like this
+        
+        #group_obj is created if postgres succesfully makes entry
+        group_obj = StudentGroups.create(name=group_name, owner_id=current_user_id, code=code)
+    else: abort(403)
+
+    return jsonify ({"message":f"userGroup {group_name} created"})
+
+@blueprint_edurange3_instructor.route("/generate_users")
+@jwt_and_csrf_required
+def generate_users():
+
+    # work in progress
+    
+    reqJSON = request.json
+
+
+    current_username = g.current_username
+    current_user_id = g.current_user_id
+    current_user_role = g.current_user_role
+
+
+    if current_user_role == 'instructor' or current_user_role == 'admin':
+        # allowed
+        
+        #testing
+        
+
+        generatedUsers = generateTestAccts(reqJSON['group_size'], reqJSON['group_prefix'])
+
+
+
+
+    else: abort(403)
+
+    return jsonify ({"message":f"userGroup {group_name} created"})
+
