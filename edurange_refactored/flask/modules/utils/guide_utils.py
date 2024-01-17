@@ -10,6 +10,9 @@ from edurange_refactored.user.models import Scenarios, User, Responses
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
+# Guide utils are functions that primarily populate and run the 
+# question & answer 'guide' that students see on the eduRange webpage (not the terminal ssh)
+
 ## TESTED/WORKING
 
 def getContent(scenario_id, username):

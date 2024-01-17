@@ -4,7 +4,7 @@ from flask import current_app
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_data  # gets all the previous
-from edurange_refactored.flask.modules.utils.auth_utils import register_user
+from edurange_refactored.flask.modules.utils.account_utils import register_user
 
 import secrets
 from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema, RegistrationSchema
