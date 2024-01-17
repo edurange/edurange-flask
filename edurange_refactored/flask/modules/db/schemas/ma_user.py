@@ -61,11 +61,11 @@ class RegistrationSchema(ma.SQLAlchemyAutoSchema):
         if password_input != confirm_password_input:
             raise ValidationError("Passwords do not match")
         
-        if password_input == confirm_password_input:
-            print('pws match')
+        # if password_input == confirm_password_input:
+        #     print('pws match')
 
         user = db_ses.query(User).filter_by(username=username_input).first()
-        print(user)
+        # print(user)
         if user != None:
             print("user already exists! aborting...")
             abort(418)
