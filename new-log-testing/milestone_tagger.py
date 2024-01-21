@@ -8,6 +8,7 @@ import pprint
 import csv
 import re
 import numpy as np
+import os
 
 
 ERRORS = [
@@ -83,6 +84,19 @@ def parse_stdin(stdin_line):
 
 
 def decompose_line(line):
+    """
+    Split the csv file into a list of lists where each item is one log entry
+
+    column indexes:
+        0: edulog (Experiment name: Starting Timestamp)
+        1: Hostname
+        2: Start Timestamp
+        3: Working Dir
+        4: Input Command (Plus args, Plus error)
+        5: Output (Contains newlines)
+        6: Prompt (user@hostname)
+    """
+    #print(line)
     try:
         components = {
                 "hostname": line[1],
@@ -92,30 +106,80 @@ def decompose_line(line):
                 "output": line[5],
                 "prompt": line[6]
                 }
-    except ValueError:
-        pass
+        return components
+
+    except IndexError:
+        print("Found incomplete log line")
+        #exit(0)
 
 def handle_input_milestone(mstone, line):
     # TODO 
-    print("Found INPUT")
+    #print("Found INPUT")
     pass
 
 def handle_output_milestone(mstone, line):
     # TODO 
-    print("Found OUTPUT")
-    
-    desired_output = mstone["Output"]
+
+    desired_output = str(mstone["Output"])
     found_output = line["output"]
 
+    print(f"Checking Line: {line}")
+    print(f"Want output: {desired_output}")
+    print(f"Found output: {found_output}\n")
+
     if desired_output in found_output:
-        print("hooray")
+        print("MATCHED OUTPUT")
+        exit(0)
 
     pass
 
 def handle_compound_milestone(mstone, line):
     # TODO 
-    print("Found COMPOUND")
+    #print("Found COMPOUND")
     pass
+
+
+def process_logs(log_dir, milestones):
+    for file in os.listdir(log_dir):
+        filename = os.fsdecode(file)
+
+        if filename.endswith(".csv"):
+            process_student_log(log_dir, filename, milestones)
+
+def process_student_log(log_dir, filename, milestones):
+        with open(os.path.join(log_dir, filename), 'r') as csv_file:
+            reader = list(csv.reader(csv_file, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL))
+
+            #print(reader)
+            #print(filename)
+            #print(milestones)
+
+
+            for l in reader:
+                line = decompose_line(l)
+                #print(line)
+                if line is None:
+                    continue
+
+                for i, mstone in enumerate(milestones):
+                    print(mstone)
+                    mstone_type = mstone["Type"]
+                    # Breaks if not on python 3.10 TODO update docker images
+                    match mstone_type:
+                        case 'Input':
+                            handle_input_milestone(mstone, line)
+
+                        case "Output":
+                            handle_output_milestone(mstone, line)
+
+                        case "Compound":
+                            handle_compound_milestone(mstone, line)
+
+                        case _:
+                            raise Exception("Unknown Milestone Type Encountered")
+
+                    #print(type(m))
+
 
 
 
@@ -149,7 +213,7 @@ if __name__ == "__main__":
 
     pp = pprint.PrettyPrinter(indent=4)
     if len(sys.argv) != 4:
-        #print('usage:\n milestone_tagger.py <log_dir> <milestone_file> <out_dir>')
+        print('usage:\n milestone_tagger.py <log_dir> <milestone_file> <out_dir>')
         exit(1)
 
     # Read Arguments
@@ -170,54 +234,14 @@ if __name__ == "__main__":
         #for item in regexes.items():
         #    print(item[1])
 
-    csvFile = open("untagged.csv", "r")
+    process_logs(log_dir, milestones)
 
-
-    """
-    Split the csv file into a list of lists where each item is one log entry
-
-    column indexes:
-        0: edulog (Experiment name: Starting Timestamp)
-        1: Hostname
-        2: Start Timestamp
-        3: Working Dir
-        4: Input Command (Plus args, Plus error)
-        5: Output (Contains newlines)
-        6: Prompt (user@hostname)
-    """
-    reader = list(csv.reader(csvFile, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL))
     
 
     #pp.pprint(reader)
     
-    for line in reader:
-        line = decompose_line(line)
-        for index, m in enumerate(milestones):
-            mstone_type = m["Type"]
 
-            #mnumber = index + 1
-
-            #mtag = "M" + mnumber
-
-            #pp.pprint(m)
-
-            # Breaks if not on python 3.10 TODO update docker images
-            match mstone_type:
-                case 'Input':
-                    handle_input_milestone(m, line)
-
-                case "Output":
-                    handle_output_milestone(m, line)
-
-                case "Compound":
-                    handle_compound_milestone(m, line)
-
-                case _:
-                    raise Exception("Unknown Milestone Type Encountered")
-
-            #print(type(m))
-
-    untagged = []
+   
     
     #num_milestones = len(regexes)
     #milestone_bitvector = np.zeros(num_milestones)
