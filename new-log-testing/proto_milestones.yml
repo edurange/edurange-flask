@@ -1,33 +1,81 @@
----
+# Milestone file will be preprocessed to replace OCTET
+
 - Milestones:
     Prototype:
       - Label: M1
         Type: Input
-        Objective: Long listing in the home directory
-        Command: ls
-        Args: -la
+        Objective: ssh with -p and correct port
+        Command: ssh
+        Args: <user>@10.OCTET.0.7 -p <port>
         Strictness: FullMatch
       - Label: M2
-        Type: Output
-        Objective: Read the secret file
-        Output: "sup3rs3cr3t"
-        Strictness: FullMatch
+        Type: Input
+        Objective: nmap to find next ip
+        Command: nmap
+        Args: '*'
       - Label: M3
+        Type: Output
+        Objective: display correct ip ending in 13
+        Output: 10.12.0.13
+      - Label: M4
         Type: Compound
-        Objective: Listing and Read Secret
-        Requirements: M1, M2
-    Regexes:
-      M1: cd /
-      M2: cd /root
-      M3: man
-      M4: ls
-      M5: file \w+.jpg
-      M6: echo "This is cool" > \w+
-      M7: cat
-      M8: cat \w+ >> \w+
-      M9: cat alltogether.txt
-      M10: cd okYouAreHERE!
-      M11: vim .+
-      M12: find . -iname "?\*cowFJS\*\"? |find / -iname "?\*cowFJS\*\"? |find . -iname "?\*cowFJS\*\"? |find . -type f -iname "?\*cowFJS\*\"? |find / -type f -iname "?\*cowFJS\*\"?|find . -iname "?\*cowFJS\*\"?|find / -iname "?\*cowFJS\*\"?
-      M13: cowsay
-...
+        Objective: use nmap to display next ip
+        Requirements: M2, M3
+      - Label: M5
+        Type: Input
+        Objective: ssh with -i and identity file
+        Command: ssh
+        Args: <user>@10.OCTET.0.10 -i id_rsa
+        Strictness: FullMatch
+      - Label: M6
+        Type: Output
+        Objective: find the password to fourth stop
+        Output: 7035efa5
+      - Label: M7
+        Type: Input
+        Objective: ssh from non-blocked ip to fourth stop
+        Command: ssh
+        Hostname: NOT ThirdStop
+        Args: <user>@10.OCTET.0.14 -p <port>
+        Strictness: FullMatch
+      - Label: M8
+        Type: Output
+        Objective: retrieve the hint from the FTP server
+        Output: 'decryption_password: 8fddakjfds0s9f'
+      - Label: M9
+        Type: Output
+        Objective: Succesfully decrypted fifth stop password
+        Output: '95541890'
+      - Label: M10
+        Type: Input
+        Objective: use base64 decode to find the final password
+        Command: base64
+        Hostname: FifthStop
+        Args: --decode -d betcha_cant_read_me
+        Strictness: FullMatch
+      - Label: M11
+        Type: Output
+        Objective: Read betcha_cant_read_me
+        Output: You found me. Good job. 
+      - Label: M12
+        Type: Compound
+        Objective: read betcha_cant_read_me using base64
+        Requirements: M10, M11
+      - Label: M13
+        Type: Input
+        Objective: list the files before getting kicked
+        Command: ssh 
+        Hostname: FifthStop
+        Args: 10.OCTET.0.17 ls
+        Strictness: FullMatch
+      - Label: M14
+        Type: Input
+        Objective: read the final flag before getting kicked
+        Command: ssh 
+        Hostname: FifthStop
+        Args: 10.OCTET.0.17 cat final_flag
+        Strictness: FullMatch
+      - Label: M15
+        Type: Compound
+        Objective: retrieve the final flag
+        Requirements: M13, M14
