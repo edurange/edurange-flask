@@ -88,7 +88,7 @@ def create_group():
 @jwt_and_csrf_required
 def generate_users():
 
-    # work in progress
+    # work in progress ;
     
     reqJSON = request.json
 
