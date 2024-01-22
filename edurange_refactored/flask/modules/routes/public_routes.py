@@ -7,7 +7,7 @@ from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_
 from edurange_refactored.flask.modules.utils.account_utils import register_user
 
 import secrets
-from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema, RegistrationSchema
+from edurange_refactored.flask.modules.db.schemas.user_schemas import LoginSchema, RegistrationSchema
 from flask_jwt_simple import create_jwt
 
 from flask import (

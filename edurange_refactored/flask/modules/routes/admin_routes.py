@@ -22,7 +22,7 @@ from flask import (
     session,
     g, ## see note
 )
-from ..utils.auth_utils import jwt_and_csrf_required
+from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.

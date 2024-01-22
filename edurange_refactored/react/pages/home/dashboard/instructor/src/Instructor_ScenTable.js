@@ -1,23 +1,21 @@
 import axios from 'axios';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import './ScenarioTable.css';
-import { ScenariosRouterContext } from '../Scenarios_router';
+import '../../scenarios/src/list/ScenarioTable.css';
 
-function ScenarioTable() {
+function Instructor_ScenTable() {
 
+    const [scenariosList_state, set_scenariosList_State] = useState([]);
     const navigate = useNavigate();
-
-    const { scenarioList_state,   set_scenarioList_state,
-            scenarioMeta_state, set_scenarioMeta_state
-     } = useContext( ScenariosRouterContext );
+;
 
     async function fetchScenarioList() {
         try {
-            const response = await axios.get("/api/get_group_scenarios");
+            const response = await axios.post("/api/scenario_interface",{METHOD: 'LIST'});
+            console.log(response);
             if (response.data.scenarios_list) {
-                set_scenarioList_state(response.data.scenarios_list);
+                set_scenariosList_State(response.data.scenarios_list);
             };
         }
         catch (error) {console.log('get_scenarios_list error:', error);};
@@ -25,12 +23,15 @@ function ScenarioTable() {
     useEffect(() => {fetchScenarioList();}, []);
 
     function handleNavClick (scenario_index) {
-        const currentMeta = scenarioList_state[scenario_index];
+        const currentMeta = scenariosList_state[scenario_index];
         navigate(`${currentMeta.scenario_id}/0`);
     };
 
+
+
     return (
         <div className="newdash-datatable-frame">
+
             <div className="newdash-datatable-header">
                 <div className='table-cell-item table-active' >ID</div>
                 <div className='table-cell-item table-scenario-name'>Title</div>
@@ -38,7 +39,7 @@ function ScenarioTable() {
                 <div className='table-cell-item table-scenario-name'>Group</div>
                 <div className='table-cell-item table-scenario-name'>Owner</div>
             </div>
-            {scenarioList_state.slice(0).map((scenario, index) => (
+            {scenariosList_state.slice(0).map((scenario, index) => (
                 <div  key={scenario.scenario_id} onClick={() => handleNavClick(index)} >
                     <div className="table-row">
                         <div className='table-cell-item table-active'>{scenario.scenario_id}</div>
@@ -53,4 +54,4 @@ function ScenarioTable() {
     );
 };
 
-export default ScenarioTable;
+export default Instructor_ScenTable;

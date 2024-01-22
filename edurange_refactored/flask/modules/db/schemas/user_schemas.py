@@ -74,7 +74,27 @@ class RegistrationSchema(ma.SQLAlchemyAutoSchema):
         model = User
 
 
+class UpdateEmailSchema(ma.SQLAlchemyAutoSchema):
 
+    email = String(required=True, validate=[validate.Email(error="Please use a valid email address")])
+    username = String(required=True)
+    
+    @validates_schema
+    def validate_updateEmail(self, data, **kwargs):
+        username_input = data.get("username")
+        email_input = data.get("email")
+
+        user = db_ses.query(User).filter_by(username=username_input).first()
+        # print(user)
+        if user == None:
+            print("user does not exist! aborting...")
+            abort(418)
+        test_email = User.query.filter_by(email=email_input).first()
+        if test_email:
+            self.address.errors.append("email already in use! aborting...")
+
+    class Meta:
+        model = User
 
 
 

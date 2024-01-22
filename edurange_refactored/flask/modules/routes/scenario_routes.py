@@ -106,17 +106,24 @@ def get_content(i):
         })
 
 
-@blueprint_edurange3_scenarios.route('/get_scenarios', methods=['GET'])
+@blueprint_edurange3_scenarios.route('/get_group_scenarios', methods=['GET'])
 @jwt_and_csrf_required
-def student():
-    current_username = g.current_username
-    current_user_id = g.current_user_id
-    current_user_role = g.current_user_role
-    db_ses = db.session
+def get_scenarios():
     
-    all_scenarios = db_ses.query(Scenarios).all()
-    all_scenarios_list = []
-    for scenario in all_scenarios:
+    db_ses = db.session
+    group_id = db_ses.query(GroupUsers.group_id).filter(GroupUsers.user_id == g.current_user_id).first()
+    
+    # Assuming 'group_id' is a tuple with a single integer element
+    filter_group_id = group_id[0]
+
+    # query for all entries with the given 'group_id' value
+    grp_db_scenarios = db_ses.query(ScenarioGroups).filter(ScenarioGroups.group_id == filter_group_id).all()
+    
+    scenario_ids = [entry.id for entry in grp_db_scenarios]
+    scenarios = db_ses.query(Scenarios).filter(Scenarios.id.in_(scenario_ids)).all()
+
+    group_scenarios_output = []
+    for scenario in scenarios:
         scenario_info = {
             "scenario_id": scenario.id,
             "scenario_name": scenario.name,
@@ -125,8 +132,8 @@ def student():
             "scenario_created_at": scenario.created_at,
             "scenario_status": scenario.status,
         }
-        all_scenarios_list.append(scenario_info)
-    return jsonify({"scenarios_list":all_scenarios_list})
+        group_scenarios_output.append(scenario_info)
+    return jsonify({"scenarios_list":group_scenarios_output})
 
 @blueprint_edurange3_scenarios.route('/check_response', methods=['POST'])
 @jwt_and_csrf_required
@@ -154,11 +161,6 @@ def checkResponse():
 # def get_docker_info(i):
 #     current_username = g.current_username
 #     current_scenario_id = i
-
-
-
-
-
 
 
 

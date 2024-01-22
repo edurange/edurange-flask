@@ -24,7 +24,7 @@ def createUserGroup():
 
 
 # - INSTRUCTOR: GENERATE GENERIC USER ACCTS FOR EXISTING GROUP
-def generateTestAccts(group_size, group_prefix, group_code):
+def generateTestAccts(new_user_count, group_name, group_code):
 
     # check for code input
     if not group_code:
@@ -33,11 +33,11 @@ def generateTestAccts(group_size, group_prefix, group_code):
         # if code NOT in database, reject request
 
     generatedUsers = []
-    for i in range(group_size):
+    for i in range(new_user_count):
 
         newPass = generate_registration_code()
         user_obj = {
-            'username' : group_prefix + '-' + i,
+            'username' : group_name + '-' + i,
             'password' : newPass,
             'confirm_password' : newPass,
             'code' : group_code,
@@ -52,6 +52,7 @@ def generateTestAccts(group_size, group_prefix, group_code):
 # - INSTRUCTOR: CREATE/START/STOP/DESTROY SCENARIOS
 def createScenario(scenario_unique_name, scenario_generic_name):
     return 0
+
 def populateScenario(scenario_unique_name, scenario_generic_name):
     # this process should look through the current list of users
     # and their group association, and then create the user accts

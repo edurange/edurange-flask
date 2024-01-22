@@ -1,6 +1,6 @@
 
 from flask_login import login_user, logout_user
-from edurange_refactored.user.models import User, StudentGroups
+from edurange_refactored.user.models import User, StudentGroups, Scenarios
 from edurange_refactored.extensions import db, csrf_protect
 from flask import (
     Blueprint,
@@ -9,11 +9,13 @@ from flask import (
     make_response,
     g,  ## see note
 )
-from ..utils.auth_utils import jwt_and_csrf_required
+from ..utils.auth_utils import jwt_and_csrf_required, instructor_only
 from ..utils.instructor_utils import generateTestAccts
 from werkzeug.exceptions import abort
+from ..utils.scenario_interface import scenario_create, list_all_scenarios
 
 from ..utils.instructor_utils import generate_registration_code as grc
+from edurange_refactored.user.forms import changeEmailForm
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.
@@ -55,6 +57,7 @@ def instructor_test():
     current_username = g.current_username
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
+    instructor_only()
     return jsonify ({"message":"this is /instructor_test"})
 
 @blueprint_edurange3_instructor.route("/create_group")
@@ -89,24 +92,76 @@ def generate_users():
     
     reqJSON = request.json
 
-
     current_username = g.current_username
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
 
-
     if current_user_role == 'instructor' or current_user_role == 'admin':
-        # allowed
-        
-        #testing
-        
-
-        generatedUsers = generateTestAccts(reqJSON['group_size'], reqJSON['group_prefix'])
-
-
-
+        generatedUsers = generateTestAccts(reqJSON['new_user_count'], reqJSON['group_name'])
 
     else: abort(403)
 
-    return jsonify ({"message":f"userGroup {group_name} created"})
+    return jsonify ({"message":f"{reqJSON['new_user_count']} users for group {reqJSON['group_name']} created"})
 
+@blueprint_edurange3_instructor.route("/scenario_interface", methods=["POST"])
+@jwt_and_csrf_required
+def scenario_interface():
+    instructor_only()
+
+    requestJSON = request.json
+    if ('METHOD' not in requestJSON):
+        return jsonify({'message':'method not found'})
+        abort(418)
+
+    method = requestJSON['METHOD']
+    if method not in ('LIST','CREATE', 'START', 'STOP', 'UPDATE', 'DELETE'):
+        return jsonify({'message':'wrong method given'})
+        abort(418)
+
+    def list_scenarios(requestJSON):
+        print("Performing LIST method")
+        scenario_list = list_all_scenarios(requestJSON)
+        return scenario_list
+
+    def create_scenario(requestJSON):   
+        print("Performing CREATE method")
+        if ("type" not in requestJSON or "name" not in requestJSON):
+            abort(418)
+        scenario_type = requestJSON["type"]
+        scenario_name = requestJSON["name"]
+        scenario_group_name = "goob"
+        # scenario_group_name = requestJSON["Group"]
+        scenario_users = scenario_create(scenario_type, scenario_name, scenario_group_name)
+        if (scenario_users != None):
+            print("CREATE method success")
+            return scenario_users
+        else: 
+            print ("Scenario CREATE failed")
+            return None
+
+
+    def start_scenario(requestJSON):
+        print("Performing START method")
+
+    def stop_scenario(requestJSON):
+        print("Performing STOP method")
+
+    def update_scenario(requestJSON):
+        print("Performing UPDATE method")
+
+    def delete_scenario(requestJSON):
+        print("Performing DELETE method")
+
+    method_switch = {
+        "LIST": list_scenarios,
+        "CREATE": create_scenario,
+        "START": start_scenario,
+        "STOP": stop_scenario,
+        "UPDATE": update_scenario,
+        "DELETE": delete_scenario,
+    }
+
+    methodToUse = method_switch[method]
+    print(methodToUse)
+    returnJSON = methodToUse(requestJSON)
+    return (returnJSON)

@@ -55,3 +55,8 @@ def jwt_and_csrf_required(fn):
         return fn(*args, **kwargs)
     
     return wrapper
+
+# returns true if argument is an element of this tuple, false otherwise.
+def instructor_only():
+    if g.current_user_role not in ('instructor', 'admin'):
+        return jsonify({"error": "insufficient role privileges"}), 418
