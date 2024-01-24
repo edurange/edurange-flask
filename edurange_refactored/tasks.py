@@ -101,7 +101,10 @@ def CreateScenarioTask(
     ''' self is the task instance, other arguments are the results of database queries '''
 
     scenario_type_lower = scenario_type.lower()
-    group_id = group_id["id"]
+    if isinstance(group_id, int):
+        pass
+    else:
+        group_id = group_id['id']
 
     # return group_id
     print (group_id)

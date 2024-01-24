@@ -43,7 +43,6 @@ from ..role_utils import (
     user_is_instructor
 )
 from ..scenario_utils import gen_chat_names, identify_state, identify_type, populate_catalog
-from ..tasks import CreateScenarioTask
 from ..utils import (
     check_role_view,
     displayCorrectAnswers,
@@ -367,6 +366,7 @@ def make_scenario():
     form = makeScenarioForm(request.form)  # type2Form()
 
     if form.validate_on_submit():
+        from ..tasks import CreateScenarioTask
         db_ses = db.session
         name = request.form.get("scenario_name")
         s_type = identify_type(request.form)
@@ -410,7 +410,13 @@ def make_scenario():
                     .all()
 
         namedict = gen_chat_names(student_ids, s_id_list)
-
+        print(f"name: {name}")
+        print(f"s_type: {s_type}")
+        print(f"own_id: {own_id}")
+        print(f"students: {students}")
+        print(f"g_id: {g_id}")
+        print(f"s_id_list: {s_id_list}")
+        print(f"namedict: {namedict}")
         CreateScenarioTask.delay(name, s_type, own_id, students, g_id, s_id_list, namedict)
         flash(
             "Success! Your scenario will appear shortly. This page will automatically update. " \

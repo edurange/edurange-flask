@@ -1,4 +1,5 @@
 
+from celery import group
 from edurange_refactored.extensions import db
 # from common_utils import g
 from edurange_refactored.user.models import User, GroupUsers, StudentGroups, Scenarios
@@ -6,6 +7,8 @@ from edurange_refactored.notification_utils import NotifyCapture
 from edurange_refactored.tasks import CreateScenarioTask
 from edurange_refactored.scenario_utils import gen_chat_names
 from flask import jsonify, g
+
+from edurange_refactored.user.views import student
 
 def scenario_create(scenario_type, scenario_name, scen_group_name):
     db_ses = db.session
@@ -18,6 +21,8 @@ def scenario_create(scenario_type, scenario_name, scen_group_name):
         .filter(GroupUsers.user_id == User.id)
         .all()
     )
+    for i, s in enumerate(students):
+        students[i] = s._asdict()
 
     Scenarios.create(name=scenario_name, description=scenario_type, owner_id=owner_user_id)
     NotifyCapture(f"Scenario {scenario_name} has been created.")
@@ -31,6 +36,7 @@ def scenario_create(scenario_type, scenario_name, scen_group_name):
     scenario.update(status=7)
     group_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == scen_group_name).first()
     group_id = group_id._asdict()
+    print(group_id['id'])
 
     # Convert the students list to a list of dictionaries
     students_list = [{'username': student['username']} for student in students]
@@ -40,10 +46,15 @@ def scenario_create(scenario_type, scenario_name, scen_group_name):
 
     namedict = gen_chat_names(student_ids, scenario_id)
 
-    group_name = 'goob'
-        # 
-    #            args: self, scenario_name, scenario_type, owner_user_id, group_name,    group_id, scenario_id,      namedict
-    CreateScenarioTask.delay(scenario_name, scenario_type, owner_user_id, group_name,    group_id, scenario_id,      namedict)
+    # args: self, scenario_name, scenario_type, owner_user_id, group_name,    group_id, scenario_id,      namedict
+    print(f"name: {scenario_name}")
+    print(f"s_type: {scenario_type}")
+    print(f"own_id: {owner_user_id}")
+    print(f"students: {students}")
+    print(f"g_id: {group_id}")
+    print(f"s_id_list: {scenario_id}")
+    print(f"namedict: {namedict}")
+    CreateScenarioTask.delay(scenario_name, scenario_type, owner_user_id, students, group_id, scenario_id,  namedict)
 
     # Return the list of students as a JSON response
     return jsonify({"student_list": students_list})
