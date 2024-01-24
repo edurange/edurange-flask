@@ -129,8 +129,8 @@ def scenario_interface():
             abort(418)
         scenario_type = requestJSON["type"]
         scenario_name = requestJSON["name"]
-        scenario_group_name = "goob"
-        # scenario_group_name = requestJSON["Group"]
+        # scenario_group_name = "goob"
+        scenario_group_name = requestJSON["group_name"]
         scenario_users = scenario_create(scenario_type, scenario_name, scenario_group_name)
         if (scenario_users != None):
             print("CREATE method success")

@@ -21,11 +21,13 @@ def scenario_create(scenario_type, scenario_name, scen_group_name):
 
     Scenarios.create(name=scenario_name, description=scenario_type, owner_id=owner_user_id)
     NotifyCapture(f"Scenario {scenario_name} has been created.")
-
+    
     scenario_id = db_ses.query(Scenarios.id).filter(Scenarios.name == scenario_name).first()
-    scenario_id_list = list(scenario_id._asdict().values())[0]
-
-    scenario = Scenarios.query.filter_by(id=scenario_id_list).first()
+    # scenario_id_list = list(scenario_id._asdict().values())[0]
+    scenario_id = scenario_id._asdict()
+    print('PRINTING SCENARIO_ID: ',scenario_id)
+    scenario_id = scenario_id['id']
+    scenario = Scenarios.query.filter_by(id=scenario_id).first()
     scenario.update(status=7)
     group_id = db_ses.query(StudentGroups.id).filter(StudentGroups.name == scen_group_name).first()
     group_id = group_id._asdict()
@@ -36,9 +38,12 @@ def scenario_create(scenario_type, scenario_name, scen_group_name):
     group_id = group_id["id"]
     student_ids = db_ses.query(GroupUsers.id).filter(GroupUsers.group_id == group_id).all()
 
-    namedict = gen_chat_names(student_ids, scenario_id_list)
+    namedict = gen_chat_names(student_ids, scenario_id)
 
-    CreateScenarioTask.delay(scenario_name, scenario_type, owner_user_id, students_list, group_id, scenario_id_list, namedict)
+    group_name = 'goob'
+        # 
+    #            args: self, scenario_name, scenario_type, owner_user_id, group_name,    group_id, scenario_id,      namedict
+    CreateScenarioTask.delay(scenario_name, scenario_type, owner_user_id, group_name,    group_id, scenario_id,      namedict)
 
     # Return the list of students as a JSON response
     return jsonify({"student_list": students_list})
