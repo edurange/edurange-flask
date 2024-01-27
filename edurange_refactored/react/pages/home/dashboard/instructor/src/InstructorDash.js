@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { scenarioShells } from '../../../../../modules/shells/scenarioType_shells';
 import Instructor_ScenTable from './Instructor_ScenTable';
 import axios from 'axios';
+import Instructor_ScenDetail from './Instructor_ScenDetail';
 
 function InstructorDash() {
     
   const [scenarioType_state, set_scenarioType_state] = useState('');
   const [scenarioName_state, set_scenarioName_state] = useState('');
   const [scenGroup_name_state, set_scenGroup_name_state] = useState('');
+  const [scenarioDetail_state, set_scenarioDetail_state] = useState({})
+
 
   const handleRadioChange = (event) => {
     set_scenarioType_state(event.target.value);
@@ -36,7 +39,8 @@ function InstructorDash() {
 
   return (
     <>
-    <Instructor_ScenTable/>
+    <Instructor_ScenDetail scenario_detail={scenarioDetail_state}/>
+    <Instructor_ScenTable set_scenarioDetail_state={set_scenarioDetail_state}/>
     New Scenario Type:
       <form onSubmit={handleSubmit}>
         {Object.keys(scenarioShells).map((key) => {
@@ -66,12 +70,11 @@ function InstructorDash() {
         <br></br>
         <input
           type="text"
-          placeholder="scenario group name"
+          placeholder="student group name"
           value={scenGroup_name_state}
           onChange={handle_groupNameChange}
         />
         <button type="submit">Submit</button>
-        hello
       </form>
     </>
   );

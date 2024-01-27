@@ -45,6 +45,7 @@ def generateTestAccts(new_user_count, group_name, group_code):
         }
 
         register_user(user_obj)
+        generatedUsers.append(user_obj)
 
     return []
 

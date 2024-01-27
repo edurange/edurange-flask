@@ -12,13 +12,15 @@ at the moment, so plz bear with me. - Jonah (exoriparian)
 # These legacy Models may all find use w/ the new UI, in one form or another.  TBD.
 # Each relates directly to a table in the db
 from edurange_refactored.user.models import (
-    User, 
-    GroupUsers, 
-    ScenarioGroups,
-    Scenarios,
-    StudentGroups,
-    Responses,
-    Notification
+    In use:
+        User, 
+        GroupUsers, 
+        ScenarioGroups,
+        Scenarios,
+        StudentGroups,
+        Responses,
+    TBD:
+        Notification
 )
 
 # the utils will mostly be replaced with a (sometimes very minorly) changed version
@@ -71,6 +73,12 @@ DONE
     - Create Scenario
     - Create User Group
     - Add Users to Group
+    - Start Scenario
+    - Modify Senario
+    - Stop Scenario
+    - Delete Scenario
+    - Delete UserGroup (NEED TESTING)
+    - Delete User (NEED TESTING)
 
     Scenario Guide:
     - Get Data for x scenario (readings & questions)
@@ -82,19 +90,11 @@ DONE
 
 TODO (approx order of urgency):
 
-    User:
-
     Instructor:
-    - Start Scenario
-    - Modify Senario
-    - Stop Scenario
-    - Delete Scenario
     - Get Bash History of User
     - Get Answers Data for User
-    - Delete UserGroup
-    - Delete User
 
-    Scenario Guide:
+    User Scenario Guide:
     - displayCorrectAnswers
     - displayProgress replacement
     - User: Get my Answers to scenario Qs

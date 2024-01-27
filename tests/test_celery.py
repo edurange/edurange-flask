@@ -1,5 +1,5 @@
 # from edurange_refactored.user.models import StudentGroups, User
-# from edurange_refactored.tasks import CreateScenarioTask
+# from edurange_refactored.tasks import create_scenario_task
 #
 # class TestCeleryTasks:
 #     @app.task(bind=True)

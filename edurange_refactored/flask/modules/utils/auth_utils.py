@@ -18,7 +18,7 @@ def jwt_and_csrf_required(fn):
     def wrapper(*args, **kwargs):
         
         # CSRF check (dev)
-        client_CSRF = request.headers.get('X-XSRF-TOKEN')
+        client_CSRF = request.cookies.get('X-XSRF-TOKEN')
         if not client_CSRF: return jsonify({"error": "no client csrf request denied"}), 418
         server_CSRF = session.get('X-XSRF-TOKEN')
         if not server_CSRF: return jsonify({"error": "no server csrf request denied"}), 418

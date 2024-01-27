@@ -371,8 +371,7 @@ def make_scenario():
         name = request.form.get("scenario_name")
         s_type = identify_type(request.form)
         own_id = session.get("_user_id")
-        group = request.form.get("scenario_group")
-
+        group = request.form.get("scenario_group") # CONFIRMED STUDENT GROUP NAME
         students = (
             db_ses.query(User.username)
             .filter(StudentGroups.name == group)
