@@ -113,27 +113,43 @@ def get_scenarios():
     db_ses = db.session
     group_id = db_ses.query(GroupUsers.group_id).filter(GroupUsers.user_id == g.current_user_id).first()
     
-    # Assuming 'group_id' is a tuple with a single integer element
     filter_group_id = group_id[0]
 
     # query for all entries with the given 'group_id' value
     grp_db_scenarios = db_ses.query(ScenarioGroups).filter(ScenarioGroups.group_id == filter_group_id).all()
     
     scenario_ids = [entry.id for entry in grp_db_scenarios]
-    scenarios = db_ses.query(Scenarios).filter(Scenarios.id.in_(scenario_ids)).all()
+    scenarioTable = (
+        db_ses.query(
+            Scenarios.id,
+            Scenarios.name.label("sname"),
+            Scenarios.description.label("type"),
+            Scenarios.status.label("status"),
+            StudentGroups.name.label("gname"),
+            Scenarios.created_at.label("created_at"),
+            Scenarios.owner_id.label("owner_id"),
+            User.username.label("iname"),)
+                .filter(GroupUsers.user_id == g.current_user_id)
+                .filter(StudentGroups.id == GroupUsers.group_id)
+                .filter(User.id == StudentGroups.owner_id)
+                .filter(ScenarioGroups.group_id == StudentGroups.id)
+                .filter(Scenarios.id == ScenarioGroups.scenario_id))
+    
+    # get the scenario objects which have the ids in the scenario_ids list
+    myScenarios = []
+    for entry in scenarioTable:
 
-    group_scenarios_output = []
-    for scenario in scenarios:
         scenario_info = {
-            "scenario_id": scenario.id,
-            "scenario_name": scenario.name,
-            "scenario_description": scenario.description,
-            "scenario_owner_id": scenario.owner_id,
-            "scenario_created_at": scenario.created_at,
-            "scenario_status": scenario.status,
+            "scenario_id": entry.id,
+            "scenario_name": entry.sname,
+            "scenario_description": entry.type,
+            "scenario_owner_id": entry.owner_id,
+            "scenario_created_at": entry.created_at,
+            "scenario_status": entry.status,
         }
-        group_scenarios_output.append(scenario_info)
-    return jsonify({"scenarios_list":group_scenarios_output})
+        myScenarios.append(scenario_info)
+
+    return jsonify({"scenarios_list":myScenarios})
 
 @blueprint_edurange3_scenarios.route('/check_response', methods=['POST'])
 @jwt_and_csrf_required
