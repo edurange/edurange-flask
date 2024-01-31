@@ -10,7 +10,7 @@ from flask import (
 )
 from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required, instructor_only
 from edurange_refactored.flask.modules.utils.instructor_utils import generateTestAccts
-from edurange_refactored.flask.modules.utils.instructor_utils import generate_registration_code as grc
+from edurange_refactored.user.models import generate_registration_code as grc
 from edurange_refactored.user.forms import changeEmailForm
 from edurange_refactored.flask.modules.utils.scenario_interface import (
     list_all_scenarios, 

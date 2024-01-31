@@ -9,14 +9,14 @@ import random
 from ..utils.account_utils import register_user
 
 from edurange_refactored.extensions import db
-from edurange_refactored.user.models import Scenarios, User, Responses
+from edurange_refactored.user.models import Scenarios, User, Responses, generate_registration_code
 
 path_to_key = os.path.dirname(os.path.abspath(__file__))
 
 ## whole file is currently WIP 1/17/24 -Jonah (exoriparian)
 
-def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for _ in range(size))
+# def generate_registration_code(size=8, chars=string.ascii_lowercase + string.digits):
+#     return "".join(random.choice(chars) for _ in range(size))
 
 # - INSTRUCTOR: GENERATE USER GROUP W/ GROUP CODE
 def createUserGroup():

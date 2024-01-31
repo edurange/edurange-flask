@@ -66,25 +66,25 @@ def admin_test():
     current_user_role = g.current_user_role
     return jsonify ({"message":"this is /admin_test"})
 
-@blueprint_edurange3_admin.route("/generate_registration_code", methods=["POST"])
-@jwt_and_csrf_required
-def generate_registration_code():
-    current_username = g.current_username
-    current_user_id = g.current_user_id
-    current_user_role = g.current_user_role
+# @blueprint_edurange3_admin.route("/generate_registration_code", methods=["POST"])
+# @jwt_and_csrf_required
+# def generate_registration_code():
+#     current_username = g.current_username
+#     current_user_id = g.current_user_id
+#     current_user_role = g.current_user_role
 
-    if current_user_role != "admin":
-        return jsonify({"error":"request denied"})
+#     if current_user_role != "admin":
+#         return jsonify({"error":"request denied"})
     
-    minsUntilExpire = 90
-    if "minsUntilExpire" in request.json:
-        minsUntilExpire = request.json["minsUntilExpire"]
-    secsUntilExpire = minsUntilExpire * 60
-    expiry = time.time() + secsUntilExpire
+#     minsUntilExpire = 90
+#     if "minsUntilExpire" in request.json:
+#         minsUntilExpire = request.json["minsUntilExpire"]
+#     secsUntilExpire = minsUntilExpire * 60
+#     expiry = time.time() + secsUntilExpire
 
-    session['registration_code'] = secrets.token_hex(32)
-    session['registration_code_expiry'] = expiry
+#     session['registration_code'] = secrets.token_hex(32)
+#     session['registration_code_expiry'] = expiry
     
-    genCode = secrets.token_urlsafe(8)
+#     genCode = secrets.token_urlsafe(8)
 
-    return jsonify ({"registration_code": genCode, "expiry":expiry})
+#     return jsonify ({"registration_code": genCode, "expiry":expiry})
