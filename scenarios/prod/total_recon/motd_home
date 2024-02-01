@@ -25,7 +25,7 @@ a place called Rekall which offers a memory implanted vacation. That sounds fun,
 better? Your best friend Harry tells you this is a bad idea, a really bad idea, but what does Harry know?
 
 The next day you arrive at Rekall but can't find an obvious door inside. Your first task is to enter into Rekall
-it's IP Address is OCTET.0.0.4 although it's port is unusual. Be careful, it could be dangerous.
+it's IP Address is 10.OCTET.0.4 although it's port is unusual. Be careful, it could be dangerous.
 
 Helpful commands: nmap, ssh -p port_number user@ip_address
 

@@ -34,19 +34,30 @@
   overflow: hidden;
   padding: 0 .5em;
   text-align: center;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid: 'header header header' 50px
+  'main main main' auto;
   background-color: whitesmoke;
   outline: 2px #2e9566 solid;
   border-radius: 1rem 1rem 0 0;
   min-width: 25vw;
-  height: 45vh;
+  height: 50vh;
   transition-duration: .5s;
 }
 
 .edu-chatbox-open p {
   margin: 0;
   padding: .2rem .5rem;
+}
+
+.chat_title {
+  height: 5vh;
+  grid-area: header;
+}
+
+.socket_container {
+  height: 45vh;
+  grid-area: main;
 }
 
 .ClientSocket {

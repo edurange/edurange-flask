@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function distribute_flag() {
+    while read line; do
+        echo $1 > /home/$line/secret
+    done</usr/local/src/user_names.txt
+}
+
+if [ $(hostname) == "StartingLine" ]; then distribute_flag $1; fi
+if [ $(hostname) == "FirstStop" ]; then distribute_flag $2; fi
+if [ $(hostname) == "SecondStop" ]; then distribute_flag $3; fi
+if [ $(hostname) == "ThirdStop" ]; then distribute_flag $4; fi
+if [ $(hostname) == "FourthStop" ]; then distribute_flag $5; fi
+if [ $(hostname) == "FifthStop" ]; then distribute_flag $6; fi
+if [ $(hostname) == "SatansPalace" ]; then distribute_flag $7; fi
+

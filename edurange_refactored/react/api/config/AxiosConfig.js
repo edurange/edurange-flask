@@ -33,8 +33,7 @@ const csrfToken = getCSRFfromCookie();
 // if it is incorrect (or says URL_TO_BE_REPLACED), you must
 // update that portion to your actual edurange instance IP.
 // example:
-const baseURL = 'http://127.0.0.1:5000/edurange3/';
-// const baseURL = 'http://URL_TO_BE_REPLACED:5000/edurange3/'; 
+const baseURL = 'http://URL_TO_BE_REPLACED:5000/edurange3/'; 
 
 if (!csrfToken) { 
     console.log('Axios: CSRF cookie not found'); } // DEV_ONLY

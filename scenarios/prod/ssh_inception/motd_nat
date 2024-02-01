@@ -22,7 +22,7 @@ cat << \EOF >/etc/motd
 It's a week the first level down. Six months the second level down, and... the third level...
 
         Welcome to SSH Inception. The goal is to answer all questions by exploring
-    the local network, the subnet OCTET.0.0.0/27. You are currently at the Starting Line.
+    the local network, the subnet 10.OCTET.0.0/27. You are currently at the Starting Line.
 
     For every host you login to you will be greeted with instructions. Each host
     will give you a list of useful commands to solve each challenge. Use man
@@ -32,7 +32,7 @@ It's a week the first level down. Six months the second level down, and... the t
     EDURange to verify your progress.
 
 
-Go a level deeper. You will find the next host at OCTET.0.0.7.
+Go a level deeper. You will find the next host at 10.OCTET.0.7.
 The trick is that the ssh port has been changed to 123.
 Your ssh username and password for the next stop are the same that got you here.
 

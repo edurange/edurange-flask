@@ -17,7 +17,8 @@ function ClientSocket(props) {
   
   useEffect(() => {
     const uid = props.uid;
-    socket.auth = { uid };
+    const sid = props.sid;
+    socket.auth = { uid, sid };
     socket.connect();
     
     socket.on("student session retrieval", (prevChat) => {

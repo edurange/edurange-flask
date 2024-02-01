@@ -1,13 +1,30 @@
 {
-	"containers": [{
-		"name" : "ransom",
-		"files": [{
-			"global_files": [
-			],
-			"system_files": [
-			],
-			"user_files": [
-			]
-		}]
-	}]
+	"containers": 
+    [
+        {
+            "name" : "ransom",
+            "files": [{
+                "global_files": [
+                ],
+                "system_files": [
+                ],
+                "user_files": [
+                ]
+            }]
+	    },
+        {
+            "name" : "gateway",
+            "files":[
+                {
+                    "global_files": [
+                    ],
+                    "system_files": [
+                    ],
+                    "user_files": [
+                        "milestones.txt"
+                    ]
+                }
+            ]
+        }
+    ]
 }

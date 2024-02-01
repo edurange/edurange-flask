@@ -1,5 +1,0 @@
-#!/bin/bash
-
-while read line; do
-	echo "3DTLjQlk" > /home/$line/secret
-done</usr/local/src/user_names.txt

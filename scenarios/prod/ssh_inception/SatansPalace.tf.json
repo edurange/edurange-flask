@@ -31,11 +31,11 @@
                             "name": "SNAME_SatansPalace",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.19",
+                                    "ipv4_address": "10.OCTET.1.19",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.19",
+                                    "ipv4_address": "10.OCTET.0.19",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],

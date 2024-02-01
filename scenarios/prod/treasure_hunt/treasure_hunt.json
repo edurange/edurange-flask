@@ -1,20 +1,37 @@
 {
-	"containers": {
-		"name" : "nat",
-		"files": [{
-			"global_files": [
-			],
-			"system_files": [
-				"install",
-				"motd_nat"
-			],
-			"user_files": [
-				"resetFakeUsers.c",
-				"resetUsers",
-				"treasure-hunt-users-fall12.tar",
-				"milestones.txt"
-			]
-		}]
-	}
+    "containers": 
+    [ 
+        {
+            "name" : "nat",
+            "files": [{
+                "global_files": [
+                ],
+                "system_files": [
+                    "install",
+                    "motd_nat"
+                ],
+                "user_files": [
+                    "resetFakeUsers.c",
+                    "resetUsers",
+                    "treasure-hunt-users-fall12.tar",
+                    "milestones.txt"
+                ]
+            }]
+        },
+        {
+            "name" : "gateway",
+            "files":[
+                {
+                    "global_files": [
+                    ],
+                    "system_files": [
+                    ],
+                    "user_files": [
+                        "milestones.txt"
+                    ]
+                }
+            ]
+        }
+    ]
 }
 

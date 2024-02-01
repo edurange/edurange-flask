@@ -8,8 +8,6 @@ from flask import abort
 from edurange_refactored.extensions import db
 from edurange_refactored.user.models import Scenarios, User, Responses
 
-path_to_key = os.path.dirname(os.path.abspath(__file__))
-
 # Guide utils are functions that primarily populate and run the 
 # question & answer 'guide' that students see on the eduRange webpage (not the terminal ssh)
 
@@ -33,7 +31,7 @@ def getContent(scenario_id, username):
     if unique_name: unique_name = unique_name[0]
     if (not unique_name
     or status != "Started"): abort(418) 
-
+      
     unique_name = "".join(e for e in unique_name if e.isalnum())
     
     with open(f'data/tmp/{unique_name}/student_view/content.json', 'r') as fp:
@@ -127,6 +125,7 @@ def evaluateResponse(user_id, scenario_id, question_num, student_response):
             tempResponseItem['points_awarded'] = pointsAwarded
 
         responseData.append (tempResponseItem)
+
     return responseData
 
 ### UNTESTED / DEV 
@@ -136,98 +135,3 @@ def get_dockerPort (scenario_unique_name):
     # use name to select docker container
     docClient = docker.from_env()
     active_containers = docClient.containers.list()
-    
-
-
-    # get docker port info
-
-    # return docker port info
-    
-# def getResponses(req_user_id, req_attempt, req_query, req_questions):
-#     responses = []
-#     entries = [
-#         entry 
-#         for entry 
-#         in req_query 
-#         if entry.user_id == req_user_id 
-#         # and entry.attempt == req_attempt
-#     ]
-
-#     for response in entries:
-#         question_number = response.question_data
-#         question_data = req_questions[question_number-1]
-
-#         responses.append({
-#             'number': question_number,
-#             'question': question_data['Text'],
-#             'answer': question_data['Answers'][0]['Value'],
-#             'points': question_data['Points'],
-#             'student_response': response.student_response,
-#             'earned': response.points
-#         })
-
-#     return responses
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ################## notes / scratch #################
-    
-    
-    # # the db property of `.description` (assigned to scenario_title variable here) 
-    # # is the generic name for a scenario, e.g. 'Getting_Started'
-    # scenario_title = db_ses.query(Scenarios.description).filter(Scenarios.id == scenario_id).first()
-    # scenario_title = scenario_title[0]
-
-    # # getDescription returns the short description, or 'blurb', for a scenario
-    # # e.g. "This game uses strace to examine executable files."
-    # # pulls values from "./scenarios/prod/{scenario}/{scenario}.yml"
-    # # '{scenario}' here is the title in lower_snake, e.g. 'getting_started'
-    # # blurb = getDescription(scenario_title)
-
-    
-    # # guide = None #getGuide(scenario_title)
-    
-    
-    # # questions = getQuestions(scenario_title)
-
-    # # sName = db_ses.query(Scenarios.name).filter(Scenarios.id == scenario_id).first()
-    # # sName = sName[0]
-
-    # # if user_role == "ins":
-    # #     createdAt = db_ses.query(Scenarios.created_at).filter(Scenarios.id == scenario_id).first()
-    # #     createdAt = createdAt[0]
-
-    # #     return status, ownerName, createdAt, blurb, scenario_title, sName, guide, questions
-    # # elif user_role == "stu":
-    # #     username = db_ses.query(User.username).filter(User.id == user_id).first()[0]
-    # #     username = "".join(e for e in username if e.isalnum())
-    # #     pw = getPass(sName, username)
-
-    # #     return status, ownerName, blurb, scenario_title, sName, username, pw, guide, questions

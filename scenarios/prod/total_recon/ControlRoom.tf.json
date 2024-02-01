@@ -31,11 +31,11 @@
               "name": "SNAME_ControlRoom",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.11",
+                  "ipv4_address": "10.OCTET.1.11",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.250.5",
+                  "ipv4_address": "10.OCTET.250.5",
                   "name": "SNAME_MARS"
                 }
               ],

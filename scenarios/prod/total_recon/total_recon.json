@@ -1,7 +1,7 @@
 {
   "containers":[
     {
-      "name":"Home",
+      "name":"nat",
       "files":[
         {
           "global_files":[
@@ -158,6 +158,20 @@
           ]
         }
       ]
+    },
+    {
+        "name" : "gateway",
+        "files":[
+            {
+                "global_files": [
+                ],
+                "system_files": [
+                ],
+                "user_files": [
+                    "milestones.txt"
+                ]
+            }
+        ]
     }
   ]
 }
