@@ -26,16 +26,16 @@
                                     "user": "root"
                                 }
                             ],
-                            "hostname": "WebFu",
+                            "hostname": "NAT",
                             "image": "edurange2/webfu:latest",
                             "name": "SNAME_nat",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.2",
+                                    "ipv4_address": "10.OCTET.1.2",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.2",
+                                    "ipv4_address": "10.OCTET.0.2",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
@@ -79,7 +79,7 @@
     ],
     "locals": [
         {
-            "SNAME_nat_extern": "${tostring(docker_container.SNAME_nat.ports[0].external)}"
+            "SNAME_nat_extern": "HIDDEN"
         }
     ],
     "output": [

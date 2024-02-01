@@ -31,15 +31,15 @@
               "name": "SNAME_EarthSpaceport",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.6",
+                  "ipv4_address": "10.OCTET.1.6",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.0.24",
+                  "ipv4_address": "10.OCTET.0.24",
                   "name": "SNAME_PLAYER"
                 },
                 {
-                  "ipv4_address": "OCTET.0.193.0",
+                  "ipv4_address": "10.OCTET.193.0",
                   "name": "SNAME_MARS"
                 }
               ],

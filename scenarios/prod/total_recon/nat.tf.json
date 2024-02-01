@@ -3,7 +3,7 @@
     {
       "docker_container": [
         {
-          "SNAME_Home": [
+          "SNAME_nat": [
             {
               "capabilities": [
                 {
@@ -26,16 +26,16 @@
                   "user": "root"
                 }
               ],
-              "hostname": "Home",
+              "hostname": "NAT",
               "image": "edurange2/ubuntu-sshd:16.04",
-              "name": "SNAME_Home",
+              "name": "SNAME_nat",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.2",
+                  "ipv4_address": "10.OCTET.1.2",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.0.2",
+                  "ipv4_address": "10.OCTET.0.2",
                   "name": "SNAME_PLAYER"
                 }
               ],
@@ -64,17 +64,17 @@
     }],
   "locals": [
     {
-      "SNAME_Home_extern": "${tostring(docker_container.SNAME_Home.ports[0].external)}"
+      "SNAME_nat_extern": "HIDDEN"
     }
   ],
   "output": [
     {
-      "SNAME_Home": [
+      "SNAME_nat": [
         {
           "value": [
             {
-              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_Home_extern])}",
-              "name": "SNAME_Home"
+              "ip_address_public": "${join(\":\", [\"EXTERN_HOST\", local.SNAME_nat_extern])}",
+              "name": "SNAME_nat"
             }
           ]
         }

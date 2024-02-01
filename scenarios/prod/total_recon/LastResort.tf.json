@@ -31,11 +31,11 @@
               "name": "SNAME_LastResort",
               "networks_advanced": [
                 {
-                  "ipv4_address": "OCTET.1.0.9",
+                  "ipv4_address": "10.OCTET.1.9",
                   "name": "SNAME_NAT"
                 },
                 {
-                  "ipv4_address": "OCTET.0.216.144",
+                  "ipv4_address": "10.OCTET.216.144",
                   "name": "SNAME_MARS"
                 }
               ],

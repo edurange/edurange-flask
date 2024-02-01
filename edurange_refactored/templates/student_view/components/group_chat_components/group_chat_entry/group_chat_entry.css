@@ -1,0 +1,35 @@
+.student_from_other {
+    background-color: rgba(0, 125, 0, .5);
+    align-self: flex-start;
+    text-align: right;
+    padding: 0 .5rem;
+}
+
+.student_from_self {
+    background-color: rgba(0, 200, 200, .5);
+    padding: 0 .5rem;
+    align-self: flex-end;
+    text-align: left;
+}
+
+.student_from_self, .student_from_other {
+    border-radius: .5rem;
+    max-width: 13vw;
+}
+
+.userID {
+    font-size: 75%;
+}
+
+.student_from_self_div, .student_from_other_div {
+    margin-bottom: 1rem;
+    overflow: contain;
+}
+
+.student_from_self_name {
+    text-align: right;
+}
+
+.student_from_other_name {
+    text-align: left;
+}

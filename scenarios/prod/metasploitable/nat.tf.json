@@ -31,11 +31,11 @@
                             "name": "SNAME_attacker",
                             "networks_advanced": [
                                 {
-                                    "ipv4_address": "OCTET.0.1.3",
+                                    "ipv4_address": "10.OCTET.1.3",
                                     "name": "SNAME_NAT"
                                 },
                                 {
-                                    "ipv4_address": "OCTET.0.0.3",
+                                    "ipv4_address": "10.OCTET.0.3",
                                     "name": "SNAME_PLAYER"
                                 }
                             ],
@@ -47,7 +47,7 @@
                             "host": [
                                 {
                                     "host": "target",
-                                    "ip": "OCTET.0.0.2"
+                                    "ip": "10.OCTET.0.2"
                                 }
                             ],
                             "provisioner": [
@@ -89,3 +89,4 @@
         }
     ]
 }
+

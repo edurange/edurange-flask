@@ -1,0 +1,8 @@
+#!/bin/bash
+ssh-keygen -b 2048 -t rsa -f /tmp/start_key -q -N ""
+
+while read student_username; do
+  cp /tmp/start_key /home/$student_username/start_key
+  chown $student_username /home/$student_username/start_key
+  chmod 600 /home/$student_username/start_key
+done</usr/local/src/user_names.txt

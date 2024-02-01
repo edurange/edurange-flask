@@ -24,7 +24,7 @@ of Rekall Inc. tries to calm you, but you yell "My name is not Quaid!".
   (  `-,_..`., )-- '_,)       memory so fuzzy, you had better get a sense of
  ( ` _)  (  -~( -_ `,  }      your surroundings.
  (_-  _  ~_-~~~~`,  ,' )
-   `~ -^(    __;-,((()))      Try scanning the subnet OCTET.0.0.0/24 to see what's
+   `~ -^(    __;-,((()))      Try scanning the subnet 10.OCTET.0.0/24 to see what's
          ~~~~ {_ -_(())       around you. You'll find the subway on the host
                 `\  }         with an open webserver. The ssh user and password
                   { }         is the same as this host. Good luck!

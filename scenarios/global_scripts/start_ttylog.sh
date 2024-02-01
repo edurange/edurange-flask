@@ -142,8 +142,8 @@ if [ -z "$SSH_ORIGINAL_COMMAND" ]; then
         sudo python3 /usr/local/src/ttylog/intervention.py ${ANNOTATORPATH} ${MILESTONEFILE} ${MILESTONEMESS} 2>/dev/null &
         PID_INTERVENTION=$!
     fi
-
-    bash
+    source /etc/environment
+    ssh -o "StrictHostKeyChecking no" -i /home/$USER/start_key $START
 
 elif [ "$(echo ${SSH_ORIGINAL_COMMAND} | grep '^sftp' )" ]; then
 
