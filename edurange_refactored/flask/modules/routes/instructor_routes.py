@@ -62,7 +62,8 @@ def instructor_test():
     instructor_only()
     return jsonify ({"message":"this is /instructor_test, successful"})
 
-@blueprint_edurange3_instructor.route("/create_group")
+# tested 1/31/24; seems to be working -exoriparian
+@blueprint_edurange3_instructor.route("/create_group", methods=['POST'])
 @jwt_and_csrf_required
 def create_group():
     instructor_only()
@@ -75,8 +76,7 @@ def create_group():
     
     group_obj = StudentGroups.create(name=group_name, owner_id=g.current_user_id, code=code)
 
-    # DEV_TEST
-    group_obj_dict = group_obj._asdict()
+    group_obj_dict = group_obj.to_dict()
     return jsonify ({"message":f"userGroup {group_name} created", 'group_obj':group_obj_dict})
 
 @blueprint_edurange3_instructor.route("/delete_group")
@@ -90,6 +90,9 @@ def delete_group(group_name):
     group_id = student_group.id
     group_scenarios = db_ses.query(ScenarioGroups).filter(ScenarioGroups.group_id == group_id).first()
     group_users = db_ses.query(GroupUsers).filter(GroupUsers.group_id == group_id).all()
+
+    chat_history = {}
+
     if group_scenarios is not None:
         jsonify({"message":"Cannot delete group - Are there still scenarios for this group?"})
     else:

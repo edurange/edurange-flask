@@ -13,6 +13,7 @@
 //
 // TLDR: If you change how the CSRF token is submitted/accepted, 
 //       do NOT make it by way of cookie.
+import { env } from 'node:process';
 
 import axios from 'axios';
 
@@ -43,6 +44,11 @@ axios.defaults.headers.common['X-XSRF-TOKEN'] = csrfToken || ""; // provide empt
 axios.defaults.withCredentials = true; // very important
 
 const AxiosConfig = ({ children }) => {
+    
+    const envTest = process.env.REACT_APP_AXIOS_HOST
+    const envTest2 = process.env.REACT_APP_AXIOS_HOST
+    console.log('ENV TEST: ', envTest, envTest2)
+
     return children;
 };
 

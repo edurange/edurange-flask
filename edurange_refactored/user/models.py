@@ -3,6 +3,7 @@
 import datetime as dt
 import random
 import string
+from sqlalchemy import inspect
 
 from flask_login import UserMixin
 
@@ -32,6 +33,9 @@ class StudentGroups(UserMixin, SurrogatePK, Model):
     )
     hidden = Column(db.Boolean(), nullable=False, default=False)
     users = relationship("GroupUsers", backref="groups", cascade="all, delete-orphan")
+    def to_dict(self):
+        """Return a dictionary representation of the StudentGroups instance."""
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
 
 class GroupUsers(UserMixin, SurrogatePK, Model):

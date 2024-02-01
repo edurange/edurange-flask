@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+require('dotenv').config();
 /*
  * Webpack Plugins
  */
@@ -8,7 +9,8 @@ const ProductionPlugins = [
   // production webpack plugins go here
   new webpack.DefinePlugin({
     "process.env": {
-      NODE_ENV: JSON.stringify("production")
+      NODE_ENV: JSON.stringify("production"),
+      REACT_APP_AXIOS_HOST: JSON.stringify(process.env.REACT_APP_AXIOS_HOST),
     }
   })
 ]
