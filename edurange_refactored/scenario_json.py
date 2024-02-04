@@ -123,7 +123,7 @@ def write_resource(address, name, s_type,
                  "place_milestone_file", "change_root_pass", "cgconfig.conf",
                  "limit_resources", "gateway_setup"]
 
-    global_scripts = ["cgconfig.conf", "limit_resources", "iamfrustrated"]
+    global_scripts = ["cgconfig.conf", "limit_resources", "iamfrustrated", "change_root_pass"]
     # Generate a list of 'provisioner' blocks to upload all files
     if c_name == "gateway":
         uploads = build_uploads(s_files, g_files, u_files, log_files, s_type)
