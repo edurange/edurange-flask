@@ -41,7 +41,6 @@ import queue
 import subprocess
 import threading
 
-
 def starting_index_timestamp(line):
     """Return the index where the timestamp starts, in a line. If timestamp does not exist, return None"""
     reg_expr_end_timestamp = re.compile(';[0-9]+$')
@@ -103,8 +102,8 @@ def decode(lines, current_user_prompt, current_root_prompt):
     buf = []
     i_line = 0
     decode_line_timestamp = ''
-    current_user_prompt = ''
-    current_root_prompt = ''
+    current_user_prompt = current_user_prompt.casefold()
+    current_root_prompt = current_root_prompt.casefold()
 
     for count, line in enumerate(lines):
         i_stream_line = 0
@@ -112,17 +111,6 @@ def decode(lines, current_user_prompt, current_root_prompt):
         length_before_carriage_return = -1
         encountered_carriage_return = False
         buf.append([])
-
-        p = re.compile(r'^User prompt is ')
-        if p.match(line):
-            current_user_prompt = line.split()[-1]
-            node_name = line.split('@')[-1]
-            current_root_prompt = 'root@' + node_name
-            current_user_prompt = current_user_prompt.casefold()
-            current_root_prompt = current_root_prompt.casefold()
-            buf[i_line] = line
-            i_line += 1
-            continue
 
         #Eliminiating OSC for root prompt
         if escape_sequence_dict['osc_reg_expr'].findall(line):
@@ -382,12 +370,12 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, k
             index_ttylog_lines_file = len(ttylog_lines_read_next) - 1 - count
 
             # Find the last user prompt. Get data starting from 0th index to ending of last user prompt from the line
-            for p in known_prompts:
-                if (line.casefold().rfind(p) > -1):
-                    line_prompt_end_index = line.casefold().rfind(p)
-                    line_prompt_end_index = line_prompt_end_index + len(p)
-                    break
-            line_to_append = line[:line_prompt_end_index]
+            #for p in known_prompts:
+            #    if (line.casefold().rfind(p.casefold()) > -1):
+            #        line_prompt_end_index = line.casefold().rfind(p.casefold())
+            #        line_prompt_end_index = line_prompt_end_index + len(p.casefold())
+            #        break
+            #line_to_append = line[:line_prompt_end_index]
 
     if index_ttylog_lines_file is not None and no_of_prompts_in_ttylog_read_next >= 2:
 
@@ -395,8 +383,8 @@ def get_ttylog_lines_to_decode(ttylog_lines_read_next, ttylog_lines_from_file, k
 
         # Add the line containing user/root prompt to ttylog_lines_to_decode so that the most recently executed command can be parsed.
         # The characters from 0th index till ending of last user prompt is included is contained in line_to_append
-        if len(line_to_append) > 0:
-            ttylog_lines_to_decode.append(line_to_append)
+        #if len(line_to_append) > 0:
+        #    ttylog_lines_to_decode.append(line_to_append)
 
         ttylog_lines_read_next = ttylog_lines_read_next[index_ttylog_lines_file:]
         return ttylog_lines_to_decode, ttylog_lines_read_next
@@ -698,6 +686,7 @@ if __name__ == "__main__":
     skip_reading_in_first_iteration = True
     ttylog_lines_read_next = []
     exit_flag = False
+    user_prompt = ''
     known_prompts = []
     host_pattern = ''
 
@@ -732,6 +721,7 @@ if __name__ == "__main__":
         p = re.compile(r'^User prompt is ')
         if p.match(line):
             user_initial_prompt = (line.split()[-1])
+            user_prompt = user_initial_prompt
             ttylog_sessions[current_session_id]['initial_prompt'] = user_initial_prompt
             node_name = line.split('@')[-1]
             root_prompt = 'root@' + node_name
@@ -757,8 +747,10 @@ if __name__ == "__main__":
         for node in nodes:
             known_prompts.append(user_initial_prompt.split('@')[0] + '@' + node)
     except FileNotFoundError:
-        print('File /usr/local/src/ttylog/host_names.txt not found', file=sys.stderr)
-        known_prompts.append(user_initial_prompt)
+        user_prompt = user_initial_prompt.split('@')[0] + '@nat'
+        known_prompts.append(user_prompt)
+        known_prompts.append(user_initial_prompt.split('@')[0] + '@FirstStop')
+        host_pattern = "(nat|firststop)"
 
     while True:
 
@@ -775,7 +767,7 @@ if __name__ == "__main__":
             time.sleep(0.1)
             continue
 
-        ttylog_lines = decode(ttylog_lines_to_decode, user_initial_prompt, root_prompt)
+        ttylog_lines = decode(ttylog_lines_to_decode, user_prompt, root_prompt)
 
         for count,line in enumerate(ttylog_lines):
             # Check for ctrl c and remove
@@ -833,7 +825,6 @@ if __name__ == "__main__":
                         line = right_dollar_part[1:]
                 else:
                     current_working_directory = home_directory
-                    user_prompt = user_initial_prompt
                     current_line_prompt = user_prompt
             else:
                 isinput = False
