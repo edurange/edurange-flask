@@ -1,5 +1,5 @@
 
-
+import time
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import (
@@ -13,14 +13,16 @@ from edurange_refactored.flask.modules.utils.db_devHelper import (
     get_instructor_data,  # gets all the previous
 )
 
+import secrets
 from flask import (
     Blueprint,
     request,
     jsonify,
     make_response,
+    session,
     g, ## see note
 )
-from ..utils.auth_utils import jwt_and_csrf_required
+from edurange_refactored.flask.modules.utils.auth_utils import jwt_and_csrf_required
 
 #######
 # The `g` object is a global flask object that lasts ONLY for the life of a single request.
@@ -63,3 +65,27 @@ def admin_test():
     current_user_id = g.current_user_id
     current_user_role = g.current_user_role
     return jsonify ({"message":"this is /admin_test"})
+
+# probably deprecated; seems to be redundant and uncessesary -exoriparian 1/31/24
+# @blueprint_edurange3_admin.route("/generate_registration_code", methods=["POST"])
+# @jwt_and_csrf_required
+# def generate_registration_code():
+#     current_username = g.current_username
+#     current_user_id = g.current_user_id
+#     current_user_role = g.current_user_role
+
+#     if current_user_role != "admin":
+#         return jsonify({"error":"request denied"})
+    
+#     minsUntilExpire = 90
+#     if "minsUntilExpire" in request.json:
+#         minsUntilExpire = request.json["minsUntilExpire"]
+#     secsUntilExpire = minsUntilExpire * 60
+#     expiry = time.time() + secsUntilExpire
+
+#     session['registration_code'] = secrets.token_hex(32)
+#     session['registration_code_expiry'] = expiry
+    
+#     genCode = secrets.token_urlsafe(8)
+
+#     return jsonify ({"registration_code": genCode, "expiry":expiry})

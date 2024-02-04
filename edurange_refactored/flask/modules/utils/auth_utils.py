@@ -4,9 +4,10 @@ from flask import (
     jsonify,
     g
 )
-from edurange_refactored.user.models import User
+
 from functools import wraps
 from flask_jwt_simple import decode_jwt
+
 
 ###########
 #  This `@jwt_and_csrf_required()` decorator function should be used on ALL 
@@ -17,7 +18,7 @@ def jwt_and_csrf_required(fn):
     def wrapper(*args, **kwargs):
         
         # CSRF check (dev)
-        client_CSRF = request.headers.get('X-XSRF-TOKEN')
+        client_CSRF = request.cookies.get('X-XSRF-TOKEN')
         if not client_CSRF: return jsonify({"error": "no client csrf request denied"}), 418
         server_CSRF = session.get('X-XSRF-TOKEN')
         if not server_CSRF: return jsonify({"error": "no server csrf request denied"}), 418
@@ -54,3 +55,8 @@ def jwt_and_csrf_required(fn):
         return fn(*args, **kwargs)
     
     return wrapper
+
+# returns true if argument is an element of this tuple, false otherwise.
+def instructor_only():
+    if g.current_user_role not in ('instructor', 'admin'):
+        return jsonify({"error": "insufficient role privileges"}), 418

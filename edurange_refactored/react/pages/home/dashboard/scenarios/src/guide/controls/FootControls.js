@@ -21,14 +21,12 @@ function FootControls({ guideContent, updatePane, paneSide }) {
   if ((!meta)) { return (<>Scenario not found</>); }
   // GUARD
   
-  const SSH_key = `${guideContent.unique_scenario_name}_nat`
-  const SSH_IP = guideContent.SSH_IP[SSH_key]
+  const content_sshInfo = guideContent.content_sshInfo
   const SSH_username = guideContent.credentialsJSON.username;
   const SSH_password = guideContent.credentialsJSON.password;
-  const shellData = scenarioShells[`${meta.scenario_description}`];
-  const [SSH_ip, SSH_port_str] = SSH_IP.split(':');
+  const [SSH_IP_str, SSH_PORT_str] = content_sshInfo.split(':');
 
-  const sshCommand = `ssh ${SSH_username}@${SSH_ip} -p ${SSH_port_str}`;
+  const sshCommand = `ssh ${SSH_username}@${SSH_IP_str} -p ${SSH_PORT_str}`;
 
   const left_controls = (
     <>
@@ -72,7 +70,7 @@ function FootControls({ guideContent, updatePane, paneSide }) {
             <section className='footcontrol-ssh-creds-values-frame'>
               <div className='footcontrol-ssh-creds-values-row'>
                   <div className='footcontrol-ssh-creds-values-text'>  
-                    ssh {SSH_username}{zws}@{SSH_ip} -p {SSH_port_str} 
+                    ssh {SSH_username}{zws}@{SSH_IP_str} -p {SSH_PORT_str} 
                   </div>
               </div>
               <div className='footcontrol-ssh-creds-values-row'>

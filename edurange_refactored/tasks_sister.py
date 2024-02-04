@@ -15,6 +15,7 @@ from flask_mail import Mail, Message
 from edurange_refactored.scenario_json import adjust_network, find_and_copy_template, write_resource
 from edurange_refactored.scenario_utils import gather_files
 from edurange_refactored.settings import CELERY_BROKER_URL, CELERY_RESULT_BACKEND
+from edurange_refactored.user.models import ScenarioGroups, Scenarios
 
 logger = get_task_logger(__name__)
 
@@ -91,17 +92,15 @@ def test_send_async_email(email_data):
 
 
 @celery.task(bind=True)
-def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
+def create_scenario_task(self, scen_name, scen_type, owner_user_id, group, grp_id, scen_id, namedict):
     ''' self is the task instance, other arguments are the results of database queries '''
     from edurange_refactored.user.models import ScenarioGroups, Scenarios
-    import yaml
-    import json
 
     app = current_app
-    s_type = s_type.lower()
-    g_id = g_id["id"]
+    scen_type = scen_type.lower()
+    grp_id = grp_id["id"]
 
-    c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(s_type, logger)
+    c_names, g_files, s_files, u_files, packages, ip_addrs = gather_files(scen_type, logger)
 
     logger.info(
         "Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}".format(
@@ -111,9 +110,6 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
 
     students = {}
     usernames, passwords = [], []
-
-    print("WHAT IS 'GROUP'?: ",group)
-    logger.info("WHAT IS 'GROUP'?: ",group)
 
     for i in range(len(group)):
         username = "".join(e for e in group[i]["username"] if e.isalnum())
@@ -131,11 +127,11 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
     logger.info("All names: {}".format(students))
 
     with app.test_request_context():
-        scenario = Scenarios.query.filter_by(id=s_id).first()
-        name = "".join(e for e in name if e.isalnum())
+        scenario = Scenarios.query.filter_by(id=scen_id).first()
+        scen_name = "".join(e for e in scen_name if e.isalnum())
 
-        os.makedirs("./data/tmp/" + name)
-        os.chdir("./data/tmp/" + name)
+        os.makedirs("./data/tmp/" + scen_name)
+        os.chdir("./data/tmp/" + scen_name)
 
         os.makedirs("./student_view")
 
@@ -146,27 +142,31 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
         with open(f"../chatnames.json", "w") as chatnamefile:
            json.dump(namedict, chatnamefile)
 
-        with open(f"../../../scenarios/prod/{s_type}/questions.yml", "r+") as f:
-            questions = yaml.safe_load(f)
-            logger.info(f"Questions Type: {type(questions)}")
-        with open(f"../../../scenarios/prod/{s_type}/student_view/content.json", "r+")as f:
-            content = json.load(f)
-            logger.info(f"Content Type: {type(content)}")
+        questions = open(f"../../../scenarios/prod/{scen_type}/questions.yml", "r+")
+        content = open(f"../../../scenarios/prod/{scen_type}/student_view/content.json", "r+")
 
-        # randomize answers
+        logger.info(f"Questions Type: {type(questions)}")
+        logger.info(f"Content Type: {type(content)}")
+
         flags = []
-        for q_num, q in enumerate(questions):
-            for a_num, a in enumerate(q["Answers"]):
-                if isinstance(a["Value"], str) and "$RANDOM" in a["Value"]:
-                    rnd_ans = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
-                    content["StudentGuide"]["Questions"][str(q_num + 1)]["Answers"][a_num]["Value"] = rnd_ans
-                    a["Value"] = rnd_ans
-                    flags.append(rnd_ans)
+        if scen_type == "getting_started" or scen_type == "file_wrangler":
+            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
+            flags.append("".join(random.choice(string.ascii_letters + string.digits) for _ in range(8)))
+
+            questions = questions.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
+            content = content.read().replace("$RANDOM_ONE", flags[0]).replace("$RANDOM_TWO", flags[1])
 
         with open("questions.yml", "w") as outfile:
-            yaml.dump(questions, outfile)
+            if type(questions) == str:
+                outfile.write(questions)
+            else:
+                outfile.write(questions.read())
+
         with open("./student_view/content.json", "w") as outfile:
-            json.dump(content, outfile, indent=4)
+            if type(content) == str:
+                outfile.write(content)
+            else:
+                outfile.write(content.read())
 
         active_scenarios = Scenarios.query.count()
         starting_octet = int(os.getenv("SUBNET_STARTING_OCTET", 10))
@@ -175,32 +175,33 @@ def CreateScenarioTask(self, name, s_type, owner, group, g_id, s_id, namedict):
         address = str(starting_octet + active_scenarios)
 
         # Write provider and networks
-        find_and_copy_template(s_type, "network")
-        adjust_network(address, name)
+        find_and_copy_template(scen_type, "network")
+        adjust_network(address, scen_name)
         os.system("terraform init")
         os.system("terraform plan -out network")
 
         logger.info("All flags: {}".format(flags))
 
-        # Each container and their names are pulled from the 's_type'.json file
+        # Each container and their names are pulled from the 'scen_type'.json file
         for i, c in enumerate(c_names):
-            find_and_copy_template(s_type, c)
+            find_and_copy_template(scen_type, c)
             write_resource(
-                address, name, s_type, c_names[i], usernames, passwords,
-                s_files[i], g_files[i], u_files[i], flags, c_names
+                address, scen_name, scen_type, c_names[i], usernames, passwords,
+                s_files[i], g_files[i], u_files[i], flags
             )
 
         scenario.update(
             status=0,
-            subnet=f"10.{address}.0.0/27"
+            subnet=f"{address}.0.0.0/27"
         )
         os.chdir("../../..")
 
-        ScenarioGroups.create(group_id=g_id, scenario_id=s_id)
+        ScenarioGroups.create(group_id=grp_id, scenario_id=scen_id)
+
 
 
 @celery.task(bind=True)
-def start(self, sid):
+def start_scenario_task(self, scenario_id):
     from edurange_refactored.user.models import Scenarios
     from edurange_refactored.utils import setAttempt
     from edurange_refactored.notification_utils import NotifyCapture
@@ -212,13 +213,10 @@ def start(self, sid):
         )
     )
     with app.test_request_context():
-        scenario = Scenarios.query.filter_by(id=sid).first()
+        scenario = Scenarios.query.filter_by(id=scenario_id).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
         name = "".join(e for e in name if e.isalnum())
-        gateway = name + "_gateway"
-        start = name + "_nat"
-        start_ip = '10.' + scenario.subnet.split('.')[1] + '.0.2'
         if int(scenario.status) != 0:
             logger.info("Invalid Status")
             NotifyCapture("Failed to start scenario " + name + ": Invalid Status")
@@ -229,10 +227,9 @@ def start(self, sid):
             os.chdir("./data/tmp/" + name)
             os.system("terraform apply network")
             os.system("terraform apply --auto-approve")
-            os.system("../../../shell_scripts/scenario_movekeys {} {} {}".format(gateway, start, start_ip))
             os.chdir("../../..")
             scenario.update(status=1)
-            scenario.update(attempt=setAttempt(sid))
+            scenario.update(attempt=setAttempt(scenario_id))
             NotifyCapture("Scenario " + name + " has started successfully.")
         else:
             #part that Jack discussed about
@@ -243,7 +240,7 @@ def start(self, sid):
 #function for grabbing notify could be made (already made in separate utils file for notification)
 
 @celery.task(bind=True)
-def stop(self, sid):
+def stop_scenario_task(self, scenario_id):
     from edurange_refactored.user.models import Scenarios
     from edurange_refactored.notification_utils import NotifyCapture
 
@@ -254,7 +251,40 @@ def stop(self, sid):
         )
     )
     with app.test_request_context():
-        scenario = Scenarios.query.filter_by(id=sid).first()
+        scenario = Scenarios.query.filter_by(id=scenario_id).first()
+        logger.info("Found Scenario: {}".format(scenario))
+        name = str(scenario.name)
+        name = "".join(e for e in name if e.isalnum())
+        if int(scenario.status) != 1:
+            logger.info("Invalid Status")
+            NotifyCapture("Failed to stop scenario " + name + ": Invalid Status")
+            flash("Scenario is not ready to start", "warning")
+        elif os.path.isdir(os.path.join("./data/tmp/", name)):
+            logger.info("Folder Found")
+            scenario.update(status=4)
+            os.chdir("./data/tmp/" + name)
+            os.system("terraform destroy --auto-approve")
+            os.chdir("../../..")
+            scenario.update(status=0)
+            NotifyCapture("Scenario " + name + " has successfully stopped.")
+        else:
+            logger.info("Something went wrong")
+            NotifyCapture("Failed to stop scenario " + name + ": Invalid Status")
+            flash("Something went wrong", "warning")
+
+@celery.task(bind=True)
+def update_scenario_task(self, scenario_id):
+    from edurange_refactored.user.models import Scenarios
+    from edurange_refactored.notification_utils import NotifyCapture
+
+    app = current_app
+    logger.info(
+        "Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}".format(
+            self.request
+        )
+    )
+    with app.test_request_context():
+        scenario = Scenarios.query.filter_by(id=scenario_id).first()
         logger.info("Found Scenario: {}".format(scenario))
         name = str(scenario.name)
         name = "".join(e for e in name if e.isalnum())
@@ -277,7 +307,7 @@ def stop(self, sid):
 
 
 @celery.task(bind=True)
-def destroy(self, sid):
+def destroy_scenario_task(self, scenario_id):
     from edurange_refactored.user.models import Scenarios, ScenarioGroups, Responses
     from edurange_refactored.notification_utils import NotifyCapture
 
@@ -288,7 +318,7 @@ def destroy(self, sid):
         )
     )
     with app.test_request_context():
-        scenario = Scenarios.query.filter_by(id=sid).first()
+        scenario = Scenarios.query.filter_by(id=scenario_id).first()
         if scenario is not None:
             logger.info("Found Scenario: {}".format(scenario))
             name = str(scenario.name)
@@ -378,17 +408,15 @@ def scenarioCollectLogs(self, arg):
         if c_name is not None and c_name != 'ago' and c_name != 'NAMES':
             if c_name.split('_')[0] is not None and c_name.split('_')[0] not in scenarios:
                 scenarios.append(c_name.split('_')[0])
+        try:  # This is dangerous, may want to substitute for subprocess.call
+            os.system(f'docker cp {c_name}:/usr/local/src/merged_logs.csv logs/{c_name}.csv')
+            os.system(f'docker cp {c_name}:/usr/local/src/raw_logs.zip logs/{c_name}.zip')
+        except FileNotFoundError as e:
+            print(f'{e}')
 
     files = subprocess.run(['ls', 'logs/'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     files = files.split('\n')[:-1]
     for s in scenarios:
-        #try:  # This is dangerous, may want to substitute for subprocess.call
-        try:
-            os.system(f'docker cp {s}_gateway:/usr/local/src/merged_logs.csv logs/{s}_gateway.csv')
-            os.system(f'docker cp {s}_gateway:/usr/local/src/raw_logs.zip logs/{s}_gateway.zip')
-        except FileNotFoundError as e:
-            print(f'{e}')
-
         if os.path.isdir(f'data/tmp/{s}'):
             try:
                 os.system(f'cat /dev/null > data/tmp/{s}/{s}-history.csv')

@@ -1,12 +1,13 @@
-
-from flask_login import login_user, logout_user
-
+import time
+from flask_login import login_user
+from flask import current_app
 from edurange_refactored.user.models import User
 from edurange_refactored.extensions import db, csrf_protect
 from edurange_refactored.flask.modules.utils.db_devHelper import get_instructor_data  # gets all the previous
+from edurange_refactored.flask.modules.utils.account_utils import register_user
 
 import secrets
-from edurange_refactored.flask.modules.db.schemas.ma_user import LoginSchema
+from edurange_refactored.flask.modules.db.schemas.user_schemas import LoginSchema, RegistrationSchema
 from flask_jwt_simple import create_jwt
 
 from flask import (
@@ -74,7 +75,7 @@ def login_edurange3():
         "user_id": validated_user_dump["id"]
         }))
     
-    # httponly=True ; mitigate XSS attacks by blinding JS to the value
+    # httponly=True ; this property mitigates XSS attacks by 'blinding' JS to the value
     login_return.set_cookie(
         'edurange3_jwt', 
         token_return, 
@@ -91,6 +92,20 @@ def login_edurange3():
         path='/edurange3/'
 )
     return login_return
+
+@blueprint_edurange3_public.route("/register", methods=["POST"])
+def registration():
+    
+    validation_schema = RegistrationSchema()  # instantiate validation schema
+    validated_data = validation_schema.load(request.json) # validate registration. reject if bad.
+    
+    existing_db_user = User.query.filter_by(username=validated_data["username"]).first()
+    
+    if existing_db_user is None:
+        print("existing db user was not found, trying to create with: ", validated_data)
+        register_user(validated_data) # register user in the database
+        return jsonify({"response":"account successfully registered"})
+    else: return jsonify({"response":"user already exists. account NOT registered"})
 
 # handles all other non-login requests to base URL (non-protected)
 @blueprint_edurange3_public.route("/", defaults={'path': ''}, methods=["GET"])

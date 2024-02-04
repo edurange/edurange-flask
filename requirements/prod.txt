@@ -59,3 +59,6 @@ Flask-JWT-Simple==0.0.3
 marshmallow==3.20.1
 marshmallow-sqlalchemy==0.29.0
 flask-marshmallow==0.15.0
+
+# Docker
+docker==6.1.3
