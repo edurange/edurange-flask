@@ -66,7 +66,7 @@ def admin_test():
     current_user_role = g.current_user_role
     return jsonify ({"message":"this is /admin_test"})
 
-# seems to be redundant and uncessesary -exoriparian 1/31/24
+# probably deprecated; seems to be redundant and uncessesary -exoriparian 1/31/24
 # @blueprint_edurange3_admin.route("/generate_registration_code", methods=["POST"])
 # @jwt_and_csrf_required
 # def generate_registration_code():
