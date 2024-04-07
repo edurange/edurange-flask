@@ -1,7 +1,7 @@
-'''
+"""
 milestone tagger
 
-'''
+"""
 import sys
 import yaml
 import pprint
@@ -9,20 +9,22 @@ import csv
 import re
 import numpy as np
 import os
+import enum
 
 
 ERRORS = [
-        "Invalid mode",
-        "Invalid option",
-        "No such file or directory",
-        "Permission denied",
-        "Command Interrupted ^C",
-        "Segmentation Fault (Core Dumped)",
-        "Syntax Error",
-        "Out of memory",
-        "Command not found",
-        "Argument list too long",
-        ]
+    "Invalid mode",
+    "Invalid option",
+    "No such file or directory",
+    "Permission denied",
+    "Command Interrupted ^C",
+    "Segmentation Fault (Core Dumped)",
+    "Syntax Error",
+    "Out of memory",
+    "Command not found",
+    "Argument list too long",
+]
+
 
 def detect_error(output_line, ERRORS):
     error_tag = "s"
@@ -31,13 +33,13 @@ def detect_error(output_line, ERRORS):
             error_tag = "f"
     return error_tag
 
+
 def detect_overflow(output_line):
-    #TODO
+    # TODO
     pass
 
 
-
-def levenshtein(s, t):            #checks similarities between two words
+def levenshtein(s, t):  # checks similarities between two words
     rows = len(s) + 1
     cols = len(t) + 1
     deletes = 1
@@ -45,37 +47,42 @@ def levenshtein(s, t):            #checks similarities between two words
     substitutes = 1
     dist = [[0 for x in range(cols)] for x in range(rows)]
 
-    for row in range(1,rows):
+    for row in range(1, rows):
         dist[row][0] = row * deletes
     for col in range(1, cols):
         dist[0][col] = col * inserts
-    for col in range(1,cols):
-        for row in range(1,rows):
-            if s[row-1] == t[col-1]:
+    for col in range(1, cols):
+        for row in range(1, rows):
+            if s[row - 1] == t[col - 1]:
                 cost = 0
             else:
                 cost = substitutes
-            dist[row][col] = min(dist[row-1][col] + deletes, dist[row][col-1] + inserts, dist[row-1][col-1] + cost)
+            dist[row][col] = min(
+                dist[row - 1][col] + deletes,
+                dist[row][col - 1] + inserts,
+                dist[row - 1][col - 1] + cost,
+            )
     return dist[row][col]
 
-def apply_regexes(regex_list, csv_line, milestone_bitvector):
 
+def apply_regexes(regex_list, csv_line, milestone_bitvector):
     stdin = ""
     if len(csv_line) >= 4:
         stdin = csv_line[4]
-        command, args = parse_stdin(stdin)       
-        
+        command, args = parse_stdin(stdin)
+
     for milestone, r in enumerate(regex_list.values()):
         potential_match = re.match(r, stdin)
-        
+
         distance = levenshtein(r, stdin)
         print(distance)
 
         if potential_match is not None:
             milestone_bitvector[milestone] = 1
-            #print(potential_match)
+            # print(potential_match)
 
     print(milestone_bitvector)
+
 
 def parse_stdin(stdin_line):
     command = ""
@@ -96,47 +103,61 @@ def decompose_line(line):
         5: Output (Contains newlines)
         6: Prompt (user@hostname)
     """
-    #print(line)
+    # print(line)
     try:
         components = {
-                "hostname": line[1],
-                "timestamp": line[2],
-                "directory": line[3],
-                "stdin" : line[4],
-                "output": line[5],
-                "prompt": line[6]
-                }
+            "hostname": line[1],
+            "timestamp": line[2],
+            "directory": line[3],
+            "stdin": line[4],
+            "output": line[5],
+            "prompt": line[6],
+        }
         return components
 
     except IndexError:
         print("Found incomplete log line")
-        #exit(0)
+        # exit(0)
 
+
+# assumes the input starts with the command, probably not ideal since the user
+# might have multiple ways to use the command that this would not match
 def handle_input_milestone(mstone, line):
-    # TODO 
-    #print("Found INPUT")
-    pass
+    result = False
+    cmd = mstone["Command"]
+    args = mstone["Args"].split(" ")
+    found_input = line["stdin"]
+
+    if found_input.startswith(cmd) and all([x in found_input for x in args]):
+        return True
+    return result
+
 
 def handle_output_milestone(mstone, line):
-    # TODO 
-
+    # TODO
+    result = False
     desired_output = str(mstone["Output"])
     found_output = line["output"]
 
-    print(f"Checking Line: {line}")
-    print(f"Want output: {desired_output}")
-    print(f"Found output: {found_output}\n")
-
     if desired_output in found_output:
-        print("MATCHED OUTPUT")
-        exit(0)
+        result = True
+    return result
 
-    pass
 
-def handle_compound_milestone(mstone, line):
-    # TODO 
-    #print("Found COMPOUND")
-    pass
+# assumes a compound milestones is defined after it's requirements
+def handle_compound_milestone(mstone, bitvector):
+    # TODO
+    result = False
+    reqs = mstone["Requirements"].split(",")
+    reqs = (reqs[0].strip(), reqs[1].strip())
+    if mstone["Operator"] == "AND":
+        result = bitvector[reqs[0]] and bitvector[reqs[1]]
+    elif mstone["Operator"] == "OR":
+        result = bitvector[reqs[0]] or bitvector[reqs[1]]
+    else:
+        raise Exception("Unimplemented Operator")
+
+    return result
 
 
 def process_logs(log_dir, milestones):
@@ -146,45 +167,44 @@ def process_logs(log_dir, milestones):
         if filename.endswith(".csv"):
             process_student_log(log_dir, filename, milestones)
 
+
 def process_student_log(log_dir, filename, milestones):
-        with open(os.path.join(log_dir, filename), 'r') as csv_file:
-            reader = list(csv.reader(csv_file, delimiter=',', quotechar='%', quoting=csv.QUOTE_MINIMAL))
+    with open(os.path.join(log_dir, filename), "r") as csv_file:
+        reader = list(
+            csv.reader(
+                csv_file, delimiter=",", quotechar="%", quoting=csv.QUOTE_MINIMAL
+            )
+        )
 
-            #print(reader)
-            #print(filename)
-            #print(milestones)
+    milestone_bitvector = {ms["Label"]: 0 for ms in milestones}
+    for l in reader:
+        line = decompose_line(l)
+        # print(line)
+        if line is None:
+            continue
+        for i, mstone in enumerate(milestones):
+            mstone_type = mstone["Type"]
+            # Breaks if not on python 3.10 TODO update docker images
+            match mstone_type:
+                case "Input":
+                    milestone_bitvector[i] = int(handle_input_milestone(mstone, line))
 
+                case "Output":
+                    milestone_bitvector[i] = int(handle_output_milestone(mstone, line))
 
-            for l in reader:
-                line = decompose_line(l)
-                #print(line)
-                if line is None:
-                    continue
+                case "Compound":
+                    milestone_bitvector[i] = int(
+                        handle_compound_milestone(mstone, milestone_bitvector)
+                    )
 
-                for i, mstone in enumerate(milestones):
-                    print(mstone)
-                    mstone_type = mstone["Type"]
-                    # Breaks if not on python 3.10 TODO update docker images
-                    match mstone_type:
-                        case 'Input':
-                            handle_input_milestone(mstone, line)
+                case _:
+                    raise Exception("Unknown Milestone Type Encountered")
 
-                        case "Output":
-                            handle_output_milestone(mstone, line)
-
-                        case "Compound":
-                            handle_compound_milestone(mstone, line)
-
-                        case _:
-                            raise Exception("Unknown Milestone Type Encountered")
-
-                    #print(type(m))
-
-
+                # print(type(m))
 
 
 if __name__ == "__main__":
-    '''
+    """
   Milestone file is a .yml file
 
   Old finished tagged product:
@@ -195,7 +215,7 @@ if __name__ == "__main__":
     editme  final-mission  followMe  i  stuff  textfiles  toLearn
     devuser1@NAT%,devuser1@NAT:~
 
-  '''
+  """
     """
   for k, cmd in enumerate(stdin):
             if k == 0 or stdin[0] == 'sessions':
@@ -213,7 +233,7 @@ if __name__ == "__main__":
 
     pp = pprint.PrettyPrinter(indent=4)
     if len(sys.argv) != 4:
-        print('usage:\n milestone_tagger.py <log_dir> <milestone_file> <out_dir>')
+        print("usage:\n milestone_tagger.py <log_dir> <milestone_file> <out_dir>")
         exit(1)
 
     # Read Arguments
@@ -223,31 +243,11 @@ if __name__ == "__main__":
 
     with open(milestone_file, "r") as yml:
         document = yaml.full_load(yml)
-        
-        #pp.pprint(document[0])
-        
         # Create the list of milestones, each milestone is a dictionary
         milestones = document[0]["Milestones"]["Prototype"]
-        
-        #print(regexes.keys())
-
-        #for item in regexes.items():
-        #    print(item[1])
 
     process_logs(log_dir, milestones)
 
-    
-
-    #pp.pprint(reader)
-    
-
-   
-    
-    #num_milestones = len(regexes)
-    #milestone_bitvector = np.zeros(num_milestones)
-
-   # for row in reader:
-   #     apply_regexes(regexes, row, milestone_bitvector)
-
-    #print(untagged)
-    #print(regexes)
+    # pp.pprint(reader)
+    # num_milestones = len(regexes)
+    # milestone_bitvector = np.zeros(num_milestones)
