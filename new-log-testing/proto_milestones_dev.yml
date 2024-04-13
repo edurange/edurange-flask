@@ -1,84 +1,87 @@
 # Milestone file will be preprocessed to replace OCTET
+# labels(types): input, output, compound
+# currently no way to have a sub goal of a compound not be directly related to
+# the current line, but a general sense of the user having achieved something
 
-- Milestones:
-    Prototype:
-      - Label: M1
-        Type: Input
-        Objective: ssh with -p and correct port
-        Command: ssh
-        Args: '10.12.0.7 -p 123'
-        Strictness: FullMatch
-      - Label: M2
-        Type: Input
-        Objective: nmap to find next ip
-        Command: nmap
-        Args: '*'
-      - Label: M3
-        Type: Output
-        Objective: display correct ip ending in 13
-        Output: 10.12.0.13
-      - Label: M4
-        Type: Compound
-        Objective: use nmap to display next ip
-        Requirements: M2, M3
-        Operator: AND
-      - Label: M5
-        Type: Input
-        Objective: ssh with -i and identity file
-        Command: ssh
-        Args: <user>@10.OCTET.0.10 -i id_rsa
-        Strictness: FullMatch
-      - Label: M6
-        Type: Output
-        Objective: find the password to fourth stop
-        Output: 7035efa5
-      - Label: M7
-        Type: Input
-        Objective: ssh from non-blocked ip to fourth stop
-        Command: ssh
-        Hostname: NOT ThirdStop
-        Args: <user>@10.OCTET.0.14 -p <port>
-        Strictness: FullMatch
-      - Label: M8
-        Type: Output
-        Objective: retrieve the hint from the FTP server
-        Output: 'decryption_password: 8fddakjfds0s9f'
-      - Label: M9
-        Type: Output
-        Objective: Succesfully decrypted fifth stop password
-        Output: '95541890'
-      - Label: M10
-        Type: Input
-        Objective: use base64 decode to find the final password
-        Command: base64
-        Hostname: FifthStop
-        Args: --decode -d betcha_cant_read_me
-        Strictness: FullMatch
-      - Label: M11
-        Type: Output
-        Objective: Read betcha_cant_read_me
-        Output: You found me. Good job. 
-      - Label: M12
-        Type: Compound
-        Objective: read betcha_cant_read_me using base64
-        Requirements: M10, M11
-        Operator: AND
-      - Label: M13
-        Type: Input
-        Objective: list the files before getting kicked
-        Command: ssh 
-        Hostname: FifthStop
-        Args: 10.OCTET.0.17 ls
-        Strictness: FullMatch
-      - Label: M14
-        Type: Input
-        Objective: read the final flag before getting kicked
-        Command: ssh 
-        Hostname: FifthStop
-        Args: 10.OCTET.0.17 cat final_flag
-        Strictness: FullMatch
-      - Label: M15
-        Type: Compound
-        Objective: retrieve the final flag
-        Requirements: M13, M14
-        Operator: AND
+- !Node
+  objective: ssh with -p and correct port
+  label: input
+  value: ssh 10.OCTET.0.7 -p 123
+  strictness: full
+
+- !Node
+  objective: use nmap to display next ip/reach next host
+  label: compound
+  value: OR
+  left: !Node
+    label: input
+    value: nmap
+  right: !Node
+    label: output
+    value: 10.OCTET.0.13
+
+- !Node
+  objective: something
+  label: compound
+  value: OR
+  left:
+    !Node
+    label: input
+    value: something
+  right: !Node
+    label: compound
+    value: AND
+    left: !Node
+      label: input
+      value: something else
+    right: !Node
+      label: output
+      value: fffff
+
+- !Node
+  label: input
+  objective: ssh with -i and identity file
+  value: ssh 10.OCTET.0.10 -i id_rsa
+  strictness: FullMatch
+
+- !Node
+  label: output
+  objective: find the password to fourth stop
+  value: 7035efa5
+
+- !Node
+  label: input
+  objective: ssh from non-blocked ip to fourth stop
+  value: ssh 10.OCTET.0.14 -p <port>
+  hostname: NOT thirdstop
+  strictness: FullMatch
+
+- !Node
+  label: output
+  objective: retrieve the hint from the FTP server
+  value: 'decryption_password: 8fddakjfds0s9f'
+
+- !Node
+  label: output
+  objective: Succesfully decrypt fifth stop password
+  value: '95541890'
+
+- !Node
+  label: compound
+  objective: read betcha_cant_read_me using base64
+  left: !Node
+    label: input
+    value: base64 --decode -d betcha_cant_read_me
+    hostname: FifthStop
+    strictness: FullMatch
+  right: !Node
+    label: output
+    value: You found me. Good job.
+  value: AND
+
+- !Node
+  label: output
+  objective: read final flag
+  value: 'ZLKDOXQP VLR XOB QEB PPE FKZBMQFLK JXPQBO. Ebob fp vlro mollc: 5y2687a5'
+  hostname: FifthStop
+  strictness: FullMatch
