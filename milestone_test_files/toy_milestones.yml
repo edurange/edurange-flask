@@ -1,0 +1,27 @@
+- label: M1
+  objective: be a milestone
+  comment: is present but inconsequential
+  input: foo
+  output: foo
+  
+- label: M2
+  objective: demonstrate that the comment parameter is not required
+  input: foo
+  not:
+    output: bar
+    
+- label: M3
+  objective: previously found milestones can be checked
+  found: M2
+  
+- label: M4
+  objective: demonstrate that search strings can be regexes
+  output: ba*
+  
+- label: M5
+  comment: the objective parameter is also not required
+  found: M1
+  output: a
+  
+- comment: labels will be automatically created if not provided
+  input: bar
