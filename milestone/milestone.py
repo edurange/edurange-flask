@@ -5,6 +5,8 @@ try: # Use the C-native implementation if it's available
 except ImportError:
     from yaml import Loader
 from itertools import count
+from regex import search
+from numpy import arctan, pi
 
 USER = 'user'
 TIMESTAMP = 'timestamp'
@@ -126,6 +128,103 @@ def label_anonymous_milestones(milestones):
 
 def load_milestones(filename):
   return label_anonymous_milestones(load_yaml(filename))
+
+# Expression parsing helpers
+def to_arg_list(value_parameters):
+  """
+  Makes things into lists so we can use yaml attributes like n-tree 
+  nodes
+  """
+  args = []
+  if isinstance(value_parameters, list):
+    args = value_parameters
+  elif isinstance(value_parameters, dict):
+    # derivatives can parse options/keywords here
+    # 'args' isn't guaranteed to be a list - is this a problem?
+    args = value_parameters['args']
+  else:
+    args = [value_parameters]
+  return args
+  
+def to_arg_dict(value_parameters):
+  """
+  Packs lists and literals into a dict so that parse methods can have 
+  standardized patterns for parameter handling
+  """
+  if isinstance(value_paramters, dict):
+    return value_parameters
+  else:
+    return {'args': to_arg_list(value_parameters)}
+
+# Regex search helpers
+def fuzzy_regex(string_pattern):
+  """
+  Wraps a simple regex search string with the proper parameterization 
+  to use with the fuzzy matching provided by regex.search. Permits some 
+  simple wildcard pattern features but likely does not support all 
+  regexes due to the nesting of pattern in the return value.
+  """
+  return f'(?:{pattern})' + r'{e}(?b)'
+  # Is f'(?:{pattern}){"{e}"}(?b)' clearer?
+
+def search_node(value_parameters, string):
+  """Dispatches regex.search over a string of text"""
+  # Add search options and/or wrap this method with more advanced 
+  # behavior later
+  patterns = to_arg_list(value_parameters)
+  return [search(fuzzy_regex(pattern), string) for pattern in patterns]
+
+# Error ranking/match metric helpers
+"""
+First we need a way of converting a Levenshtein-type distance metric 
+[0,inf) to a finite interval. Using such a mapping, we can create a 
+"correctness" metric that can be sensibly compared to finite sets of 
+logical criteria. This will allow us to mix Levenshtein distances with 
+"completeness" scoring strategies for logical operations. Generally, 
+these mappings should have f(0) = 1 (no errors = 100% correct), 
+lim(f(x)) -> 0 as x approaches infinty, and be 
+order-preserving/monotonic (strictly decreasing over the interval ie a 
+negative derivative).
+
+This is a naive approach! In practice with partial matches allowed (the 
+default regex search behavior) the maximum possible Levenshtein 
+distance will be n for a pattern of n literal characters - one 
+insertion or replacement for each character. (Potentially less for 
+patterns of length n that include escaped or interpreted characters, 
+but also as many as infinite for wildcards of unconstrained 
+length/repetition.)
+
+It may be preferable to normalize the Levenshtein distance relative to 
+the length of the pattern in some applications. At other times it 
+should be sufficient, and perhaps more versatile, to use an 
+order-preserving interval mapping as described above. One strategy 
+would be to disallow infinite length regexes in basic search strings, 
+and create a wildcard mechanism at the parser level. This would make it 
+trivial to identify expressions with potentially infinite distance 
+values and handle their normalization separately.
+"""
+def multiplicative_inverse(num):
+  """
+  Maps [0,inf) to [1,0) using the multiplicative inverse: 1 / (1 + num)
+  """
+  return 1 / (1 + num)
+  
+def normalized_arctan(num):
+  """Maps [0,inf) to [1,0) using the inverse tangent"""
+  return 1 - 2 * arctan(num) / pi
+
+def relative_match(match_obj):
+  """
+  Returns a value from [1,0] based on Levenshtein edit distance of a 
+  regex.Match object; normalizes the distance by inferring the length 
+  of the target search string based on the length of the partial match 
+  and the number of edits.
+  """
+  match_length = len(match_obj.captures()[0])
+  counts = match_obj.fuzzy_counts()
+  net_chars_added = counts[1] - counts[2]
+  target_length = match_length + net_chars_added
+  return (target_length + sum(counts)) / target_length
   
 """
 Questions:
@@ -135,7 +234,14 @@ Questions:
   - Double dicts and other such nested iterators are discouraged - 
     should we consider a class interface for the return structure? Or 
     switch to a numpy matrix/pandas dataframe?
+Note:
+  - regex.Match objects maintain a copy of/reference to the original 
+    search string. This could become a memory issue.
 To Do:
   - Consolidate IndexError try blocks in yield_log.
   - Consider pandas for normalizing log and output representations.
+  - Experiment with regex.Match to better distinguish between the 
+    BESTMATCH and ENHANCEMATCH options; documentation mostly shows use 
+    examples and does not clearly define the difference between the 
+    two; likely need to examine the module source.
 """

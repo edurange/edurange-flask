@@ -1,5 +1,5 @@
 from collections import defaultdict
-from re import search
+from regex import search
 from yaml import load
 try:
     from yaml import CLoader as Loader
@@ -26,13 +26,28 @@ def to_arg_list(value_parameters):
     args = value_parameters
   elif isinstance(value_parameters, dict):
     # derivatives can parse options/keywords here
+    # 'args' isn't guaranteed to be a list - is this a problem?
     args = value_parameters['args']
   else:
     args = [value_parameters]
   return args
+  
+def to_arg_dict(value_parameters):
+  """
+  packs lists and literals into a dict so that parse methods can have 
+  standardized patterns for parameter handling
+  """
+  args = value_parameters
+  if not isinstance(value_parameters, dict):
+    args['args'] = to_arg_list(value_parameters)
+  return args
+  # if isinstance(value_paramters, dict):
+  #   return value_parameters
+  # else:
+  #   return {'args': to_arg_list(value_parameters)}
 
 def search_node(value_parameters, search_content):
-  """helper function to dispatch re.search over log text"""
+  """helper function to dispatch regex.search over log text"""
   search_strings = to_arg_list(value_parameters)
   matched = False
   for string_pattern in search_strings:
@@ -45,22 +60,21 @@ def label(milestone):
   return milestone['label']
 # end helpers
 
-def check_milestones(milestones_deserialized, log_data):
+def check_milestones(milestones_deserialized, log_stream):
   """"""
   found = defaultdict(list)
-  
-  class Dispatcher(dict):
-    """a custom defaultdict with a parameterized default factory"""
-    def __missing__(self, key):
-      def template_handler(*args):
-        print('Dispatcher:', key, 'not found - ignoring...')
-        return False
-      self[key] = template_handler
-      return self[key]
-  parse_dispatcher = Dispatcher()
+  parse_dispatcher = {}
   
   # these methods are responsible for parsing nodes of the milestone 
   # expression trees - helpers first
+  def dispatch(key, value_parameters, log_line):
+    try:
+      parse_method = parse_dispatcher[key]
+    except KeyError:
+      print(f'dispatch: {key} not found - ignoring...')
+      return False
+    return parse_method(value_parameters, log_line)
+    
   def fan_subnodes(expression_node, log_line):
     """fan and dispatch subexpression nodes"""
     results = []
@@ -69,7 +83,7 @@ def check_milestones(milestones_deserialized, log_data):
       if key in ['label', 'objective', 'comment']:
         continue
       else:
-        sub_result = parse_dispatcher[key](value_parameters, log_line)
+        sub_result = dispatch(key, value_parameters, log_line)
         results.append(sub_result)
     return results
   
@@ -91,7 +105,6 @@ def check_milestones(milestones_deserialized, log_data):
     the same line pass due to unpredictable dictionary ordering in 
     earlier Python implementations
     """
-    nonlocal found
     search_labels = to_arg_list(value_parameters)
     results = [label for label in search_labels if label in 
                 found.keys()]
@@ -146,12 +159,11 @@ def check_milestones(milestones_deserialized, log_data):
         matched = False
     return matched
   
-  # could fold these fors using itertools.product - clearer like this?
-  for line_index, log_line in enumerate(log_data):
+  for line_index, log_line in log_stream:
     for milestone in milestones_deserialized:
       if match_milestone(milestone, log_line):
         found[label(milestone)].append(line_index)
-  return found
+    yield found
 
 
 
@@ -163,7 +175,7 @@ if __name__ == '__main__':
     try:
       file = open(filename)
     except IOError:
-      print('load_yaml: ', filename, ' not found')
+      print(f'load_yaml: {filename} not found')
       quit()
     
     yaml_collection = load(file, Loader=Loader)
@@ -171,29 +183,21 @@ if __name__ == '__main__':
     
     return yaml_collection
     
-  def load_csv(filename):
-    """creates a list of strings according to a csv file"""
-    try:
-      file = open(filename, newline='')
-    except IOError:
-      print('load_csv: ', filename, ' not found')
-      quit()
-    
-    reader_object = csvreader(file, delimiter=',')
-    csv_list = list(reader_object)
-    file.close()
-    
-    return csv_list
+  def stream_csv(filename):
+    """generates a list of strings according to a csv file"""
+    with open(filename, newline='') as stream:
+      for line in csvreader(stream, delimiter=','):
+        yield line
   # end helpers
     
   milestones_deserialized = load_yaml('milestones.yml')
   print(milestones_deserialized)
   
-  log_data = load_csv('log.csv')
-  print(log_data)
+  log_stream = enumerate(stream_csv('log.csv'))
+  print(log_stream)
   
-  found = check_milestones(milestones_deserialized, log_data)
-  print(found)
+  for found in check_milestones(milestones_deserialized, log_stream):
+    print(found)
   
 # Thoughts:
 #
