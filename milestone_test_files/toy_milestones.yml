@@ -25,3 +25,11 @@
   
 - comment: labels will be automatically created if not provided
   input: bar
+  
+- objective: see if yaml can have multiple properties of the same name
+  and:
+    input: foo
+    input: bar
+  or:
+    - input: baz
+    - input: bleep

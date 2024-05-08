@@ -1,3 +1,4 @@
+from warnings import warn
 from csv import reader as csvreader
 from yaml import load as yamlloader
 try: # Use the C-native implementation if it's available
@@ -5,6 +6,7 @@ try: # Use the C-native implementation if it's available
 except ImportError:
     from yaml import Loader
 from itertools import count
+from collections import defaultdict
 from regex import search
 from numpy import arctan, pi
 
@@ -13,6 +15,16 @@ TIMESTAMP = 'timestamp'
 NODE = 'node'
 INPUT = 'input'
 OUTPUT = 'output'
+
+# Exception/error/warning hierarchy
+class TaggerWarning(Warning):
+  pass
+  
+class TokenHandlerNotFoundWarning(TaggerWarning):
+  pass
+
+class IncompleteLogRowWarning(TaggerWarning):
+  pass
 
 # Log handling helpers
 def object_identity(obj):
@@ -23,7 +35,7 @@ def remove_null_bytes(string):
 
 def yield_csv(
     filename, delimiter='|', quotechar='%', 
-    filter_f = object_identity):
+    filter_f=object_identity):
   """
   Generates a list of strings according to a csv file. Provide filter_f  
   a function str -> str to pre-process the input text (eg for error 
@@ -45,21 +57,26 @@ def yield_log(filename):
   """
   # Sample logs have null bytes which csv.reader cannot handle, so I'm 
   # providing a filter function to use before csv.reader gets the input
-  for line in yield_csv(filename, filter_f=remove_null_bytes):
+  log_iterator = yield_csv(filename, filter_f=remove_null_bytes)
+  for i, line in enumerate(log_iterator):
+    err = False
     try: # This version is very permissive of bad log lines
       user_text = line[1]
     except IndexError:
       user_text = ''
+      err = True
     
     try:
       timestamp_text = line[3]
     except IndexError:
       timestamp_text = ''
+      err = True
     
     try:
       prompt = line[6].split(':')
     except IndexError:
       prompt = ['', '']
+      err = True
     
     node_text = prompt[0]
     
@@ -67,11 +84,17 @@ def yield_log(filename):
       input_text = prompt[1]
     except IndexError:
       input_text = ''
+      err = True
       
     try:
       output_text = line[7]
     except IndexError:
       output_text = ''
+      err = True
+      
+    if err:
+      warn(f'line {i}', IncompleteLogRowWarning)
+      print(f'yield_log: Encountered incomplete row at line {i}')
       
     yield {
             USER: user_text,
@@ -117,7 +140,7 @@ def load_yaml(filename):
 def label_anonymous_milestones(milestones):
   """
   Adds a 'label' key-value pair to each dict in a list of milestone 
-  dicts, if 'label' was not already present
+  dicts, if 'label' was not already present.
   """
   num = count()
   for milestone in milestones:
@@ -128,33 +151,6 @@ def label_anonymous_milestones(milestones):
 
 def load_milestones(filename):
   return label_anonymous_milestones(load_yaml(filename))
-
-# Expression parsing helpers
-def to_arg_list(value_parameters):
-  """
-  Makes things into lists so we can use yaml attributes like n-tree 
-  nodes
-  """
-  args = []
-  if isinstance(value_parameters, list):
-    args = value_parameters
-  elif isinstance(value_parameters, dict):
-    # derivatives can parse options/keywords here
-    # 'args' isn't guaranteed to be a list - is this a problem?
-    args = value_parameters['args']
-  else:
-    args = [value_parameters]
-  return args
-  
-def to_arg_dict(value_parameters):
-  """
-  Packs lists and literals into a dict so that parse methods can have 
-  standardized patterns for parameter handling
-  """
-  if isinstance(value_paramters, dict):
-    return value_parameters
-  else:
-    return {'args': to_arg_list(value_parameters)}
 
 # Regex search helpers
 def fuzzy_regex(string_pattern):
@@ -171,8 +167,10 @@ def search_node(value_parameters, string):
   """Dispatches regex.search over a string of text"""
   # Add search options and/or wrap this method with more advanced 
   # behavior later
-  patterns = to_arg_list(value_parameters)
-  return [search(fuzzy_regex(pattern), string) for pattern in patterns]
+  terms = to_arg_list(value_parameters)
+  patterns = [fuzzy_regex(term) for term in terms]
+  matches = [search(pattern, string) for pattern in patterns]
+  return zip(terms, matches)
 
 # Error ranking/match metric helpers
 """
@@ -224,7 +222,183 @@ def relative_match(match_obj):
   counts = match_obj.fuzzy_counts()
   net_chars_added = counts[1] - counts[2]
   target_length = match_length + net_chars_added
-  return (target_length + sum(counts)) / target_length
+  return (target_length - sum(counts)) / target_length
+  
+def relative_search(value_parameters, string):
+  """Applies relative_match to search_node"""
+  match_pairs = search_node(value_parameters)
+  match_ranks = [(term, relative_match(match_obj)) for term, match_obj 
+                  in match_pairs]
+  best_rank = max([rank for _, rank in match_ranks])
+  trace_structure = to_arg_dict(match_ranks)
+  return best_rank, trace_structure
+  
+# Expression tree helpers
+def to_arg_list(value_parameters):
+  """
+  Makes things into lists so we can traverse YAML attribute structures 
+  like n-tree nodes. By wrapping all primitive values as singleton 
+  lists, parse methods can avoid type checking and handle all such 
+  values as iterable collections.
+  """
+  args = []
+  if isinstance(value_parameters, list):
+    args = value_parameters
+  elif isinstance(value_parameters, dict):
+    # derivatives can parse options/keywords here
+    # 'args' isn't guaranteed to be a list - is this a problem?
+    args = value_parameters['args']
+  else:
+    args = [value_parameters]
+  return args
+  
+def to_arg_dict(value_parameters):
+  """
+  Packs lists and literals into a dict so that parse methods can always 
+  look for their arguments under the key 'args' and implement 
+  standardized patterns for parameter handling.
+  """
+  if isinstance(value_parameters, dict):
+    return value_parameters
+  else:
+    return {'args': to_arg_list(value_parameters)}
+
+# Token dispatcher and instruction evaluators
+"""
+The idea is to create an interpreter that returns trees (expressed as 
+dicts) with each node annotated with the intermediate return value of 
+each subexpression - essentially a trace of the evaluation, rather than 
+just the final computed value. When the trace doesn't need to be saved, 
+the final value is easily extracted and the rest discarded. Preserving 
+the traces will hopefully assist in the development of better search 
+macros and error metrics.
+
+No policy yet on what should happen if an instruction token is not 
+found. For now we can simply complain to the error log and return a 
+true (1.0 aka 100% truth confidence) value to the expression evaluator.
+""" 
+class DispatchDict(dict):
+  """
+  DispatchDict overrides the __missing__ method to report parameterized 
+  error messages and return a default value when a key is not found.
+  """
+  def __missing__(self, key):
+    warn(f'{key}', TokenHandlerNotFoundWarning)
+    print(f'DispatchDict: key "{key}" not found, continuing...')
+    return (1.0, {})
+
+# This is a global-level object that should be wrapped in production
+dispatch = DispatchDict()
+
+def fan_subnodes(expression_node, log_line):
+  """
+  Fan and dispatch subexpression nodes, returning a list of tuples of 
+  the key and the result of the subexpression.
+  """
+  results = {}
+  for key, value_parameters in expression_node.items():
+    # Omit or save/process special properties such as label
+    if key in ['label', 'objective', 'comment']:
+      continue
+    else:
+      results[key] = dispatch[key](value_parameters, log_line)
+  return results
+  
+# Token interpreter methods
+"""
+Token interpreters should return a confidence value [0,1] and the trace 
+trees of the parameters and/or subnodes; fan_subnodes then wraps the 
+result in a dict of result, subnode tuples.
+"""
+def token_input(value_parameters, log_line):
+  """Search the input portion of log_line"""
+  return relative_search(value_parameters, log_line[INPUT])
+  
+def token_output(value_parameters, log_line):
+  """Search the output portion of log_line"""
+  return relative_search(value_parameters, log_line[OUTPUT])
+  
+def token_node(value_parameters, log_line):
+  """Search the output portion of log_line"""
+  return relative_search(value_parameters, log_line[NODE])
+  
+# This is a global-level object that should be wrapped in production
+matched = defaultdict(list)
+def token_matched(value_parameters, _):
+  """
+  Checks the matched record; returns n / m where n is the number of 
+  milestone labels found in the matched record and m is the number of 
+  labels searched for.
+  """
+  """
+  Note that results may be inconsistent for milestones matched on the 
+  same line pass due to unpredictable dictionary ordering in earlier 
+  Python implementations.
+  """
+  search_labels = to_arg_list(value_parameters)
+  if search_labels.len() == 0:
+    return 0.0, {}
+  results = [1.0 if label in matched.keys() else 0.0 for label 
+              in search_labels]
+  trace_structure = to_arg_dict(zip(search_labels, results))
+  return sum(*results) / search_labels.len(), trace_structure
+
+def token_and(value_parameters, log_line):
+  """
+  Performs n-ary and on the subnodes of value_parameters. Returns 1.0 
+  (true/full confidence) when all subnodes are true/full confidence; 
+  returns the normalized sum (mean average) of the confidence values 
+  otherwise.
+  """
+  trace_structure = fan_subnodes(value_parameters, log_line)
+  results = trace_structure.values()
+  subrank_sum = sum([subnode_rank for subnode_rank, _ in results])
+  rank = subrank_sum / results.len()
+  return rank, trace_structure
+  
+def token_or(value_parameters, log_line):
+  """
+  Performs n-ary or on the subnodes of value_parameters. Returns 1.0 
+  (true/full confidence) if any subnode is true/full confidence; 
+  the maximum found confidence value otherwise.
+  """
+  trace_structure = fan_subnodes(value_parameters, log_line)
+  results = trace_structure.values()
+  ranks = [subrank for subrank, _ in results]
+  rank = max(ranks)
+  return rank, trace_structure
+  
+def token_not(value_parameters, log_line):
+  """Boolean negation of the n-ary and of value_parameters"""
+  result, trace_structure = parse_and(value_parameters, log_line)
+  rank = 1.0 - result
+  return result, trace_structure
+# end parse methods
+
+dispatch |= {
+    'input': token_input,
+    'output': token_output,
+    'node': token_node,
+    'matched': token_matched,
+    'and': token_and,
+    'or': token_or,
+    'not': token_not
+    }
+
+# Milestone interpreter methods
+def eval_milestone(milestone, log_line):
+  """Evaluates one milestone against one line"""
+  trace_structure = fan_subnodes(milestone, log_line)
+  result, _ = token_and(trace_structure, log_line)
+  trace_structure['label'] = milestone['label']
+  return result, trace_structure
+
+def milestone_tagger(milestones_deserialized, log_iterable):
+  for line_index, log_line in log_iterable:
+    for milestone in milestones_deserialized:
+      if eval_milestone(milestone, log_line) == 1.0:
+        found[label(milestone)].append(line_index)
+    yield found
   
 """
 Questions:
@@ -234,6 +408,10 @@ Questions:
   - Double dicts and other such nested iterators are discouraged - 
     should we consider a class interface for the return structure? Or 
     switch to a numpy matrix/pandas dataframe?
+  - Is deleting null bytes the right approach for preparing the log 
+    CSVs? Do the null bytes mean something in the original encoding?
+  - Can log_line be factored out safely as a global? Is this possible 
+    with a simple global or is a protection/scoping scheme needed?
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue.
@@ -244,4 +422,11 @@ To Do:
     BESTMATCH and ENHANCEMATCH options; documentation mostly shows use 
     examples and does not clearly define the difference between the 
     two; likely need to examine the module source.
+  - Verify this version is well-behaved in the case of multiple 
+    milestones matching on the same line.
+  - Add exception raising/error output for file handlers, especially 
+    yield_log.
+  - Verify the reasoning behind relative_match, particularly that 
+    sum(counts) will never exceed target_length.
+  - Work out unifying terminology for module.
 """
