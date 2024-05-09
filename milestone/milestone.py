@@ -195,7 +195,6 @@ def search_macro(value_parameters, string):
   """Dispatches regex.search over a string of text"""
   # Add search options and/or wrap this method with more advanced 
   # behavior later
-  print(string)
   terms = to_arg_list(value_parameters)
   patterns = [fuzzy_regex(term) for term in terms]
   matches = [search(pattern, string) for pattern in patterns]
@@ -247,17 +246,11 @@ def relative_match(match_obj):
   of the target search string based on the length of the partial match 
   and the number of edits.
   """
-  print(match_obj)
   match_length = len(match_obj.captures()[0])
-  print(match_length)
   counts = match_obj.fuzzy_counts
-  print(counts)
   net_chars_added = counts[1] - counts[2]
-  print(net_chars_added)
   target_length = match_length - net_chars_added
-  print(target_length)
   rank = (target_length - sum(counts)) / target_length
-  print(rank)
   return rank
   
 def relative_search(value_parameters, string):
@@ -267,7 +260,6 @@ def relative_search(value_parameters, string):
                   in match_pairs]
   best_rank = max([rank for rank, _ in match_ranks])
   trace_structure = to_arg_dict(match_ranks)
-  print(match_ranks)
   return best_rank, trace_structure
 
 # Token dispatcher and instruction evaluators
@@ -307,7 +299,6 @@ def fan_subnodes(expression_node, log_line):
   structure) returns a tuple containing a confidence score of 0.0 (0% 
   truth/certain falsehood) and the expression.
   """
-  print(expression_node)
   if type(expression_node) is dict:
     result = {}
     if 'args' in expression_node:
@@ -330,7 +321,6 @@ def fan_subnodes(expression_node, log_line):
   else:
     # Could implement literals and other types of expressions here
     result = 0.0, expression_node
-  print(result)
   return result
 
 def subnode_results(interpreted_parameters):
@@ -358,8 +348,6 @@ def subnode_results(interpreted_parameters):
     results = interpreted_parameters
   if type(results) is dict:
     results = results.values()
-  print('subnode_results:')
-  print(results)
   return results
   
 # Token interpreter methods
@@ -452,16 +440,14 @@ def eval_milestone(milestone, log_line):
   return result, trace_structure
 
 def milestone_tagger(milestones_deserialized, log_iterable):
-  print('milestone_tagger: Starting...')
   for line_index, log_line in log_iterable:
-    print('-------')
-    print(f'milestone_tagger: reading line {line_index} - {log_line}')
-    print('-------')
+    results = []
     for milestone in milestones_deserialized:
-      rank, _ = eval_milestone(milestone, log_line)
-      if rank == 1.0:
+      result, trace_structure = eval_milestone(milestone, log_line)
+      if result == 1.0:
         matched[milestone['label']].append(line_index)
-    yield matched
+      results.append((result, trace_structure))
+    yield matched, results
   
 """
 Questions:
