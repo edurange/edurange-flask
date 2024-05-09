@@ -134,7 +134,6 @@ def load_yaml(filename):
   """
   with open(filename) as file:
     contents = yamlloader(file, Loader=Loader)
-  
   return contents
   
 def label_anonymous_milestones(milestones):
@@ -144,13 +143,42 @@ def label_anonymous_milestones(milestones):
   """
   num = count()
   for milestone in milestones:
-    if 'label' not in milestone.keys():
+    if 'label' not in milestone:
       milestone['label'] = f'Anonymous Milestone {next(num)}'
-  
   return milestones
 
 def load_milestones(filename):
   return label_anonymous_milestones(load_yaml(filename))
+  
+# Expression tree helpers
+def to_arg_list(value_parameters):
+  """
+  Makes things into lists so we can traverse YAML attribute structures 
+  like n-tree nodes. By wrapping all primitive values as singleton 
+  lists, parse methods can avoid type checking and handle all such 
+  values as iterable collections.
+  """
+  args = []
+  if isinstance(value_parameters, list):
+    args = value_parameters
+  elif isinstance(value_parameters, dict):
+    # derivatives can parse options/keywords here
+    # 'args' isn't guaranteed to be a list - is this a problem?
+    args = value_parameters['args']
+  else:
+    args = [value_parameters]
+  return args
+  
+def to_arg_dict(value_parameters):
+  """
+  Packs lists and literals into a dict so that parse methods can always 
+  look for their arguments under the key 'args' and implement 
+  standardized patterns for parameter handling.
+  """
+  if isinstance(value_parameters, dict):
+    return value_parameters
+  else:
+    return {'args': to_arg_list(value_parameters)}
 
 # Regex search helpers
 def fuzzy_regex(string_pattern):
@@ -160,17 +188,18 @@ def fuzzy_regex(string_pattern):
   simple wildcard pattern features but likely does not support all 
   regexes due to the nesting of pattern in the return value.
   """
-  return f'(?:{pattern})' + r'{e}(?b)'
-  # Is f'(?:{pattern}){"{e}"}(?b)' clearer?
+  return f'(?:{string_pattern})' + r'{e}(?b)'
+  # Is f'(?:{string_pattern}){"{e}"}(?b)' clearer?
 
-def search_node(value_parameters, string):
+def search_macro(value_parameters, string):
   """Dispatches regex.search over a string of text"""
   # Add search options and/or wrap this method with more advanced 
   # behavior later
+  print(string)
   terms = to_arg_list(value_parameters)
   patterns = [fuzzy_regex(term) for term in terms]
   matches = [search(pattern, string) for pattern in patterns]
-  return zip(terms, matches)
+  return zip(matches, terms)
 
 # Error ranking/match metric helpers
 """
@@ -218,50 +247,28 @@ def relative_match(match_obj):
   of the target search string based on the length of the partial match 
   and the number of edits.
   """
+  print(match_obj)
   match_length = len(match_obj.captures()[0])
-  counts = match_obj.fuzzy_counts()
+  print(match_length)
+  counts = match_obj.fuzzy_counts
+  print(counts)
   net_chars_added = counts[1] - counts[2]
-  target_length = match_length + net_chars_added
-  return (target_length - sum(counts)) / target_length
+  print(net_chars_added)
+  target_length = match_length - net_chars_added
+  print(target_length)
+  rank = (target_length - sum(counts)) / target_length
+  print(rank)
+  return rank
   
 def relative_search(value_parameters, string):
-  """Applies relative_match to search_node"""
-  match_pairs = search_node(value_parameters)
-  match_ranks = [(term, relative_match(match_obj)) for term, match_obj 
+  """Applies relative_match to search_macro"""
+  match_pairs = search_macro(value_parameters, string)
+  match_ranks = [(relative_match(match_obj), term) for match_obj, term 
                   in match_pairs]
-  best_rank = max([rank for _, rank in match_ranks])
+  best_rank = max([rank for rank, _ in match_ranks])
   trace_structure = to_arg_dict(match_ranks)
+  print(match_ranks)
   return best_rank, trace_structure
-  
-# Expression tree helpers
-def to_arg_list(value_parameters):
-  """
-  Makes things into lists so we can traverse YAML attribute structures 
-  like n-tree nodes. By wrapping all primitive values as singleton 
-  lists, parse methods can avoid type checking and handle all such 
-  values as iterable collections.
-  """
-  args = []
-  if isinstance(value_parameters, list):
-    args = value_parameters
-  elif isinstance(value_parameters, dict):
-    # derivatives can parse options/keywords here
-    # 'args' isn't guaranteed to be a list - is this a problem?
-    args = value_parameters['args']
-  else:
-    args = [value_parameters]
-  return args
-  
-def to_arg_dict(value_parameters):
-  """
-  Packs lists and literals into a dict so that parse methods can always 
-  look for their arguments under the key 'args' and implement 
-  standardized patterns for parameter handling.
-  """
-  if isinstance(value_parameters, dict):
-    return value_parameters
-  else:
-    return {'args': to_arg_list(value_parameters)}
 
 # Token dispatcher and instruction evaluators
 """
@@ -285,23 +292,74 @@ class DispatchDict(dict):
   def __missing__(self, key):
     warn(f'{key}', TokenHandlerNotFoundWarning)
     print(f'DispatchDict: key "{key}" not found, continuing...')
-    return (1.0, {})
+    return lambda value_parameters, log_line: (1.0, value_parameters)
 
 # This is a global-level object that should be wrapped in production
 dispatch = DispatchDict()
 
 def fan_subnodes(expression_node, log_line):
   """
-  Fan and dispatch subexpression nodes, returning a list of tuples of 
-  the key and the result of the subexpression.
+  Fan and dispatch subexpression nodes. When called on a dict, returns 
+  a dict where each value has been replaced by a tuple of the 
+  evaluated result and the original subexpression. When called on a 
+  list, recursively calls itself over the items in the list. When 
+  called on any other type (presumably a literal if the input is a YAML 
+  structure) returns a tuple containing a confidence score of 0.0 (0% 
+  truth/certain falsehood) and the expression.
   """
-  results = {}
-  for key, value_parameters in expression_node.items():
-    # Omit or save/process special properties such as label
-    if key in ['label', 'objective', 'comment']:
-      continue
+  print(expression_node)
+  if type(expression_node) is dict:
+    result = {}
+    if 'args' in expression_node:
+      # If the expression has explicit terms, just fan those. Should we 
+      # distinguish 'args' in the general case from this use? Perhaps 
+      # this should instead be 'terms', 'leaves', 'children', 
+      # 'subnodes' etc.?
+      result = expression_node.copy()
+      result['args'] = fan_subnodes(expression_node['args'], log_line)
     else:
-      results[key] = dispatch[key](value_parameters, log_line)
+      for key, parameter_node in expression_node.items():
+        # Omit or save/process special properties such as label
+        if key in ['label', 'objective', 'comment']:
+          continue
+        else:
+          value_parameters = to_arg_dict(parameter_node)
+          result[key] = dispatch[key](value_parameters, log_line)
+  elif type(expression_node) is list:
+    result = [fan_subnodes(node, log_line) for node in expression_node]
+  else:
+    # Could implement literals and other types of expressions here
+    result = 0.0, expression_node
+  print(result)
+  return result
+
+def subnode_results(interpreted_parameters):
+  """
+  Unpacks results from interpreted parameter dicts. If there is no 
+  'args' key, we assume every key-value pair has been interpreted and 
+  contains (rank, subexpression) tuples for all associated values. If 
+  'args' is present, then the results are read exclusively from 'args'.
+  """
+  if 'args' in interpreted_parameters:
+    arguments = interpreted_parameters['args']
+    if type(arguments) is list:
+      results = []
+      for item in arguments:
+        if type(item) is dict:
+          results.append(list(item.values()))
+        elif type(item) is list:
+          results.append(item)
+        else:
+          results.append([item])
+      results = sum(results, []) # Addition on lists is catenation
+    else:
+      results = arguments.values()
+  else:
+    results = interpreted_parameters
+  if type(results) is dict:
+    results = results.values()
+  print('subnode_results:')
+  print(results)
   return results
   
 # Token interpreter methods
@@ -336,12 +394,13 @@ def token_matched(value_parameters, _):
   Python implementations.
   """
   search_labels = to_arg_list(value_parameters)
-  if search_labels.len() == 0:
+  if len(search_labels) == 0:
     return 0.0, {}
-  results = [1.0 if label in matched.keys() else 0.0 for label 
+  results = [1.0 if label in matched else 0.0 for label 
               in search_labels]
-  trace_structure = to_arg_dict(zip(search_labels, results))
-  return sum(*results) / search_labels.len(), trace_structure
+  result = sum(results) / len(search_labels)
+  trace_structure = list(zip(results, search_labels))
+  return result, to_arg_dict(trace_structure)
 
 def token_and(value_parameters, log_line):
   """
@@ -351,10 +410,10 @@ def token_and(value_parameters, log_line):
   otherwise.
   """
   trace_structure = fan_subnodes(value_parameters, log_line)
-  results = trace_structure.values()
+  results = subnode_results(trace_structure)
   subrank_sum = sum([subnode_rank for subnode_rank, _ in results])
-  rank = subrank_sum / results.len()
-  return rank, trace_structure
+  rank = subrank_sum / len(results)
+  return rank, to_arg_dict(trace_structure)
   
 def token_or(value_parameters, log_line):
   """
@@ -363,16 +422,16 @@ def token_or(value_parameters, log_line):
   the maximum found confidence value otherwise.
   """
   trace_structure = fan_subnodes(value_parameters, log_line)
-  results = trace_structure.values()
+  results = subnode_results(trace_structure)
   ranks = [subrank for subrank, _ in results]
   rank = max(ranks)
-  return rank, trace_structure
+  return rank, to_arg_dict(trace_structure)
   
 def token_not(value_parameters, log_line):
   """Boolean negation of the n-ary and of value_parameters"""
-  result, trace_structure = parse_and(value_parameters, log_line)
+  result, trace_structure = token_and(value_parameters, log_line)
   rank = 1.0 - result
-  return result, trace_structure
+  return rank, trace_structure
 # end parse methods
 
 dispatch |= {
@@ -388,17 +447,21 @@ dispatch |= {
 # Milestone interpreter methods
 def eval_milestone(milestone, log_line):
   """Evaluates one milestone against one line"""
-  trace_structure = fan_subnodes(milestone, log_line)
-  result, _ = token_and(trace_structure, log_line)
+  result, trace_structure = token_and(milestone, log_line)
   trace_structure['label'] = milestone['label']
   return result, trace_structure
 
 def milestone_tagger(milestones_deserialized, log_iterable):
+  print('milestone_tagger: Starting...')
   for line_index, log_line in log_iterable:
+    print('-------')
+    print(f'milestone_tagger: reading line {line_index} - {log_line}')
+    print('-------')
     for milestone in milestones_deserialized:
-      if eval_milestone(milestone, log_line) == 1.0:
-        found[label(milestone)].append(line_index)
-    yield found
+      rank, _ = eval_milestone(milestone, log_line)
+      if rank == 1.0:
+        matched[milestone['label']].append(line_index)
+    yield matched
   
 """
 Questions:
@@ -411,11 +474,14 @@ Questions:
   - Is deleting null bytes the right approach for preparing the log 
     CSVs? Do the null bytes mean something in the original encoding?
   - Can log_line be factored out safely as a global? Is this possible 
-    with a simple global or is a protection/scoping scheme needed?
+    with a simple global or is a protection/scoping scheme needed? It's 
+    only assigned in one place, so it seems plausible.
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue.
 To Do:
+  - Wrap all incoming value_parameters and outgoing trace_structure in 
+    to_arg_dict to enforce a more uniform output structure.
   - Consolidate IndexError try blocks in yield_log.
   - Consider pandas for normalizing log and output representations.
   - Experiment with regex.Match to better distinguish between the 

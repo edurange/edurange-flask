@@ -12,7 +12,7 @@
     
 - label: M3
   objective: previously found milestones can be checked
-  found: M2
+  matched: M2
   
 - label: M4
   objective: demonstrate that search strings can be regexes
@@ -20,7 +20,7 @@
   
 - label: M5
   comment: the objective parameter is also not required
-  found: M1
+  matched: M1
   output: a
   
 - comment: labels will be automatically created if not provided
