@@ -1,3 +1,4 @@
+from sys import stdin
 from warnings import warn
 from csv import reader as csvreader
 from yaml import load as yamlloader
@@ -33,21 +34,33 @@ def object_identity(obj):
 def remove_null_bytes(string):
   return string.replace('\0', '')
 
+def yield_file(filename):
+  with open(filename, newline='') as iterator:
+    for line in iterator:
+      yield line
+
+def yield_stdin():
+  for line in stdin:
+    yield line
+
 def yield_csv(
-    filename, delimiter='|', quotechar='%', 
+    source, delimiter='|', quotechar='%', 
     filter_f=object_identity):
   """
   Generates a list of strings according to a csv file. Provide filter_f  
   a function str -> str to pre-process the input text (eg for error 
   correction) before csv.reader attempts to parse it.
   """
-  with open(filename, newline='') as file:
-    filtered_text = (filter_f(line) for line in file)
-    for line in csvreader(filtered_text, delimiter=delimiter, 
-        quotechar=quotechar):
-      yield line
+  if type(source) is str:
+    iterator = yield_file(source)
+  else:
+    iterator = source
+  filtered_text = (filter_f(line) for line in iterator)
+  for line in csvreader(filtered_text, delimiter=delimiter, 
+      quotechar=quotechar):
+    yield line
 
-def yield_log(filename):
+def yield_log(source):
   """
   A generator function that yields the log line-by-line, with relevant 
   columns (input, output, etc) pre-processed into a dict of 
@@ -57,7 +70,7 @@ def yield_log(filename):
   """
   # Sample logs have null bytes which csv.reader cannot handle, so I'm 
   # providing a filter function to use before csv.reader gets the input
-  log_iterator = yield_csv(filename, filter_f=remove_null_bytes)
+  log_iterator = yield_csv(source, filter_f=remove_null_bytes)
   for i, line in enumerate(log_iterator):
     err = False
     try: # This version is very permissive of bad log lines
@@ -440,7 +453,8 @@ def eval_milestone(milestone, log_line):
   return result, trace_structure
 
 def milestone_tagger(milestones_deserialized, log_iterable):
-  for line_index, log_line in log_iterable:
+  log_enumerated = enumerate(log_iterable)
+  for line_index, log_line in log_enumerated:
     results = []
     for milestone in milestones_deserialized:
       result, trace_structure = eval_milestone(milestone, log_line)
