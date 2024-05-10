@@ -6,6 +6,7 @@ try: # Use the C-native implementation if it's available
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+from math import floor
 from itertools import count
 from collections import defaultdict
 from regex import search
@@ -28,11 +29,9 @@ class IncompleteLogRowWarning(TaggerWarning):
   pass
 
 # Log handling helpers
-def object_identity(obj):
-  return obj
-
-def remove_null_bytes(string):
-  return string.replace('\0', '')
+def remove_null_bytes(source):
+  for string in source:
+    yield string.replace('\0', '')
 
 def yield_file(filename):
   with open(filename, newline='') as iterator:
@@ -43,20 +42,17 @@ def yield_stdin():
   for line in stdin:
     yield line
 
-def yield_csv(
-    source, delimiter='|', quotechar='%', 
-    filter_f=object_identity):
+def yield_csv(source, delimiter='|', quotechar='%'):
   """
-  Generates a list of strings according to a csv file. Provide filter_f  
-  a function str -> str to pre-process the input text (eg for error 
-  correction) before csv.reader attempts to parse it.
+  Generates a list of strings according to a csv file.
   """
+  # Do we still need filter_f? Can't we just compose generators to do 
+  # the filtering?
   if type(source) is str:
     iterator = yield_file(source)
   else:
     iterator = source
-  filtered_text = (filter_f(line) for line in iterator)
-  for line in csvreader(filtered_text, delimiter=delimiter, 
+  for line in csvreader(iterator, delimiter=delimiter, 
       quotechar=quotechar):
     yield line
 
@@ -68,10 +64,13 @@ def yield_log(source):
   the main portion of the script to support different log format 
   versions.
   """
+  if type(source) is str:
+    log_iterator = yield_file(source)
+  else:
+    log_iterator = source
   # Sample logs have null bytes which csv.reader cannot handle, so I'm 
   # providing a filter function to use before csv.reader gets the input
-  log_iterator = yield_csv(source, filter_f=remove_null_bytes)
-  for i, line in enumerate(log_iterator):
+  for i, line in enumerate(yield_csv(remove_null_bytes(log_iterator))):
     err = False
     try: # This version is very permissive of bad log lines
       user_text = line[1]
@@ -382,8 +381,8 @@ def token_node(value_parameters, log_line):
   return relative_search(value_parameters, log_line[NODE])
   
 # This is a global-level object that should be wrapped in production
-matched = defaultdict(list)
-def token_matched(value_parameters, _):
+matched = defaultdict(lambda: defaultdict(list))
+def token_matched(value_parameters, log_line):
   """
   Checks the matched record; returns n / m where n is the number of 
   milestone labels found in the matched record and m is the number of 
@@ -397,7 +396,8 @@ def token_matched(value_parameters, _):
   search_labels = to_arg_list(value_parameters)
   if len(search_labels) == 0:
     return 0.0, {}
-  results = [1.0 if label in matched else 0.0 for label 
+  this_user = log_line[USER]
+  results = [1.0 if label in matched[this_user] else 0.0 for label 
               in search_labels]
   result = sum(results) / len(search_labels)
   trace_structure = list(zip(results, search_labels))
@@ -429,9 +429,12 @@ def token_or(value_parameters, log_line):
   return rank, to_arg_dict(trace_structure)
   
 def token_not(value_parameters, log_line):
-  """Boolean negation of the n-ary and of value_parameters"""
-  result, trace_structure = token_and(value_parameters, log_line)
-  rank = 1.0 - result
+  """Negation of the n-ary or of value_parameters"""
+  # This was misbehaving before; should check the traces and/or 
+  # construct a truth table to examine whether or not this properly 
+  # implements logical not. token_and and token_or are also suspect.
+  result, trace_structure = token_or(value_parameters, log_line)
+  rank = floor(1.0 - result)
   return rank, trace_structure
 # end parse methods
 
@@ -452,14 +455,15 @@ def eval_milestone(milestone, log_line):
   trace_structure['label'] = milestone['label']
   return result, trace_structure
 
-def milestone_tagger(milestones_deserialized, log_iterable):
-  log_enumerated = enumerate(log_iterable)
+def milestone_tagger(milestones_deserialized, log_iterator):
+  log_enumerated = enumerate(log_iterator)
   for line_index, log_line in log_enumerated:
     results = []
+    this_user = log_line[USER]
     for milestone in milestones_deserialized:
       result, trace_structure = eval_milestone(milestone, log_line)
       if result == 1.0:
-        matched[milestone['label']].append(line_index)
+        matched[this_user][milestone['label']].append(line_index)
       results.append((result, trace_structure))
     yield matched, results
   
@@ -476,9 +480,19 @@ Questions:
   - Can log_line be factored out safely as a global? Is this possible 
     with a simple global or is a protection/scoping scheme needed? It's 
     only assigned in one place, so it seems plausible.
+  - yield_log creates its own inner enumerator to track log lines. Is 
+    this redundant to the enumerator in milestone_tagger? Should 
+    yield_log and toy_yield_log provide enumerator indices explicitly?
+  - Would it be worthwhile to move to a [-1,1] logic system? When 
+    confidence values are [0,1], the behavior of logical not becomes 
+    asymmetric (under this implementation, at least.) In particular, 
+    for a truth value n, not(not(n)) is 0.0 or 1.0, rather than n. This 
+    is because [0,1) all represent intermediate falsity, and only 1.0 
+    proper is interpreted as a true value.
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
-    search string. This could become a memory issue.
+    search string. This could become a memory issue. Match objects 
+    have a method to instruct them to release the reference if needed.
 To Do:
   - Wrap all incoming value_parameters and outgoing trace_structure in 
     to_arg_dict to enforce a more uniform output structure.
