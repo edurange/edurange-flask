@@ -60,9 +60,10 @@ def yield_log(source):
   """
   A generator function that yields the log line-by-line, with relevant 
   columns (input, output, etc) pre-processed into a dict of 
-  properties. This can be re-implemented and its references swapped in 
-  the main portion of the script to support different log format 
-  versions.
+  properties. The original line from csv.reader is returned for 
+  constructing log output later. This can be re-implemented and its 
+  references swapped in the main portion of the script to support 
+  different log format versions.
   """
   if type(source) is str:
     log_iterator = yield_file(source)
@@ -70,22 +71,22 @@ def yield_log(source):
     log_iterator = source
   # Sample logs have null bytes which csv.reader cannot handle, so I'm 
   # providing a filter function to use before csv.reader gets the input
-  for i, line in enumerate(yield_csv(remove_null_bytes(log_iterator))):
+  for original_line in yield_csv(remove_null_bytes(log_iterator)):
     err = False
     try: # This version is very permissive of bad log lines
-      user_text = line[1]
+      user_text = original_line[1]
     except IndexError:
       user_text = ''
       err = True
     
     try:
-      timestamp_text = line[3]
+      timestamp_text = original_line[3]
     except IndexError:
       timestamp_text = ''
       err = True
     
     try:
-      prompt = line[6].split(':')
+      prompt = original_line[6].split(':')
     except IndexError:
       prompt = ['', '']
       err = True
@@ -99,22 +100,23 @@ def yield_log(source):
       err = True
       
     try:
-      output_text = line[7]
+      output_text = original_line[7]
     except IndexError:
       output_text = ''
       err = True
       
     if err:
-      warn(f'line {i}', IncompleteLogRowWarning)
-      print(f'yield_log: Encountered incomplete row at line {i}')
+      warn(f'line {reader.line_num}', IncompleteLogRowWarning)
+      print(f'yield_log: Incomplete row at line {reader.line_num}')
       
-    yield {
+    log_line = {
             USER: user_text,
             TIMESTAMP: timestamp_text,
             NODE: node_text,
             INPUT: input_text, 
             OUTPUT: output_text
     }
+    yield log_line, original_line
   """
   Consider changing dict representation to a @dataclass for 
   compactness. String dict keys come with redundant reference clutter; 
@@ -130,14 +132,15 @@ def toy_yield_log(filename):
   As above, but with a simplified log format for early testing. The 
   bare minimum of what a log handling generator should do.
   """
-  for line in yield_csv(filename, delimiter=','):
-    yield {
-            USER: line[0],
-            TIMESTAMP: line[1],
-            NODE: line[2],
-            INPUT: line[3], 
-            OUTPUT: line[4]
+  for original_line in yield_csv(filename, delimiter=','):
+    log_line = {
+            USER: original_line[0],
+            TIMESTAMP: original_line[1],
+            NODE: original_line[2],
+            INPUT: original_line[3], 
+            OUTPUT: original_line[4]
     }
+    yield log_line, original_line
     
 # Milestone file handling helpers
 def load_yaml(filename):
@@ -456,16 +459,16 @@ def eval_milestone(milestone, log_line):
   return result, trace_structure
 
 def milestone_tagger(milestones_deserialized, log_iterator):
-  log_enumerated = enumerate(log_iterator)
-  for line_index, log_line in log_enumerated:
+  for log_line, original_line in log_iterator:
     results = []
     this_user = log_line[USER]
+    this_timestamp = log_line[TIMESTAMP]
     for milestone in milestones_deserialized:
       result, trace_structure = eval_milestone(milestone, log_line)
       if result == 1.0:
-        matched[this_user][milestone['label']].append(line_index)
+        matched[this_user][milestone['label']].append(this_timestamp)
       results.append((result, trace_structure))
-    yield matched, results
+    yield matched, results, original_line
   
 """
 Questions:
@@ -480,22 +483,31 @@ Questions:
   - Can log_line be factored out safely as a global? Is this possible 
     with a simple global or is a protection/scoping scheme needed? It's 
     only assigned in one place, so it seems plausible.
-  - yield_log creates its own inner enumerator to track log lines. Is 
-    this redundant to the enumerator in milestone_tagger? Should 
-    yield_log and toy_yield_log provide enumerator indices explicitly?
   - Would it be worthwhile to move to a [-1,1] logic system? When 
     confidence values are [0,1], the behavior of logical not becomes 
     asymmetric (under this implementation, at least.) In particular, 
     for a truth value n, not(not(n)) is 0.0 or 1.0, rather than n. This 
     is because [0,1) all represent intermediate falsity, and only 1.0 
     proper is interpreted as a true value.
+  - How should milestones be formatted in the output? Now that all 
+    milestones have distance metrics, it's probably more likely that 
+    partial matches aka 'attempts' under the prior nomenclature will be 
+    found on any given line.
+  - How should unlabeled milestones be enumerated? Should measures be 
+    taken to pad milestones to uniform length?
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue. Match objects 
     have a method to instruct them to release the reference if needed.
+  - Could be helpful to wrap the log iterator with a class interface to 
+    allow the user column to be checked at multiple levels, eg to 
+    select just the user's dict from matched when displaying updated 
+    rows.
 To Do:
   - Wrap all incoming value_parameters and outgoing trace_structure in 
     to_arg_dict to enforce a more uniform output structure.
+  - See csv library's dialects feature for managing different CSV 
+    parsing parameters.
   - Consolidate IndexError try blocks in yield_log.
   - Consider pandas for normalizing log and output representations.
   - Experiment with regex.Match to better distinguish between the 
@@ -509,4 +521,6 @@ To Do:
   - Verify the reasoning behind relative_match, particularly that 
     sum(counts) will never exceed target_length.
   - Work out unifying terminology for module.
+  - Consider changing toy_yield_log to automatically generate indicies/ 
+    timestamps for interactive testing.
 """
