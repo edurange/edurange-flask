@@ -216,8 +216,8 @@ def search_macro(value_parameters, string):
   # Add search options and/or wrap this method with more advanced 
   # behavior later
   terms = to_arg_list(value_parameters)
-  patterns = [fuzzy_regex(term) for term in terms]
-  matches = [search(pattern, string) for pattern in patterns]
+  patterns = (fuzzy_regex(term) for term in terms)
+  matches = (search(pattern, string) for pattern in patterns)
   return zip(matches, terms)
 
 # Error ranking/match metric helpers
@@ -266,6 +266,7 @@ def relative_match(match_obj):
   of the target search string based on the length of the partial match 
   and the number of edits.
   """
+  print(match_obj)
   match_length = len(match_obj.captures()[0])
   rank = 1.0
   if match_length > 0:
@@ -277,7 +278,7 @@ def relative_match(match_obj):
   
 def relative_search(value_parameters, string):
   """Applies relative_match to search_macro"""
-  match_pairs = list(search_macro(value_parameters, string))
+  match_pairs = search_macro(value_parameters, string)
   #print(match_pairs)
   #for match_obj, _ in match_pairs:
     #print(match_obj.string)
@@ -285,7 +286,7 @@ def relative_search(value_parameters, string):
   match_ranks = [(relative_match(match_obj), term) for match_obj, term 
                   in match_pairs]
   #print(match_ranks)
-  best_rank = max([rank for rank, _ in match_ranks])
+  best_rank = max((rank for rank, _ in match_ranks))
   trace_structure = to_arg_dict(match_ranks)
   return best_rank, trace_structure
 
@@ -541,4 +542,7 @@ To Do:
   - Find a way to expose csv.reader.line_num to yield_log and 
     toy_yield_log so that log lines don't have to be inferred by a 
     separate enumerator.
+  - Replace max() with a short-circuiting version for places where we 
+    know the maximum possible value (eg confidence values; return 1.0 
+    as soon as 1.0 is found, rather than searching the whole list).
 """
