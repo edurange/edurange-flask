@@ -28,7 +28,7 @@
 - input: pwd
   label: M9
 
-- input: ls -a -l || ls -l -a || ls -la || ls -al
+- input: ls -a -l | ls -l -a | ls -la | ls -al
   label: M10
 
 - input: mv file1.txt renamed_file1.txt

@@ -32,11 +32,11 @@ if __name__ == '__main__':
   parser = create_argv_parser()
   arguments = parser.parse_args()
   
-  input_f = arguments.inputf[0]
+  input_f = arguments.inputf
   if input_f is not stdin:
     input_f = open(input_f, newline='')
   
-  output_f = arguments.outputf[0]
+  output_f = arguments.outputf
   if output_f is not stdout:
     output_f = open(output_f, 'w', newline='')
   
@@ -44,6 +44,7 @@ if __name__ == '__main__':
   for i, csv_line in enumerate(csvreader(input_f)):
     milestone_dict = dict(zip(csv_columns, csv_line))
     for row in list(milestone_dict.keys()):
+      milestone_dict[row] = milestone_dict[row].replace('||', '|')
       if milestone_dict[row] == '*' or milestone_dict[row] == '':
         del milestone_dict[row]
     milestone_dict['label'] = f'M{i}'

@@ -25,7 +25,8 @@ def main_loop(tagger, destination):
   writer = csvwriter(destination, delimiter=',', quotechar='%')
   for line in tagger:
     matched, results, original_text = line
-    writer.writerow(original_text + [rank for rank, _ in results])
+    output_text = original_text + [rank for rank, _ in results]
+    writer.writerow(output_text)
 
 if __name__ == '__main__':
   parser = create_argv_parser()

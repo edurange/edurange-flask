@@ -277,9 +277,14 @@ def relative_match(match_obj):
   
 def relative_search(value_parameters, string):
   """Applies relative_match to search_macro"""
-  match_pairs = search_macro(value_parameters, string)
+  match_pairs = list(search_macro(value_parameters, string))
+  #print(match_pairs)
+  #for match_obj, _ in match_pairs:
+    #print(match_obj.string)
+    #print(match_obj.captures())
   match_ranks = [(relative_match(match_obj), term) for match_obj, term 
                   in match_pairs]
+  #print(match_ranks)
   best_rank = max([rank for rank, _ in match_ranks])
   trace_structure = to_arg_dict(match_ranks)
   return best_rank, trace_structure
