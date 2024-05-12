@@ -38,11 +38,7 @@ def yield_file(filename):
     for line in iterator:
       yield line
 
-def yield_stdin():
-  for line in stdin:
-    yield line
-
-def yield_csv(source, delimiter='|', quotechar='%'):
+def yield_csv(source, delimiter=',', quotechar='%'):
   """
   Generates a list of strings according to a csv file.
   """
@@ -69,45 +65,50 @@ def yield_log(source):
     log_iterator = yield_file(source)
   else:
     log_iterator = source
+    
   # Sample logs have null bytes which csv.reader cannot handle, so I'm 
   # providing a filter function to use before csv.reader gets the input
-  for original_line in yield_csv(remove_null_bytes(log_iterator)):
+  enumerated_log = enumerate(yield_csv(remove_null_bytes(log_iterator)))
+  for i, original_line in enumerated_log:
     err = False
-    try: # This version is very permissive of bad log lines
-      user_text = original_line[1]
-    except IndexError:
-      user_text = ''
-      err = True
     
-    try:
-      timestamp_text = original_line[3]
+    try: # This version is very permissive of bad log lines
+      timestamp_text = original_line[2]
     except IndexError:
       timestamp_text = ''
       err = True
-    
+      
     try:
-      prompt = original_line[6].split(':')
-    except IndexError:
-      prompt = ['', '']
-      err = True
-    
-    node_text = prompt[0]
-    
-    try: # split() could return a list of length 1
-      input_text = prompt[1]
+      input_text = original_line[4]
     except IndexError:
       input_text = ''
       err = True
       
     try:
-      output_text = original_line[7]
+      output_text = original_line[5]
     except IndexError:
       output_text = ''
       err = True
+    
+    try:
+      prompt = original_line[6].split('@')
+    except IndexError:
+      prompt = ['', '']
+      err = True
+    
+    user_text = prompt[0]
+    
+    try: # split() could return a list of length 1
+      node_text = prompt[1]
+    except IndexError:
+      node_text = ''
+      err = True
       
     if err:
-      warn(f'line {reader.line_num}', IncompleteLogRowWarning)
-      print(f'yield_log: Incomplete row at line {reader.line_num}')
+      warn(f'line {i}', IncompleteLogRowWarning)
+      # Suppress this print unless we know we're not writing to stdout 
+      # or otherwise know we are allowed to be verbose
+      # print(f'yield_log: Incomplete row at line {i}')
       
     log_line = {
             USER: user_text,
@@ -116,6 +117,10 @@ def yield_log(source):
             INPUT: input_text, 
             OUTPUT: output_text
     }
+    print('-------')
+    print(log_line)
+    print(original_line)
+    print('-------')
     yield log_line, original_line
   """
   Consider changing dict representation to a @dataclass for 
@@ -132,7 +137,7 @@ def toy_yield_log(filename):
   As above, but with a simplified log format for early testing. The 
   bare minimum of what a log handling generator should do.
   """
-  for original_line in yield_csv(filename, delimiter=','):
+  for original_line in yield_csv(filename):
     log_line = {
             USER: original_line[0],
             TIMESTAMP: original_line[1],
@@ -262,10 +267,12 @@ def relative_match(match_obj):
   and the number of edits.
   """
   match_length = len(match_obj.captures()[0])
-  counts = match_obj.fuzzy_counts
-  net_chars_added = counts[1] - counts[2]
-  target_length = match_length - net_chars_added
-  rank = (target_length - sum(counts)) / target_length
+  rank = 1.0
+  if match_length > 0:
+    counts = match_obj.fuzzy_counts
+    net_chars_added = counts[1] - counts[2]
+    target_length = match_length - net_chars_added
+    rank = (target_length - sum(counts)) / target_length
   return rank
   
 def relative_search(value_parameters, string):
@@ -297,8 +304,8 @@ class DispatchDict(dict):
   error messages and return a default value when a key is not found.
   """
   def __missing__(self, key):
-    warn(f'{key}', TokenHandlerNotFoundWarning)
-    print(f'DispatchDict: key "{key}" not found, continuing...')
+    warn(f'key: {key}', TokenHandlerNotFoundWarning)
+    #print(f'DispatchDict: key "{key}" not found, continuing...')
     return lambda value_parameters, log_line: (1.0, value_parameters)
 
 # This is a global-level object that should be wrapped in production
@@ -513,7 +520,8 @@ To Do:
   - Experiment with regex.Match to better distinguish between the 
     BESTMATCH and ENHANCEMATCH options; documentation mostly shows use 
     examples and does not clearly define the difference between the 
-    two; likely need to examine the module source.
+    two; likely need to examine the module source. BESTMATCH appears to 
+    be quite time intensive for large inputs.
   - Verify this version is well-behaved in the case of multiple 
     milestones matching on the same line.
   - Add exception raising/error output for file handlers, especially 
@@ -523,4 +531,9 @@ To Do:
   - Work out unifying terminology for module.
   - Consider changing toy_yield_log to automatically generate indicies/ 
     timestamps for interactive testing.
+  - Wrap load_milestones, yield_log and milestone_tagger into a single 
+    convenience function so users only have to import one symbol.
+  - Find a way to expose csv.reader.line_num to yield_log and 
+    toy_yield_log so that log lines don't have to be inferred by a 
+    separate enumerator.
 """

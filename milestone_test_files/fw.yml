@@ -1,0 +1,54 @@
+- input: pwd
+  label: M0
+
+- input: man pwd
+  label: M1
+
+- input: ls
+  label: M2
+
+- input: man ls
+  label: M3
+
+- input: ls -l
+  label: M4
+
+- input: cd view
+  label: M5
+
+- input: man ls
+  label: M6
+
+- input: ls -a
+  label: M7
+
+- input: cd ..
+  label: M8
+
+- input: pwd
+  label: M9
+
+- input: ls -a -l || ls -l -a || ls -la || ls -al
+  label: M10
+
+- input: mv file1.txt renamed_file1.txt
+  label: M11
+
+- input: cp file2.txt copied_file2.txt
+  label: M12
+
+- input: cp perm1.txt copied_perm1.txt
+  label: M13
+
+- input: man chmod
+  label: M14
+
+- input: chmod copied_perm.txt 660
+  label: M15
+
+- input: cp perm2.txt copied_perm2.txt
+  label: M16
+
+- input: chmod copied_perm2.txt 764
+  label: M17
+

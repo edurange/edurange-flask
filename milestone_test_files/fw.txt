@@ -1,0 +1,18 @@
+*,pwd,*
+*,man pwd,*
+*,ls,*
+*,man ls,*
+*,ls -l,*
+*,cd view,*
+*,man ls,*
+*,ls -a,*
+*,cd ..,*
+*,pwd,*
+*,ls -a -l || ls -l -a || ls -la || ls -al,*
+*,mv file1.txt renamed_file1.txt,*
+*,cp file2.txt copied_file2.txt,*
+*,cp perm1.txt copied_perm1.txt,*
+*,man chmod,*
+*,chmod copied_perm.txt 660,*
+*,cp perm2.txt copied_perm2.txt,*
+*,chmod copied_perm2.txt 764,*
