@@ -1,4 +1,5 @@
 import sys
+
 from milestone import load_milestones
 
 if __name__ == '__main__':

@@ -28,265 +28,24 @@ class TokenHandlerNotFoundWarning(TaggerWarning):
 class IncompleteLogRowWarning(TaggerWarning):
   pass
 
-# Log handling helpers
-def remove_null_bytes(source):
-  for string in source:
-    yield string.replace('\0', '')
-
-def yield_file(filename):
-  with open(filename, newline='') as iterator:
-    for line in iterator:
-      yield line
-
-def yield_csv(source, delimiter=',', quotechar='%'):
-  """
-  Generates a list of strings according to a csv file.
-  """
-  if type(source) is str:
-    iterator = yield_file(source)
-  else:
-    iterator = source
-  for line in csvreader(iterator, delimiter=delimiter, 
-      quotechar=quotechar):
-    yield line
-
-def yield_log(source):
-  """
-  A generator function that yields the log line-by-line, with relevant 
-  columns (input, output, etc) pre-processed into a dict of 
-  properties. The original line from csv.reader is returned for 
-  constructing log output later. This can be re-implemented and its 
-  references swapped in the main portion of the script to support 
-  different log format versions.
-  """
-  if type(source) is str:
-    log_iterator = yield_file(source)
-  else:
-    log_iterator = source
-    
-  # Sample logs have null bytes which csv.reader cannot handle, so I'm 
-  # providing a filter function to use before csv.reader gets the input
-  enumerated_log = enumerate(yield_csv(remove_null_bytes(log_iterator)))
-  for i, original_line in enumerated_log:
-    err = False
-    
-    try: # This version is very permissive of bad log lines
-      timestamp_text = original_line[2]
-    except IndexError:
-      timestamp_text = ''
-      err = True
-      
-    try:
-      input_text = original_line[4]
-    except IndexError:
-      input_text = ''
-      err = True
-      
-    try:
-      output_text = original_line[5]
-    except IndexError:
-      output_text = ''
-      err = True
-    
-    try:
-      prompt = original_line[6].split('@')
-    except IndexError:
-      prompt = ['', '']
-      err = True
-    
-    user_text = prompt[0]
-    
-    try: # split() could return a list of length 1
-      node_text = prompt[1]
-    except IndexError:
-      node_text = ''
-      err = True
-      
-    if err:
-      warn(f'line {i}', IncompleteLogRowWarning)
-      # Suppress this print unless we know we're not writing to stdout 
-      # or otherwise know we are allowed to be verbose
-      # print(f'yield_log: Incomplete row at line {i}')
-      
-    log_line = {
-            USER: user_text,
-            TIMESTAMP: timestamp_text,
-            NODE: node_text,
-            INPUT: input_text, 
-            OUTPUT: output_text
-    }
-    print('-------')
-    print(log_line)
-    print(original_line)
-    print('-------')
-    yield log_line, original_line
-  """
-  Consider changing dict representation to a @dataclass for 
-  compactness. String dict keys come with redundant reference clutter; 
-  trying to save space here by using marker objects as keys instead of 
-  plain strings. See also typing.Literal for a possible improvement.
+# Milestone interpreter methods
+def milestone_tagger(milestones_deserialized, log_iterator):
+  for log_line, original_line in log_iterator:
+    results = []
+    this_user = log_line[USER]
+    this_timestamp = log_line[TIMESTAMP]
+    for milestone in milestones_deserialized:
+      result, trace_structure = eval_milestone(milestone, log_line)
+      if result == 1.0:
+        matched[this_user][milestone['label']].append(this_timestamp)
+      results.append((result, trace_structure))
+    yield matched, results, original_line
   
-  May need to implement a separate log loader module that does the 
-  error handling and cleaning elsewhere for clarity.
-  """
-
-def toy_yield_log(filename):
-  """
-  As above, but with a simplified log format for early testing. The 
-  bare minimum of what a log handling generator should do.
-  """
-  for original_line in yield_csv(filename):
-    log_line = {
-            USER: original_line[0],
-            TIMESTAMP: original_line[1],
-            NODE: original_line[2],
-            INPUT: original_line[3], 
-            OUTPUT: original_line[4]
-    }
-    yield log_line, original_line
-    
-# Milestone file handling helpers
-def load_yaml(filename):
-  """
-  Interprets a YAML file as a list of nested dicts, lists and literals
-  """
-  with open(filename) as file:
-    contents = yamlloader(file, Loader=Loader)
-  return contents
-  
-def label_anonymous_milestones(milestones):
-  """
-  Adds a 'label' key-value pair to each dict in a list of milestone 
-  dicts, if 'label' was not already present.
-  """
-  num = count()
-  for milestone in milestones:
-    if 'label' not in milestone:
-      milestone['label'] = f'Anonymous Milestone {next(num)}'
-  return milestones
-
-def load_milestones(filename):
-  return label_anonymous_milestones(load_yaml(filename))
-  
-# Expression tree helpers
-def to_arg_list(value_parameters):
-  """
-  Makes things into lists so we can traverse YAML attribute structures 
-  like n-tree nodes. By wrapping all primitive values as singleton 
-  lists, parse methods can avoid type checking and handle all such 
-  values as iterable collections.
-  """
-  args = []
-  if isinstance(value_parameters, list):
-    args = value_parameters
-  elif isinstance(value_parameters, dict):
-    # derivatives can parse options/keywords here
-    # 'args' isn't guaranteed to be a list - is this a problem?
-    args = value_parameters['args']
-  else:
-    args = [value_parameters]
-  return args
-  
-def to_arg_dict(value_parameters):
-  """
-  Packs lists and literals into a dict so that parse methods can always 
-  look for their arguments under the key 'args' and implement 
-  standardized patterns for parameter handling.
-  """
-  if isinstance(value_parameters, dict):
-    return value_parameters
-  else:
-    return {'args': to_arg_list(value_parameters)}
-
-# Regex search helpers
-def fuzzy_regex(string_pattern):
-  """
-  Wraps a simple regex search string with the proper parameterization 
-  to use with the fuzzy matching provided by regex.search. Permits some 
-  simple wildcard pattern features but likely does not support all 
-  regexes due to the nesting of pattern in the return value.
-  """
-  return f'(?:{string_pattern})' + r'{e}(?b)'
-  # Is f'(?:{string_pattern}){"{e}"}(?b)' clearer?
-
-def search_macro(value_parameters, string):
-  """Dispatches regex.search over a string of text"""
-  # Add search options and/or wrap this method with more advanced 
-  # behavior later
-  terms = to_arg_list(value_parameters)
-  patterns = (fuzzy_regex(term) for term in terms)
-  matches = (search(pattern, string) for pattern in patterns)
-  return zip(matches, terms)
-
-# Error ranking/match metric helpers
-"""
-First we need a way of converting a Levenshtein-type distance metric 
-[0,inf) to a finite interval. Using such a mapping, we can create a 
-"correctness" metric that can be sensibly compared to finite sets of 
-logical criteria. This will allow us to mix Levenshtein distances with 
-"completeness" scoring strategies for logical operations. Generally, 
-these mappings should have f(0) = 1 (no errors = 100% correct), 
-lim(f(x)) -> 0 as x approaches infinty, and be 
-order-preserving/monotonic (strictly decreasing over the interval ie a 
-negative derivative).
-
-This is a naive approach! In practice with partial matches allowed (the 
-default regex search behavior) the maximum possible Levenshtein 
-distance will be n for a pattern of n literal characters - one 
-insertion or replacement for each character. (Potentially less for 
-patterns of length n that include escaped or interpreted characters, 
-but also as many as infinite for wildcards of unconstrained 
-length/repetition.)
-
-It may be preferable to normalize the Levenshtein distance relative to 
-the length of the pattern in some applications. At other times it 
-should be sufficient, and perhaps more versatile, to use an 
-order-preserving interval mapping as described above. One strategy 
-would be to disallow infinite length regexes in basic search strings, 
-and create a wildcard mechanism at the parser level. This would make it 
-trivial to identify expressions with potentially infinite distance 
-values and handle their normalization separately.
-"""
-def multiplicative_inverse(num):
-  """
-  Maps [0,inf) to [1,0) using the multiplicative inverse: 1 / (1 + num)
-  """
-  return 1 / (1 + num)
-  
-def normalized_arctan(num):
-  """Maps [0,inf) to [1,0) using the inverse tangent"""
-  return 1 - 2 * arctan(num) / pi
-
-def relative_match(match_obj):
-  """
-  Returns a value from [1,0] based on Levenshtein edit distance of a 
-  regex.Match object; normalizes the distance by inferring the length 
-  of the target search string based on the length of the partial match 
-  and the number of edits.
-  """
-  print(match_obj)
-  match_length = len(match_obj.captures()[0])
-  rank = 1.0
-  if match_length > 0:
-    counts = match_obj.fuzzy_counts
-    net_chars_added = counts[1] - counts[2]
-    target_length = match_length - net_chars_added
-    rank = (target_length - sum(counts)) / target_length
-  return rank
-  
-def relative_search(value_parameters, string):
-  """Applies relative_match to search_macro"""
-  match_pairs = search_macro(value_parameters, string)
-  #print(match_pairs)
-  #for match_obj, _ in match_pairs:
-    #print(match_obj.string)
-    #print(match_obj.captures())
-  match_ranks = [(relative_match(match_obj), term) for match_obj, term 
-                  in match_pairs]
-  #print(match_ranks)
-  best_rank = max((rank for rank, _ in match_ranks))
-  trace_structure = to_arg_dict(match_ranks)
-  return best_rank, trace_structure
+def eval_milestone(milestone, log_line):
+  """Evaluates one milestone against one line"""
+  result, trace_structure = token_and(milestone, log_line)
+  trace_structure['label'] = milestone['label']
+  return result, trace_structure
 
 # Token dispatcher and instruction evaluators
 """
@@ -305,7 +64,9 @@ true (1.0 aka 100% truth confidence) value to the expression evaluator.
 class DispatchDict(dict):
   """
   DispatchDict overrides the __missing__ method to report parameterized 
-  error messages and return a default value when a key is not found.
+  error messages and return a default value when a key is not found. 
+  This will be used in fan_subnodes below to map expression node tokens 
+  to token handler methods.
   """
   def __missing__(self, key):
     warn(f'key: {key}', TokenHandlerNotFoundWarning)
@@ -380,7 +141,8 @@ def subnode_results(interpreted_parameters):
 """
 Token interpreters should return a confidence value [0,1] and the trace 
 trees of the parameters and/or subnodes; fan_subnodes then wraps the 
-result in a dict of result, subnode tuples.
+result in a dict of result, subnode tuples. See below for further 
+discussion of confidence values.
 """
 def token_input(value_parameters, log_line):
   """Search the input portion of log_line"""
@@ -452,6 +214,7 @@ def token_not(value_parameters, log_line):
   return rank, trace_structure
 # end parse methods
 
+# Make sure to register all token handlers here.
 dispatch |= {
     'input': token_input,
     'output': token_output,
@@ -462,25 +225,256 @@ dispatch |= {
     'not': token_not
     }
 
-# Milestone interpreter methods
-def eval_milestone(milestone, log_line):
-  """Evaluates one milestone against one line"""
-  result, trace_structure = token_and(milestone, log_line)
-  trace_structure['label'] = milestone['label']
-  return result, trace_structure
+# Error ranking/match metric helpers
+"""
+First we need a way of converting a Levenshtein-type distance metric 
+[0,inf) to a finite interval. Using such a mapping, we can create a 
+"correctness" metric that can be sensibly compared to finite sets of 
+logical criteria. This will allow us to mix Levenshtein distances with 
+"completeness" scoring strategies for logical operations. Generally, 
+these mappings should have f(0) = 1 (no errors = 100% correct), 
+lim(f(x)) -> 0 as x approaches infinty, and be 
+order-preserving/monotonic (strictly decreasing over the interval ie a 
+negative derivative).
 
-def milestone_tagger(milestones_deserialized, log_iterator):
-  for log_line, original_line in log_iterator:
-    results = []
-    this_user = log_line[USER]
-    this_timestamp = log_line[TIMESTAMP]
-    for milestone in milestones_deserialized:
-      result, trace_structure = eval_milestone(milestone, log_line)
-      if result == 1.0:
-        matched[this_user][milestone['label']].append(this_timestamp)
-      results.append((result, trace_structure))
-    yield matched, results, original_line
+This is a naive approach! In practice with partial matches allowed (the 
+default regex search behavior) the maximum possible Levenshtein 
+distance will be n for a pattern of n literal characters - one 
+insertion or replacement for each character. (Potentially less for 
+patterns of length n that include escaped or interpreted characters, 
+but also as many as infinite for wildcards of unconstrained 
+length/repetition.)
+
+It may be preferable to normalize the Levenshtein distance relative to 
+the length of the pattern in some applications. At other times it 
+should be sufficient, and perhaps more versatile, to use an 
+order-preserving interval mapping as described above. One strategy 
+would be to disallow infinite length regexes in basic search strings, 
+and create a wildcard mechanism at the parser level. This would make it 
+trivial to identify expressions with potentially infinite distance 
+values and handle their normalization separately.
+"""  
+def relative_search(value_parameters, string):
+  """Applies relative_match to search_macro"""
+  match_pairs = search_macro(value_parameters, string)
+  match_ranks = [(relative_match(match_obj), term) for match_obj, term 
+                  in match_pairs]
+  best_rank = max((rank for rank, _ in match_ranks))
+  trace_structure = to_arg_dict(match_ranks)
+  return best_rank, trace_structure
   
+def relative_match(match_obj):
+  """
+  Returns a value from [1,0] based on Levenshtein edit distance of a 
+  regex.Match object; normalizes the distance by inferring the length 
+  of the target search string based on the length of the partial match 
+  and the number of edits.
+  """
+  match_length = len(match_obj.captures()[0])
+  rank = 1.0
+  if match_length > 0:
+    counts = match_obj.fuzzy_counts
+    net_chars_added = counts[1] - counts[2]
+    target_length = match_length - net_chars_added
+    rank = (target_length - sum(counts)) / target_length
+  return rank
+
+def normalized_arctan(num):
+  """Maps [0,inf) to [1,0) using the inverse tangent"""
+  return 1 - 2 * arctan(num) / pi
+
+def multiplicative_inverse(num):
+  """
+  Maps [0,inf) to [1,0) using the multiplicative inverse: 1 / (1 + num)
+  """
+  return 1 / (1 + num)
+
+# Regex search helpers
+def search_macro(value_parameters, string):
+  """Dispatches regex.search over a string of text"""
+  # Add search options and/or wrap this method with more advanced 
+  # behavior later
+  terms = to_arg_list(value_parameters)
+  patterns = (fuzzy_regex(term) for term in terms)
+  matches = (search(pattern, string) for pattern in patterns)
+  return zip(matches, terms)
+
+def fuzzy_regex(string_pattern):
+  """
+  Wraps a simple regex search string with the proper parameterization 
+  to use with the fuzzy matching provided by regex.search. Permits some 
+  simple wildcard pattern features but likely does not support all 
+  regexes due to the nesting of pattern in the return value.
+  """
+  return f'(?:{string_pattern})' + r'{e}(?b)'
+  # Is f'(?:{string_pattern}){"{e}"}(?b)' clearer?
+  
+# Expression tree helpers  
+def to_arg_dict(value_parameters):
+  """
+  Packs lists and literals into a dict so that parse methods can always 
+  look for their arguments under the key 'args' and implement 
+  standardized patterns for parameter handling.
+  """
+  if isinstance(value_parameters, dict):
+    return value_parameters
+  else:
+    return {'args': to_arg_list(value_parameters)}
+
+def to_arg_list(value_parameters):
+  """
+  Makes things into lists so we can traverse YAML attribute structures 
+  like n-tree nodes. By wrapping all primitive values as singleton 
+  lists, parse methods can avoid type checking and handle all such 
+  values as iterable collections.
+  """
+  args = []
+  if isinstance(value_parameters, list):
+    args = value_parameters
+  elif isinstance(value_parameters, dict):
+    # derivatives can parse options/keywords here
+    # 'args' isn't guaranteed to be a list - is this a problem?
+    args = value_parameters['args']
+  else:
+    args = [value_parameters]
+  return args
+    
+# Milestone file handling helpers
+def load_milestones(filename):
+  return label_anonymous_milestones(load_yaml(filename))
+  
+def label_anonymous_milestones(milestones):
+  """
+  Adds a 'label' key-value pair to each dict in a list of milestone 
+  dicts, if 'label' was not already present.
+  """
+  num = count()
+  for milestone in milestones:
+    if 'label' not in milestone:
+      milestone['label'] = f'Anonymous Milestone {next(num)}'
+  return milestones
+
+def load_yaml(filename):
+  """
+  Interprets a YAML file as a list of nested dicts, lists and literals
+  """
+  with open(filename) as file:
+    contents = yamlloader(file, Loader=Loader)
+  return contents
+
+# Log file/stream handling helpers
+def toy_yield_log(filename):
+  """
+  As below, but with a simplified log format for early testing. The 
+  bare minimum of what a log handling generator should do.
+  """
+  for original_line in yield_csv(filename):
+    log_line = {
+            USER: original_line[0],
+            TIMESTAMP: original_line[1],
+            NODE: original_line[2],
+            INPUT: original_line[3], 
+            OUTPUT: original_line[4]
+    }
+    yield log_line, original_line
+
+def yield_log(source):
+  """
+  A generator function that yields the log line-by-line, with relevant 
+  columns (input, output, etc) pre-processed into a dict of 
+  properties. The original line from csv.reader is returned for 
+  constructing log output later. This can be re-implemented and its 
+  references swapped in the main portion of the script to support 
+  different log format versions.
+  """
+  if type(source) is str:
+    log_iterator = yield_file(source)
+  else:
+    log_iterator = source
+    
+  # Sample logs have null bytes which csv.reader cannot handle, so I'm 
+  # providing a filter function to use before csv.reader gets the input
+  enumerated_log = enumerate(yield_csv(remove_null_bytes(log_iterator)))
+  for i, original_line in enumerated_log:
+    err = False
+    
+    try: # This version is very permissive of bad log lines
+      timestamp_text = original_line[2]
+    except IndexError:
+      timestamp_text = ''
+      err = True
+      
+    try:
+      input_text = original_line[4]
+    except IndexError:
+      input_text = ''
+      err = True
+      
+    try:
+      output_text = original_line[5]
+    except IndexError:
+      output_text = ''
+      err = True
+    
+    try:
+      prompt = original_line[6].split('@')
+    except IndexError:
+      prompt = ['', '']
+      err = True
+    
+    user_text = prompt[0]
+    
+    try: # split() could return a list of length 1
+      node_text = prompt[1]
+    except IndexError:
+      node_text = ''
+      err = True
+      
+    if err:
+      warn(f'line {i}', IncompleteLogRowWarning)
+      # Suppress this print unless we know we're not writing to stdout 
+      # or otherwise know we are allowed to be verbose
+      # print(f'yield_log: Incomplete row at line {i}')
+      
+    log_line = {
+            USER: user_text,
+            TIMESTAMP: timestamp_text,
+            NODE: node_text,
+            INPUT: input_text, 
+            OUTPUT: output_text
+    }
+    yield log_line, original_line
+  """
+  Consider changing dict representation to a @dataclass for 
+  compactness. String dict keys come with redundant reference clutter; 
+  trying to save space here by using marker objects as keys instead of 
+  plain strings. See also typing.Literal for a possible improvement.
+  
+  May need to implement a separate log loader module that does the 
+  error handling and cleaning elsewhere for clarity.
+  """
+
+def yield_csv(source, delimiter=',', quotechar='%'):
+  """
+  Generates a list of strings according to a csv file.
+  """
+  if type(source) is str:
+    iterator = yield_file(source)
+  else:
+    iterator = source
+  for line in csvreader(iterator, delimiter=delimiter, 
+      quotechar=quotechar):
+    yield line
+
+def yield_file(filename):
+  with open(filename, newline='') as iterator:
+    for line in iterator:
+      yield line
+
+def remove_null_bytes(source):
+  for string in source:
+    yield string.replace('\0', '')
+
 """
 Questions:
   - Do we want to coerce values on loading - ie should timestamps be 
@@ -511,6 +505,8 @@ Questions:
     implementing the parameter seems straightforward, but its design 
     implications are unclear to me. Does a maximum error distance imply 
     that we should adjust the mapping of our relative distance metric?
+  - Is it possible to load an 'empty' milestone through yaml.load and 
+    is the interpreter robust when encountering such a milestone?
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue. Match objects 
@@ -520,6 +516,8 @@ Note:
     select just the user's dict from matched when displaying updated 
     rows.
 To Do:
+  - Add a canonical invocation method (possibly a different file?) that 
+    properly reports script termination through sys.exit.
   - Wrap all incoming value_parameters and outgoing trace_structure in 
     to_arg_dict to enforce a more uniform output structure.
   - See csv library's dialects feature for managing different CSV 
@@ -552,4 +550,5 @@ To Do:
     ordering of string patterns.
   - Implement explicit conversion of strings to search patterns using 
     fnmatch.
+  - Catch yaml.load errors/exceptions.
 """

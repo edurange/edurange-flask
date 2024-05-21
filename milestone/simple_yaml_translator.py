@@ -14,6 +14,11 @@ generic iterator method when reading dicts, and so properties come out
 in alphabetical order despite attempts to manipulate insertion order or 
 use of dict subclasses.
 """
+"""
+Please note that argparse is a standard Python library and is used only 
+to parse sys.argv for invocation options. It is not involved in the 
+interpretation of milestones.
+"""
 
 def create_argv_parser():
   description = 'Convert a three-column CSV milestone file to a YAML '\

@@ -33,6 +33,6 @@
     input: foo
     input: bar
   or:
-    comment: do it like this! use lists when you might shadow a key
+    - comment: do it like this - use lists when you might shadow a key
     - input: baz
     - input: bleep

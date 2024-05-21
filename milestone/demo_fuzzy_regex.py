@@ -1,4 +1,5 @@
 import sys
+
 from milestone import relative_search
 
 if __name__ == '__main__':
