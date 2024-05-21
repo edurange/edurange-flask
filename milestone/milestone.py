@@ -42,8 +42,6 @@ def yield_csv(source, delimiter=',', quotechar='%'):
   """
   Generates a list of strings according to a csv file.
   """
-  # Do we still need filter_f? Can't we just compose generators to do 
-  # the filtering?
   if type(source) is str:
     iterator = yield_file(source)
   else:
@@ -393,7 +391,7 @@ def token_output(value_parameters, log_line):
   return relative_search(value_parameters, log_line[OUTPUT])
   
 def token_node(value_parameters, log_line):
-  """Search the output portion of log_line"""
+  """Search the node portion of log_line"""
   return relative_search(value_parameters, log_line[NODE])
   
 # This is a global-level object that should be wrapped in production
@@ -436,7 +434,7 @@ def token_or(value_parameters, log_line):
   """
   Performs n-ary or on the subnodes of value_parameters. Returns 1.0 
   (true/full confidence) if any subnode is true/full confidence; 
-  the maximum found confidence value otherwise.
+  returns the maximum found confidence value otherwise.
   """
   trace_structure = fan_subnodes(value_parameters, log_line)
   results = subnode_results(trace_structure)
@@ -508,6 +506,11 @@ Questions:
     found on any given line.
   - How should unlabeled milestones be enumerated? Should measures be 
     taken to pad milestones to uniform length?
+  - Could we/how would we create a specification for maximum error 
+    distance? regex.Match provides this as a parameter, and 
+    implementing the parameter seems straightforward, but its design 
+    implications are unclear to me. Does a maximum error distance imply 
+    that we should adjust the mapping of our relative distance metric?
 Note:
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue. Match objects 
@@ -545,4 +548,8 @@ To Do:
   - Replace max() with a short-circuiting version for places where we 
     know the maximum possible value (eg confidence values; return 1.0 
     as soon as 1.0 is found, rather than searching the whole list).
+  - Provide a positional matching system similar to slicing or relative 
+    ordering of string patterns.
+  - Implement explicit conversion of strings to search patterns using 
+    fnmatch.
 """

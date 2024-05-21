@@ -15,7 +15,8 @@
   matched: M2
   
 - label: M4
-  objective: demonstrate that search strings can be regexes
+  objective: demonstrate that search strings can be regexes/patterns
+  comment: this currently works but maybe we won't always support it
   output: ba*
   
 - label: M5
@@ -28,8 +29,10 @@
   
 - objective: see if yaml can have multiple properties of the same name
   and:
+    comment: don't do this! you'll overwrite the first key-value pair
     input: foo
     input: bar
   or:
+    comment: do it like this! use lists when you might shadow a key
     - input: baz
     - input: bleep
