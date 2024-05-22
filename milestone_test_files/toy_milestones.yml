@@ -43,3 +43,9 @@
     - 1
   input: foo
   output: foo
+
+- objective: demonstrate flow style YAML lists
+  weights: [3, 7]
+  not:
+    input: foo
+  output: bleep

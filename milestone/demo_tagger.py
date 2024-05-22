@@ -66,6 +66,7 @@ if __name__ == '__main__':
   
   # Load a YAML file of milestones, with a little error checking.
   milestones_deserialized = load_milestones(arguments.milestonef)
+  print(milestones_deserialized)
   
   # Load a log source, which can be a file handler or a path string.
   if arguments.toy:

@@ -8,7 +8,7 @@ except ImportError:
     from yaml import Loader
 from math import floor
 from itertools import chain, count, repeat
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from regex import search
 from numpy import arctan, pi
 
@@ -70,7 +70,6 @@ class DispatchDict(dict):
   """
   def __missing__(self, key):
     warn(f'key: {key}', TokenHandlerNotFoundWarning)
-    #print(f'DispatchDict: key "{key}" not found, continuing...')
     return lambda value_parameters, log_line: (1.0, value_parameters)
 
 # This is a global-level object that should be wrapped in production
@@ -87,21 +86,21 @@ def fan_subnodes(expression_node, log_line):
   truth/certain falsehood) and the expression.
   """
   if type(expression_node) is dict:
-    result = {}
+    result = OrderedDict()
     if 'args' in expression_node:
       # If the expression has explicit terms, just fan those. Should we 
       # distinguish 'args' in the general case from this use? Perhaps 
       # this should instead be 'terms', 'leaves', 'children', 
       # 'subnodes' etc.?
-      result = expression_node.copy()
+      result = OrderedDict(expression_node)
       result['args'] = fan_subnodes(expression_node['args'], log_line)
     else:
-      for key, parameter_node in expression_node.items():
+      for key in expression_node:
         # Omit or save/process special properties such as label
         if key in ['label', 'objective', 'comment']:
           continue
         else:
-          value_parameters = to_arg_dict(parameter_node)
+          value_parameters = to_arg_dict(expression_node[key])
           result[key] = dispatch[key](value_parameters, log_line)
   elif type(expression_node) is list:
     result = [fan_subnodes(node, log_line) for node in expression_node]
@@ -171,7 +170,7 @@ def token_matched(value_parameters, log_line):
   """
   search_labels = to_arg_list(value_parameters)
   if len(search_labels) == 0:
-    return 0.0, {}
+    return 0.0, ''
   this_user = log_line[USER]
   results = [1.0 if label in matched[this_user] else 0.0 for label 
               in search_labels]
@@ -186,15 +185,23 @@ def token_and(value_parameters, log_line):
   returns the normalized sum (mean average) of the confidence values 
   otherwise.
   """
+  """
+  Problem! Subnodes/subexpressions appear to sometimes change order 
+  within dictionaries, so the ordered mapping of weights to subranks is 
+  not always preserved. Might need enforce that weights be a dict when 
+  the subnodes are packed as a dict, and a list when the subnodes are 
+  packed as a list, or something like that. Packing subnodes as a list 
+  under the args key (within the YAML file) also seems to help.
+  """
   arguments = value_parameters
   weights = []
   
   if 'weights' in value_parameters:
-    arguments = {key: value_parameters[key] for key 
-                  in value_parameters.keys() - ['weights']}
+    arguments = value_parameters.copy()
+    arguments.pop('weights')
     weights = value_parameters['weights']
   
-  # Puts weights in an iterator with infinite 1.0 elements at the end.
+  # Pads the end of weights in case the user didn't specify enough.
   weights = chain(weights, repeat(1.0))
   
   trace_structure = fan_subnodes(arguments, log_line)
@@ -223,7 +230,10 @@ def token_not(value_parameters, log_line):
   # construct a truth table to examine whether or not this properly 
   # implements logical not. token_and and token_or are also suspect.
   result, trace_structure = token_or(value_parameters, log_line)
-  rank = floor(1.0 - result)
+  if result == 1.0:
+    rank = 1.0
+  else:
+    rank = 0.0
   return rank, trace_structure
 # end parse methods
 
@@ -332,7 +342,7 @@ def to_arg_dict(value_parameters):
   if isinstance(value_parameters, dict):
     return value_parameters
   else:
-    return {'args': to_arg_list(value_parameters)}
+    return OrderedDict({'args': to_arg_list(value_parameters)})
 
 def to_arg_list(value_parameters):
   """
@@ -373,7 +383,22 @@ def load_yaml(filename):
   """
   with open(filename) as file:
     contents = yamlloader(file, Loader=Loader)
-  return contents
+  return to_ordered_dicts(contents)
+  
+def to_ordered_dicts(obj):
+  """
+  Recurses over a YAML structure of dicts, lists and literals, creating 
+  OrderedDicts in place of ordinary dictionaries.
+  """
+  if type(obj) is dict:
+    result = OrderedDict(obj)
+    for key in result:
+      result[key] = to_ordered_dicts(result[key])
+  if type(obj) is list:
+    result = [to_ordered_dicts(item) for item in obj]
+  else:
+    result = obj
+  return result
 
 # Log file/stream handling helpers
 def toy_yield_log(filename):
