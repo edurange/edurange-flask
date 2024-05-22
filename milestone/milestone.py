@@ -7,7 +7,7 @@ try: # Use the C-native implementation if it's available
 except ImportError:
     from yaml import Loader
 from math import floor
-from itertools import count
+from itertools import chain, count, repeat
 from collections import defaultdict
 from regex import search
 from numpy import arctan, pi
@@ -186,10 +186,23 @@ def token_and(value_parameters, log_line):
   returns the normalized sum (mean average) of the confidence values 
   otherwise.
   """
-  trace_structure = fan_subnodes(value_parameters, log_line)
-  results = subnode_results(trace_structure)
-  subrank_sum = sum([subnode_rank for subnode_rank, _ in results])
-  rank = subrank_sum / len(results)
+  arguments = value_parameters
+  weights = []
+  
+  if 'weights' in value_parameters:
+    arguments = {key: value_parameters[key] for key 
+                  in value_parameters.keys() - ['weights']}
+    weights = value_parameters['weights']
+  
+  # Puts weights in an iterator with infinite 1.0 elements at the end.
+  weights = chain(weights, repeat(1.0))
+  
+  trace_structure = fan_subnodes(arguments, log_line)
+  subranks = [subnode_rank for subnode_rank, _ 
+              in subnode_results(trace_structure)]
+  terms = list(zip(weights, subranks))
+  subrank_sum = sum([weight * subrank for weight, subrank in terms])
+  rank = subrank_sum / sum([weight for weight, _ in terms])
   return rank, to_arg_dict(trace_structure)
   
 def token_or(value_parameters, log_line):
@@ -551,4 +564,7 @@ To Do:
   - Implement explicit conversion of strings to search patterns using 
     fnmatch.
   - Catch yaml.load errors/exceptions.
+  - Check return value of subnode_results; appears to be using a 
+    generator or builtin type related to dict. Type should be 
+    standardized.
 """
