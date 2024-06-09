@@ -288,11 +288,12 @@ def relative_search(value_parameters, string):
   
 def relative_match(match_obj):
   """
-  Returns a value from [1,0] based on Levenshtein edit distance of a 
+  Returns a float from [1,0] based on Levenshtein edit distance of a 
   regex.Match object; normalizes the distance by inferring the length 
   of the target search string based on the length of the partial match 
   and the number of edits.
   """
+  # Explain [1,0] ordering
   match_length = len(match_obj.captures()[0])
   rank = 1.0
   if match_length > 0:
@@ -330,7 +331,6 @@ def fuzzy_regex(string_pattern):
   regexes due to the nesting of pattern in the return value.
   """
   return f'(?:{string_pattern})' + r'{e}(?b)'
-  # Is f'(?:{string_pattern}){"{e}"}(?b)' clearer?
   
 # Expression tree helpers  
 def to_arg_dict(value_parameters):
@@ -546,6 +546,9 @@ Questions:
   - Is it possible to load an 'empty' milestone through yaml.load and 
     is the interpreter robust when encountering such a milestone?
 Note:
+  - regex fuzzy matching only supports the classic Levenshtein metric. 
+    It may be desirable to implement the Damerau-Levenshtein algorithm 
+    instead, which accounts for one-character transpostions.
   - regex.Match objects maintain a copy of/reference to the original 
     search string. This could become a memory issue. Match objects 
     have a method to instruct them to release the reference if needed.
@@ -553,6 +556,13 @@ Note:
     allow the user column to be checked at multiple levels, eg to 
     select just the user's dict from matched when displaying updated 
     rows.
+  - dict.keys sometimes returns alphabetized order? Had to change the 
+    subtraction of the 'weights' key from a set/list operation on 
+    dict.keys to dict.pop('weights'). Also aggressively changed 
+    dicts used in milestone expressions to OrderedDicts; 
+    order-preserving behavior in Python dicts is considered a 'desired' 
+    characteristic but not a part of the definitive feature set, and is 
+    therefor not guaranteed to remain in future versions.
 To Do:
   - Add a canonical invocation method (possibly a different file?) that 
     properly reports script termination through sys.exit.
@@ -592,4 +602,9 @@ To Do:
   - Check return value of subnode_results; appears to be using a 
     generator or builtin type related to dict. Type should be 
     standardized.
+  - Add search options, including flags for fuzzy matching. See 
+    positional matching above; should be compatible with anchor (^ and 
+    $) patterns.
+  - Methods in dispatch dict should be renamed; token is an ambiguous 
+    term now that the scope includes shell language grammar.
 """
